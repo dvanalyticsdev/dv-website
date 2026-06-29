@@ -1,0 +1,2037 @@
+export interface SubSection {
+  title: string;
+  topics: string[];
+  applications?: string[];
+}
+
+export interface CourseModule {
+  title: string;
+  description?: string;
+  sections: SubSection[];
+}
+
+export interface ProjectDomain {
+  domain: string;
+  projects: string[];
+}
+
+export interface CareerLevel {
+  level: string;
+  roles: string[];
+}
+
+export interface DetailedCourse {
+  id: string;
+  title: string;
+  tagline: string;
+  overview: string;
+  duration: string;
+  practicalExposure: string[];
+  expertiseAreas?: string[];
+  theme: 'blue' | 'purple' | 'indigo' | 'magenta' | 'orange' | 'teal';
+  modules: CourseModule[];
+  industryProjects: ProjectDomain[];
+  programOutcome: string[];
+  careers: CareerLevel[];
+  whoShouldJoin: string[];
+  careerAdvantage: string;
+  certifications?: string[];
+}
+
+export const coursesData: Record<string, DetailedCourse> = {
+  APIDS: {
+    id: 'apids',
+    title: 'Advanced Program in Industrial Data Science & AI (APIDS)',
+    tagline: 'A comprehensive industry-oriented program covering the complete lifecycle of data-driven business solutions—from data collection to AI deployment in the cloud.',
+    overview: 'The Advanced Program in Industrial Data Science & AI (APIDS) is a comprehensive industry-oriented training program designed to prepare students, graduates, working professionals, and career transition candidates for successful careers in Data Science, Artificial Intelligence, and Analytics.\n\nThe program follows a 360-degree learning approach, covering the complete lifecycle of data-driven business solutions—from data collection and management to advanced AI model development and deployment in cloud environments.',
+    duration: '6-8 Months',
+    practicalExposure: [
+      'Instructor-led training',
+      'Real-world industry projects',
+      'Case studies and assignments',
+      'Hands-on Industry Projects',
+      'Industry Mentorship',
+      'Resume Building',
+      'Interview Preparation',
+      'Tests and Mock Interviews',
+      'Placement support',
+    ],
+    expertiseAreas: [
+      'Data Management',
+      'Data Analysis & Visualization',
+      'Machine Learning & Artificial Intelligence',
+      'Generative AI & Agentic AI',
+      'Cloud Deployment & AI Operations',
+    ],
+    theme: 'blue',
+    modules: [
+      {
+        title: 'Module 1: Data Management & Programming',
+        sections: [
+          {
+            title: 'SQL (Structured Query Language)',
+            topics: [
+              'Database Concepts',
+              'Data Modeling',
+              'SQL Server / MySQL',
+              'DDL, DML, DCL Commands',
+              'Joins',
+              'Subqueries & CTE',
+              'Views',
+              'Stored Procedures',
+              'Functions',
+              'Window Functions',
+              'Query Optimization',
+            ],
+            applications: [
+              'Customer Analytics',
+              'Banking Analytics',
+              'Sales Analytics',
+              'Data Extraction',
+              'Business Reporting',
+            ],
+          },
+          {
+            title: 'Python Programming',
+            topics: [
+              'Python Fundamentals',
+              'Variables & Data Types',
+              'Loops & Conditions',
+              'Functions',
+              'File Handling',
+              'OOP Concepts',
+              'Exception Handling',
+              'APIs',
+              'Python Libraries',
+            ],
+            applications: [
+              'Data Processing',
+              'Automation',
+              'AI Development',
+              'Business Analytics',
+            ],
+          },
+          {
+            title: 'SAS Programming',
+            topics: [
+              'Base SAS',
+              'Data Step Programming',
+              'PROC SQL',
+              'Macro Programming',
+              'Data Manipulation',
+              'Statistical Procedures',
+              'Reporting',
+            ],
+            applications: [
+              'Banking Analytics',
+              'Insurance Analytics',
+              'Healthcare Analytics',
+              'Credit Risk Analytics',
+            ],
+          },
+          {
+            title: 'PySpark & Scala',
+            topics: [
+              'Big Data Concepts',
+              'Apache Spark',
+              'Distributed Computing',
+              'Spark SQL',
+              'DataFrames',
+              'RDD',
+              'Spark ML',
+            ],
+            applications: [
+              'Large Scale Data Processing',
+              'Telecom Analytics',
+              'Retail Analytics',
+              'AI Data Engineering',
+            ],
+          },
+        ],
+      },
+      {
+        title: 'Module 2: Data Analysis & Visualization',
+        sections: [
+          {
+            title: 'Excel + AI',
+            topics: [
+              'Advanced Excel',
+              'Pivot Tables',
+              'Power Query',
+              'Power Pivot',
+              'Dashboard Development',
+              'AI Assisted Analytics',
+              'Business Forecasting',
+            ],
+            applications: [
+              'MIS Reporting',
+              'Sales Analytics',
+              'Finance Analytics',
+              'HR Analytics',
+            ],
+          },
+          {
+            title: 'Power BI',
+            topics: [
+              'Data Modeling',
+              'DAX',
+              'Power Query',
+              'Interactive Dashboards',
+              'KPI Design',
+              'Row Level Security',
+            ],
+            applications: [
+              'Executive Dashboards',
+              'Financial Reporting',
+              'Customer Analytics',
+              'Business Intelligence',
+            ],
+          },
+          {
+            title: 'Tableau',
+            topics: [
+              'Tableau Desktop',
+              'Data Connections',
+              'Visual Analytics',
+              'Storytelling',
+              'Dashboard Design',
+              'Calculated Fields',
+            ],
+            applications: [
+              'Data Visualization',
+              'Executive Reporting',
+              'Marketing Analytics',
+              'Operational Analytics',
+            ],
+          },
+        ],
+      },
+      {
+        title: 'Module 3: Data Mining & Artificial Intelligence',
+        sections: [
+          {
+            title: 'Python Statistics',
+            topics: [
+              'Descriptive Statistics',
+              'Probability',
+              'Hypothesis Testing',
+              'Correlation',
+              'Regression',
+              'Statistical Modeling',
+            ],
+            applications: [
+              'Business Decision Making',
+              'Market Research',
+              'Customer Behavior Analysis',
+            ],
+          },
+          {
+            title: 'Machine Learning',
+            topics: [
+              'Supervised Learning',
+              'Unsupervised Learning',
+              'Feature Engineering',
+              'Classification Models',
+              'Regression Models',
+              'Clustering',
+              'Ensemble Techniques',
+            ],
+            applications: [
+              'Credit Risk Models',
+              'Customer Churn Prediction',
+              'Fraud Detection',
+              'Recommendation Systems',
+            ],
+          },
+          {
+            title: 'Deep Learning',
+            topics: [
+              'Neural Networks',
+              'TensorFlow',
+              'Keras',
+              'CNN',
+              'RNN',
+              'LSTM',
+            ],
+            applications: [
+              'Image Analytics',
+              'Speech Recognition',
+              'Predictive Intelligence',
+            ],
+          },
+          {
+            title: 'Natural Language Processing (NLP)',
+            topics: [
+              'Text Mining',
+              'Sentiment Analysis',
+              'Text Classification',
+              'Chatbots',
+              'Language Models',
+            ],
+            applications: [
+              'Customer Feedback Analytics',
+              'AI Assistants',
+              'Social Media Analytics',
+            ],
+          },
+          {
+            title: 'Generative AI',
+            topics: [
+              'Large Language Models',
+              'Prompt Engineering',
+              'RAG Architecture',
+              'AI Agents',
+              'AI Workflows',
+              'Vector Databases',
+            ],
+            applications: [
+              'AI Chatbots',
+              'Enterprise AI Assistants',
+              'Content Automation',
+              'Knowledge Management',
+            ],
+          },
+          {
+            title: 'Agentic AI',
+            topics: [
+              'AI Agents',
+              'Multi-Agent Systems',
+              'Autonomous Decision Making',
+              'Workflow Automation',
+              'Tool Calling',
+              'Agent Orchestration',
+            ],
+            applications: [
+              'AI Business Automation',
+              'Autonomous Customer Support',
+              'Intelligent Operations',
+            ],
+          },
+        ],
+      },
+      {
+        title: 'Module 4: AI Deployment & Operations',
+        sections: [
+          {
+            title: 'MLOps',
+            topics: [
+              'Model Deployment',
+              'Model Monitoring',
+              'CI/CD Pipelines',
+              'Version Control',
+              'Automation',
+            ],
+            applications: [
+              'Production ML Systems',
+              'Enterprise AI Deployment',
+            ],
+          },
+          {
+            title: 'LLMOps',
+            topics: [
+              'LLM Deployment',
+              'Prompt Monitoring',
+              'RAG Deployment',
+              'Vector Databases',
+              'LLM Governance',
+            ],
+            applications: [
+              'Enterprise Gen AI Solutions',
+              'AI Knowledge Systems',
+            ],
+          },
+          {
+            title: 'AIOps',
+            topics: [
+              'AI Infrastructure Monitoring',
+              'Incident Prediction',
+              'Cloud Monitoring',
+              'Automated Remediation',
+            ],
+            applications: [
+              'IT Operations Automation',
+              'Enterprise Monitoring Systems',
+            ],
+          },
+          {
+            title: 'Cloud Platforms',
+            topics: [
+              'AWS (S3, EC2, SageMaker, Lambda)',
+              'Microsoft Azure (Azure ML, Data Factory, Synapse Analytics)',
+              'Google Cloud Platform (Vertex AI, BigQuery, Cloud Storage)',
+            ],
+            applications: [
+              'AI Deployment',
+              'Scalable Analytics',
+              'Cloud-Based AI Solutions',
+            ],
+          },
+        ],
+      },
+    ],
+    industryProjects: [
+      {
+        domain: 'Banking & Financial Services',
+        projects: [
+          'Credit Risk Analytics',
+          'Loan Default Prediction',
+          'Collection & Recovery Analytics',
+        ],
+      },
+      {
+        domain: 'Telecom',
+        projects: [
+          'Customer Churn Prediction',
+          'Revenue Analytics',
+          'Customer Segmentation',
+        ],
+      },
+      {
+        domain: 'Retail & E-Commerce',
+        projects: [
+          'Sales Forecasting',
+          'Customer Analytics',
+          'Recommendation Engine',
+        ],
+      },
+      {
+        domain: 'Healthcare',
+        projects: [
+          'Patient Analytics',
+          'Claims Analytics',
+        ],
+      },
+      {
+        domain: 'Manufacturing',
+        projects: [
+          'Predictive Maintenance',
+          'Quality Analytics',
+        ],
+      },
+      {
+        domain: 'Generative AI',
+        projects: [
+          'Enterprise Knowledge Assistant',
+          'AI Chatbot Development',
+          'Agentic AI Automation Platform',
+        ],
+      },
+    ],
+    programOutcome: [
+      'Develop SQL and Python-based business solutions',
+      'Build interactive dashboards using Excel AI, Power BI, and Tableau',
+      'Perform advanced statistical analysis',
+      'Develop Machine Learning and Deep Learning models',
+      'Build NLP, Generative AI, and Agentic AI applications',
+      'Design and deploy AI solutions in cloud environments',
+      'Implement MLOps, LLMOps, and AIOps frameworks',
+      'Solve real-world business problems using Data Science & AI',
+      'Create a professional project portfolio',
+      'Become industry-ready for Data Science and AI roles',
+    ],
+    careers: [
+      {
+        level: 'Entry-Level Roles',
+        roles: [
+          'Data Analyst',
+          'Business Analyst',
+          'Reporting Analyst',
+          'MIS Analyst',
+          'Junior Data Scientist',
+          'AI Associate',
+          'BI Developer',
+          'Power BI Developer',
+          'Tableau Developer',
+        ],
+      },
+      {
+        level: 'Mid-Level Roles',
+        roles: [
+          'Data Scientist',
+          'Machine Learning Engineer',
+          'AI Engineer',
+          'Analytics Consultant',
+          'Data Engineer',
+          'Gen AI Developer',
+          'Prompt Engineer',
+          'MLOps Engineer',
+        ],
+      },
+      {
+        level: 'Senior-Level Roles',
+        roles: [
+          'Senior Data Scientist',
+          'Lead AI Engineer',
+          'AI Solution Architect',
+          'Principal Data Scientist',
+          'Analytics Manager',
+          'Head of AI',
+          'AI Product Manager',
+        ],
+      },
+    ],
+    whoShouldJoin: [
+      'Fresh Graduates (B.Sc, B.Com, BBA, BCA, B.Tech, BE)',
+      'MBA Graduates',
+      'M.Sc / MCA Students',
+      'PhD Scholars',
+      'IT Professionals',
+      'Non-IT Professionals',
+      'Banking Professionals',
+      'Sales & Marketing Professionals',
+      'Finance Professionals',
+      'Entrepreneurs',
+      'Career Gap Candidates',
+    ],
+    careerAdvantage: 'APIDS is designed to transform learners into industry-ready Data Science & AI professionals with practical skills, real-world project experience, and deployment expertise required by modern organizations worldwide.',
+  },
+
+  APIDA: {
+    id: 'apida',
+    title: 'Advanced Program in Industrial Data Analytics & AI (APIDA)',
+    tagline: 'A comprehensive industry-focused program combining Data Management, Business Intelligence, Machine Learning, and MLOps for analytics professionals.',
+    overview: 'The Advanced Program in Industrial Data Analytics & AI (APIDA) is a comprehensive industry-focused training program designed to equip students, graduates, and working professionals with the most in-demand skills in Data Analytics, Business Intelligence, Artificial Intelligence, and Predictive Analytics.\n\nThe program combines Data Management, Data Analysis, Data Visualization, Statistical Analytics, Machine Learning, and MLOps to help learners transform raw data into meaningful business insights and intelligent solutions.\n\nThe program emphasizes hands-on learning, enabling participants to become job-ready Data Analytics and AI professionals.',
+    duration: '5-6 Months',
+    practicalExposure: [
+      'Instructor-Led Training',
+      'Real-Time Industry Projects',
+      'Case Studies',
+      'Assignments & Assessments',
+      'Dashboard Development',
+      'Predictive Analytics Solutions',
+      'End-to-End Project Implementation',
+    ],
+    theme: 'purple',
+    modules: [
+      {
+        title: 'Module 1: Data Management',
+        description: 'Data management forms the foundation of analytics by enabling organizations to collect, store, clean, and manage structured data effectively.',
+        sections: [
+          {
+            title: 'SQL (Structured Query Language)',
+            topics: [
+              'Database Fundamentals',
+              'Relational Database Concepts',
+              'SQL Server / MySQL',
+              'Data Extraction',
+              'Data Manipulation',
+              'Joins',
+              'Subqueries',
+              'Views',
+              'Stored Procedures',
+              'Functions',
+              'Window Functions',
+              'Query Optimization',
+            ],
+            applications: [
+              'Customer Analytics',
+              'Banking Analytics',
+              'Sales Reporting',
+              'Business Intelligence Reporting',
+              'Data Warehousing',
+            ],
+          },
+          {
+            title: 'Python Programming',
+            topics: [
+              'Python Fundamentals',
+              'Data Structures',
+              'Functions',
+              'File Handling',
+              'Object-Oriented Programming',
+              'APIs',
+              'Data Processing Libraries',
+              'Automation Scripts',
+            ],
+            applications: [
+              'Data Cleaning',
+              'Data Transformation',
+              'Process Automation',
+              'Analytical Model Development',
+            ],
+          },
+          {
+            title: 'SAS Programming',
+            topics: [
+              'Base SAS',
+              'Data Step Programming',
+              'PROC SQL',
+              'Data Manipulation',
+              'Reporting',
+              'Macro Programming',
+              'Statistical Procedures',
+            ],
+            applications: [
+              'Banking Analytics',
+              'Insurance Analytics',
+              'Healthcare Analytics',
+              'Credit Risk Analytics',
+              'Regulatory Reporting',
+            ],
+          },
+        ],
+      },
+      {
+        title: 'Module 2: Data Analysis & Visualization',
+        description: 'This module focuses on converting business data into meaningful insights and executive dashboards for strategic decision-making.',
+        sections: [
+          {
+            title: 'Excel + AI',
+            topics: [
+              'Advanced Excel',
+              'Lookup Functions',
+              'Pivot Tables',
+              'Power Query',
+              'Power Pivot',
+              'Dashboard Design',
+              'AI-Assisted Analysis',
+              'Forecasting',
+            ],
+            applications: [
+              'MIS Reporting',
+              'Sales Performance Tracking',
+              'Financial Analysis',
+              'Business Planning',
+            ],
+          },
+          {
+            title: 'Power BI',
+            topics: [
+              'Data Modeling',
+              'Power Query',
+              'DAX Functions',
+              'Dashboard Development',
+              'KPI Design',
+              'Drill-Through Analytics',
+              'Row Level Security',
+            ],
+            applications: [
+              'Executive Dashboards',
+              'Financial Analytics',
+              'Customer Analytics',
+              'Business Intelligence Solutions',
+            ],
+          },
+          {
+            title: 'Tableau',
+            topics: [
+              'Tableau Desktop',
+              'Data Connections',
+              'Visual Analytics',
+              'Dashboard Development',
+              'Storytelling with Data',
+              'Calculated Fields',
+              'Advanced Visualizations',
+            ],
+            applications: [
+              'Business Reporting',
+              'Marketing Analytics',
+              'Operations Analytics',
+              'Customer Intelligence',
+            ],
+          },
+        ],
+      },
+      {
+        title: 'Module 3: Data Mining & Artificial Intelligence',
+        description: 'This module enables participants to build predictive and intelligent business solutions using data science methodologies.',
+        sections: [
+          {
+            title: 'Python Statistics',
+            topics: [
+              'Descriptive Statistics',
+              'Probability',
+              'Hypothesis Testing',
+              'Correlation Analysis',
+              'Regression Analysis',
+              'Statistical Inference',
+            ],
+            applications: [
+              'Business Research',
+              'Customer Behavior Analysis',
+              'Risk Analytics',
+              'Market Intelligence',
+            ],
+          },
+          {
+            title: 'Machine Learning',
+            topics: [
+              'Data Preparation',
+              'Feature Engineering',
+              'Supervised Learning',
+              'Unsupervised Learning',
+              'Regression Models',
+              'Classification Models',
+              'Clustering Techniques',
+              'Model Evaluation',
+            ],
+            applications: [
+              'Customer Churn Prediction',
+              'Credit Risk Assessment',
+              'Fraud Detection',
+              'Sales Forecasting',
+              'Recommendation Systems',
+            ],
+          },
+          {
+            title: 'MLOps (Machine Learning Operations)',
+            topics: [
+              'Model Deployment',
+              'Model Monitoring',
+              'Version Control',
+              'CI/CD Pipelines',
+              'Model Governance',
+              'Production Automation',
+            ],
+            applications: [
+              'Production AI Systems',
+              'Enterprise Machine Learning Deployment',
+              'Automated Analytics Solutions',
+              'Scalable AI Operations',
+            ],
+          },
+        ],
+      },
+    ],
+    industryProjects: [
+      {
+        domain: 'Banking & Financial Services',
+        projects: [
+          'Credit Risk Analytics',
+          'Loan Portfolio Analytics',
+          'Collections Analytics',
+        ],
+      },
+      {
+        domain: 'Retail & E-Commerce',
+        projects: [
+          'Customer Segmentation',
+          'Sales Analytics',
+          'Product Performance Analytics',
+        ],
+      },
+      {
+        domain: 'Telecom',
+        projects: [
+          'Customer Churn Analytics',
+          'Revenue Analytics',
+          'Campaign Performance Analytics',
+        ],
+      },
+      {
+        domain: 'Healthcare',
+        projects: [
+          'Patient Analytics',
+          'Claims Analytics',
+          'Operational Reporting',
+        ],
+      },
+      {
+        domain: 'Marketing',
+        projects: [
+          'Customer Lifetime Value',
+          'Campaign Analytics',
+          'Customer Acquisition Analytics',
+        ],
+      },
+    ],
+    programOutcome: [
+      'Manage and process enterprise data using SQL, Python, and SAS',
+      'Develop advanced business reports and dashboards using Excel AI, Power BI, and Tableau',
+      'Perform statistical analysis and business analytics',
+      'Build machine learning models for prediction and decision-making',
+      'Deploy and manage machine learning solutions using MLOps',
+      'Analyze large datasets to identify business opportunities and risks',
+      'Create end-to-end analytics solutions for real-world business problems',
+      'Build an industry-ready project portfolio',
+      'Become job-ready in Data Analytics and AI domains',
+    ],
+    careers: [
+      {
+        level: 'Entry-Level Roles',
+        roles: [
+          'Data Analyst',
+          'Business Analyst',
+          'MIS Analyst',
+          'Reporting Analyst',
+          'Power BI Developer',
+          'Tableau Developer',
+          'Analytics Associate',
+        ],
+      },
+      {
+        level: 'Mid-Level Roles',
+        roles: [
+          'Senior Data Analyst',
+          'Analytics Consultant',
+          'Machine Learning Analyst',
+          'Business Intelligence Developer',
+          'Data Science Associate',
+          'AI Analyst',
+        ],
+      },
+      {
+        level: 'Senior-Level Roles',
+        roles: [
+          'Analytics Manager',
+          'Lead Data Analyst',
+          'Business Intelligence Manager',
+          'AI Consultant',
+          'Analytics Solution Architect',
+          'Head of Analytics',
+        ],
+      },
+    ],
+    whoShouldJoin: [
+      'B.Sc, B.Com, BBA Graduates',
+      'BCA, BE, B.Tech Graduates',
+      'MBA Students & Professionals',
+      'M.Sc & MCA Students',
+      'Working Professionals',
+      'Banking Professionals',
+      'Finance Professionals',
+      'Sales & Marketing Professionals',
+      'Entrepreneurs',
+      'Career Transition Candidates',
+    ],
+    careerAdvantage: 'The APIDA program bridges the gap between traditional reporting and modern AI-driven analytics by combining Data Management, Business Intelligence, Statistical Analytics, Machine Learning, and MLOps, helping learners become highly employable analytics professionals capable of driving business decisions through data.',
+  },
+
+  SPECIALIST: {
+    id: 'specialist',
+    title: 'Data Analytics Specialist (DAS)',
+    tagline: 'Build expertise in Data Analytics, Business Intelligence, Reporting, and Data Visualization with industry-standard tools.',
+    overview: 'The Data Analytics Specialist (DAS) program is designed for graduates, working professionals, and career transition candidates who want to build expertise in Data Analytics, Business Intelligence, Reporting, and Data Visualization.\n\nThe program focuses on developing strong analytical and business problem-solving skills through industry-standard tools and technologies. Participants learn how to collect, manage, analyze, visualize, and communicate data-driven insights that support strategic business decisions.\n\nThe DAS program prepares learners for analytics careers across Banking, Finance, Retail, Telecom, Healthcare, Manufacturing, E-Commerce, and Consulting industries.',
+    duration: '3-4 Months',
+    practicalExposure: [
+      'Instructor-Led Training',
+      'Hands-on Assignments',
+      'Real-Time Case Studies',
+      'Dashboard Development',
+      'Business Analytics Projects',
+      'Industry-Oriented Applications',
+    ],
+    theme: 'orange',
+    modules: [
+      {
+        title: 'Module 1: Data Management',
+        description: 'Data management is the foundation of analytics. This module focuses on collecting, storing, retrieving, and preparing data for business analysis.',
+        sections: [
+          {
+            title: 'SQL (Structured Query Language)',
+            topics: [
+              'Database Fundamentals',
+              'Relational Database Concepts',
+              'Data Types',
+              'DDL, DML, and DCL Commands',
+              'Filtering & Sorting',
+              'Aggregations',
+              'Joins',
+              'Subqueries',
+              'Views',
+              'Functions',
+              'Stored Procedures',
+              'Window Functions',
+            ],
+            applications: [
+              'Customer Analytics',
+              'Sales Analytics',
+              'Banking Analytics',
+              'Financial Reporting',
+              'Business Intelligence Reporting',
+            ],
+          },
+          {
+            title: 'Python Programming',
+            topics: [
+              'Python Fundamentals',
+              'Variables & Data Types',
+              'Conditional Statements',
+              'Loops',
+              'Functions',
+              'File Handling',
+              'Data Processing',
+              'Python Libraries',
+              'Data Automation',
+            ],
+            applications: [
+              'Data Cleaning',
+              'Data Transformation',
+              'Business Analytics',
+              'Process Automation',
+              'Reporting Automation',
+            ],
+          },
+        ],
+      },
+      {
+        title: 'Module 2: Data Analysis & Visualization',
+        description: 'This module focuses on transforming raw business data into meaningful insights and interactive dashboards.',
+        sections: [
+          {
+            title: 'Excel + AI',
+            topics: [
+              'Advanced Excel',
+              'Lookup Functions',
+              'Pivot Tables',
+              'Power Query',
+              'Power Pivot',
+              'Dashboard Design',
+              'AI-Assisted Analysis',
+              'Forecasting Techniques',
+            ],
+            applications: [
+              'MIS Reporting',
+              'Sales Performance Analysis',
+              'Financial Analysis',
+              'HR Analytics',
+              'Business Planning',
+            ],
+          },
+          {
+            title: 'Power BI',
+            topics: [
+              'Data Import & Transformation',
+              'Data Modeling',
+              'DAX Functions',
+              'Power Query',
+              'Dashboard Development',
+              'KPI Design',
+              'Drill Through Analytics',
+              'Publishing Reports',
+            ],
+            applications: [
+              'Executive Dashboards',
+              'Financial Dashboards',
+              'Customer Analytics',
+              'Business Intelligence Reporting',
+            ],
+          },
+          {
+            title: 'Tableau',
+            topics: [
+              'Tableau Desktop',
+              'Data Connections',
+              'Data Blending',
+              'Calculated Fields',
+              'Dashboard Development',
+              'Storytelling with Data',
+              'Advanced Visualizations',
+            ],
+            applications: [
+              'Interactive Reporting',
+              'Marketing Analytics',
+              'Operations Analytics',
+              'Customer Insights',
+            ],
+          },
+        ],
+      },
+    ],
+    industryProjects: [
+      {
+        domain: 'Banking Analytics',
+        projects: [
+          'Loan Portfolio Analysis',
+          'Credit Card Analytics',
+          'Collection Analytics',
+        ],
+      },
+      {
+        domain: 'Retail & E-Commerce',
+        projects: [
+          'Customer Analytics',
+          'Product Performance Analytics',
+          'Sales Dashboard Development',
+        ],
+      },
+      {
+        domain: 'Telecom Analytics',
+        projects: [
+          'Revenue Analytics',
+          'Customer Segmentation',
+          'Churn Analysis',
+        ],
+      },
+      {
+        domain: 'Healthcare Analytics',
+        projects: [
+          'Patient Reporting',
+          'Operational Analytics',
+        ],
+      },
+      {
+        domain: 'Human Resources Analytics',
+        projects: [
+          'Employee Performance Analytics',
+          'Workforce Reporting',
+        ],
+      },
+    ],
+    programOutcome: [
+      'Extract and manage business data using SQL and Python',
+      'Perform data cleaning and transformation activities',
+      'Analyze business performance using analytical techniques',
+      'Build interactive dashboards using Excel AI, Power BI, and Tableau',
+      'Create executive reports and KPI scorecards',
+      'Generate business insights for strategic decision-making',
+      'Develop end-to-end analytics solutions',
+      'Build an industry-ready analytics portfolio',
+      'Become job-ready for Data Analytics and Business Intelligence roles',
+    ],
+    careers: [
+      {
+        level: 'Entry-Level Roles',
+        roles: [
+          'Data Analyst',
+          'MIS Analyst',
+          'Reporting Analyst',
+          'Business Analyst',
+          'Power BI Developer',
+          'Tableau Developer',
+          'Analytics Associate',
+        ],
+      },
+      {
+        level: 'Mid-Level Roles',
+        roles: [
+          'Senior Data Analyst',
+          'Business Intelligence Analyst',
+          'Analytics Consultant',
+          'Reporting Lead',
+          'Dashboard Developer',
+        ],
+      },
+      {
+        level: 'Senior-Level Roles',
+        roles: [
+          'Analytics Manager',
+          'Business Intelligence Manager',
+          'Data Analytics Consultant',
+          'Analytics Lead',
+        ],
+      },
+    ],
+    whoShouldJoin: [
+      'B.Sc, B.Com, BBA Graduates',
+      'BCA, BE, B.Tech Graduates',
+      'MBA Students & Professionals',
+      'M.Sc & MCA Students',
+      'Working Professionals',
+      'Banking & Finance Professionals',
+      'Sales & Marketing Professionals',
+      'Operations Professionals',
+      'Entrepreneurs',
+      'Career Transition Candidates',
+    ],
+    careerAdvantage: 'The Data Analytics Specialist (DAS) program provides a strong foundation in Data Management, Data Analysis, Reporting, and Business Intelligence, enabling learners to convert business data into actionable insights. The program is ideal for those seeking fast-track careers in Data Analytics, Reporting, MIS, Business Intelligence, and Dashboard Development across multiple industries.',
+  },
+
+  AIML: {
+    id: 'aiml',
+    title: 'Advanced AI/ML with Generative AI & Agentic AI (AIML-GAA)',
+    tagline: 'Master the complete AI lifecycle from data preparation and ML model development to Generative AI, Agentic AI, and enterprise-grade deployment.',
+    overview: 'The Advanced AI/ML with Generative AI & Agentic AI (AIML-GAA) program is designed to prepare students, graduates, researchers, and working professionals for careers in Artificial Intelligence, Machine Learning, Generative AI, and Autonomous AI Systems.\n\nThe program covers the complete AI lifecycle, from data preparation and machine learning model development to advanced Generative AI applications, Agentic AI systems, and enterprise-grade deployment using MLOps and LLMOps.\n\nThe program focuses on practical implementation, enabling learners to build intelligent AI systems capable of solving real-world business challenges.',
+    duration: '5-7 Months',
+    practicalExposure: [
+      'Instructor-Led Training',
+      'Real-Time Industry Projects',
+      'AI Model Development',
+      'Gen AI Solution Building',
+      'Agentic AI Applications',
+      'Capstone Projects',
+      'Cloud-Based AI Deployment',
+    ],
+    theme: 'indigo',
+    modules: [
+      {
+        title: 'Module 1: Data Management',
+        description: 'Strong data management skills are essential for building successful AI and Machine Learning solutions.',
+        sections: [
+          {
+            title: 'SQL (Structured Query Language)',
+            topics: [
+              'Database Fundamentals',
+              'Relational Database Concepts',
+              'Data Extraction',
+              'Data Manipulation',
+              'Joins',
+              'Subqueries',
+              'Views',
+              'Functions',
+              'Stored Procedures',
+              'Window Functions',
+            ],
+            applications: [
+              'AI Data Preparation',
+              'Customer Analytics',
+              'Banking Analytics',
+              'Enterprise Data Management',
+              'Feature Engineering',
+            ],
+          },
+          {
+            title: 'Python Programming',
+            topics: [
+              'Python Fundamentals',
+              'Data Structures',
+              'Functions',
+              'Object-Oriented Programming',
+              'File Handling',
+              'APIs',
+              'Automation',
+              'Python Libraries',
+            ],
+            applications: [
+              'AI Development',
+              'Data Engineering',
+              'Automation',
+              'Machine Learning Workflows',
+            ],
+          },
+        ],
+      },
+      {
+        title: 'Module 2: Data Mining & Artificial Intelligence',
+        description: 'This module focuses on advanced AI and Machine Learning techniques used by modern organizations.',
+        sections: [
+          {
+            title: 'Python Statistics',
+            topics: [
+              'Descriptive Statistics',
+              'Probability Theory',
+              'Hypothesis Testing',
+              'Correlation Analysis',
+              'Regression Analysis',
+              'Statistical Inference',
+            ],
+            applications: [
+              'Predictive Analytics',
+              'Customer Intelligence',
+              'Business Research',
+              'Risk Analytics',
+            ],
+          },
+          {
+            title: 'Machine Learning',
+            topics: [
+              'Data Preparation',
+              'Feature Engineering',
+              'Supervised Learning',
+              'Unsupervised Learning',
+              'Classification Models',
+              'Regression Models',
+              'Clustering',
+              'Ensemble Techniques',
+              'Model Evaluation',
+            ],
+            applications: [
+              'Fraud Detection',
+              'Customer Churn Prediction',
+              'Credit Risk Analytics',
+              'Sales Forecasting',
+              'Recommendation Engines',
+            ],
+          },
+          {
+            title: 'Deep Learning',
+            topics: [
+              'Neural Networks',
+              'TensorFlow',
+              'Keras',
+              'Convolutional Neural Networks (CNN)',
+              'Recurrent Neural Networks (RNN)',
+              'LSTM Networks',
+              'Transfer Learning',
+            ],
+            applications: [
+              'Computer Vision',
+              'Image Analytics',
+              'Speech Recognition',
+              'Predictive Intelligence',
+            ],
+          },
+          {
+            title: 'Natural Language Processing (NLP)',
+            topics: [
+              'Text Mining',
+              'Text Preprocessing',
+              'Sentiment Analysis',
+              'Text Classification',
+              'Named Entity Recognition',
+              'Topic Modeling',
+              'Language Understanding',
+            ],
+            applications: [
+              'Customer Feedback Analysis',
+              'Chatbots',
+              'Document Processing',
+              'Social Media Analytics',
+            ],
+          },
+          {
+            title: 'Generative AI',
+            topics: [
+              'Large Language Models (LLMs)',
+              'Prompt Engineering',
+              'Advanced Prompt Design',
+              'Retrieval-Augmented Generation (RAG)',
+              'Vector Databases',
+              'Fine-Tuning Concepts',
+              'AI Assistants',
+              'Enterprise Gen AI Architecture',
+            ],
+            applications: [
+              'Enterprise Chatbots',
+              'AI Knowledge Assistants',
+              'Content Generation',
+              'Automated Reporting',
+              'Customer Service Automation',
+            ],
+          },
+          {
+            title: 'Agentic AI',
+            topics: [
+              'AI Agents Fundamentals',
+              'Multi-Agent Systems',
+              'Autonomous AI Workflows',
+              'Tool Calling',
+              'Agent Orchestration',
+              'Memory Management',
+              'AI Reasoning Systems',
+              'Enterprise Agent Frameworks',
+            ],
+            applications: [
+              'AI Business Automation',
+              'Autonomous Customer Support',
+              'Research Agents',
+              'AI Operations Assistants',
+              'Enterprise Workflow Automation',
+            ],
+          },
+        ],
+      },
+      {
+        title: 'Module 3: AI Deployment & Operations',
+        description: 'This module enables learners to deploy, monitor, and manage AI systems in production environments.',
+        sections: [
+          {
+            title: 'MLOps (Machine Learning Operations)',
+            topics: [
+              'Model Deployment',
+              'CI/CD Pipelines',
+              'Version Control',
+              'Model Monitoring',
+              'Model Governance',
+              'Production Automation',
+            ],
+            applications: [
+              'Enterprise Machine Learning Deployment',
+              'Automated AI Pipelines',
+              'Production AI Systems',
+            ],
+          },
+          {
+            title: 'LLMOps (Large Language Model Operations)',
+            topics: [
+              'LLM Deployment',
+              'Prompt Monitoring',
+              'RAG Deployment',
+              'Vector Database Management',
+              'LLM Evaluation',
+              'LLM Governance',
+            ],
+            applications: [
+              'Enterprise Gen AI Deployment',
+              'AI Knowledge Platforms',
+              'Production LLM Solutions',
+            ],
+          },
+        ],
+      },
+    ],
+    industryProjects: [
+      {
+        domain: 'Banking & Financial Services',
+        projects: [
+          'Credit Risk Prediction',
+          'Fraud Detection Systems',
+          'Customer Lifetime Value Prediction',
+        ],
+      },
+      {
+        domain: 'Retail & E-Commerce',
+        projects: [
+          'Recommendation Engine',
+          'Customer Segmentation',
+          'Demand Forecasting',
+        ],
+      },
+      {
+        domain: 'Telecom',
+        projects: [
+          'Churn Prediction',
+          'Customer Intelligence',
+          'Revenue Optimization',
+        ],
+      },
+      {
+        domain: 'Healthcare',
+        projects: [
+          'Disease Prediction Models',
+          'Medical Text Analytics',
+          'Patient Risk Assessment',
+        ],
+      },
+      {
+        domain: 'Generative AI',
+        projects: [
+          'Enterprise Knowledge Assistant',
+          'AI-Powered Chatbot',
+          'Intelligent Document Search System',
+        ],
+      },
+      {
+        domain: 'Agentic AI',
+        projects: [
+          'Multi-Agent Business Automation',
+          'Autonomous Research Agent',
+          'AI Workflow Automation Platform',
+        ],
+      },
+    ],
+    programOutcome: [
+      'Manage and prepare enterprise data using SQL and Python',
+      'Perform advanced statistical analysis',
+      'Build Machine Learning and Deep Learning models',
+      'Develop NLP and Text Analytics solutions',
+      'Design and implement Generative AI applications',
+      'Build Agentic AI systems and autonomous workflows',
+      'Deploy AI and LLM solutions using MLOps and LLMOps',
+      'Create enterprise-ready AI applications',
+      'Build a strong AI project portfolio',
+      'Become industry-ready for AI, ML, Gen AI, and Agentic AI roles',
+    ],
+    careers: [
+      {
+        level: 'Entry-Level Roles',
+        roles: [
+          'AI/ML Engineer',
+          'Junior Data Scientist',
+          'AI Developer',
+          'Machine Learning Associate',
+          'NLP Engineer',
+          'Gen AI Associate',
+        ],
+      },
+      {
+        level: 'Mid-Level Roles',
+        roles: [
+          'Machine Learning Engineer',
+          'Data Scientist',
+          'AI Engineer',
+          'NLP Engineer',
+          'Generative AI Engineer',
+          'MLOps Engineer',
+          'LLMOps Engineer',
+        ],
+      },
+      {
+        level: 'Senior-Level Roles',
+        roles: [
+          'Senior Data Scientist',
+          'Lead AI Engineer',
+          'AI Solution Architect',
+          'Principal Machine Learning Engineer',
+          'Head of AI',
+          'Generative AI Architect',
+          'Agentic AI Architect',
+        ],
+      },
+    ],
+    whoShouldJoin: [
+      'B.Sc, B.Com, BBA Graduates',
+      'BCA, BE, B.Tech Graduates',
+      'M.Sc & MCA Students',
+      'MBA Professionals',
+      'Software Engineers',
+      'Data Analysts',
+      'Data Scientists',
+      'AI Enthusiasts',
+      'Researchers & PhD Scholars',
+      'Working Professionals seeking AI careers',
+    ],
+    careerAdvantage: 'The Advanced AI/ML with Generative AI & Agentic AI (AIML-GAA) program equips learners with cutting-edge AI skills spanning Machine Learning, Deep Learning, NLP, Generative AI, Agentic AI, MLOps, and LLMOps. The program prepares participants to build, deploy, and manage intelligent AI solutions that drive digital transformation across industries worldwide.',
+  },
+
+  GENAI: {
+    id: 'genai',
+    title: 'Master Program in Generative AI & Agentic AI (MPGAA)',
+    tagline: 'Specialize in Deep Learning, NLP, Generative AI, Agentic AI, and enterprise AI deployment for next-generation intelligent systems.',
+    overview: 'The Master Program in Generative AI & Agentic AI (MPGAA) is an advanced industry-focused program designed for students, professionals, entrepreneurs, researchers, and technology enthusiasts who want to specialize in the rapidly evolving field of Artificial Intelligence.\n\nThe program focuses on building expertise in Deep Learning, Natural Language Processing (NLP), Generative AI, Agentic AI, MLOps, and LLMOps, enabling learners to design, develop, deploy, and manage intelligent AI systems capable of autonomous decision-making and business automation.\n\nThe curriculum is designed to provide practical knowledge required to build next-generation AI applications used across industries.',
+    duration: '4-5 Months',
+    practicalExposure: [
+      'Instructor-Led Training',
+      'Real-Time AI Projects',
+      'Enterprise Use Cases',
+      'AI Solution Development',
+      'Gen AI Applications',
+      'Agentic AI Systems',
+      'Deployment & Monitoring Practices',
+      'Capstone Projects',
+    ],
+    theme: 'magenta',
+    modules: [
+      {
+        title: 'Module 1: Python Foundations for AI',
+        description: 'Python serves as the foundation for Artificial Intelligence and Machine Learning development.',
+        sections: [
+          {
+            title: 'Python Basics',
+            topics: [
+              'Introduction to Python',
+              'Variables & Data Types',
+              'Operators',
+              'Conditional Statements',
+              'Loops',
+              'Functions',
+              'Data Structures',
+              'File Handling',
+              'Object-Oriented Programming Basics',
+              'APIs & Automation',
+            ],
+            applications: [
+              'Data Processing',
+              'AI Development',
+              'Workflow Automation',
+              'AI Application Development',
+              'Model Integration',
+            ],
+          },
+        ],
+      },
+      {
+        title: 'Module 2: Deep Learning & Artificial Intelligence',
+        description: 'This module focuses on advanced AI techniques used in modern intelligent systems.',
+        sections: [
+          {
+            title: 'Deep Learning',
+            topics: [
+              'Artificial Neural Networks',
+              'Deep Neural Networks',
+              'TensorFlow',
+              'Keras',
+              'Convolutional Neural Networks (CNN)',
+              'Recurrent Neural Networks (RNN)',
+              'LSTM Networks',
+              'Transfer Learning',
+              'Model Optimization',
+            ],
+            applications: [
+              'Computer Vision',
+              'Image Recognition',
+              'Video Analytics',
+              'Predictive Intelligence',
+              'Speech Processing',
+            ],
+          },
+          {
+            title: 'Natural Language Processing (NLP)',
+            topics: [
+              'Text Processing',
+              'Tokenization',
+              'Text Classification',
+              'Sentiment Analysis',
+              'Named Entity Recognition',
+              'Topic Modeling',
+              'Language Understanding',
+              'Transformer Models',
+            ],
+            applications: [
+              'Chatbots',
+              'Customer Feedback Analysis',
+              'Document Intelligence',
+              'Social Media Analytics',
+              'Language Understanding Systems',
+            ],
+          },
+        ],
+      },
+      {
+        title: 'Module 3: Generative AI',
+        description: 'This module focuses on Large Language Models and enterprise-grade Generative AI applications.',
+        sections: [
+          {
+            title: 'Generative AI',
+            topics: [
+              'Introduction to Large Language Models (LLMs)',
+              'Prompt Engineering',
+              'Advanced Prompt Design',
+              'Context Engineering',
+              'Retrieval-Augmented Generation (RAG)',
+              'Vector Databases',
+              'Embeddings',
+              'Fine-Tuning Concepts',
+              'Enterprise AI Architecture',
+              'AI Knowledge Assistants',
+            ],
+            applications: [
+              'AI Chatbots',
+              'Enterprise Search',
+              'Content Generation',
+              'Automated Reporting',
+              'Customer Service Automation',
+              'Knowledge Management Systems',
+            ],
+          },
+        ],
+      },
+      {
+        title: 'Module 4: Agentic AI',
+        description: 'Agentic AI focuses on autonomous AI systems capable of planning, reasoning, and executing tasks.',
+        sections: [
+          {
+            title: 'Agentic AI',
+            topics: [
+              'AI Agent Fundamentals',
+              'Autonomous AI Systems',
+              'Multi-Agent Systems',
+              'Tool Calling',
+              'Agent Memory',
+              'Agent Planning',
+              'AI Reasoning',
+              'Agent Orchestration',
+              'Workflow Automation',
+              'Enterprise Agent Frameworks',
+            ],
+            applications: [
+              'Autonomous Customer Support',
+              'AI Research Assistants',
+              'AI Business Automation',
+              'Intelligent Process Automation',
+              'Enterprise Workflow Agents',
+              'Digital Workforce Solutions',
+            ],
+          },
+        ],
+      },
+      {
+        title: 'Module 5: AI Deployment & Operations',
+        description: 'Learn how to deploy, manage, monitor, and scale AI applications in production environments.',
+        sections: [
+          {
+            title: 'MLOps (Machine Learning Operations)',
+            topics: [
+              'Model Deployment',
+              'Version Control',
+              'CI/CD Pipelines',
+              'Model Monitoring',
+              'Model Governance',
+              'Production Automation',
+            ],
+            applications: [
+              'Production AI Systems',
+              'Automated AI Pipelines',
+              'Enterprise AI Deployment',
+            ],
+          },
+          {
+            title: 'LLMOps (Large Language Model Operations)',
+            topics: [
+              'LLM Deployment',
+              'Prompt Monitoring',
+              'RAG Deployment',
+              'Vector Database Management',
+              'LLM Evaluation',
+              'LLM Governance',
+              'Cost Optimization',
+              'Security & Compliance',
+            ],
+            applications: [
+              'Enterprise Gen AI Deployment',
+              'AI Knowledge Platforms',
+              'Large-Scale AI Solutions',
+              'Production LLM Systems',
+            ],
+          },
+        ],
+      },
+    ],
+    industryProjects: [
+      {
+        domain: 'Enterprise Knowledge Assistant',
+        projects: [
+          'Internal ChatGPT for Organizations',
+          'Document Search & Question Answering',
+        ],
+      },
+      {
+        domain: 'AI Customer Support Agent',
+        projects: [
+          'Multilingual AI Chatbot',
+          'Customer Query Automation',
+        ],
+      },
+      {
+        domain: 'AI Content Generation Platform',
+        projects: [
+          'Automated Content Creation',
+          'Marketing Content Generation',
+        ],
+      },
+      {
+        domain: 'Agentic AI Business Assistant',
+        projects: [
+          'Autonomous Task Execution',
+          'Business Workflow Automation',
+        ],
+      },
+      {
+        domain: 'AI Research Assistant',
+        projects: [
+          'Document Summarization',
+          'Knowledge Discovery',
+          'Intelligent Information Retrieval',
+        ],
+      },
+      {
+        domain: 'Multi-Agent AI Platform',
+        projects: [
+          'Collaborative AI Agents',
+          'Enterprise Automation Systems',
+        ],
+      },
+    ],
+    programOutcome: [
+      'Develop AI applications using Python',
+      'Build Deep Learning and NLP solutions',
+      'Design and implement Generative AI applications',
+      'Create enterprise-grade RAG solutions',
+      'Develop AI Chatbots and AI Assistants',
+      'Build Agentic AI systems and autonomous workflows',
+      'Deploy AI applications using MLOps and LLMOps',
+      'Monitor and manage production AI systems',
+      'Create an advanced AI project portfolio',
+      'Become industry-ready for Generative AI and Agentic AI careers',
+    ],
+    careers: [
+      {
+        level: 'Entry-Level Roles',
+        roles: [
+          'Generative AI Associate',
+          'AI Developer',
+          'Prompt Engineer',
+          'AI Support Engineer',
+          'Junior NLP Engineer',
+          'AI Application Developer',
+        ],
+      },
+      {
+        level: 'Mid-Level Roles',
+        roles: [
+          'Generative AI Engineer',
+          'NLP Engineer',
+          'AI Engineer',
+          'Agentic AI Developer',
+          'LLM Engineer',
+          'MLOps Engineer',
+          'LLMOps Engineer',
+        ],
+      },
+      {
+        level: 'Senior-Level Roles',
+        roles: [
+          'Lead Generative AI Engineer',
+          'AI Solution Architect',
+          'Agentic AI Architect',
+          'Principal AI Engineer',
+          'Head of AI Innovation',
+          'Enterprise AI Consultant',
+        ],
+      },
+    ],
+    whoShouldJoin: [
+      'Graduates from Any Discipline',
+      'BCA, B.Sc, B.Tech, BE Students',
+      'MCA & M.Sc Students',
+      'MBA Professionals',
+      'Software Developers',
+      'Data Analysts',
+      'Data Scientists',
+      'Working Professionals',
+      'Entrepreneurs',
+      'Researchers & PhD Scholars',
+    ],
+    careerAdvantage: 'The Master Program in Generative AI & Agentic AI (MPGAA) provides specialized expertise in Deep Learning, NLP, Generative AI, Agentic AI, MLOps, and LLMOps, enabling learners to build intelligent AI systems, enterprise AI assistants, autonomous agents, and next-generation business automation solutions. This program prepares professionals for some of the most in-demand and highest-paying AI careers globally.',
+  },
+
+  APCS: {
+    id: 'apcs',
+    title: 'Advanced Program in Cybersecurity & Forensics (APCF)',
+    tagline: 'Comprehensive training in Cybersecurity, Ethical Hacking, Digital Forensics, Threat Intelligence, and Security Operations.',
+    overview: 'The Advanced Program in Cybersecurity & Forensics (APCF) is a comprehensive industry-oriented training program designed to prepare students, graduates, IT professionals, and cybersecurity enthusiasts for successful careers in Cybersecurity, Ethical Hacking, Digital Forensics, Threat Intelligence, and Security Operations.\n\nThe program provides hands-on exposure to real-world cyber threats, attack simulations, vulnerability assessments, incident response, and digital forensic investigations. Learners gain practical experience in securing enterprise systems, identifying cyber threats, investigating security incidents, and protecting digital assets.\n\nThe program combines theoretical concepts with practical labs, cyber range exercises, case studies, and industry projects to build job-ready cybersecurity professionals.',
+    duration: '5-7 Months',
+    practicalExposure: [
+      'Instructor-Led Training',
+      'Practical Labs & Cyber Range Exercises',
+      'Real-World Case Studies',
+      'Attack Simulations',
+      'Vulnerability Assessments',
+      'Incident Response Exercises',
+      'Digital Forensic Investigations',
+      'Industry Projects',
+    ],
+    theme: 'teal',
+    modules: [
+      {
+        title: 'Module 1: Networking & Security Fundamentals',
+        description: 'A strong understanding of networking is essential for cybersecurity professionals.',
+        sections: [
+          {
+            title: 'Networking & Security Fundamentals',
+            topics: [
+              'Computer Network Fundamentals',
+              'OSI & TCP/IP Models',
+              'IP Addressing & Subnetting',
+              'Routing & Switching Concepts',
+              'DNS, DHCP, FTP, HTTP, HTTPS',
+              'Network Devices & Security',
+              'Firewalls & Proxy Servers',
+              'VPN Technologies',
+              'Wireless Network Security',
+            ],
+            applications: [
+              'Network Security Monitoring',
+              'Infrastructure Protection',
+              'Secure Communication Design',
+              'Enterprise Network Security',
+            ],
+          },
+        ],
+      },
+      {
+        title: 'Module 2: Linux & Windows Security',
+        sections: [
+          {
+            title: 'Linux Security',
+            topics: [
+              'Linux Administration',
+              'User Management',
+              'File Permissions',
+              'Shell Scripting',
+              'Service Hardening',
+              'Security Configuration',
+            ],
+          },
+          {
+            title: 'Windows Security',
+            topics: [
+              'Windows Administration',
+              'Active Directory',
+              'Group Policy Management',
+              'Security Configuration',
+              'Event Monitoring',
+              'Access Management',
+            ],
+            applications: [
+              'Server Hardening',
+              'Access Control',
+              'Security Monitoring',
+              'Enterprise Administration',
+            ],
+          },
+        ],
+      },
+      {
+        title: 'Module 3: Cybersecurity Fundamentals',
+        sections: [
+          {
+            title: 'Cybersecurity Fundamentals',
+            topics: [
+              'Information Security Concepts',
+              'CIA Triad',
+              'Risk Management',
+              'Security Policies',
+              'Security Governance',
+              'Identity & Access Management',
+              'Authentication & Authorization',
+              'Cybersecurity Frameworks',
+            ],
+            applications: [
+              'Security Program Development',
+              'Compliance Management',
+              'Organizational Security Controls',
+            ],
+          },
+        ],
+      },
+      {
+        title: 'Module 4: Ethical Hacking & Penetration Testing',
+        sections: [
+          {
+            title: 'Ethical Hacking & Penetration Testing',
+            topics: [
+              'Ethical Hacking Methodology',
+              'Footprinting & Reconnaissance',
+              'Scanning & Enumeration',
+              'Vulnerability Assessment',
+              'Exploitation Techniques',
+              'Password Attacks',
+              'Wireless Security Testing',
+              'Web Application Testing',
+              'Social Engineering Awareness',
+            ],
+            applications: [
+              'Security Assessments',
+              'Penetration Testing',
+              'Vulnerability Identification',
+              'Security Improvement Planning',
+            ],
+          },
+        ],
+      },
+      {
+        title: 'Module 5: Web Application Security',
+        sections: [
+          {
+            title: 'Web Application Security',
+            topics: [
+              'OWASP Top 10',
+              'SQL Injection',
+              'Cross-Site Scripting (XSS)',
+              'CSRF',
+              'Authentication Vulnerabilities',
+              'API Security',
+              'Secure Coding Practices',
+              'Security Testing Tools',
+            ],
+            applications: [
+              'Secure Application Development',
+              'Vulnerability Testing',
+              'Web Security Audits',
+            ],
+          },
+        ],
+      },
+      {
+        title: 'Module 6: Security Operations Center (SOC)',
+        sections: [
+          {
+            title: 'Security Operations Center (SOC)',
+            topics: [
+              'Security Monitoring',
+              'Log Analysis',
+              'Threat Detection',
+              'Security Information & Event Management (SIEM)',
+              'Incident Handling',
+              'Threat Hunting',
+              'Alert Management',
+              'Security Reporting',
+            ],
+            applications: [
+              'SOC Operations',
+              'Security Monitoring',
+              'Incident Detection',
+              'Threat Intelligence',
+            ],
+          },
+        ],
+      },
+      {
+        title: 'Module 7: Cloud Security',
+        sections: [
+          {
+            title: 'AWS Security',
+            topics: [
+              'IAM',
+              'Security Groups',
+              'Cloud Monitoring',
+              'Security Best Practices',
+            ],
+          },
+          {
+            title: 'Azure Security',
+            topics: [
+              'Identity Management',
+              'Security Center',
+              'Cloud Governance',
+            ],
+          },
+          {
+            title: 'GCP Security',
+            topics: [
+              'Cloud Security Controls',
+              'Access Management',
+              'Monitoring',
+            ],
+            applications: [
+              'Cloud Security Architecture',
+              'Secure Cloud Deployments',
+              'Compliance Management',
+            ],
+          },
+        ],
+      },
+      {
+        title: 'Module 8: Digital Forensics',
+        sections: [
+          {
+            title: 'Digital Forensics',
+            topics: [
+              'Digital Forensics Fundamentals',
+              'Evidence Collection',
+              'Chain of Custody',
+              'Disk Forensics',
+              'Memory Forensics',
+              'Mobile Device Forensics',
+              'Email Forensics',
+              'Network Forensics',
+              'Malware Analysis Basics',
+            ],
+            applications: [
+              'Cybercrime Investigation',
+              'Incident Investigation',
+              'Legal Evidence Collection',
+              'Fraud Investigation',
+            ],
+          },
+        ],
+      },
+      {
+        title: 'Module 9: Incident Response & Threat Intelligence',
+        sections: [
+          {
+            title: 'Incident Response & Threat Intelligence',
+            topics: [
+              'Incident Response Lifecycle',
+              'Threat Intelligence',
+              'Threat Hunting',
+              'Malware Investigation',
+              'Security Breach Analysis',
+              'Risk Mitigation',
+              'Recovery Planning',
+            ],
+            applications: [
+              'Security Incident Management',
+              'Threat Investigation',
+              'Business Continuity Planning',
+            ],
+          },
+        ],
+      },
+      {
+        title: 'Module 10: Cybersecurity Governance, Risk & Compliance (GRC)',
+        sections: [
+          {
+            title: 'Governance, Risk & Compliance (GRC)',
+            topics: [
+              'ISO 27001',
+              'NIST Framework',
+              'GDPR Overview',
+              'Security Auditing',
+              'Risk Assessment',
+              'Compliance Management',
+            ],
+            applications: [
+              'Compliance Programs',
+              'Security Audits',
+              'Risk Management',
+            ],
+          },
+        ],
+      },
+    ],
+    industryProjects: [
+      {
+        domain: 'Cybersecurity Projects',
+        projects: [
+          'Vulnerability Assessment & Penetration Testing',
+          'Security Monitoring Dashboard',
+          'SOC Incident Analysis',
+          'Web Security Assessment',
+          'Cloud Security Assessment',
+        ],
+      },
+      {
+        domain: 'Digital Forensics Projects',
+        projects: [
+          'Disk Forensics Investigation',
+          'Memory Analysis',
+          'Malware Investigation',
+          'Email Forensics',
+          'Cybercrime Investigation Case Study',
+        ],
+      },
+      {
+        domain: 'Threat Intelligence Projects',
+        projects: [
+          'Threat Hunting Exercise',
+          'Security Incident Investigation',
+          'Threat Intelligence Reporting',
+        ],
+      },
+    ],
+    programOutcome: [
+      'Understand enterprise cybersecurity architecture',
+      'Secure networks, servers, and cloud environments',
+      'Perform vulnerability assessments and penetration testing',
+      'Monitor and investigate security incidents',
+      'Conduct digital forensic investigations',
+      'Analyze cyber threats and malware activities',
+      'Implement security controls and compliance frameworks',
+      'Work with SOC and threat intelligence teams',
+      'Investigate cybercrime and security breaches',
+      'Build a professional cybersecurity project portfolio',
+    ],
+    careers: [
+      {
+        level: 'Entry-Level Roles',
+        roles: [
+          'Cybersecurity Analyst',
+          'SOC Analyst',
+          'Security Operations Analyst',
+          'Information Security Analyst',
+          'Vulnerability Assessment Analyst',
+          'Digital Forensics Associate',
+        ],
+      },
+      {
+        level: 'Mid-Level Roles',
+        roles: [
+          'Cybersecurity Engineer',
+          'Ethical Hacker',
+          'Penetration Tester',
+          'Incident Response Analyst',
+          'Threat Intelligence Analyst',
+          'Digital Forensics Investigator',
+          'Security Consultant',
+        ],
+      },
+      {
+        level: 'Senior-Level Roles',
+        roles: [
+          'Security Architect',
+          'Cybersecurity Manager',
+          'Lead Penetration Tester',
+          'Security Consultant',
+          'Incident Response Manager',
+          'Head of Cybersecurity',
+          'Chief Information Security Officer (CISO)',
+        ],
+      },
+    ],
+    whoShouldJoin: [
+      'B.Sc, BCA, B.Tech, BE Graduates',
+      'MCA & M.Sc Students',
+      'IT Support Professionals',
+      'Network Administrators',
+      'System Administrators',
+      'Software Engineers',
+      'Cybersecurity Enthusiasts',
+      'Working Professionals',
+      'Government Security Professionals',
+      'Career Transition Candidates',
+    ],
+    careerAdvantage: 'The Advanced Program in Cybersecurity & Forensics (APCF) equips learners with practical expertise in Ethical Hacking, Penetration Testing, SOC Operations, Digital Forensics, Threat Intelligence, Cloud Security, and Incident Response. The program develops industry-ready professionals capable of protecting organizations from cyber threats, investigating cybercrimes, and building secure digital environments across industries worldwide.',
+  },
+};
