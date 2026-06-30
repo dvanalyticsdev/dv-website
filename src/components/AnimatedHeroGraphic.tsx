@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 
 const slideshowImages = [
-  '/hero-stories/WhatsApp Image 2026-06-25 at 3.35.12 PM (1).jpeg',
-  '/hero-stories/WhatsApp Image 2026-06-25 at 3.35.12 PM.jpeg',
-  '/hero-stories/WhatsApp Image 2026-06-25 at 3.35.13 PM.jpeg',
-  '/hero-stories/WhatsApp Image 2026-06-25 at 3.35.14 PM.jpeg',
-  '/hero-stories/WhatsApp Image 2026-06-25 at 3.35.15 PM.jpeg',
-  '/hero-stories/WhatsApp Image 2026-06-25 at 3.35.16 PM.jpeg',
+  '/hero-stories/WhatsApp Image 2026-06-29 at 1.25.40 PM.jpeg',
+  '/hero-stories/WhatsApp Image 2026-06-29 at 1.34.30 PM.jpeg',
+  '/hero-stories/WhatsApp Image 2026-06-29 at 1.42.30 PM.jpeg',
+  '/hero-stories/WhatsApp Image 2026-06-29 at 1.45.19 PM.jpeg',
+  '/hero-stories/WhatsApp Image 2026-06-29 at 1.47.37 PM.jpeg',
+  '/hero-stories/WhatsApp Image 2026-06-29 at 1.54.09 PM.jpeg',
 ];
 
 const SLIDE_DURATION = 2000; // 2.0 seconds per slide (speeded up)

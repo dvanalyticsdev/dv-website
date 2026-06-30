@@ -2539,6 +2539,27 @@ a {
   animation: fadeInBenefits 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
+.benefits-certificates-grid {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.benefits-certificate-image {
+  width: 100%;
+  border-radius: 18px;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+}
+
+@media (max-width: 768px) {
+  .benefits-certificates-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 @keyframes fadeInBenefits {
   from {
     opacity: 0;
@@ -2905,8 +2926,10 @@ a {
 
 /* 3-Column Card Grid */
 .center-cards-grid {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   justify-content: center;
+  gap: 2rem;
   margin-bottom: 5rem;
   width: 100%;
 }
@@ -2949,6 +2972,10 @@ a {
   z-index: 1;
 }
 
+.center-card.bhubaneswar::before {
+  background-image: url('/office-bg/bhubneshwar.png');
+}
+
 .center-card:hover::before {
   transform: scale(1.04);
 }
@@ -2956,26 +2983,34 @@ a {
 /* Bottom Overlay Panel: Solid Dark Blue Content (20% of Card Height) */
 .center-card-footer-panel {
   background-color: #1b2452; /* Solid Dark Blue */
-  height: 20%; /* Exactly 20% of overall card height */
-  padding: 0.5rem 2rem;
+  min-height: 170px;
+  padding: 1rem 1.5rem 1.15rem;
   width: 100%;
   box-sizing: border-box;
   z-index: 2;
   border-bottom-left-radius: 22px; /* matches container border-radius minus border width */
   border-bottom-right-radius: 22px;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
 }
 
 /* Footer Grid Layout */
 .footer-flex-row {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.65fr);
+  grid-template-areas:
+    "company address"
+    "phone email";
+  align-items: start;
   width: 100%;
-  height: 100%;
-  gap: 1rem;
+  gap: 1rem 1.25rem;
+}
+
+.center-card.bhubaneswar .footer-flex-row {
+  grid-template-areas:
+    "company address"
+    "phone phone"
+    "email email";
 }
 
 .footer-col {
@@ -2985,11 +3020,11 @@ a {
 }
 
 .company-col {
+  grid-area: company;
   flex-direction: column;
   align-items: flex-start;
-  justify-content: center;
-  gap: 0.15rem;
-  flex: 1.2;
+  justify-content: flex-start;
+  gap: 0.35rem;
 }
 
 .company-col .center-header-row {
@@ -3003,7 +3038,8 @@ a {
   text-align: left;
   font-size: 0.95rem;
   font-weight: 700;
-  white-space: nowrap;
+  white-space: normal;
+  line-height: 1.35;
 }
 
 .company-col .center-icon-wrapper {
@@ -3022,10 +3058,10 @@ a {
 }
 
 .address-col {
+  grid-area: address;
   flex-direction: row;
-  align-items: center;
+  align-items: flex-start;
   gap: 0.6rem;
-  flex: 1.4;
 }
 
 .address-col .info-text {
@@ -3036,33 +3072,41 @@ a {
 }
 
 .phone-col {
+  grid-area: phone;
   flex-direction: row;
-  align-items: center;
+  align-items: flex-start;
   gap: 0.5rem;
-  flex: 0.9;
-  justify-content: center;
 }
 
 .phone-col .info-text {
-  font-size: var(--font-size-small);
+  font-size: 0.95rem;
   font-weight: 600;
   color: #e2e8f0;
   white-space: nowrap;
+  line-height: 1.4;
 }
 
 .email-col {
+  grid-area: email;
   flex-direction: row;
-  align-items: center;
+  align-items: flex-start;
   gap: 0.5rem;
-  flex: 1.1;
-  justify-content: flex-end;
 }
 
 .email-col .info-text {
   font-size: var(--font-size-small);
   font-weight: 600;
   color: #e2e8f0;
-  white-space: nowrap;
+  white-space: normal;
+  line-height: 1.4;
+}
+
+.center-card.bhubaneswar .phone-col .info-text {
+  font-size: 0.92rem;
+}
+
+.center-card.bhubaneswar .email-col .info-text {
+  padding-left: 0;
 }
 
 /* Top Accent Bars */
@@ -3219,6 +3263,20 @@ a {
   font-weight: 600;
   border-bottom: 1px solid transparent;
   transition: all var(--transition-speed) ease;
+  overflow-wrap: anywhere;
+}
+
+.center-link-phone {
+  color: #e2e8f0;
+}
+
+.center-link-phone:hover {
+  color: #ffffff;
+}
+
+.phone-separator {
+  color: rgba(226, 232, 240, 0.65);
+  margin: 0 0.35rem;
 }
 
 .center-link:hover {
@@ -3245,6 +3303,17 @@ a {
 }
 
 /* Responsive adjustments */
+@media (max-width: 1200px) {
+  .footer-flex-row {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "company"
+      "address"
+      "phone"
+      "email";
+  }
+}
+
 @media (max-width: 768px) {
   .site-footer {
     padding: 4rem 0 2.5rem 0;
@@ -3256,6 +3325,7 @@ a {
     font-size: var(--font-size-h2);
   }
   .center-cards-grid {
+    grid-template-columns: 1fr;
     margin-bottom: 3.5rem;
   }
   .center-company {
@@ -3293,8 +3363,12 @@ a {
     font-size: 0.98rem;
   }
   .address-col .info-text,
-  .phone-col .info-text,
   .email-col .info-text {
+    white-space: normal;
+    font-size: var(--font-size-small);
+    line-height: 1.35;
+  }
+  .phone-col .info-text {
     white-space: normal;
     font-size: var(--font-size-small);
     line-height: 1.35;

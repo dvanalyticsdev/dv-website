@@ -2,8 +2,14 @@ import React, { useState } from 'react';
 import { useScrollReveal } from '../hooks/useScrollReveal';
 
 export const BenefitsSection: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<'program' | 'lms'>('program');
+  const [activeTab, setActiveTab] = useState<'program' | 'lms' | 'certificate'>('program');
   const revealRef = useScrollReveal(activeTab);
+
+  const titleMap = {
+    program: 'Program Benefits',
+    lms: 'LMS Platform Benefits',
+    certificate: 'Certificates'
+  } as const;
 
   return (
     <section className="benefits-section" id="benefits">
@@ -13,7 +19,7 @@ export const BenefitsSection: React.FC = () => {
         <div className="benefits-header reveal-on-scroll">
           <span className="benefits-subtitle">Maximize Your Success</span>
           <h2 className="benefits-title">
-            {activeTab === 'program' ? 'Program Benefits' : 'LMS Platform Benefits'}
+            {titleMap[activeTab]}
           </h2>
           
           {/* Decorative Divider */}
@@ -42,26 +48,47 @@ export const BenefitsSection: React.FC = () => {
           >
             LMS Platform Benefits
           </button>
+          <button 
+            className={`tab-btn ${activeTab === 'certificate' ? 'active' : ''}`}
+            onClick={() => setActiveTab('certificate')}
+          >
+            Certificates
+          </button>
         </div>
 
         {/* Benefits Image Display Area */}
         <div className="benefits-image-container" ref={revealRef}>
           {activeTab === 'program' ? (
             <img 
-              src="/program-benefit.jpeg" 
+              src="/program-benefit.png" 
               alt="Core Program Benefits" 
               className="benefits-display-image"
               key="program-img"
               loading="lazy"
             />
-          ) : (
+          ) : activeTab === 'lms' ? (
             <img 
-              src="/lms-benefit.jpeg" 
+              src="/lms-benefit.png" 
               alt="LMS Platform Benefits" 
               className="benefits-display-image"
               key="lms-img"
               loading="lazy"
             />
+          ) : (
+            <div className="benefits-certificates-grid" key="certificate-grid">
+              <img
+                src="/benefits-certificates/certificate-1.jpeg"
+                alt="DV Analytics certificate sample 1"
+                className="benefits-display-image benefits-certificate-image"
+                loading="lazy"
+              />
+              <img
+                src="/benefits-certificates/certificate-2.jpeg"
+                alt="DV Analytics certificate sample 2"
+                className="benefits-display-image benefits-certificate-image"
+                loading="lazy"
+              />
+            </div>
           )}
         </div>
 

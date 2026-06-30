@@ -36,7 +36,7 @@ export const RoadmapSection: React.FC = () => {
         <div className="roadmap-image-container">
           {activeRoadmap === 'ds' ? (
             <img 
-              src="/data-scientist-roadmap.jpeg" 
+              src="/data-scientist-roadmap.png" 
               alt="Data Scientist Roadmap" 
               className="roadmap-display-image"
               key="ds-img"
@@ -44,7 +44,7 @@ export const RoadmapSection: React.FC = () => {
             />
           ) : (
             <img 
-              src="/cyber-security-roadmap.jpeg" 
+              src="/cyber-security-roadmap.png" 
               alt="Cyber Security Roadmap" 
               className="roadmap-display-image"
               key="cyber-img"
