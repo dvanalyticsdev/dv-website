@@ -47,3 +47,27 @@
     font-size: 1.55rem !important;
   }
 }
+
+/* Center cards footer alignment overrides */
+
+/* Make both center cards footers have the same grid layout and areas */
+.center-card.bhubaneswar .footer-flex-row {
+  grid-template-areas:
+    "company address"
+    "phone email" !important;
+}
+
+/* Ensure phone text wraps cleanly and stacks vertically */
+.phone-col .info-text {
+  white-space: normal !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0.2rem !important;
+}
+
+/* Align heights of the footer panels on desktop */
+@media (min-width: 769px) {
+  .center-card-footer-panel {
+    min-height: 200px !important;
+  }
+}

@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 
 const slideshowImages = [
-  '/hero-stories/WhatsApp Image 2026-06-29 at 1.25.40 PM.jpeg',
-  '/hero-stories/WhatsApp Image 2026-06-29 at 1.34.30 PM.jpeg',
-  '/hero-stories/WhatsApp Image 2026-06-29 at 1.42.30 PM.jpeg',
-  '/hero-stories/WhatsApp Image 2026-06-29 at 1.45.19 PM.jpeg',
-  '/hero-stories/WhatsApp Image 2026-06-29 at 1.47.37 PM.jpeg',
-  '/hero-stories/WhatsApp Image 2026-06-29 at 1.54.09 PM.jpeg',
+  '/hero-stories/6th.jpeg',
+  '/hero-stories/1st.jpeg',
+  '/hero-stories/2nd.jpeg',
+  '/hero-stories/3rd.jpeg',
+  '/hero-stories/4th.jpeg',
+  '/hero-stories/5th.jpeg',
 ];
 
 const SLIDE_DURATION = 2000; // 2.0 seconds per slide (speeded up)
@@ -26,7 +26,7 @@ interface AnimatedHeroGraphicProps {
 }
 
 export const AnimatedHeroGraphic: React.FC<AnimatedHeroGraphicProps> = ({ images: propImages }) => {
-  const [images] = useState(() => shuffleArray(propImages || slideshowImages));
+  const [images] = useState(() => propImages ? shuffleArray(propImages) : slideshowImages);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(true);
   const touchStartX = useRef<number | null>(null);

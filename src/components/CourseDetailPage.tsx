@@ -14,10 +14,11 @@ const posterImages: Record<string, string> = {
 
 const courseSuccessImages: Record<string, string[]> = {
   apids: [
-    '/Success Stories/WhatsApp Image 2026-06-29 at 11.28.19 AM.jpeg',
-    '/Success Stories/WhatsApp Image 2026-06-29 at 11.28.20 AM (1).jpeg',
-    '/Success Stories/WhatsApp Image 2026-06-29 at 11.28.20 AM (2).jpeg',
-    '/Success Stories/WhatsApp Image 2026-06-29 at 11.28.20 AM.jpeg',
+    '/Success Stories/WhatsApp Image 2026-07-01 at 11.19.49 AM.jpeg',
+    '/Success Stories/WhatsApp Image 2026-07-01 at 11.19.50 AM (1).jpeg',
+    '/Success Stories/WhatsApp Image 2026-07-01 at 11.19.50 AM (2).jpeg',
+    '/Success Stories/WhatsApp Image 2026-07-01 at 11.19.50 AM.jpeg',
+    '/Success Stories/WhatsApp Image 2026-07-01 at 11.19.51 AM.jpeg',
   ],
   apida: [
     '/Success Stories/WhatsApp Image 2026-06-29 at 11.28.19 AM.jpeg',

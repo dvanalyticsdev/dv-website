@@ -15,7 +15,7 @@ export const Footer: React.FC = () => {
         {/* 3-Column Card Grid matching site theme */}
         <div className="center-cards-grid">
 
-          {/* Dubai Center */}
+          {/* Bangalore Center */}
           <div className="center-card bangalore">
             <div className="center-card-footer-panel">
               <div className="footer-flex-row">
@@ -29,7 +29,11 @@ export const Footer: React.FC = () => {
                       </svg>
                     </div>
                   </div>
-                  <h3 className="center-company">DV Analytics</h3>
+                  <h3 className="center-company">
+                    <a href="https://www.dvanalyticsmds.com/" target="_blank" rel="noreferrer" className="center-link">
+                      DV Data &amp; Analytics Private Limited
+                    </a>
+                  </h3>
                 </div>
 
                 <div className="footer-col address-col">
@@ -39,9 +43,10 @@ export const Footer: React.FC = () => {
                     </svg>
                   </div>
                   <p className="info-text">
-                    Villa 335, Murooj al Furzan East 1<br />
-                    Near Gate 3 Jabel Ali First<br />
-                    Al Furjan, Dubai, UAE
+                    #52, 2nd Floor:<br />
+                    Malleshpalya Maruthinagar Bengaluru.<br />
+                    Bangalore 560075<br />
+                    India
                   </p>
                 </div>
 
@@ -52,7 +57,8 @@ export const Footer: React.FC = () => {
                     </svg>
                   </div>
                   <p className="info-text">
-                    <a href="tel:+971525533211" className="center-link center-link-phone">+971 52 553 3211</a>
+                    <a href="tel:+919019030033" className="center-link center-link-phone">(+91) 9019 030 033</a>
+                    <a href="tel:+918095881188" className="center-link center-link-phone">(+91) 8095 881 188</a>
                   </p>
                 </div>
 
@@ -88,7 +94,7 @@ export const Footer: React.FC = () => {
                   </div>
                   <h3 className="center-company">
                     <a href="https://www.dvanalyticsmds.com/" target="_blank" rel="noreferrer" className="center-link">
-                      DV Data &amp; Analytics Private Limited Bhubaneswar
+                      DV Data &amp; Analytics Private Limited
                     </a>
                   </h3>
                 </div>
@@ -115,7 +121,6 @@ export const Footer: React.FC = () => {
                   </div>
                   <p className="info-text">
                     <a href="tel:+918095881188" className="center-link center-link-phone">+91 8095 881 188</a>
-                    <span className="phone-separator"> | </span>
                     <a href="tel:+918249430414" className="center-link center-link-phone">+91 8249 430 414</a>
                   </p>
                 </div>
