@@ -12,6 +12,14 @@ const posterImages: Record<string, string> = {
   apcs: '/courses-poster/APCF.jpeg',
 };
 
+const heroImages: Record<string, string> = {
+  apids: '/course-hero/APIDS.jpeg',
+  aiml: '/course-hero/Advance AIML.jpeg',
+  genai: '/course-hero/Gen AI.jpeg',
+  specialist: '/course-hero/DAS.jpeg',
+  apcs: '/course-hero/APCF.jpeg',
+};
+
 const courseSuccessImages: Record<string, string[]> = {
   apids: [
     '/Success Stories/WhatsApp Image 2026-07-01 at 11.19.49 AM.jpeg',
@@ -147,44 +155,55 @@ export const CourseDetailPage: React.FC<CourseDetailPageProps> = ({ courseId, on
     <div className="course-detail-container theme-blue">
       
       {/* 1. Hero Banner Section */}
-      <section className="course-hero">
-        <div className="course-hero-overlay"></div>
-        <div className="course-hero-content container hero-split">
-          <div className="hero-left">
-            <h1 className="course-hero-title">
-              {course.title.includes(' & ') ? (
-                <>
-                  {course.title.substring(0, course.title.indexOf(' & '))}
-                  <br />
-                  & {course.title.substring(course.title.indexOf(' & ') + 3)}
-                </>
-              ) : (
-                course.title
-              )}
-            </h1>
-            <p className="course-hero-tagline">{course.tagline}</p>
+      {heroImages[courseId.toLowerCase()] ? (
+        <section className="course-hero-full" onClick={onEnroll} style={{ cursor: 'pointer', width: '100%', overflow: 'hidden' }}>
+          <img 
+            src={heroImages[courseId.toLowerCase()]} 
+            alt={`${course.title} Hero`} 
+            className="course-hero-full-img"
+            style={{ width: '100%', height: 'auto', display: 'block' }}
+          />
+        </section>
+      ) : (
+        <section className="course-hero">
+          <div className="course-hero-overlay"></div>
+          <div className="course-hero-content container hero-split">
+            <div className="hero-left">
+              <h1 className="course-hero-title">
+                {course.title.includes(' & ') ? (
+                  <>
+                    {course.title.substring(0, course.title.indexOf(' & '))}
+                    <br />
+                    & {course.title.substring(course.title.indexOf(' & ') + 3)}
+                  </>
+                ) : (
+                  course.title
+                )}
+              </h1>
+              <p className="course-hero-tagline">{course.tagline}</p>
 
-            <div className="hero-cta-group">
-              <button ref={heroEnrollRef} className="btn btn-enroll-main" onClick={onEnroll}>Enroll Now</button>
-              <a href="/APIDS-Brochure.pdf" download="APIDS-Brochure.pdf" className="btn btn-download-syllabus">
-                <svg viewBox="0 0 24 24" className="download-icon">
-                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" stroke="currentColor" strokeWidth="2.5" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-                Download Brochure
-              </a>
+              <div className="hero-cta-group">
+                <button ref={heroEnrollRef} className="btn btn-enroll-main" onClick={onEnroll}>Enroll Now</button>
+                <a href="/APIDS-Brochure.pdf" download="APIDS-Brochure.pdf" className="btn btn-download-syllabus">
+                  <svg viewBox="0 0 24 24" className="download-icon">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" stroke="currentColor" strokeWidth="2.5" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  Download Brochure
+                </a>
+              </div>
+            </div>
+            <div className="hero-right">
+              <div className="hero-image-container course-hero-poster-container">
+                <img 
+                  src={posterImages[course.id.toLowerCase()]} 
+                  alt={`${course.title} Poster`} 
+                  className="course-hero-poster-img"
+                />
+              </div>
             </div>
           </div>
-          <div className="hero-right">
-            <div className="hero-image-container course-hero-poster-container">
-              <img 
-                src={posterImages[course.id.toLowerCase()]} 
-                alt={`${course.title} Poster`} 
-                className="course-hero-poster-img"
-              />
-            </div>
-          </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* 2. Quick Stats Grid - 3 cards only */}
       <section className="course-stats-section container reveal-on-scroll">

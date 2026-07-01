@@ -1643,3 +1643,198 @@
 .tech-tag.teal {
   color: #051f40 !important;
 }
+
+/* Main Header Hover and Selection Highlights (Orange Opaque/Opacity Background) */
+
+/* 1. Main Navigation Items (Desktop & Mobile) */
+.site-header .nav-item a {
+  transition: background-color 0.25s cubic-bezier(0.16, 1, 0.3, 1), 
+              color 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.site-header .nav-item a:hover,
+.site-header .nav-item a.active,
+.site-header .nav-item a.open {
+  background-color: rgba(239, 83, 35, 0.1) !important;
+  color: #ef5323 !important;
+}
+
+/* Disable the bottom line indicator under nav items when hovered/active/open for cleaner look */
+.site-header .nav-item a:hover::after,
+.site-header .nav-item a.active::after,
+.site-header .nav-item a.open::after {
+  opacity: 0 !important;
+  width: 0 !important;
+}
+
+/* 2. Dropdown Menu Items (Desktop & Mobile) */
+.site-header .dropdown-item-link {
+  transition: background-color 0.2s cubic-bezier(0.16, 1, 0.3, 1), 
+              color 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  border-radius: 8px !important;
+  margin: 0.15rem 0.5rem !important;
+  border-bottom: none !important; /* Remove line dividers between items for a modern pill hover effect */
+}
+
+.site-header .dropdown-item-link:hover {
+  background-color: rgba(239, 83, 35, 0.1) !important;
+  color: #ef5323 !important;
+}
+
+/* 3. Mobile Specific Overrides */
+@media (max-width: 768px) {
+  /* Mobile Courses Dropdown Trigger Button */
+  .mobile-courses-container .dropdown-trigger:hover,
+  .mobile-courses-container .dropdown-trigger.open {
+    background-color: rgba(239, 83, 35, 0.1) !important;
+    color: #ef5323 !important;
+  }
+}
+
+/* ==========================================================================
+   Typography Hierarchy & Single Sizing Rules
+   ========================================================================== */
+
+:root {
+  /* Page Hero Titles */
+  --page-hero-title-size: 3.2rem;
+  
+  /* Panel/Section Main Headings (Overrides default --font-size-h2) */
+  --font-size-h2: 2.35rem !important;
+  
+  /* Panel/Section Subheadings/Pre-titles */
+  --font-size-panel-subtitle: 0.95rem;
+}
+
+/* 1. Page Hero Titles (All major landing page hero headings) */
+.about-title,
+.blogs-title,
+.services-title,
+.faq-title,
+.enroll-title,
+.course-hero-title {
+  font-size: var(--page-hero-title-size) !important;
+  font-weight: 800 !important;
+  letter-spacing: -1px !important;
+  line-height: 1.15 !important;
+}
+
+/* 2. Panel/Section Main Headings (All main sections/panels across the site) */
+.section-title,
+.section-title-divider,
+.section-title-accent,
+.benefits-title,
+.badges-title,
+.cat-title-header,
+.blog-section-title,
+.aau-modal-header h2 {
+  font-size: var(--font-size-h2) !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.5px !important;
+  line-height: 1.2 !important;
+}
+
+/* 3. Panel/Section Subheadings / Pre-titles (All smaller capitalized/spaced text headers) */
+.benefits-subtitle,
+.about-subtitle,
+.blogs-subtitle,
+.services-subtitle,
+.stories-subtitle,
+.footer-subtitle,
+.section-subtitle,
+.faq-subtitle,
+.enroll-subtitle,
+.companies-subtitle {
+  font-size: var(--font-size-panel-subtitle) !important;
+  letter-spacing: 2px !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important; /* Ensure consistent casing for pre-title subtitles */
+  display: block !important;
+  margin-bottom: 0.5rem !important;
+}
+
+/* Responsive Scaling Rules for Mobile Screens */
+@media (max-width: 768px) {
+  :root {
+    --page-hero-title-size: 2.2rem;
+    --font-size-h2: 1.8rem !important;
+    --font-size-panel-subtitle: 0.85rem;
+  }
+}
+
+/* Full Width Course Hero Image Styling */
+.course-hero-full {
+  width: 100%;
+  overflow: hidden;
+  background-color: #051f40;
+  position: relative;
+  transition: opacity 0.3s ease;
+  padding: 0;
+  margin: 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.course-hero-full:hover {
+  opacity: 0.95;
+}
+
+.course-hero-full-img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Premium Accordion Trigger Styling (Orange Hover & Selection Highlights) */
+.accordion-trigger {
+  background-color: #ffffff !important; /* Force clean white default background */
+  background: #ffffff !important;
+  border-radius: 12px;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.accordion-trigger .module-title {
+  color: #051f40 !important; /* Highly visible dark navy title */
+  font-weight: 700 !important;
+  transition: color 0.25s ease !important;
+}
+
+.accordion-trigger .module-index {
+  color: #ef5323 !important; /* Keep index numbers in brand orange */
+  font-weight: 800 !important;
+  opacity: 1 !important;
+}
+
+.accordion-trigger .accordion-arrow {
+  color: #051f40 !important; /* Highly visible arrow icon */
+  transition: color 0.25s ease !important;
+}
+
+/* Hover State */
+.accordion-trigger:hover {
+  background-color: rgba(239, 83, 35, 0.1) !important; /* Translucent orange background */
+  background: rgba(239, 83, 35, 0.1) !important;
+}
+
+.accordion-trigger:hover .module-title {
+  color: #ef5323 !important; /* Turn text color to brand orange */
+}
+
+.accordion-trigger:hover .accordion-arrow {
+  color: #ef5323 !important; /* Turn arrow color to brand orange */
+}
+
+/* Active/Expanded State (when parent accordion-item is active) */
+.accordion-item.active .accordion-trigger {
+  background-color: rgba(239, 83, 35, 0.08) !important; /* Maintain subtle highlight when open */
+  background: rgba(239, 83, 35, 0.08) !important;
+}
+
+.accordion-item.active .accordion-trigger .module-title {
+  color: #ef5323 !important; /* Highlight title in brand orange when open */
+}
+
+.accordion-item.active .accordion-trigger .accordion-arrow {
+  color: #ef5323 !important; /* Highlight arrow in brand orange when open */
+}
+
+
