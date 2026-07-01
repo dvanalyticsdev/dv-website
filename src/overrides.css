@@ -9,6 +9,7 @@
   --font-size-h4: 1.025rem;
   --font-size-h5: 0.85rem;
   --font-size-lead: 1.075rem;
+  --container-max-width: 1520px !important;
 }
 
 /* Desktop Hero Headings Override */
