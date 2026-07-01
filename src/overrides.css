@@ -1765,14 +1765,17 @@
 
 /* Full Width Course Hero Image Styling */
 .course-hero-full {
-  width: 100%;
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
   overflow: hidden;
-  background-color: #051f40;
   position: relative;
   transition: opacity 0.3s ease;
-  padding: 0;
-  margin: 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  border: none !important;
+  background-color: #051f40;
 }
 
 .course-hero-full:hover {
@@ -1780,9 +1783,17 @@
 }
 
 .course-hero-full-img {
-  width: 100%;
-  height: auto;
+  width: 100% !important;
+  max-width: 100% !important;
+  height: 25vw !important; /* Scale height responsively with screen width */
+  max-height: 480px !important; /* Cap height on large screens to keep it compact */
+  min-height: 220px !important; /* Ensure it is tall enough on mobile devices */
+  object-fit: cover !important;
+  object-position: center 50% !important; /* Keep both top title and bottom text centered and visible */
   display: block;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  border: none !important;
 }
 
 /* Premium Accordion Trigger Styling (Orange Hover & Selection Highlights) */
