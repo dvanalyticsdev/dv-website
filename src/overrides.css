@@ -1463,3 +1463,16 @@
   padding: 1.25rem;
   border-radius: 0 16px 16px 0;
 }
+
+.blog-back-btn-row {
+  width: 100% !important;
+  text-align: left !important;
+  margin-bottom: 2rem !important;
+  margin-top: -3rem !important;
+}
+
+@media (max-width: 768px) {
+  .blog-back-btn-row {
+    margin-top: -2rem !important;
+  }
+}
