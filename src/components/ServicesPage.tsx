@@ -1,10 +1,13 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 
 interface ServicesPageProps {
   onNavigate: (page: string) => void;
 }
 
 export const ServicesPage: React.FC<ServicesPageProps> = ({ onNavigate }) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -173,7 +176,140 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({ onNavigate }) => {
             </span>
           ))}
         </div>
+
+        <div style={{ marginTop: '2.5rem' }}>
+          <button className="btn-view-all-industries" onClick={() => setIsModalOpen(true)}>
+            View All Options
+          </button>
+        </div>
       </section>
+
+      {isModalOpen && createPortal(
+        <div className="industry-modal-overlay" onClick={() => setIsModalOpen(false)}>
+          <div className="industry-modal-box" onClick={(e) => e.stopPropagation()}>
+            
+            <div className="industry-modal-header">
+              <h3>Target Industries - AI Project Case Studies</h3>
+              <button className="industry-modal-close" onClick={() => setIsModalOpen(false)} aria-label="Close modal">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </button>
+            </div>
+            
+            <div className="industry-modal-body">
+              <div className="industry-table-wrapper">
+                <table className="industry-solutions-table">
+                  <thead>
+                    <tr>
+                      <th>Industry</th>
+                      <th>Project Name</th>
+                      <th>Objective</th>
+                      <th>Step-by-Step Approach</th>
+                      <th>Output</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td className="industry-cell">Banking &amp; Financial Services</td>
+                      <td className="project-cell">Credit Risk &amp; Loan Default Prediction</td>
+                      <td>Predict risky customers before loan approval</td>
+                      <td>
+                        <ol>
+                          <li>Collect loan/customer data</li>
+                          <li>Analyze CIBIL, income, DPD, EMI behavior</li>
+                          <li>Build risk score model</li>
+                          <li>Segment customers into Low/Medium/High Risk</li>
+                          <li>Deploy model using MLOps</li>
+                        </ol>
+                      </td>
+                      <td>Risk Scorecard, Approval Strategy, Power BI Dashboard</td>
+                    </tr>
+                    <tr>
+                      <td className="industry-cell">Telecom</td>
+                      <td className="project-cell">Customer Churn Prediction</td>
+                      <td>Identify customers likely to leave</td>
+                      <td>
+                        <ol>
+                          <li>Collect recharge, usage, complaints, network data</li>
+                          <li>Analyze customer behavior</li>
+                          <li>Build churn prediction model</li>
+                          <li>Create retention offers</li>
+                          <li>Automate alerts</li>
+                        </ol>
+                      </td>
+                      <td>Churn Model, Retention Campaign, Customer Dashboard</td>
+                    </tr>
+                    <tr>
+                      <td className="industry-cell">Retail</td>
+                      <td className="project-cell">Customer Segmentation &amp; Sales Forecasting</td>
+                      <td>Improve sales and customer targeting</td>
+                      <td>
+                        <ol>
+                          <li>Collect billing, product, customer data</li>
+                          <li>Segment customers by purchase behavior</li>
+                          <li>Forecast product demand</li>
+                          <li>Recommend offers</li>
+                          <li>Track sales KPIs</li>
+                        </ol>
+                      </td>
+                      <td>Customer Segments, Sales Forecast, Retail BI Dashboard</td>
+                    </tr>
+                    <tr>
+                      <td className="industry-cell">Healthcare</td>
+                      <td className="project-cell">Patient Risk &amp; Hospital Analytics</td>
+                      <td>Improve patient care and hospital efficiency</td>
+                      <td>
+                        <ol>
+                          <li>Collect patient, diagnosis, treatment data</li>
+                          <li>Analyze high-risk patients</li>
+                          <li>Predict readmission risk</li>
+                          <li>Optimize hospital resources</li>
+                          <li>Create doctor/admin dashboard</li>
+                        </ol>
+                      </td>
+                      <td>Patient Risk Score, Readmission Model, Healthcare Dashboard</td>
+                    </tr>
+                    <tr>
+                      <td className="industry-cell">Insurance</td>
+                      <td className="project-cell">Claims Fraud Detection</td>
+                      <td>Detect suspicious insurance claims</td>
+                      <td>
+                        <ol>
+                          <li>Collect policy, claim, customer data</li>
+                          <li>Analyze claim patterns</li>
+                          <li>Identify fraud indicators</li>
+                          <li>Build fraud detection model</li>
+                          <li>Automate claim risk alerts</li>
+                        </ol>
+                      </td>
+                      <td>Fraud Score, Claim Approval Strategy, Investigation Dashboard</td>
+                    </tr>
+                    <tr>
+                      <td className="industry-cell">E-Commerce</td>
+                      <td className="project-cell">Recommendation Engine &amp; Customer Analytics</td>
+                      <td>Increase sales and customer engagement</td>
+                      <td>
+                        <ol>
+                          <li>Collect order, product, browsing data</li>
+                          <li>Analyze customer buying patterns</li>
+                          <li>Build recommendation engine</li>
+                          <li>Predict repeat purchase/churn</li>
+                          <li>Deploy AI recommendations</li>
+                        </ol>
+                      </td>
+                      <td>Product Recommendations, Customer Insights, E-Commerce Dashboard</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            
+          </div>
+        </div>,
+        document.body
+      )}
     </div>
   );
 };

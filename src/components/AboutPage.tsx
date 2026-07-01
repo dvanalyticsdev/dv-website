@@ -1,17 +1,6 @@
 import React from 'react';
 
 export const AboutPage: React.FC = () => {
-  const stats = [
-    { value: '15+', label: 'Years of Training Experience' },
-    { value: '200+', label: 'Batches Completed' },
-    { value: '8000+', label: 'Students Enrolled' },
-    { value: '95%+', label: 'Success Rate' },
-    { value: '65 Lacs+', label: 'Highest Salary Package' },
-    { value: '23 Lacs', label: 'Median Salary Package' },
-    { value: '250+', label: 'Recruiting MNCs' },
-    { value: '15+', label: 'Industry Projects Completed' }
-  ];
-
   const consultingAreas = [
     'Data quality and management challenges',
     'Business intelligence, MIS reporting, and automation (Daily, Weekly, Monthly)',
@@ -138,13 +127,12 @@ export const AboutPage: React.FC = () => {
           <h2 className="section-main-title">We at a Glance</h2>
           <div className="title-underline center"></div>
         </div>
-        <div className="about-stats-grid">
-          {stats.map((stat, idx) => (
-            <div key={idx} className="about-stat-card">
-              <span className="stat-value">{stat.value}</span>
-              <span className="stat-label">{stat.label}</span>
-            </div>
-          ))}
+        <div className="about-stats-image-container">
+          <img 
+            src="/about-stats.jpeg" 
+            alt="DV Analytics Track Record Stats" 
+            className="about-stats-img"
+          />
         </div>
       </section>
 

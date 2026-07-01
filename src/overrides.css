@@ -1837,4 +1837,224 @@
   color: #ef5323 !important; /* Highlight arrow in brand orange when open */
 }
 
+/* FAQ category sidebar buttons (Orange Hover & Selection Highlights) */
+.faq-tab-btn {
+  color: #051f40 !important; /* Make sure default text is highly visible navy */
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.faq-tab-btn .tab-arrow-icon {
+  color: inherit !important;
+}
+
+/* Hover state */
+.faq-tab-btn:hover {
+  background-color: rgba(239, 83, 35, 0.1) !important;
+  background: rgba(239, 83, 35, 0.1) !important;
+  color: #ef5323 !important;
+}
+
+.faq-tab-btn:hover .tab-arrow-icon {
+  opacity: 1 !important;
+  transform: translateX(0) !important;
+  color: #ef5323 !important;
+}
+
+/* Active state */
+.faq-tab-btn.active {
+  background-color: rgba(239, 83, 35, 0.1) !important;
+  background: rgba(239, 83, 35, 0.1) !important;
+  color: #ef5323 !important;
+}
+
+.faq-tab-btn.active .tab-arrow-icon {
+  opacity: 1 !important;
+  transform: translateX(0) !important;
+  color: #ef5323 !important;
+}
+
+/* Active Hover state */
+.faq-tab-btn.active:hover {
+  background-color: rgba(239, 83, 35, 0.12) !important;
+  background: rgba(239, 83, 35, 0.12) !important;
+  color: #ef5323 !important;
+}
+
+/* Services Page - Target Industries Modal & Table Styling */
+.btn-view-all-industries {
+  background-color: transparent;
+  color: #051f40;
+  border: 2px solid #051f40;
+  padding: 0.8rem 2.25rem;
+  font-size: 1rem;
+  font-weight: 700;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  display: inline-block;
+}
+
+.btn-view-all-industries:hover {
+  background-color: rgba(239, 83, 35, 0.1);
+  border-color: #ef5323;
+  color: #ef5323;
+}
+
+/* Modal Overlay */
+.industry-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(5, 31, 64, 0.5);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+  animation: fadeIn 0.3s ease;
+}
+
+/* Modal Box */
+.industry-modal-box {
+  background: #ffffff;
+  border-radius: 24px;
+  box-shadow: 0 20px 50px rgba(15, 23, 42, 0.15);
+  width: 92%;
+  max-width: 1100px;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Header */
+.industry-modal-header {
+  padding: 1.5rem 2rem;
+  background-color: #051f40;
+  color: #ffffff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  border-bottom: 2px solid #ef5323;
+}
+
+.industry-modal-header h3 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+
+.industry-modal-close {
+  background: transparent;
+  border: none;
+  color: #ffffff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.industry-modal-close:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #ef5323;
+}
+
+/* Body */
+.industry-modal-body {
+  padding: 2rem;
+  overflow-y: auto;
+  background-color: #f8fafc;
+}
+
+/* Table Wrapper */
+.industry-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  background-color: #ffffff;
+  border-radius: 16px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+}
+
+/* Table Style */
+.industry-solutions-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.industry-solutions-table th {
+  background-color: #f1f5f9;
+  color: #051f40;
+  font-weight: 800;
+  padding: 1rem 1.25rem;
+  border-bottom: 2px solid #cbd5e1;
+  white-space: nowrap;
+}
+
+.industry-solutions-table td {
+  padding: 1.25rem;
+  border-bottom: 1px solid #e2e8f0;
+  vertical-align: top;
+  color: #334155;
+}
+
+.industry-solutions-table tr:last-child td {
+  border-bottom: none;
+}
+
+.industry-solutions-table tr:nth-child(even) {
+  background-color: #f8fafc;
+}
+
+.industry-solutions-table td.industry-cell {
+  font-weight: 800;
+  color: #051f40;
+  white-space: nowrap;
+}
+
+.industry-solutions-table td.project-cell {
+  font-weight: 700;
+  color: #ef5323;
+}
+
+.industry-solutions-table ol {
+  margin: 0;
+  padding-left: 1.1rem;
+}
+
+.industry-solutions-table li {
+  margin-bottom: 0.35rem;
+}
+
+.industry-solutions-table li:last-child {
+  margin-bottom: 0;
+}
+
+/* About Page Stats Image styling */
+.about-stats-image-container {
+  width: 100%;
+  max-width: 1100px;
+  margin: 3rem auto 0 auto;
+  overflow: hidden;
+  background: transparent;
+}
+
+.about-stats-img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
 
