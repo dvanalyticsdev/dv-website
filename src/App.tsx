@@ -12,6 +12,7 @@ import { ServiceDetailPage } from './components/ServiceDetailPage';
 import { FaqsPage } from './components/FaqsPage';
 import { EnrollmentPage } from './components/EnrollmentPage';
 import { AboutPage } from './components/AboutPage';
+import { BlogsPage } from './components/BlogsPage';
 import { ChatbotWidget } from './components/ChatbotWidget';
 import { useScrollReveal } from './hooks/useScrollReveal';
 import { CompaniesSection } from './components/CompaniesSection';
@@ -167,19 +168,8 @@ function App() {
 
     if (activePage === 'blogs') {
       return (
-        <div className="page-wrapper container">
-          <section className="content-section" style={{ padding: '5rem 2rem', textAlign: 'center' }}>
-            <h2 style={{ fontSize: '2.75rem', marginBottom: '1.5rem', color: '#0f172a', fontWeight: '800', letterSpacing: '-0.75px' }}>
-              Blogs
-            </h2>
-            <div style={{ height: '4px', width: '60px', backgroundColor: '#ef5323', margin: '0 auto 2.5rem auto' }}></div>
-            <p style={{ color: 'var(--text-secondary)', fontSize: '1.25rem', marginBottom: '3rem', fontWeight: '500' }}>
-              Coming Soon
-            </p>
-            <button className="btn btn-primary" onClick={() => setActivePage('home')}>
-              ← Back to Homepage
-            </button>
-          </section>
+        <div data-section="blogs">
+          <BlogsPage />
         </div>
       );
     }
