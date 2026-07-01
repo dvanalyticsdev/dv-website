@@ -8,6 +8,7 @@ import { SuccessStories } from './components/SuccessStories';
 import { Footer } from './components/Footer';
 import { CourseDetailPage } from './components/CourseDetailPage';
 import { ServicesPage } from './components/ServicesPage';
+import { ServiceDetailPage } from './components/ServiceDetailPage';
 import { FaqsPage } from './components/FaqsPage';
 import { EnrollmentPage } from './components/EnrollmentPage';
 import { AboutPage } from './components/AboutPage';
@@ -138,7 +139,20 @@ function App() {
     }
 
     if (activePage === 'services') {
-      return <div data-section="services"><ServicesPage /></div>;
+      return <div data-section="services"><ServicesPage onNavigate={(page) => setActivePage(page)} /></div>;
+    }
+
+    if (activePage.startsWith('service-')) {
+      const serviceId = activePage.replace('service-', '');
+      return (
+        <div data-section="service-detail">
+          <ServiceDetailPage 
+            serviceId={serviceId} 
+            onBackHome={() => setActivePage('home')}
+            onNavigate={(page) => setActivePage(page)}
+          />
+        </div>
+      );
     }
 
     if (activePage === 'faqs') {

@@ -21,10 +21,9 @@ export const Header: React.FC<HeaderProps> = ({ onNavClick, activePage = 'home' 
   ];
 
   const servicesList = [
-    { id: 'aau', label: 'DV Analytics University (DVU)' },
-    { id: 'ais', label: 'DV Intelligence Solutions (DVIS)' },
-    { id: 'aap', label: 'DV Advisory Practice (DVAP)' },
-    { id: 'aeipp', label: 'Agentic Economic Intelligence & Policy Practice (AEIPP)' }
+    { id: 'service-aics', label: 'AI Consulting Solutions' },
+    { id: 'service-ccs', label: 'Corporate Consulting Services' },
+    { id: 'service-crhta', label: 'Corporate Resource Hiring & Talent Augmentation' }
   ];
 
   // Close dropdown on click outside
@@ -76,11 +75,7 @@ export const Header: React.FC<HeaderProps> = ({ onNavClick, activePage = 'home' 
     setServicesDropdownOpen(false);
     setMobileMenuOpen(false);
     if (onNavClick) {
-      if (serviceId === 'aau') {
-        onNavClick('aau');
-      } else {
-        onNavClick('services');
-      }
+      onNavClick(serviceId);
     }
   };
 
@@ -137,10 +132,10 @@ export const Header: React.FC<HeaderProps> = ({ onNavClick, activePage = 'home' 
       >
         <a
           href="#services"
-          className={`dropdown-trigger ${servicesDropdownOpen ? 'open' : ''} ${activePage === 'services' ? 'active' : ''}`}
+          className={`dropdown-trigger ${servicesDropdownOpen ? 'open' : ''} ${activePage === 'services' || activePage.startsWith('service-') ? 'active' : ''}`}
           onClick={(e) => {
             e.preventDefault();
-            setServicesDropdownOpen(!servicesDropdownOpen);
+            if (onNavClick) onNavClick('services');
           }}
         >
           Services
