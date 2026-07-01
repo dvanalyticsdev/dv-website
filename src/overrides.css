@@ -50,11 +50,25 @@
 
 /* Center cards footer alignment overrides */
 
-/* Make both center cards footers have the same grid layout and areas */
-.center-card.bhubaneswar .footer-flex-row {
-  grid-template-areas:
-    "company address"
-    "phone email" !important;
+/* Make both center cards footers have the same grid layout and areas on desktop */
+@media (min-width: 769px) {
+  .center-card.bhubaneswar .footer-flex-row {
+    grid-template-areas:
+      "company address"
+      "phone email" !important;
+  }
+}
+
+/* Fix Bhubaneswar card vertical layout stack on mobile */
+@media (max-width: 768px) {
+  .center-card.bhubaneswar .footer-flex-row {
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-template-areas:
+      "company"
+      "address"
+      "phone"
+      "email" !important;
+  }
 }
 
 /* Ensure phone text wraps cleanly and stacks vertically */
