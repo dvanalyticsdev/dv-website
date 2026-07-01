@@ -5,6 +5,7 @@ import { ProgramsSection } from './components/ProgramsSection';
 import { BenefitsSection } from './components/BenefitsSection';
 import { RoadmapSection } from './components/RoadmapSection';
 import { SuccessStories } from './components/SuccessStories';
+import { GoogleReviewsSection } from './components/GoogleReviewsSection';
 import { Footer } from './components/Footer';
 import { CourseDetailPage } from './components/CourseDetailPage';
 import { ServicesPage } from './components/ServicesPage';
@@ -280,6 +281,9 @@ function App() {
         </div>
         <div data-section="success-stories">
           <SuccessStories />
+        </div>
+        <div data-section="google-reviews">
+          <GoogleReviewsSection />
         </div>
       </div>
     );
