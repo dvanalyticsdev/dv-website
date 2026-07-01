@@ -770,3 +770,331 @@
     left: 1rem !important;
   }
 }
+
+/* About Page Custom Layouts */
+
+.about-intro-section {
+  padding: 5rem 0 3rem 0;
+}
+
+.about-intro-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 3.5rem;
+  align-items: center;
+}
+
+@media (max-width: 1024px) {
+  .about-intro-grid {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+}
+
+.about-section-badge {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #ef5323;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.about-section-heading {
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0 0 1.5rem 0;
+  letter-spacing: -0.5px;
+}
+
+.about-para {
+  font-size: 1.05rem;
+  line-height: 1.75;
+  color: #475569;
+  margin-bottom: 1.25rem;
+}
+
+.about-consulting-box {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 28px;
+  padding: 3rem;
+  box-shadow: 0 10px 30px rgba(5, 31, 64, 0.03);
+}
+
+@media (max-width: 640px) {
+  .about-consulting-box {
+    padding: 2rem 1.5rem;
+  }
+}
+
+.consulting-title {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #1e293b;
+  margin: 0 0 0.5rem 0;
+}
+
+.consulting-subtitle {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: #64748b;
+  margin-bottom: 1.5rem;
+}
+
+.consulting-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.consulting-item {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+  font-size: 0.95rem;
+  color: #334155;
+  line-height: 1.4;
+}
+
+.consulting-bullet {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: rgba(13, 148, 136, 0.1);
+  color: #0d9488;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  margin-top: 0.1rem;
+}
+
+.consulting-bullet svg {
+  width: 10px;
+  height: 10px;
+}
+
+/* Mission Vision Values section */
+.about-mvv-section {
+  background: #f1f5f9;
+  padding: 6rem 0;
+}
+
+.about-mvv-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+}
+
+@media (max-width: 1024px) {
+  .about-mvv-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.mvv-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 24px;
+  padding: 3rem 2.5rem;
+  text-align: center;
+  transition: all 0.4s ease;
+}
+
+.mvv-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(5, 31, 64, 0.05);
+}
+
+.mvv-icon-holder {
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  background: rgba(239, 83, 35, 0.1);
+  color: #ef5323;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto 1.5rem auto;
+}
+
+.mvv-icon-holder svg {
+  width: 26px;
+  height: 26px;
+}
+
+.mvv-card h3 {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0 0 1rem 0;
+}
+
+.mvv-card p {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: #475569;
+  margin: 0;
+}
+
+/* We at a Glance stats */
+.about-stats-section {
+  padding: 6rem 0;
+}
+
+.about-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  margin-top: 3.5rem;
+}
+
+@media (max-width: 1024px) {
+  .about-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 540px) {
+  .about-stats-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.about-stat-card {
+  background: #ffffff;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 20px;
+  padding: 2.25rem 1.5rem;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.about-stat-card:hover {
+  border-color: #ef5323;
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(5, 31, 64, 0.03);
+}
+
+.stat-value {
+  display: block;
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: #1e293b;
+  letter-spacing: -0.5px;
+  margin-bottom: 0.5rem;
+}
+
+.stat-label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #64748b;
+  line-height: 1.4;
+}
+
+/* Founder Spotlight Card */
+.about-founder-section {
+  padding: 0 0 6rem 0;
+}
+
+.founder-spotlight-card {
+  display: grid;
+  grid-template-columns: 0.8fr 1.2fr;
+  gap: 3.5rem;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 32px;
+  padding: 4rem;
+  box-shadow: 0 10px 45px rgba(5, 31, 64, 0.04);
+  align-items: center;
+  margin-top: 3.5rem;
+}
+
+@media (max-width: 900px) {
+  .founder-spotlight-card {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+    padding: 2.5rem;
+  }
+}
+
+.founder-image-wrapper {
+  position: relative;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.08);
+  aspect-ratio: 1 / 1;
+}
+
+.founder-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.founder-name {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0;
+  letter-spacing: -0.5px;
+}
+
+.founder-title {
+  display: block;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #ef5323;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-top: 0.25rem;
+}
+
+.founder-edu {
+  display: block;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #64748b;
+  margin: 1rem 0 1.5rem 0;
+  line-height: 1.5;
+  border-left: 3px solid #e2e8f0;
+  padding-left: 1rem;
+}
+
+.founder-bio {
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: #475569;
+  margin-bottom: 1.25rem;
+}
+
+.founder-clients-box {
+  background: #f8fafc;
+  border-radius: 16px;
+  padding: 1.25rem 1.5rem;
+  border-left: 4px solid #0d9488;
+  margin-top: 1.5rem;
+}
+
+.clients-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  display: block;
+}
+
+.clients-list {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #1e293b;
+  margin: 0.25rem 0 0 0;
+}
