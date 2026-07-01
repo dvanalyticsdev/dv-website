@@ -27,7 +27,7 @@ export const BenefitsSection: React.FC = () => {
             <div className="divider-line"></div>
             <div className="divider-diamond">
               <svg viewBox="0 0 24 24" width="16" height="16">
-                <path d="M12 2L15 9L22 12L15 15L12 22L9 15L2 12L9 9Z" fill="#1e293b"/>
+                <path d="M12 2L15 9L22 12L15 15L12 22L9 15L2 12L9 9Z" fill="#051f40"/>
               </svg>
             </div>
             <div className="divider-line"></div>

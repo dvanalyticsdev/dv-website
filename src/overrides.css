@@ -157,7 +157,7 @@
 .service-card-title {
   font-size: 1.25rem;
   font-weight: 800;
-  color: #1e293b;
+  color: #051f40;
   line-height: 1.3;
   margin: 0;
 }
@@ -241,7 +241,7 @@
 /* Service Detail Page Styles */
 .service-detail-wrapper {
   background-color: #f8fafc;
-  color: #0f172a;
+  color: #051f40;
 }
 
 /* Theme variables based on active service */
@@ -260,7 +260,7 @@
 
 .service-detail-hero {
   position: relative;
-  background-color: #25316d;
+  background-color: #051f40;
   background-size: cover;
   background-position: center;
   padding: 8rem 0 7rem 0;
@@ -375,7 +375,7 @@
 .section-title-accent {
   font-size: 1.5rem;
   font-weight: 800;
-  color: #0f172a;
+  color: #051f40;
   margin: 0;
 }
 
@@ -417,7 +417,7 @@
 .section-main-title {
   font-size: 2.25rem;
   font-weight: 800;
-  color: #0f172a;
+  color: #051f40;
   margin: 0;
   letter-spacing: -0.75px;
 }
@@ -469,7 +469,7 @@
 .exp-title {
   font-size: 1.2rem;
   font-weight: 800;
-  color: #1e293b;
+  color: #051f40;
   margin: 0 0 0.75rem 0;
 }
 
@@ -544,7 +544,7 @@
 .tools-list-text {
   font-size: 1.15rem;
   font-weight: 800;
-  color: #0f172a;
+  color: #051f40;
   margin: 0.35rem 0 0 0;
   letter-spacing: -0.25px;
 }
@@ -617,7 +617,7 @@
 
 /* Service Footer Call to Action section styling */
 .service-footer-cta {
-  background-color: #0f172a;
+  background-color: #051f40;
   color: #ffffff;
   padding: 7rem 2rem;
   position: relative;
@@ -664,6 +664,11 @@
   justify-content: center !important;
   margin-top: 80px !important; /* matches header height */
   padding: 0 !important;
+  background-image: url('/service-page-bg.jpeg') !important;
+  background-size: cover !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+  background-color: #051f40 !important;
 }
 
 .services-hero-content {
@@ -818,7 +823,7 @@
 .about-section-heading {
   font-size: 2.25rem;
   font-weight: 800;
-  color: #0f172a;
+  color: #051f40;
   margin: 0 0 1.5rem 0;
   letter-spacing: -0.5px;
 }
@@ -847,7 +852,7 @@
 .consulting-title {
   font-size: 1.35rem;
   font-weight: 800;
-  color: #1e293b;
+  color: #051f40;
   margin: 0 0 0.5rem 0;
 }
 
@@ -946,7 +951,7 @@
 .mvv-card h3 {
   font-size: 1.4rem;
   font-weight: 800;
-  color: #0f172a;
+  color: #051f40;
   margin: 0 0 1rem 0;
 }
 
@@ -1000,7 +1005,7 @@
   display: block;
   font-size: 2.25rem;
   font-weight: 800;
-  color: #1e293b;
+  color: #051f40;
   letter-spacing: -0.5px;
   margin-bottom: 0.5rem;
 }
@@ -1056,7 +1061,7 @@
 .founder-name {
   font-size: 2rem;
   font-weight: 800;
-  color: #0f172a;
+  color: #051f40;
   margin: 0;
   letter-spacing: -0.5px;
 }
@@ -1109,7 +1114,7 @@
 .clients-list {
   font-size: 1.1rem;
   font-weight: 800;
-  color: #1e293b;
+  color: #051f40;
   margin: 0.25rem 0 0 0;
 }
 
@@ -1118,7 +1123,7 @@
 .blogs-hero-section {
   position: relative !important;
   height: 420px !important;
-  background-color: #25316d !important;
+  background-color: #051f40 !important;
   background-image: url('/journal-main-bg.png') !important;
   background-size: cover !important;
   background-position: center !important;
@@ -1265,7 +1270,7 @@
 .blog-card-title {
   font-size: 1.4rem;
   font-weight: 800;
-  color: #0f172a;
+  color: #051f40;
   line-height: 1.3;
   margin: 0 0 1rem 0;
   letter-spacing: -0.25px;
@@ -1409,7 +1414,7 @@
 .blog-section-title {
   font-size: 1.5rem;
   font-weight: 800;
-  color: #0f172a;
+  color: #051f40;
   margin: 0;
 }
 
@@ -1497,7 +1502,7 @@
   .mobile-courses-container .dropdown-trigger {
     font-size: 0.85rem;
     font-weight: 700;
-    color: #25316d;
+    color: #051f40;
     padding: 0.45rem 0.75rem;
     background: #f1f5f9;
     border-radius: 12px;
@@ -1544,4 +1549,97 @@
     background: #f8fafc;
     color: #ef5323;
   }
+}
+
+/* Force dark blue background and white text for hero-left on all mobile/tablet views under 768px */
+@media (max-width: 768px) {
+  .hero-left {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0.45rem !important;
+    padding: 2.25rem 1.5rem !important;
+    background-color: #051f40 !important;
+    border-radius: 16px !important;
+    box-shadow: 0 8px 32px rgba(5, 31, 64, 0.15) !important;
+  }
+
+  .hero-heading-become,
+  .hero-heading-pro,
+  .hero-heading-accent {
+    color: #ffffff !important;
+  }
+
+  .hero-desc {
+    color: rgba(255, 255, 255, 0.85) !important;
+  }
+}
+
+/* Global brand theme color overrides matching the midnight navy logo color (#051f40) */
+:root {
+  --nav-text: #051f40 !important;
+  --course-primary: #051f40 !important;
+  --course-gradient-start: #051f40 !important;
+  --primary-color: #051f40 !important;
+}
+
+/* Header & navigation anchors link colors */
+.site-header .dropdown-trigger {
+  color: #051f40 !important;
+}
+
+/* Main heading panels, syllabus header banner & footer card backgrounds */
+.programs-section-header,
+.course-syllabus-banner,
+.section-apps-panel,
+.center-card-footer-panel {
+  background-color: #051f40 !important;
+  background: #051f40 !important;
+}
+
+/* Buttons (Enroll now, switcher active state, active faq tab trigger) */
+.btn-enroll-header,
+.mobile-enroll-btn,
+.benefits-tab-switcher .tab-btn.active,
+.faq-tab-btn.active,
+.outcome-check-icon,
+.modal-action-btn.primary.purple,
+.modal-action-btn.primary.magenta,
+.modal-action-btn.primary.teal,
+.accordion-trigger.purple,
+.accordion-trigger.magenta,
+.accordion-trigger.teal,
+.program-card.purple .card-top-accent,
+.program-card.magenta .card-top-accent,
+.program-card.teal .card-top-accent,
+.program-card.purple .bullet-dot,
+.program-card.magenta .bullet-dot,
+.program-card.teal .bullet-dot,
+.modal-header-banner.purple,
+.modal-header-banner.magenta,
+.modal-header-banner.teal,
+.center-card.purple .card-top-accent,
+.center-card.teal .card-top-accent {
+  background-color: #051f40 !important;
+  background: #051f40 !important;
+}
+
+/* Hover transitions for brand buttons */
+.btn-enroll-header:hover,
+.mobile-enroll-btn:hover,
+.benefits-tab-switcher .tab-btn.active:hover,
+.faq-tab-btn.active:hover,
+.modal-action-btn.primary:hover,
+.accordion-trigger:hover {
+  background-color: #083266 !important;
+  background: #083266 !important;
+}
+
+/* Program card title colors, tech tag colors, and text colors */
+.program-card.purple .program-title,
+.program-card.magenta .program-title,
+.program-card.teal .program-title,
+.tech-tag.purple,
+.tech-tag.magenta,
+.tech-tag.teal {
+  color: #051f40 !important;
 }

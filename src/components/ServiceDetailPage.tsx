@@ -218,7 +218,7 @@ export const ServiceDetailPage: React.FC<ServiceDetailPageProps> = ({ serviceId,
       {/* 1. Header Banner */}
       <section 
         className="service-detail-hero"
-        style={{ backgroundImage: `url('/service-${serviceId}-bg.png')` }}
+        style={{ backgroundImage: `url('/service-page-bg.jpeg')` }}
       >
         <div className="service-hero-overlay"></div>
         <div className="container service-hero-content text-center">
