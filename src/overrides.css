@@ -1656,8 +1656,8 @@
 .site-header .nav-item a:hover,
 .site-header .nav-item a.active,
 .site-header .nav-item a.open {
-  background-color: rgba(239, 83, 35, 0.1) !important;
-  color: #ef5323 !important;
+  background-color: #ef5323 !important;
+  color: #ffffff !important;
 }
 
 /* Disable the bottom line indicator under nav items when hovered/active/open for cleaner look */
@@ -1678,8 +1678,8 @@
 }
 
 .site-header .dropdown-item-link:hover {
-  background-color: rgba(239, 83, 35, 0.1) !important;
-  color: #ef5323 !important;
+  background-color: #ef5323 !important;
+  color: #ffffff !important;
 }
 
 /* 3. Mobile Specific Overrides */
@@ -1687,8 +1687,8 @@
   /* Mobile Courses Dropdown Trigger Button */
   .mobile-courses-container .dropdown-trigger:hover,
   .mobile-courses-container .dropdown-trigger.open {
-    background-color: rgba(239, 83, 35, 0.1) !important;
-    color: #ef5323 !important;
+    background-color: #ef5323 !important;
+    color: #ffffff !important;
   }
 }
 
@@ -1821,32 +1821,52 @@
   transition: color 0.25s ease !important;
 }
 
+.accordion-trigger .module-index {
+  color: #ef5323 !important; /* Keep index numbers in brand orange */
+  font-weight: 800 !important;
+  opacity: 1 !important;
+  transition: color 0.25s ease !important;
+}
+
+.accordion-trigger .accordion-arrow {
+  color: #051f40 !important; /* Highly visible arrow icon */
+  transition: color 0.25s ease !important;
+}
+
 /* Hover State */
 .accordion-trigger:hover {
-  background-color: rgba(239, 83, 35, 0.1) !important; /* Translucent orange background */
-  background: rgba(239, 83, 35, 0.1) !important;
+  background-color: #ef5323 !important; /* Solid orange background */
+  background: #ef5323 !important;
 }
 
 .accordion-trigger:hover .module-title {
-  color: #ef5323 !important; /* Turn text color to brand orange */
+  color: #ffffff !important; /* White text on hover */
+}
+
+.accordion-trigger:hover .module-index {
+  color: #ffffff !important; /* White index on hover */
 }
 
 .accordion-trigger:hover .accordion-arrow {
-  color: #ef5323 !important; /* Turn arrow color to brand orange */
+  color: #ffffff !important; /* White arrow on hover */
 }
 
 /* Active/Expanded State (when parent accordion-item is active) */
 .accordion-item.active .accordion-trigger {
-  background-color: rgba(239, 83, 35, 0.08) !important; /* Maintain subtle highlight when open */
-  background: rgba(239, 83, 35, 0.08) !important;
+  background-color: #ef5323 !important; /* Solid orange background when open */
+  background: #ef5323 !important;
 }
 
 .accordion-item.active .accordion-trigger .module-title {
-  color: #ef5323 !important; /* Highlight title in brand orange when open */
+  color: #ffffff !important; /* White text when open */
+}
+
+.accordion-item.active .accordion-trigger .module-index {
+  color: #ffffff !important; /* White index when open */
 }
 
 .accordion-item.active .accordion-trigger .accordion-arrow {
-  color: #ef5323 !important; /* Highlight arrow in brand orange when open */
+  color: #ffffff !important; /* White arrow when open */
 }
 
 /* FAQ category sidebar buttons (Orange Hover & Selection Highlights) */
@@ -1861,35 +1881,35 @@
 
 /* Hover state */
 .faq-tab-btn:hover {
-  background-color: rgba(239, 83, 35, 0.1) !important;
-  background: rgba(239, 83, 35, 0.1) !important;
-  color: #ef5323 !important;
+  background-color: #ef5323 !important;
+  background: #ef5323 !important;
+  color: #ffffff !important;
 }
 
 .faq-tab-btn:hover .tab-arrow-icon {
   opacity: 1 !important;
   transform: translateX(0) !important;
-  color: #ef5323 !important;
+  color: #ffffff !important;
 }
 
 /* Active state */
 .faq-tab-btn.active {
-  background-color: rgba(239, 83, 35, 0.1) !important;
-  background: rgba(239, 83, 35, 0.1) !important;
-  color: #ef5323 !important;
+  background-color: #ef5323 !important;
+  background: #ef5323 !important;
+  color: #ffffff !important;
 }
 
 .faq-tab-btn.active .tab-arrow-icon {
   opacity: 1 !important;
   transform: translateX(0) !important;
-  color: #ef5323 !important;
+  color: #ffffff !important;
 }
 
 /* Active Hover state */
 .faq-tab-btn.active:hover {
-  background-color: rgba(239, 83, 35, 0.12) !important;
-  background: rgba(239, 83, 35, 0.12) !important;
-  color: #ef5323 !important;
+  background-color: #e04416 !important;
+  background: #e04416 !important;
+  color: #ffffff !important;
 }
 
 /* Services Page - Target Industries Modal & Table Styling */
@@ -1907,9 +1927,9 @@
 }
 
 .btn-view-all-industries:hover {
-  background-color: rgba(239, 83, 35, 0.1);
-  border-color: #ef5323;
-  color: #ef5323;
+  background-color: #ef5323 !important;
+  border-color: #ef5323 !important;
+  color: #ffffff !important;
 }
 
 /* Modal Overlay */
