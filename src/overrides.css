@@ -1489,4 +1489,59 @@
   .blog-back-btn-row {
     margin-top: -2rem !important;
   }
+
+  .mobile-courses-container {
+    position: relative;
+  }
+
+  .mobile-courses-container .dropdown-trigger {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #25316d;
+    padding: 0.45rem 0.75rem;
+    background: #f1f5f9;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 0.2rem;
+    text-decoration: none;
+  }
+
+  .mobile-courses-dropdown {
+    position: absolute;
+    top: calc(100% + 0.6rem);
+    left: auto !important;
+    right: 0 !important;
+    transform: none !important;
+    min-width: 0 !important;
+    width: 250px !important;
+    background: #ffffff !important;
+    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+    border-radius: 16px !important;
+    box-shadow: 0 12px 32px rgba(15, 23, 42, 0.12) !important;
+    z-index: 1000 !important;
+    display: none !important;
+    flex-direction: column !important;
+    padding: 0.5rem !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+  }
+
+  .mobile-courses-dropdown.show {
+    display: flex !important;
+  }
+
+  .mobile-courses-dropdown .dropdown-item-link {
+    padding: 0.75rem 0.85rem;
+    font-size: 0.85rem;
+    color: #475569;
+    border-radius: 10px;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+
+  .mobile-courses-dropdown .dropdown-item-link:hover {
+    background: #f8fafc;
+    color: #ef5323;
+  }
 }

@@ -10,6 +10,7 @@ export const Header: React.FC<HeaderProps> = ({ onNavClick, activePage = 'home' 
   const [servicesDropdownOpen, setServicesDropdownOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
+  const [mobileCoursesOpen, setMobileCoursesOpen] = useState(false);
 
   const coursesList = [
     { id: 'course-apids', label: 'Advanced Program in Industrial Data Science & AI (APIDS)' },
@@ -32,6 +33,7 @@ export const Header: React.FC<HeaderProps> = ({ onNavClick, activePage = 'home' 
       const target = event.target as HTMLElement;
       if (!target.closest('.courses-dropdown-container')) {
         setCoursesDropdownOpen(false);
+        setMobileCoursesOpen(false);
       }
       if (!target.closest('.services-dropdown-container')) {
         setServicesDropdownOpen(false);
@@ -50,12 +52,14 @@ export const Header: React.FC<HeaderProps> = ({ onNavClick, activePage = 'home' 
     setCoursesDropdownOpen(false);
     setServicesDropdownOpen(false);
     setMobileServicesOpen(false);
+    setMobileCoursesOpen(false);
   }, [activePage]);
 
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth > 768) {
         setMobileMenuOpen(false);
+        setMobileCoursesOpen(false);
       }
     };
 
@@ -259,36 +263,36 @@ export const Header: React.FC<HeaderProps> = ({ onNavClick, activePage = 'home' 
               <img src="/logo.png" alt="DV Analytics Logo" className="logo-image mobile-logo-image" />
             </a>
 
-            {/* 3. Right: Services Dropdown */}
-            <div className="mobile-services-container services-dropdown-container">
+            {/* 3. Right: Courses Dropdown */}
+            <div className="mobile-courses-container courses-dropdown-container">
               <a
-                href="#services"
-                className={`dropdown-trigger ${mobileServicesOpen ? 'open' : ''}`}
+                href="#courses"
+                className={`dropdown-trigger ${mobileCoursesOpen ? 'open' : ''}`}
                 onClick={(e) => {
                   e.preventDefault();
-                  setMobileServicesOpen(!mobileServicesOpen);
-                  setMobileMenuOpen(false); // Close menu drawer when opening services
+                  setMobileCoursesOpen(!mobileCoursesOpen);
+                  setMobileMenuOpen(false); // Close menu drawer when opening courses
                 }}
               >
-                Services
-                <svg className={`chevron-icon ${mobileServicesOpen ? 'rotated' : ''}`} viewBox="0 0 24 24">
+                All Courses
+                <svg className={`chevron-icon ${mobileCoursesOpen ? 'rotated' : ''}`} viewBox="0 0 24 24">
                   <path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="2.5" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
               </a>
 
-              <div className={`services-dropdown-menu mobile-services-dropdown ${mobileServicesOpen ? 'show' : ''}`}>
-                {servicesList.map((service) => (
+              <div className={`courses-dropdown-menu mobile-courses-dropdown ${mobileCoursesOpen ? 'show' : ''}`}>
+                {coursesList.map((course) => (
                   <a
-                    key={service.id}
-                    href={`#${service.id}`}
+                    key={course.id}
+                    href={`#${course.id}`}
                     className="dropdown-item-link"
                     onClick={(e) => {
                       e.preventDefault();
-                      setMobileServicesOpen(false);
-                      handleServiceClick(service.id);
+                      setMobileCoursesOpen(false);
+                      handleCourseClick(course.id);
                     }}
                   >
-                    {service.label}
+                    {course.label}
                   </a>
                 ))}
               </div>
@@ -299,36 +303,36 @@ export const Header: React.FC<HeaderProps> = ({ onNavClick, activePage = 'home' 
           <nav className={`nav-panel mobile-nav-panel ${mobileMenuOpen ? 'mobile-open' : ''}`}>
             <ul className="nav-list">
               <li 
-                className="nav-item dropdown-container courses-dropdown-container"
+                className="nav-item dropdown-container services-dropdown-container"
                 onClick={() => {
-                  setCoursesDropdownOpen(!coursesDropdownOpen);
+                  setMobileServicesOpen(!mobileServicesOpen);
                 }}
               >
                 <a
-                  href="#courses"
-                  className={`dropdown-trigger ${coursesDropdownOpen ? 'open' : ''} ${activePage.startsWith('course-') ? 'active' : ''}`}
+                  href="#services"
+                  className={`dropdown-trigger ${mobileServicesOpen ? 'open' : ''} ${activePage.startsWith('service-') || activePage === 'services' ? 'active' : ''}`}
                   onClick={(e) => {
                     e.preventDefault();
                   }}
                 >
-                  All Courses
-                  <svg className={`chevron-icon ${coursesDropdownOpen ? 'rotated' : ''}`} viewBox="0 0 24 24">
+                  Services
+                  <svg className={`chevron-icon ${mobileServicesOpen ? 'rotated' : ''}`} viewBox="0 0 24 24">
                     <path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="2.5" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
                   </svg>
                 </a>
 
-                <div className={`courses-dropdown-menu ${coursesDropdownOpen ? 'show' : ''}`}>
-                  {coursesList.map((course) => (
+                <div className={`services-dropdown-menu ${mobileServicesOpen ? 'show' : ''}`}>
+                  {servicesList.map((service) => (
                     <a
-                      key={course.id}
-                      href={`#${course.id}`}
+                      key={service.id}
+                      href={`#${service.id}`}
                       className="dropdown-item-link"
                       onClick={(e) => {
                         e.preventDefault();
-                        handleCourseClick(course.id);
+                        handleServiceClick(service.id);
                       }}
                     >
-                      {course.label}
+                      {service.label}
                     </a>
                   ))}
                 </div>
