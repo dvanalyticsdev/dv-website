@@ -4,8 +4,8 @@ import { useGlowCard } from '../hooks/useGlowCard';
 const posterImages: Record<string, string> = {
   apids: '/courses-poster/APIDS.jpeg',
   apida: '/courses-poster/APIDA.jpeg',
-  aiml: '/courses-poster/AIML - GAA.jpeg',
-  genai: '/courses-poster/MPGAA.jpeg',
+  aiml: '/courses-poster/Advance AIML.jpeg',
+  genai: '/courses-poster/Gen AI.jpeg',
   specialist: '/courses-poster/DAS.jpeg',
   apcs: '/courses-poster/APCF.jpeg',
 };

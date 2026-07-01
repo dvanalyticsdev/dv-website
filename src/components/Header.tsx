@@ -87,6 +87,46 @@ export const Header: React.FC<HeaderProps> = ({ onNavClick, activePage = 'home' 
   const renderNavList = () => (
     <ul className="nav-list">
       <li 
+        className="nav-item dropdown-container courses-dropdown-container"
+        onMouseEnter={() => {
+          if (window.innerWidth > 768) {
+            setCoursesDropdownOpen(true);
+            setServicesDropdownOpen(false);
+          }
+        }}
+      >
+        <a
+          href="#courses"
+          className={`dropdown-trigger ${coursesDropdownOpen ? 'open' : ''} ${activePage.startsWith('course-') ? 'active' : ''}`}
+          onClick={(e) => {
+            e.preventDefault();
+            setCoursesDropdownOpen(!coursesDropdownOpen);
+          }}
+        >
+          All Courses
+          <svg className={`chevron-icon ${coursesDropdownOpen ? 'rotated' : ''}`} viewBox="0 0 24 24">
+            <path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="2.5" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        </a>
+
+        <div className={`courses-dropdown-menu ${coursesDropdownOpen ? 'show' : ''}`}>
+          {coursesList.map((course) => (
+            <a
+              key={course.id}
+              href={`#${course.id}`}
+              className="dropdown-item-link"
+              onClick={(e) => {
+                e.preventDefault();
+                handleCourseClick(course.id);
+              }}
+            >
+              {course.label}
+            </a>
+          ))}
+        </div>
+      </li>
+
+      <li 
         className="nav-item dropdown-container services-dropdown-container"
         onMouseEnter={() => {
           if (window.innerWidth > 768) {
@@ -126,46 +166,6 @@ export const Header: React.FC<HeaderProps> = ({ onNavClick, activePage = 'home' 
         </div>
       </li>
 
-      <li 
-        className="nav-item dropdown-container courses-dropdown-container"
-        onMouseEnter={() => {
-          if (window.innerWidth > 768) {
-            setCoursesDropdownOpen(true);
-            setServicesDropdownOpen(false);
-          }
-        }}
-      >
-        <a
-          href="#courses"
-          className={`dropdown-trigger ${coursesDropdownOpen ? 'open' : ''} ${activePage.startsWith('course-') ? 'active' : ''}`}
-          onClick={(e) => {
-            e.preventDefault();
-            setCoursesDropdownOpen(!coursesDropdownOpen);
-          }}
-        >
-          AI Academy Programs
-          <svg className={`chevron-icon ${coursesDropdownOpen ? 'rotated' : ''}`} viewBox="0 0 24 24">
-            <path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="2.5" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-        </a>
-
-        <div className={`courses-dropdown-menu ${coursesDropdownOpen ? 'show' : ''}`}>
-          {coursesList.map((course) => (
-            <a
-              key={course.id}
-              href={`#${course.id}`}
-              className="dropdown-item-link"
-              onClick={(e) => {
-                e.preventDefault();
-                handleCourseClick(course.id);
-              }}
-            >
-              {course.label}
-            </a>
-          ))}
-        </div>
-      </li>
-
       <li className="nav-item">
         <a
           href="#about"
@@ -190,7 +190,7 @@ export const Header: React.FC<HeaderProps> = ({ onNavClick, activePage = 'home' 
             if (onNavClick) onNavClick('blogs');
           }}
         >
-          AI Journal
+          Journal
         </a>
       </li>
 
@@ -316,7 +316,7 @@ export const Header: React.FC<HeaderProps> = ({ onNavClick, activePage = 'home' 
                     e.preventDefault();
                   }}
                 >
-                  AI Academy Programs
+                  All Courses
                   <svg className={`chevron-icon ${coursesDropdownOpen ? 'rotated' : ''}`} viewBox="0 0 24 24">
                     <path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="2.5" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
                   </svg>
@@ -363,7 +363,7 @@ export const Header: React.FC<HeaderProps> = ({ onNavClick, activePage = 'home' 
                     if (onNavClick) onNavClick('blogs');
                   }}
                 >
-                  AI Journal
+                  Journal
                 </a>
               </li>
 

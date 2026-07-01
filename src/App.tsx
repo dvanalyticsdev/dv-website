@@ -193,16 +193,14 @@ function App() {
         <section className="content-section" data-section="hero">
           <div className="hero-split">
             <div className="hero-left">
-              <span className="hero-heading-become">Master</span>
-              <h1 className="hero-heading-accent" style={{ marginBottom: '0.35rem' }}>
-                Data Science, Data Analytics,
+              <h1 className="hero-heading-accent" style={{ marginBottom: '1.25rem', lineHeight: '1.15' }}>
+                Your Degree Doesn't Define Your Future. Your Skills Do
               </h1>
-              <h2 className="hero-heading-accent">
-                Generative AI, Agentic AI & Cybersecurity
+              <h2 className="hero-heading-become" style={{ textTransform: 'none', fontWeight: '600', marginBottom: '1.25rem', letterSpacing: 'normal' }}>
+                Become an Industry-Ready Data Scientist & AI Professional
               </h2>
-              
-              <p className="hero-desc">
-                Your Path to High-Paying Careers, Industry Leadership, and Global Opportunities
+              <p className="hero-desc" style={{ marginBottom: '3.5rem' }}>
+                A Career Transformation Journey for Freshers and Experienced Professionals
               </p>
             </div>
 

@@ -39,13 +39,13 @@ export const AauModal: React.FC<AauModalProps> = ({ isOpen, onClose, onSelectCou
       id: 'aiml',
       title: 'Advanced AI/ML with Generative AI & Agentic AI (AIML-GAA)',
       tagline: 'Master the complete AI lifecycle from data preparation and ML model development to Generative AI, Agentic AI, and enterprise-grade deployment.',
-      poster: '/courses-poster/AIML - GAA.jpeg'
+      poster: '/courses-poster/Advance AIML.jpeg'
     },
     {
       id: 'genai',
       title: 'Master Program in Generative AI & Agentic AI (MPGAA)',
       tagline: 'Specialize in Deep Learning, NLP, Generative AI, Agentic AI, and enterprise AI deployment for next-generation intelligent systems.',
-      poster: '/courses-poster/MPGAA.jpeg'
+      poster: '/courses-poster/Gen AI.jpeg'
     },
     {
       id: 'apcs',

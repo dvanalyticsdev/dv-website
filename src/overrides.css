@@ -1,0 +1,49 @@
+/* Styling overrides to decrease heading sizes slightly */
+
+:root {
+  /* Scale down global typography scale variables */
+  --font-size-display: 3.15rem;
+  --font-size-h1: 2.25rem;
+  --font-size-h2: 1.65rem;
+  --font-size-h3: 1.25rem;
+  --font-size-h4: 1.025rem;
+  --font-size-h5: 0.85rem;
+  --font-size-lead: 1.075rem;
+}
+
+/* Desktop Hero Headings Override */
+.hero-heading-become {
+  font-size: 2.1rem !important;
+}
+
+.hero-heading-accent {
+  font-size: 2.9rem !important;
+}
+
+/* Mid-range Screens Media Queries (up to 1024px) */
+@media (max-width: 1024px) {
+  .hero-heading-accent {
+    font-size: 2.2rem !important;
+  }
+}
+
+/* Tablet & Mobile Screens Media Queries (up to 768px) */
+@media (max-width: 768px) {
+  :root {
+    --font-size-display: 2.25rem;
+    --font-size-h1: 1.65rem;
+    --font-size-h2: 1.3rem;
+    --font-size-h3: 1.05rem;
+    --font-size-h4: 0.925rem;
+    --font-size-h5: 0.8rem;
+    --font-size-lead: 1.0rem;
+  }
+
+  .hero-heading-become {
+    font-size: 1.4rem !important;
+  }
+
+  .hero-heading-accent {
+    font-size: 1.55rem !important;
+  }
+}
