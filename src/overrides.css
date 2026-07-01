@@ -2057,4 +2057,14 @@
   display: block;
 }
 
+/* Leadership spotlight card alternating layouts for desktop */
+@media (min-width: 901px) {
+  .founder-spotlight-card.alt-layout .founder-image-col {
+    order: 2;
+  }
+  .founder-spotlight-card.alt-layout .founder-info-col {
+    order: 1;
+  }
+}
+
 

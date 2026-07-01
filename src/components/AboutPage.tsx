@@ -10,6 +10,48 @@ export const AboutPage: React.FC = () => {
     'Model deployment, orchestration, and execution'
   ];
 
+  const teamMembers = [
+    {
+      name: 'Debendra D Das',
+      role: 'Co-Founder & Director',
+      edu: 'MBA in IT and Business Analytics, FPM from IIMB & International School of Business Research (ISBR)',
+      img: 'https://agentifyaiglobal.com/wp-content/uploads/2026/01/debendra-das7.png',
+      bios: [
+        'Mr. Das comes with 18+ years of industry experience in the Data Science field, having worked across Healthcare, Telecom, Retail Markets, and Banking Credit Risk domains.',
+        'He has trained more than 1800 data science resources across corporate cohorts and individuals for more than a decade now.',
+        'He has skilled and delivered industry-specific data analytics solutions for DBMS reporting, visualization, and automated actions for strategy building using Machine Learning and Artificial Intelligence.'
+      ],
+      clientsLabel: 'Experience with International Clients:',
+      clientsList: 'UHG, Tata, IBM, HP, and HSBC'
+    },
+    {
+      name: 'Venkat Reddy Konasani',
+      role: 'Co-Founder & Lead Data Scientist',
+      edu: 'MSc Applied Mathematics, Indian Institute of Technology Bombay (IIT Bombay)',
+      img: 'https://dvanalyticsmds.com/wp-content/uploads/2021/11/venkat-reddy.png',
+      bios: [
+        'Venkat holds rich industry experience as an applied Data Analyst and Data Scientist with 12 years of core development experience and 6+ years as a corporate trainer.',
+        'He has successfully handled nearly 100 corporate batches and trained countless professionals in advanced analytics tools and techniques.',
+        'He is the published author of the books "Practical Business Analytics Using SAS" and "Machine Learning and Deep Learning using Python and TensorFlow". He has specialized expertise in credit risk modeling, market response modeling, social media analytics, and deep learning.'
+      ],
+      clientsLabel: 'Corporate Training & Consulting Focus:',
+      clientsList: 'Credit Risk Modeling, Deep Learning, SAS, and TensorFlow'
+    },
+    {
+      name: 'Parth Gupta',
+      role: 'Risk Management & Analytics Advisor',
+      edu: 'MBA, CFA from Indian Institute of Management Bangalore (IIMB)',
+      img: 'https://dvanalyticsmds.com/wp-content/uploads/2022/01/parth-gupta.png',
+      bios: [
+        'Parth comes with extensive experience in the Risk Management & Analytics domain, working with a variety of financial institutions around the world.',
+        'His expertise in the banking industry spans across core functions like Credit Risk, Quantitative Modeling, Strategy & Pricing Analytics.',
+        'He has vast experience in assisting global banks with regulatory compliance like IFRS 9, IRRBB, CCAR, DFAST, and Basel. Prior to advising, Parth has been employed with KPMG, HSBC, and Credit Suisse.'
+      ],
+      clientsLabel: 'Past Industry Experience:',
+      clientsList: 'KPMG, HSBC, and Credit Suisse'
+    }
+  ];
+
   return (
     <div className="about-page-container">
       {/* 1. Hero Section */}
@@ -136,45 +178,44 @@ export const AboutPage: React.FC = () => {
         </div>
       </section>
 
-      {/* 5. Founder Spotlight Section */}
+      {/* 5. Leadership & Faculty Section */}
       <section className="about-founder-section container">
         <div className="section-header text-center">
-          <span className="section-pre-title">Leadership</span>
-          <h2 className="section-main-title">Founder &amp; Director</h2>
+          <span className="section-pre-title">Leadership &amp; Faculty</span>
+          <h2 className="section-main-title">Our Leadership Team</h2>
           <div className="title-underline center"></div>
         </div>
 
-        <div className="founder-spotlight-card">
-          <div className="founder-image-col">
-            <div className="founder-image-wrapper">
-              <img 
-                src="https://agentifyaiglobal.com/wp-content/uploads/2026/01/debendra-das7.png" 
-                alt="Debendra D Das" 
-                className="founder-img"
-              />
+        <div className="team-members-list" style={{ display: 'flex', flexDirection: 'column', gap: '4rem', marginTop: '3.5rem' }}>
+          {teamMembers.map((member, idx) => (
+            <div key={idx} className={`founder-spotlight-card ${idx % 2 === 1 ? 'alt-layout' : ''}`} style={{ marginTop: 0 }}>
+              <div className="founder-image-col">
+                <div className="founder-image-wrapper">
+                  <img 
+                    src={member.img} 
+                    alt={member.name} 
+                    className="founder-img"
+                  />
+                </div>
+              </div>
+              <div className="founder-info-col">
+                <h3 className="founder-name">{member.name}</h3>
+                <span className="founder-title">{member.role}</span>
+                <span className="founder-edu">{member.edu}</span>
+                {member.bios.map((paragraph, pIdx) => (
+                  <p key={pIdx} className="founder-bio">
+                    {paragraph}
+                  </p>
+                ))}
+                {member.clientsList && (
+                  <div className="founder-clients-box">
+                    <span className="clients-label">{member.clientsLabel}</span>
+                    <p className="clients-list">{member.clientsList}</p>
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
-          <div className="founder-info-col">
-            <h3 className="founder-name">Debendra D Das</h3>
-            <span className="founder-title">Founder &amp; Director</span>
-            <span className="founder-edu">
-              MBA in IT and Business Analytics, FPM from IIMB &amp; International School of Business Research (ISBR)
-            </span>
-            <p className="founder-bio">
-              Mr. Das comes with 18+ years of industry experience in the Data Science field, having 
-              worked across Healthcare, Telecom, Retail Markets, and Banking Credit Risk domains. He has 
-              trained more than 1800 data science resources across corporate cohorts and individuals for 
-              more than a decade now.
-            </p>
-            <p className="founder-bio">
-              He has skilled and delivered industry-specific data analytics solutions for DBMS reporting, 
-              visualization, and automated actions for strategy building using Machine Learning and Artificial Intelligence.
-            </p>
-            <div className="founder-clients-box">
-              <span className="clients-label">Experience with International Clients:</span>
-              <p className="clients-list">UHG, Tata, IBM, HP, and HSBC</p>
-            </div>
-          </div>
+          ))}
         </div>
       </section>
     </div>
