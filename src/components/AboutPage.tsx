@@ -28,7 +28,7 @@ export const AboutPage: React.FC = () => {
       name: 'Venkat Reddy Konasani',
       role: 'Co-Founder & Lead Data Scientist',
       edu: 'MSc Applied Mathematics, Indian Institute of Technology Bombay (IIT Bombay)',
-      img: 'https://dvanalyticsmds.com/wp-content/uploads/2021/11/venkat-reddy.png',
+      img: '/venkat.jpeg',
       bios: [
         'Venkat holds rich industry experience as an applied Data Analyst and Data Scientist with 12 years of core development experience and 6+ years as a corporate trainer.',
         'He has successfully handled nearly 100 corporate batches and trained countless professionals in advanced analytics tools and techniques.',
@@ -36,19 +36,6 @@ export const AboutPage: React.FC = () => {
       ],
       clientsLabel: 'Corporate Training & Consulting Focus:',
       clientsList: 'Credit Risk Modeling, Deep Learning, SAS, and TensorFlow'
-    },
-    {
-      name: 'Parth Gupta',
-      role: 'Risk Management & Analytics Advisor',
-      edu: 'MBA, CFA from Indian Institute of Management Bangalore (IIMB)',
-      img: 'https://dvanalyticsmds.com/wp-content/uploads/2022/01/parth-gupta.png',
-      bios: [
-        'Parth comes with extensive experience in the Risk Management & Analytics domain, working with a variety of financial institutions around the world.',
-        'His expertise in the banking industry spans across core functions like Credit Risk, Quantitative Modeling, Strategy & Pricing Analytics.',
-        'He has vast experience in assisting global banks with regulatory compliance like IFRS 9, IRRBB, CCAR, DFAST, and Basel. Prior to advising, Parth has been employed with KPMG, HSBC, and Credit Suisse.'
-      ],
-      clientsLabel: 'Past Industry Experience:',
-      clientsList: 'KPMG, HSBC, and Credit Suisse'
     }
   ];
 

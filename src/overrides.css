@@ -1648,22 +1648,22 @@
 /* Main Header Hover and Selection Highlights (Orange Opaque/Opacity Background) */
 
 /* 1. Main Navigation Items (Desktop & Mobile) */
-.site-header .nav-item a {
+.site-header .nav-item > a {
   transition: background-color 0.25s cubic-bezier(0.16, 1, 0.3, 1), 
               color 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.site-header .nav-item a:hover,
-.site-header .nav-item a.active,
-.site-header .nav-item a.open {
-  background-color: #ef5323 !important;
+.site-header .nav-item > a:hover,
+.site-header .nav-item > a.active,
+.site-header .nav-item > a.open {
+  background-color: #051f40 !important;
   color: #ffffff !important;
 }
 
 /* Disable the bottom line indicator under nav items when hovered/active/open for cleaner look */
-.site-header .nav-item a:hover::after,
-.site-header .nav-item a.active::after,
-.site-header .nav-item a.open::after {
+.site-header .nav-item > a:hover::after,
+.site-header .nav-item > a.active::after,
+.site-header .nav-item > a.open::after {
   opacity: 0 !important;
   width: 0 !important;
 }
@@ -1687,7 +1687,7 @@
   /* Mobile Courses Dropdown Trigger Button */
   .mobile-courses-container .dropdown-trigger:hover,
   .mobile-courses-container .dropdown-trigger.open {
-    background-color: #ef5323 !important;
+    background-color: #051f40 !important;
     color: #ffffff !important;
   }
 }
