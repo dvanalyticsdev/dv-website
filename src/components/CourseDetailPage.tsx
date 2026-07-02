@@ -519,7 +519,7 @@ export const CourseDetailPage: React.FC<CourseDetailPageProps> = ({ courseId, on
       {/* 11. Bottom CTA Section */}
       <section className="course-bottom-cta reveal-on-scroll">
         <div className="cta-box container text-center">
-          <h2>Ready to Launch Your Career in {course.id.toUpperCase()}?</h2>
+          <h2>Ready to Launch Your Career in {course.title.match(/\(([^)]+)\)$/)?.[1] || course.id.toUpperCase()}?</h2>
           <p>
             {hasPlacementSupport
               ? 'Get mentored by industry experts and secure placements in top corporate groups.'
