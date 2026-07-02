@@ -1785,15 +1785,16 @@
 .course-hero-full-img {
   width: 100% !important;
   max-width: 100% !important;
-  height: 25vw !important; /* Scale height responsively with screen width */
-  max-height: 480px !important; /* Cap height on large screens to keep it compact */
-  min-height: 220px !important; /* Ensure it is tall enough on mobile devices */
-  object-fit: cover !important;
-  object-position: center 50% !important; /* Keep both top title and bottom text centered and visible */
+  height: auto !important; /* Scale height naturally to prevent cutting off the image */
   display: block;
   border-radius: 0 !important;
   box-shadow: none !important;
   border: none !important;
+}
+
+/* Prevent stats cards from overlapping full width hero banners and cutting off bottom details */
+.course-hero-full + .course-stats-section {
+  margin-top: 2rem !important;
 }
 
 /* Premium Accordion Trigger Styling (Orange Hover & Selection Highlights) */
