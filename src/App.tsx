@@ -199,7 +199,12 @@ function App() {
           <div className="hero-split">
             <div className="hero-left">
               <h1 className="hero-heading-accent" style={{ marginBottom: '2rem', lineHeight: '1.15', fontSize: '2.8rem', fontWeight: '800' }}>
-                Become an Industry-Ready Data Scientist &amp; Cybersecurity Professional
+                <span className="hero-heading-part-1">
+                  <span className="hero-heading-muted">Become an </span>
+                  <span className="hero-heading-white">Industry-Ready </span>
+                </span>
+                <span className="hero-heading-part-2">Data Scientist &amp; </span>
+                <span className="hero-heading-part-3">Cybersecurity Professional</span>
               </h1>
               
               <div className="hero-desc" style={{ marginBottom: '2rem' }}>

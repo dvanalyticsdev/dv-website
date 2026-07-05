@@ -491,7 +491,7 @@ export const coursesData: Record<string, DetailedCourse> = {
     title: 'Advanced Program in Industrial Data Analytics & AI (APIDA)',
     tagline: 'A comprehensive industry-focused program combining Data Management, Business Intelligence, Machine Learning, and MLOps for analytics professionals.',
     overview: 'The Advanced Program in Industrial Data Analytics & AI (APIDA) is a comprehensive industry-focused training program designed to equip students, graduates, and working professionals with the most in-demand skills in Data Analytics, Business Intelligence, Artificial Intelligence, and Predictive Analytics.\n\nThe program combines Data Management, Data Analysis, Data Visualization, Statistical Analytics, Machine Learning, and MLOps to help learners transform raw data into meaningful business insights and intelligent solutions.\n\nThe program emphasizes hands-on learning, enabling participants to become job-ready Data Analytics and AI professionals.',
-    duration: '5-6 Months',
+    duration: '5 Months',
     practicalExposure: [
       'Instructor-Led Training',
       'Real-Time Industry Projects',
@@ -1032,7 +1032,7 @@ export const coursesData: Record<string, DetailedCourse> = {
     title: 'Advanced AI/ML with Generative AI & Agentic AI (AIML-GAA)',
     tagline: 'Master the complete AI lifecycle from data preparation and ML model development to Generative AI, Agentic AI, and enterprise-grade deployment.',
     overview: 'The Advanced AI/ML with Generative AI & Agentic AI (AIML-GAA) program is designed to prepare students, graduates, researchers, and working professionals for careers in Artificial Intelligence, Machine Learning, Generative AI, and Autonomous AI Systems.\n\nThe program covers the complete AI lifecycle, from data preparation and machine learning model development to advanced Generative AI applications, Agentic AI systems, and enterprise-grade deployment using MLOps and LLMOps.\n\nThe program focuses on practical implementation, enabling learners to build intelligent AI systems capable of solving real-world business challenges.',
-    duration: '5-7 Months',
+    duration: '4 Months',
     practicalExposure: [
       'Instructor-Led Training',
       'Real-Time Industry Projects',
@@ -1369,7 +1369,7 @@ export const coursesData: Record<string, DetailedCourse> = {
     title: 'Master Program in Generative AI & Agentic AI (MPGAA)',
     tagline: 'Specialize in Deep Learning, NLP, Generative AI, Agentic AI, and enterprise AI deployment for next-generation intelligent systems.',
     overview: 'The Master Program in Generative AI & Agentic AI (MPGAA) is an advanced industry-focused program designed for students, professionals, entrepreneurs, researchers, and technology enthusiasts who want to specialize in the rapidly evolving field of Artificial Intelligence.\n\nThe program focuses on building expertise in Deep Learning, Natural Language Processing (NLP), Generative AI, Agentic AI, MLOps, and LLMOps, enabling learners to design, develop, deploy, and manage intelligent AI systems capable of autonomous decision-making and business automation.\n\nThe curriculum is designed to provide practical knowledge required to build next-generation AI applications used across industries.',
-    duration: '4-5 Months',
+    duration: '2-3 Months',
     practicalExposure: [
       'Instructor-Led Training',
       'Real-Time AI Projects',
@@ -1670,7 +1670,7 @@ export const coursesData: Record<string, DetailedCourse> = {
     title: 'Advanced Program in Cybersecurity & Forensics (APCF)',
     tagline: 'Comprehensive training in Cybersecurity, Ethical Hacking, Digital Forensics, Threat Intelligence, and Security Operations.',
     overview: 'The Advanced Program in Cybersecurity & Forensics (APCF) is a comprehensive industry-oriented training program designed to prepare students, graduates, IT professionals, and cybersecurity enthusiasts for successful careers in Cybersecurity, Ethical Hacking, Digital Forensics, Threat Intelligence, and Security Operations.\n\nThe program provides hands-on exposure to real-world cyber threats, attack simulations, vulnerability assessments, incident response, and digital forensic investigations. Learners gain practical experience in securing enterprise systems, identifying cyber threats, investigating security incidents, and protecting digital assets.\n\nThe program combines theoretical concepts with practical labs, cyber range exercises, case studies, and industry projects to build job-ready cybersecurity professionals.',
-    duration: '5-7 Months',
+    duration: '4 Months',
     practicalExposure: [
       'Instructor-Led Training',
       'Practical Labs & Cyber Range Exercises',
@@ -2033,5 +2033,209 @@ export const coursesData: Record<string, DetailedCourse> = {
       'Career Transition Candidates',
     ],
     careerAdvantage: 'The Advanced Program in Cybersecurity & Forensics (APCF) equips learners with practical expertise in Ethical Hacking, Penetration Testing, SOC Operations, Digital Forensics, Threat Intelligence, Cloud Security, and Incident Response. The program develops industry-ready professionals capable of protecting organizations from cyber threats, investigating cybercrimes, and building secure digital environments across industries worldwide.',
+  },
+  DAYS7_GENAI: {
+    id: 'days7_genai',
+    title: '7 Days Gen AI & Agentic AI Hands-on Master Program',
+    tagline: '🚀 Become AI-Ready in Just 7 Days. Learn the Skills That Every Company Is Hiring For.',
+    overview: 'The 7 Days Generative AI & Agentic AI Hands-on Master Program is a crash course designed to take you from Python programming foundations all the way to deep learning, Large Language Models (LLMs), Agentic AI, and building real-world autonomous multi-agent systems.\n\nLearn the latest frameworks including LangChain, LangGraph, CrewAI, and AutoGen. Graduate with three portfolio-ready AI applications built for real-world scenarios.',
+    duration: '7 Days (42 Hours)',
+    practicalExposure: [
+      '100% Practical & Hands-on',
+      'Live Instructor-Led Sessions',
+      '42 Hours of Intensive Learning',
+      'Real-World Enterprise Use Cases',
+      '3 Complete Portfolio AI Products',
+      'LangChain, LangGraph, CrewAI & AutoGen Frameworks',
+      'AI Safety, Guardrails & Production Best Practices',
+      'Certificate of Completion',
+    ],
+    theme: 'orange',
+    modules: [
+      {
+        title: 'Day 1: Python & Deep Learning Foundations',
+        sections: [
+          {
+            title: 'Core Foundations',
+            topics: [
+              'Python programming from scratch',
+              'Python Programming constructs',
+              'NumPy & Pandas library fundamentals',
+              'Data Visualization',
+              'Neural Networks foundations',
+              'Deep Learning architecture',
+              'NLP (Natural Language Processing) foundations',
+            ],
+          },
+        ],
+      },
+      {
+        title: 'Day 2: Transformers & Large Language Models',
+        sections: [
+          {
+            title: 'Large Language Models (LLMs)',
+            topics: [
+              'Understand the technology behind ChatGPT',
+              'Transformers architecture',
+              'Attention Mechanism',
+              'GPT models',
+              'BERT & T5 models',
+              'Prompt Engineering techniques',
+              'Structured Outputs from LLMs',
+            ],
+          },
+        ],
+      },
+      {
+        title: 'Day 3: Agentic AI & RAG',
+        sections: [
+          {
+            title: 'RAG & Cognitive Search',
+            topics: [
+              'Move beyond simple chatbots',
+              'Build AI systems that Think, Plan, Retrieve Information, Use Tools, and Take Actions',
+              'Retrieval-Augmented Generation (RAG)',
+              'Vector Databases integration',
+              'AI Memory mechanisms',
+              'Retrieval Systems',
+            ],
+          },
+        ],
+      },
+      {
+        title: 'Day 4: Build Multi-Agent AI Systems',
+        sections: [
+          {
+            title: 'Multi-Agent Frameworks',
+            topics: [
+              'LangChain integration',
+              'LangGraph workflows',
+              'CrewAI agent setups',
+              'AutoGen agent systems',
+              'AI Orchestration & Collaboration',
+              'AI Teams setups',
+              'Workflow Automation',
+              'Human-in-the-Loop practices',
+            ],
+          },
+        ],
+      },
+      {
+        title: 'Day 5: Fine-Tuning & Multimodal AI',
+        sections: [
+          {
+            title: 'Advanced AI Architectures',
+            topics: [
+              'LoRA & PEFT fine-tuning concepts',
+              'Vision AI & Image Processing',
+              'OCR (Optical Character Recognition)',
+              'AI Memory enhancement',
+              'Multimodal AI integration',
+              'Cross-session Intelligence',
+            ],
+          },
+        ],
+      },
+      {
+        title: 'Day 6: Production AI',
+        sections: [
+          {
+            title: 'AI Governance & Observability',
+            topics: [
+              'Deploy AI systems responsibly',
+              'AI Safety frameworks',
+              'Guardrails implementation',
+              'Prompt Security & injection handling',
+              'Model Context Protocol (MCP)',
+              'AI Evaluation & Metrics',
+              'Monitoring & Observability in production',
+            ],
+          },
+        ],
+      },
+      {
+        title: 'Day 7: Build 3 Complete AI Products',
+        sections: [
+          {
+            title: 'Banking AI Agent',
+            topics: ['Build an autonomous Loan Processing Agent'],
+          },
+          {
+            title: 'Customer Support AI',
+            topics: ['Build a Multi-Agent Customer Support Platform'],
+          },
+          {
+            title: 'Sales AI Agent',
+            topics: ['Build a Lead Qualification & Lead Scoring AI System'],
+          },
+        ],
+      },
+    ],
+    industryProjects: [
+      {
+        domain: 'Banking AI Agent',
+        projects: ['Build an autonomous Loan Processing Agent'],
+      },
+      {
+        domain: 'Customer Support AI',
+        projects: ['Build a Multi-Agent Customer Support Platform'],
+      },
+      {
+        domain: 'Sales AI Agent',
+        projects: ['Build a Lead Qualification & Lead Scoring AI System'],
+      },
+      {
+        domain: 'AI Document Search',
+        projects: ['Build a RAG Document Search Engine'],
+      },
+    ],
+    programOutcome: [
+      'Build and deploy real AI applications—not just learn theory',
+      'Understand how ChatGPT and modern LLMs actually work',
+      'Build autonomous AI Agents that can think, plan, reason, and execute tasks',
+      'Create multi-agent workflows using LangChain, LangGraph, CrewAI, and AutoGen',
+      'Implement RAG document search engines and vector databases',
+      'Apply fine-tuning techniques (LoRA, PEFT) and work with Vision AI',
+      'Deploy production-ready AI systems with safety guardrails and monitoring',
+    ],
+    careers: [
+      {
+        level: 'AI Engineering Roles',
+        roles: [
+          'AI Engineer',
+          'Generative AI Engineer',
+          'Agentic AI Developer',
+          'LLM Engineer',
+          'AI Automation Engineer',
+        ],
+      },
+      {
+        level: 'AI Strategy & Solutions Roles',
+        roles: [
+          'AI Product Manager',
+          'AI Consultant',
+          'AI Solutions Architect',
+          'AI Innovation Lead',
+        ],
+      },
+    ],
+    whoShouldJoin: [
+      'Software Engineers',
+      'Data Scientists',
+      'Data Analysts',
+      'AI Engineers',
+      'Product Managers',
+      'Business Analysts',
+      'Project Managers',
+      'Entrepreneurs',
+      'Consultants',
+      'Banking Professionals',
+      'Sales Professionals',
+      'HR Professionals',
+      'Operations Teams',
+      'Fresh Graduates',
+      'Working Professionals from Any Industry',
+    ],
+    careerAdvantage: 'The 7 Days Generative AI & Agentic AI Hands-on Master Program prepares participants to build production-ready AI solutions and autonomous agents. By graduating with three complete portfolio-ready AI applications on GitHub, participants can immediately showcase enterprise AI capabilities to recruiters and employers hiring for modern AI engineering and automation roles.',
   },
 };

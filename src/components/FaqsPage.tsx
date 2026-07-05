@@ -389,7 +389,7 @@ export const FaqsPage: React.FC<FaqsPageProps> = ({ onEnroll }) => {
               <p>Get personalized recommendations based on profile.</p>
             </div>
             <div className="advisor-kpi-card">
-              <span className="kpi-icon">🚀</span>
+              <span className="kpi-icon">🧑‍💻</span>
               <h4>Start Journey</h4>
               <p>Enroll today in Data Science, AI, and Cybersecurity.</p>
             </div>

@@ -21,6 +21,21 @@
   font-size: 2.9rem !important;
 }
 
+/* Homepage Hero Heading Parts Styling - Default Desktop */
+.hero-heading-part-1,
+.hero-heading-part-2,
+.hero-heading-part-3 {
+  display: inline;
+  color: inherit;
+}
+.hero-heading-muted {
+  color: inherit;
+  opacity: 1;
+}
+.hero-heading-white {
+  color: inherit;
+}
+
 /* Mid-range Screens Media Queries (up to 1024px) */
 @media (max-width: 1024px) {
   .hero-heading-accent {
@@ -1559,19 +1574,57 @@
     flex-direction: column !important;
     gap: 0.45rem !important;
     padding: 2.25rem 1.5rem !important;
-    background-color: #051f40 !important;
+    background-image: linear-gradient(rgba(5, 31, 64, 0.85), rgba(5, 31, 64, 0.95)), url('/hero-mobile-bg.png') !important;
+    background-size: cover !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
     border-radius: 16px !important;
     box-shadow: 0 8px 32px rgba(5, 31, 64, 0.15) !important;
   }
 
   .hero-heading-become,
-  .hero-heading-pro,
-  .hero-heading-accent {
+  .hero-heading-pro {
     color: #ffffff !important;
   }
 
-  .hero-desc {
+  .hero-heading-accent {
+    order: 2 !important;
+    color: #ef5323 !important;
+    margin-top: 1.25rem !important;
+    margin-bottom: 1.25rem !important;
+  }
+
+  .hero-heading-accent .hero-heading-part-1,
+  .hero-heading-accent .hero-heading-part-2,
+  .hero-heading-accent .hero-heading-part-3,
+  .hero-heading-accent .hero-heading-muted,
+  .hero-heading-accent .hero-heading-white {
+    display: block !important;
+    color: #ef5323 !important;
+    opacity: 1 !important;
+  }
+
+  /* Target the first hero-desc (Technologies block) and set order to 1 */
+  .hero-left > .hero-desc:nth-of-type(1) {
+    order: 1 !important;
+    margin-bottom: 0 !important;
+  }
+
+  /* Target the second hero-desc (Journey block) and set order to 3 */
+  .hero-left > .hero-desc:nth-of-type(2) {
+    order: 3 !important;
+    margin-bottom: 0 !important;
+  }
+
+  /* Keep other headings white and lists readable */
+  .hero-desc p:first-of-type {
+    color: #ffffff !important;
+    opacity: 1 !important;
+  }
+
+  .hero-desc p:last-of-type {
     color: rgba(255, 255, 255, 0.85) !important;
+    opacity: 1 !important;
   }
 }
 
@@ -1776,6 +1829,7 @@
   box-shadow: none !important;
   border: none !important;
   background-color: #051f40;
+  aspect-ratio: 3 / 1;
 }
 
 .course-hero-full:hover {
@@ -1785,7 +1839,9 @@
 .course-hero-full-img {
   width: 100% !important;
   max-width: 100% !important;
-  height: auto !important; /* Scale height naturally to prevent cutting off the image */
+  height: 100% !important;
+  object-fit: cover !important;
+  object-position: center !important;
   display: block;
   border-radius: 0 !important;
   box-shadow: none !important;
@@ -2360,5 +2416,45 @@
   }
   .google-reviews-section {
     padding: 4rem 0;
+  }
+}
+
+/* Center Card Address City Badges - Increase Size & Contrast */
+.center-badge {
+  font-size: 0.95rem !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.5px !important;
+}
+
+/* 3-Column Card Grid (Update for Dubai Card) */
+@media (min-width: 769px) {
+  .center-cards-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+}
+
+.center-card.dubai::before {
+  background-image: url('/office-bg/dubai.png') !important;
+}
+
+/* Show Slider Arrows on Mobile View */
+@media (max-width: 768px) {
+  .side-slider-arrow {
+    display: flex !important;
+    width: 38px !important;
+    height: 38px !important;
+    background-color: rgba(255, 255, 255, 0.95) !important;
+    border: 1px solid rgba(0, 0, 0, 0.15) !important;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15) !important;
+  }
+  .side-slider-arrow.prev {
+    left: 10px !important;
+  }
+  .side-slider-arrow.next {
+    right: 10px !important;
+  }
+  .side-slider-arrow svg {
+    width: 16px !important;
+    height: 16px !important;
   }
 }

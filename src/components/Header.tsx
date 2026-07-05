@@ -18,7 +18,8 @@ export const Header: React.FC<HeaderProps> = ({ onNavClick, activePage = 'home' 
     { id: 'course-specialist', label: 'Data Analytics Specialist (DAS)' },
     { id: 'course-aiml', label: 'Advanced AI/ML with Generative AI & Agentic AI (AIML-GAA)' },
     { id: 'course-genai', label: 'Master Program in Generative AI & Agentic AI (MPGAA)' },
-    { id: 'course-apcs', label: 'Advanced Program in Cybersecurity & Forensics (APCF)' }
+    { id: 'course-apcs', label: 'Advanced Program in Cybersecurity & Forensics (APCF)' },
+    { id: 'course-days7_genai', label: '7 Days Gen AI & Agentic AI Hands-on Master Program' }
   ];
 
   const servicesList = [

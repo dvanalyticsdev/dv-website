@@ -8,6 +8,7 @@ const posterImages: Record<string, string> = {
   genai: '/courses-poster/Gen AI.jpeg',
   specialist: '/courses-poster/DAS.jpeg',
   apcs: '/courses-poster/APCF.jpeg',
+  days7_genai: '/courses-poster/7-days-genai.jpeg',
 };
 
 interface Module {
@@ -346,6 +347,97 @@ export const ProgramsSection: React.FC<ProgramsSectionProps> = ({ onViewDetails 
       careers: [
         'Cybersecurity Analyst', 'Ethical Hacker', 'SOC Analyst', 'Penetration Tester',
         'Cloud Security Engineer', 'Security Operations Engineer', 'InfoSec Auditor'
+      ]
+    },
+    {
+      id: 'days7_genai',
+      title: '7 Days Gen AI & Agentic AI Hands-on Master Program',
+      shortTitle: '7 Days Gen AI Master Program',
+      tagline: '🚀 Become AI-Ready in Just 7 Days. Learn frameworks like LangChain, LangGraph, CrewAI & AutoGen.',
+      theme: 'orange',
+      bulletPoints: [
+        'Python & Deep Learning Foundations from scratch',
+        'Transformers, Attention Mechanism & ChatGPT logic',
+        'Agentic AI, Vector Databases & RAG Search Engines',
+        'LangChain, LangGraph, CrewAI & Multi-Agent orchestration',
+        'Vision AI, LoRA Fine-Tuning & Production Safety MCP'
+      ],
+      duration: '7 Days (42 Hours)',
+      delivery: 'Live Instructor-Led Online',
+      overview: 'The 7 Days Generative AI & Agentic AI Hands-on Master Program is a crash course designed to take you from Python programming foundations all the way to deep learning, Large Language Models (LLMs), Agentic AI, and building real-world autonomous multi-agent systems. You will build and deploy three complete portfolio-ready AI products.',
+      modules: [
+        {
+          title: 'Day 1: Python & Deep Learning Foundations',
+          topics: [
+            'Python programming constructs & NumPy/Pandas',
+            'Data Visualization & Neural Networks foundations',
+            'Deep Learning architecture & NLP foundations'
+          ]
+        },
+        {
+          title: 'Day 2: Transformers & Large Language Models',
+          topics: [
+            'Attention Mechanism & Transformers architecture',
+            'GPT, BERT, T5 models & Prompt Engineering',
+            'Structured Outputs & ChatGPT inner workings'
+          ]
+        },
+        {
+          title: 'Day 3: Agentic AI & RAG',
+          topics: [
+            'Retrieval-Augmented Generation (RAG) & Vector DBs',
+            'Autonomous AI systems: Think, Plan, Reason & Act',
+            'AI Memory mechanisms & Retrieval Systems'
+          ]
+        },
+        {
+          title: 'Day 4: Build Multi-Agent AI Systems',
+          topics: [
+            'Multi-Agent frameworks: LangChain & LangGraph',
+            'CrewAI agent setups & AutoGen agent systems',
+            'AI Orchestration, Teams & Human-in-the-Loop workflows'
+          ]
+        },
+        {
+          title: 'Day 5: Fine-Tuning & Multimodal AI',
+          topics: [
+            'LoRA & PEFT fine-tuning concepts',
+            'Vision AI, OCR & Multimodal AI integration',
+            'Cross-session Intelligence & AI Memory'
+          ]
+        },
+        {
+          title: 'Day 6: Production AI',
+          topics: [
+            'AI Safety frameworks & Guardrails implementation',
+            'Model Context Protocol (MCP) & Prompt Security',
+            'AI Evaluation, Monitoring & Observability'
+          ]
+        },
+        {
+          title: 'Day 7: Build 3 Complete AI Products',
+          topics: [
+            'Banking AI: Autonomous Loan Processing Agent',
+            'Customer Support AI: Multi-Agent Support Platform',
+            'Sales AI: Lead Qualification & Lead Scoring System'
+          ]
+        }
+      ],
+      projects: [
+        'Banking AI Loan Processing System',
+        'Multi-Agent Customer Support Platform',
+        'Lead Qualification & Scoring AI Agent',
+        'RAG Document Search Engine'
+      ],
+      tools: [
+        'Python', 'Transformers', 'LangChain', 'LangGraph', 'CrewAI',
+        'AutoGen', 'Vector Databases', 'LoRA', 'PEFT', 'Vision AI',
+        'OCR', 'MCP', 'GitHub'
+      ],
+      careers: [
+        'AI Engineer', 'Generative AI Engineer', 'Agentic AI Developer',
+        'LLM Engineer', 'AI Product Manager', 'AI Consultant',
+        'AI Solutions Architect', 'AI Automation Engineer'
       ]
     }
   ];

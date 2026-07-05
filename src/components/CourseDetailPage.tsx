@@ -10,6 +10,7 @@ const posterImages: Record<string, string> = {
   genai: '/courses-poster/Gen AI.jpeg',
   specialist: '/courses-poster/DAS.jpeg',
   apcs: '/courses-poster/APCF.jpeg',
+  days7_genai: '/courses-poster/7-days-genai.jpeg',
 };
 
 const heroImages: Record<string, string> = {
@@ -19,6 +20,7 @@ const heroImages: Record<string, string> = {
   genai: '/course-hero/Gen AI.jpeg',
   specialist: '/course-hero/DAS.jpeg',
   apcs: '/course-hero/APCF.jpeg',
+  days7_genai: '/course-hero/7-days-genai.jpeg',
 };
 
 const courseSuccessImages: Record<string, string[]> = {
@@ -519,7 +521,7 @@ export const CourseDetailPage: React.FC<CourseDetailPageProps> = ({ courseId, on
       {/* 11. Bottom CTA Section */}
       <section className="course-bottom-cta reveal-on-scroll">
         <div className="cta-box container text-center">
-          <h2>Ready to Launch Your Career in {course.title.match(/\(([^)]+)\)$/)?.[1] || course.id.toUpperCase()}?</h2>
+          <h2>Ready to Launch Your Career in {course.title.match(/\(([^)]+)\)$/)?.[1] || (course.id === 'days7_genai' ? '7 Days Gen AI Master Program' : course.id.toUpperCase())}?</h2>
           <p>
             {hasPlacementSupport
               ? 'Get mentored by industry experts and secure placements in top corporate groups.'
