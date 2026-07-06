@@ -3726,7 +3726,7 @@ a {
 
 /* 3. Course Overview Section */
 .course-overview-section {
-  padding: 5rem 0;
+  padding: 5rem 2rem;
 }
 
 .overview-split {
@@ -4487,6 +4487,10 @@ a {
 }
 
 @media (max-width: 768px) {
+  .course-overview-section {
+    padding: 3rem 1.5rem;
+  }
+
   .course-hero-title {
     font-size: 2.25rem;
   }
