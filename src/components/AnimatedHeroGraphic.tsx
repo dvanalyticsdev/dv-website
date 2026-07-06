@@ -32,7 +32,7 @@ export const AnimatedHeroGraphic: React.FC<AnimatedHeroGraphicProps> = ({ images
   const touchStartX = useRef<number | null>(null);
 
   useEffect(() => {
-    if (!isPlaying) return;
+    if (!isPlaying || images.length <= 1) return;
 
     const timer = setInterval(() => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
@@ -54,7 +54,7 @@ export const AnimatedHeroGraphic: React.FC<AnimatedHeroGraphicProps> = ({ images
   };
 
   const handleTouchEnd = (e: React.TouchEvent) => {
-    if (touchStartX.current === null) return;
+    if (touchStartX.current === null || images.length <= 1) return;
     const diffX = touchStartX.current - e.changedTouches[0].clientX;
     const threshold = 50; // pixels
 
@@ -95,30 +95,34 @@ export const AnimatedHeroGraphic: React.FC<AnimatedHeroGraphicProps> = ({ images
       </div>
 
       {/* Navigation Controls */}
-      <button 
-        className="slideshow-nav-btn prev-btn" 
-        onClick={(e) => {
-          e.stopPropagation();
-          handlePrev();
-        }}
-        aria-label="Previous image"
-      >
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-          <path d="M15 19l-7-7 7-7" strokeLinecap="round" strokeLinejoin="round"/>
-        </svg>
-      </button>
-      <button 
-        className="slideshow-nav-btn next-btn" 
-        onClick={(e) => {
-          e.stopPropagation();
-          handleNext();
-        }}
-        aria-label="Next image"
-      >
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-          <path d="M9 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round"/>
-        </svg>
-      </button>
+      {images.length > 1 && (
+        <>
+          <button 
+            className="slideshow-nav-btn prev-btn" 
+            onClick={(e) => {
+              e.stopPropagation();
+              handlePrev();
+            }}
+            aria-label="Previous image"
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+              <path d="M15 19l-7-7 7-7" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </button>
+          <button 
+            className="slideshow-nav-btn next-btn" 
+            onClick={(e) => {
+              e.stopPropagation();
+              handleNext();
+            }}
+            aria-label="Next image"
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+              <path d="M9 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </button>
+        </>
+      )}
     </div>
   );
 };

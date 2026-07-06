@@ -73,6 +73,9 @@ const getCourseImages = (id: string): string[] => {
   if (normalizedId === 'apcs') {
     return allSuccessImages;
   }
+  if (normalizedId === 'days7_genai') {
+    return ['/courses-poster/7-days-genai.jpeg', ...allSuccessImages];
+  }
   return courseSuccessImages[normalizedId] || allSuccessImages;
 };
 
