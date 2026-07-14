@@ -671,8 +671,8 @@ a {
   display: flex;
   justify-content: center;
   align-items: center;
-  border-left: 1px solid #eaeaea; /* Grey vertical line */
-  padding-left: 2rem;
+  border: none;
+  padding-left: 0;
 }
 
 .hero-heading-become {
@@ -699,7 +699,7 @@ a {
   font-weight: 900;
   letter-spacing: -0.045em;
   line-height: 0.98;
-  color: #051f40; /* Company brand dark navy */
+  color: #ef5323; /* DV logo orange */
   margin-bottom: 1.5rem;
 }
 
