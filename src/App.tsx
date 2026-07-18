@@ -18,6 +18,7 @@ import { ChatbotWidget } from './components/ChatbotWidget';
 import { useScrollReveal } from './hooks/useScrollReveal';
 import { CompaniesSection } from './components/CompaniesSection';
 import { AauModal } from './components/AauModal';
+import { SampleVideoSection } from './components/SampleVideoSection';
 
 function App() {
   const [activePage, setActivePage] = useState('home');
@@ -271,6 +272,8 @@ function App() {
             </div>
           </div>
         </section>
+
+        <SampleVideoSection onEnroll={() => setActivePage('enroll')} />
 
         <div id="programs-section" data-section="programs">
           <ProgramsSection onViewDetails={(courseId) => setActivePage(`course-${courseId}`)} />
