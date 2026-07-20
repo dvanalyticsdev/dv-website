@@ -809,20 +809,33 @@
 /* About Page Custom Layouts */
 
 .about-intro-section {
-  padding: 5rem 0 3rem 0;
+  width: 100%;
+  max-width: 1320px;
+  margin-inline: auto;
+  padding: 5rem 2rem 3rem;
 }
 
 .about-intro-grid {
   display: grid;
-  grid-template-columns: 1.1fr 0.9fr;
-  gap: 3.5rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(3rem, 5vw, 5rem);
   align-items: center;
+}
+
+.about-intro-text {
+  width: 100%;
+  max-width: 620px;
 }
 
 @media (max-width: 1024px) {
   .about-intro-grid {
     grid-template-columns: 1fr;
     gap: 2.5rem;
+  }
+
+  .about-intro-text {
+    max-width: 760px;
+    margin-inline: auto;
   }
 }
 
@@ -852,6 +865,9 @@
 }
 
 .about-consulting-box {
+  width: 100%;
+  max-width: 640px;
+  margin-inline: auto;
   background: #ffffff;
   border: 1px solid #e2e8f0;
   border-radius: 28px;
@@ -921,6 +937,16 @@
   padding: 6rem 0;
 }
 
+.about-mvv-section > .container,
+.about-stats-section,
+.about-founder-section {
+  width: 100%;
+  max-width: 1320px;
+  margin-inline: auto;
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+
 .about-mvv-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -980,7 +1006,8 @@
 
 /* We at a Glance stats */
 .about-stats-section {
-  padding: 6rem 0;
+  padding-top: 6rem;
+  padding-bottom: 6rem;
 }
 
 .about-stats-grid {
@@ -1036,7 +1063,23 @@
 
 /* Founder Spotlight Card */
 .about-founder-section {
-  padding: 0 0 6rem 0;
+  padding-top: 0;
+  padding-bottom: 6rem;
+}
+
+@media (max-width: 768px) {
+  .about-intro-section,
+  .about-mvv-section > .container,
+  .about-stats-section,
+  .about-founder-section {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .about-intro-section {
+    padding-top: 3.5rem;
+    padding-bottom: 2.5rem;
+  }
 }
 
 .founder-spotlight-card {
@@ -2456,5 +2499,362 @@
   .side-slider-arrow svg {
     width: 16px !important;
     height: 16px !important;
+  }
+}
+
+/* ==========================================================================
+   Mobile experience hardening
+   Keeps every section inside the viewport and makes the primary interactions
+   comfortable on touch screens.
+   ========================================================================== */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 96px;
+}
+
+body,
+#root {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: clip;
+}
+
+img,
+video,
+iframe,
+canvas {
+  max-width: 100%;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button {
+  touch-action: manipulation;
+}
+
+@media (max-width: 768px) {
+  .container,
+  .header-container {
+    padding-left: max(1rem, env(safe-area-inset-left)) !important;
+    padding-right: max(1rem, env(safe-area-inset-right)) !important;
+  }
+
+  .page-wrapper {
+    width: 100%;
+    padding-top: 116px !important;
+    padding-bottom: 3rem !important;
+    gap: 1.5rem !important;
+  }
+
+  .content-section {
+    width: 100%;
+    min-width: 0;
+    padding: 2rem 1rem !important;
+    border-radius: 20px;
+  }
+
+  .site-header {
+    padding-top: env(safe-area-inset-top);
+  }
+
+  .mobile-header-row {
+    gap: 0.65rem;
+  }
+
+  .nav-toggle-btn {
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    border-radius: 12px;
+  }
+
+  .mobile-logo-link {
+    min-width: 0;
+  }
+
+  .mobile-logo-image {
+    max-width: 112px;
+    object-fit: contain;
+  }
+
+  .mobile-courses-container {
+    min-width: 0;
+  }
+
+  .mobile-courses-container > .dropdown-trigger {
+    min-height: 44px;
+    padding: 0.55rem 0.65rem;
+    border-radius: 12px;
+    white-space: nowrap;
+  }
+
+  .mobile-courses-dropdown {
+    width: min(290px, calc(100vw - 2rem)) !important;
+    max-height: min(65vh, 520px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  .mobile-nav-panel .nav-item a,
+  .mobile-enroll-btn,
+  .dropdown-item-link {
+    min-height: 44px;
+  }
+
+  .hero-split,
+  .hero-left,
+  .hero-right,
+  .hero-image-container,
+  .hero-badges-grid,
+  .sample-promo-section,
+  .promo-container,
+  .promo-grid,
+  .promo-left-col,
+  .promo-buttons-row,
+  .promo-right-col {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .hero-split {
+    gap: 1.5rem !important;
+  }
+
+  .hero-heading-accent {
+    margin-bottom: 1.25rem !important;
+    line-height: 1.18 !important;
+    text-wrap: balance;
+  }
+
+  .hero-desc {
+    margin-bottom: 1.35rem !important;
+  }
+
+  .hero-desc p {
+    overflow-wrap: anywhere;
+  }
+
+  .hero-badges-grid {
+    gap: 0.75rem !important;
+  }
+
+  .sample-promo-section {
+    width: 100%;
+    padding: 2rem 1rem !important;
+    margin: 0.5rem 0 1.5rem !important;
+    border-radius: 20px;
+    overflow: hidden;
+  }
+
+  .sample-promo-section.reveal-on-scroll {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .promo-grid {
+    width: 100%;
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 2.25rem !important;
+  }
+
+  .promo-left-col,
+  .promo-buttons-row,
+  .promo-right-col {
+    width: 100%;
+  }
+
+  .promo-buttons-row {
+    gap: 0.75rem !important;
+  }
+
+  .promo-buttons-row .btn {
+    min-width: 0;
+    min-height: 48px;
+    padding: 0.8rem 0.75rem !important;
+    font-size: clamp(0.73rem, 3.35vw, 0.88rem) !important;
+    letter-spacing: 0.025em !important;
+    line-height: 1.25;
+    white-space: normal;
+  }
+
+  .promo-buttons-row .btn-icon {
+    width: 18px;
+    height: 18px;
+    flex: 0 0 auto;
+  }
+
+  .promo-rating-card {
+    width: 100%;
+    min-width: 0;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-areas:
+      "score details"
+      "stars stars";
+    justify-content: stretch;
+    align-items: center;
+    gap: 0.75rem 1rem !important;
+    padding: 1rem !important;
+    border-radius: 16px;
+  }
+
+  .rating-score {
+    grid-area: score;
+    font-size: clamp(2.6rem, 14vw, 3.15rem);
+  }
+
+  .rating-details {
+    grid-area: details;
+    min-width: 0;
+    text-align: left;
+  }
+
+  .rating-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+  }
+
+  .rating-students {
+    font-size: clamp(0.72rem, 3.25vw, 0.9rem);
+    line-height: 1.25;
+    white-space: normal;
+  }
+
+  .rating-stars {
+    grid-area: stars;
+    width: 100%;
+    justify-content: center;
+    padding-top: 0.65rem;
+    border-top: 1px solid #e2e8f0;
+  }
+
+  .promo-play-btn {
+    width: 72px !important;
+    height: 72px !important;
+  }
+
+  .play-btn-text {
+    font-size: 0.76rem;
+    line-height: 1.35;
+    text-align: center;
+  }
+
+  .promo-local-overlay {
+    position: fixed;
+    inset: 0;
+    border-radius: 0;
+    padding: 1rem;
+    padding-top: max(1rem, env(safe-area-inset-top));
+    padding-bottom: max(1rem, env(safe-area-inset-bottom));
+  }
+
+  .promo-modal-box {
+    max-height: calc(100dvh - 2rem);
+    overflow-y: auto;
+  }
+
+  .promo-modal-content {
+    padding: 1.25rem 1rem;
+  }
+
+  .credential-value {
+    gap: 0.5rem;
+    padding: 0.75rem;
+    font-size: clamp(0.75rem, 3.3vw, 0.9rem);
+    overflow-wrap: anywhere;
+  }
+
+  .video-modal-box {
+    width: calc(100vw - 1.5rem);
+    border-radius: 14px;
+  }
+
+  .video-modal-close {
+    top: 0.5rem;
+    right: 0.5rem;
+    width: 36px;
+    height: 36px;
+  }
+
+  .programs-section,
+  .benefits-section,
+  .roadmap-section,
+  .companies-section,
+  .success-stories-section,
+  .google-reviews-section,
+  .site-footer {
+    max-width: 100%;
+  }
+
+  .section-title,
+  .programs-section-title,
+  .badges-title,
+  .footer-title {
+    text-wrap: balance;
+  }
+
+  .service-overview-card,
+  .benefit-card,
+  .google-review-card,
+  .reviews-summary-card {
+    padding: 1.25rem !important;
+    border-radius: 18px !important;
+  }
+
+  input,
+  select,
+  textarea {
+    max-width: 100%;
+    font-size: 16px;
+  }
+
+  .site-footer {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+@media (max-width: 390px) {
+  .header-container {
+    padding-left: 0.75rem !important;
+    padding-right: 0.75rem !important;
+  }
+
+  .mobile-header-row {
+    gap: 0.45rem;
+  }
+
+  .mobile-logo-image {
+    max-width: 92px;
+  }
+
+  .mobile-courses-container > .dropdown-trigger {
+    padding-inline: 0.5rem;
+    font-size: 0.78rem;
+  }
+
+  .content-section {
+    padding-inline: 0.75rem !important;
+  }
+
+  .sample-promo-section {
+    padding-inline: 0.75rem !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }

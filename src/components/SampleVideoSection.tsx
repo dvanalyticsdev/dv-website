@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 
 interface SampleVideoSectionProps {
@@ -9,6 +9,26 @@ export const SampleVideoSection: React.FC<SampleVideoSectionProps> = ({ onEnroll
   const [isLmsModalOpen, setIsLmsModalOpen] = useState(false);
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
   const [copiedText, setCopiedText] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!isLmsModalOpen && !isVideoModalOpen) return;
+
+    const previousOverflow = document.body.style.overflow;
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setIsLmsModalOpen(false);
+        setIsVideoModalOpen(false);
+      }
+    };
+
+    document.body.style.overflow = 'hidden';
+    window.addEventListener('keydown', handleEscape);
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener('keydown', handleEscape);
+    };
+  }, [isLmsModalOpen, isVideoModalOpen]);
 
   const handleCopy = (text: string, type: 'email' | 'password') => {
     navigator.clipboard.writeText(text)
@@ -109,8 +129,8 @@ export const SampleVideoSection: React.FC<SampleVideoSectionProps> = ({ onEnroll
           </div>
         </div>
 
-        {/* LMS Demo Access Modal (Opens inline within the promo panel) */}
-        {isLmsModalOpen && (
+        {/* Render at the body level so transformed page sections cannot offset it. */}
+        {isLmsModalOpen && createPortal(
           <div className="promo-local-overlay" onClick={() => setIsLmsModalOpen(false)}>
             <div className="aau-modal-box promo-modal-box" onClick={(e) => e.stopPropagation()}>
               <button className="promo-modal-close" onClick={() => setIsLmsModalOpen(false)} aria-label="Close modal">
@@ -166,13 +186,20 @@ export const SampleVideoSection: React.FC<SampleVideoSectionProps> = ({ onEnroll
                 </a>
               </div>
             </div>
-          </div>
+          </div>,
+          document.body
         )}
       </section>
 
       {/* Video Player Modal (Rendered in Portal at the body level for true viewport centering) */}
       {isVideoModalOpen && createPortal(
-        <div className="aau-modal-overlay" onClick={() => setIsVideoModalOpen(false)}>
+        <div
+          className="aau-modal-overlay video-modal-overlay"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Sample class video"
+          onClick={() => setIsVideoModalOpen(false)}
+        >
           <div className="video-modal-box" onClick={(e) => e.stopPropagation()}>
             <button className="aau-modal-close video-modal-close" onClick={() => setIsVideoModalOpen(false)} aria-label="Close video">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -181,15 +208,20 @@ export const SampleVideoSection: React.FC<SampleVideoSectionProps> = ({ onEnroll
               </svg>
             </button>
             <div className="video-player-container">
-              <iframe 
-                width="100%" 
-                height="100%" 
-                src="https://www.youtube.com/embed/ua-CiDNNj30?autoplay=1" 
-                title="DV Analytics Sample Class Video" 
-                frameBorder="0" 
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                allowFullScreen
-              ></iframe>
+              <video
+                className="sample-class-video"
+                controls
+                autoPlay
+                playsInline
+                preload="metadata"
+                controlsList="nodownload"
+                disablePictureInPicture
+                aria-label="DV Analytics sample class"
+                onEnded={() => setIsVideoModalOpen(false)}
+              >
+                <source src="/sample-class.mp4" type="video/mp4" />
+                Your browser does not support HTML video.
+              </video>
             </div>
           </div>
         </div>,
