@@ -241,32 +241,32 @@ function App() {
           <div className="hero-badges-grid">
             <div className="hero-badge-card badge-experts">
               <img 
-                src="/hero-section-logo/card-experts.jpeg" 
-                alt="Trained by Industry Experts" 
+                src="/hero-section-logo/card-experts.png"
+                alt="Trained by Industry Experts"
                 loading="lazy"
               />
             </div>
 
             <div className="hero-badge-card badge-projects">
               <img 
-                src="/hero-section-logo/card-projects.jpeg" 
-                alt="Industry Project Hands-On" 
+                src="/hero-section-logo/card-projects.png"
+                alt="Industry Project Hands-On"
                 loading="lazy"
               />
             </div>
 
             <div className="hero-badge-card badge-lms">
               <img 
-                src="/hero-section-logo/card-lms.jpeg" 
-                alt="LMS Access 24/7" 
+                src="/hero-section-logo/card-lms.png"
+                alt="LMS Access 24/7"
                 loading="lazy"
               />
             </div>
 
             <div className="hero-badge-card badge-placement">
               <img 
-                src="/hero-section-logo/card-placement.jpeg" 
-                alt="Placement Support" 
+                src="/hero-section-logo/card-placement.png"
+                alt="Placement Support"
                 loading="lazy"
               />
             </div>
