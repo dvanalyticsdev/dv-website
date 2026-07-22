@@ -2,13 +2,60 @@ import React, { useState } from 'react';
 import { useMagneticEffect } from '../hooks/useMagneticEffect';
 
 const courses = [
-  { id: 'apids', label: 'Advanced Program in Industrial Data Science & AI (APIDS)' },
-  { id: 'apida', label: 'Advanced Program in Industrial Data Analytics & AI (APIDA)' },
-  { id: 'specialist', label: 'Data Analytics Specialist (DAS)' },
-  { id: 'aiml', label: 'Advanced AI/ML with Generative AI & Agentic AI (AIML-GAA)' },
-  { id: 'genai', label: 'Master Program in Generative AI & Agentic AI (MPGAA)' },
-  { id: 'apcs', label: 'Advanced Program in Cybersecurity & Forensics (APCF)' }
+  { id: 'apida', category: 'data-science', label: 'Data Analytics + AI' },
+  { id: 'apids', category: 'data-science', label: 'Data Science + Gen AI + Agentic AI' },
+  { id: 'aiml', category: 'data-science', label: 'AIML with Gen AI & Agentic AI' },
+  { id: 'days7_genai', category: 'data-science', label: '7 Days GEN AI + Agentic AI Master program' },
+  { id: 'apcs', category: 'cybersecurity', label: 'Cybersecurity+ Forensics' },
 ];
+
+const locations = [
+  'Andhra Pradesh',
+  'Arunachal Pradesh',
+  'Assam',
+  'Bihar',
+  'Chhattisgarh',
+  'Goa',
+  'Gujarat',
+  'Haryana',
+  'Himachal Pradesh',
+  'Jharkhand',
+  'Karnataka',
+  'Kerala',
+  'Madhya Pradesh',
+  'Maharashtra',
+  'Manipur',
+  'Meghalaya',
+  'Mizoram',
+  'Nagaland',
+  'Odisha',
+  'Punjab',
+  'Rajasthan',
+  'Sikkim',
+  'Tamil Nadu',
+  'Telangana',
+  'Tripura',
+  'Uttar Pradesh',
+  'Uttarakhand',
+  'West Bengal',
+  'Andaman and Nicobar Islands',
+  'Chandigarh',
+  'Dadra and Nagar Haveli and Daman and Diu',
+  'Delhi',
+  'Jammu and Kashmir',
+  'Ladakh',
+  'Lakshadweep',
+  'Puducherry',
+];
+const courseIndustryLabels: Record<string, string> = {
+  apids: 'Data Science and AI',
+  apida: 'Data Analytics and AI',
+  specialist: 'Data Analytics',
+  aiml: 'AI, Machine Learning, Generative AI, and Agentic AI',
+  genai: 'Generative AI and Agentic AI',
+  days7_genai: 'Generative AI and Agentic AI',
+  apcs: 'Cybersecurity and Forensics',
+};
 
 interface EnrollmentPageProps {
   onBackHome: () => void;
@@ -19,6 +66,8 @@ export const EnrollmentPage: React.FC<EnrollmentPageProps> = ({ onBackHome, defa
   const initialCourse = defaultCourseId && courses.some(c => c.id === defaultCourseId.toLowerCase()) 
     ? defaultCourseId.toLowerCase() 
     : 'apids';
+  const initialCourseCategory = courses.find((course) => course.id === initialCourse)?.category || 'data-science';
+
 
   const submitRef = useMagneticEffect(0.25);
 
@@ -26,37 +75,82 @@ export const EnrollmentPage: React.FC<EnrollmentPageProps> = ({ onBackHome, defa
     name: '',
     email: '',
     phone: '',
+    qualification: '',
+    experience: '',
+    state: '',
+    courseCategory: initialCourseCategory,
     course: initialCourse,
+    startTimeline: '',
     batch: 'weekend',
-    message: ''
+    message: '',
   });
 
   const [formErrors, setFormErrors] = useState({
     name: '',
     email: '',
-    phone: ''
+    phone: '',
+    qualification: '',
+    experience: '',
+    state: '',
+    courseCategory: '',
+    course: '',
+    startTimeline: '',
   });
 
   const [isSubmitted, setIsSubmitted] = useState(false);
 
+  const selectedCourseIndustry = courseIndustryLabels[formData.course] || 'technology';
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value
+
+    setFormData((current) => {
+      if (name === 'courseCategory') {
+        const firstMatchingCourse = courses.find((course) => course.category === value)?.id || '';
+        return {
+          ...current,
+          courseCategory: value,
+          course: firstMatchingCourse,
+        };
+      }
+
+      if (name === 'course') {
+        const selectedProgram = courses.find((course) => course.id === value);
+        return {
+          ...current,
+          course: value,
+          courseCategory: selectedProgram?.category || current.courseCategory,
+        };
+      }
+
+      return {
+        ...current,
+        [name]: value,
+      };
     });
-    // Clear error as user types
-    if (name === 'name' || name === 'email' || name === 'phone') {
-      setFormErrors({
-        ...formErrors,
-        [name]: ''
-      });
+
+    if (name in formErrors) {
+      setFormErrors((current) => ({
+        ...current,
+        [name]: '',
+        ...(name === 'courseCategory' ? { course: '' } : {}),
+      }));
     }
   };
 
   const validateForm = () => {
     let isValid = true;
-    const errors = { name: '', email: '', phone: '' };
+    const errors = {
+      name: '',
+      email: '',
+      phone: '',
+      qualification: '',
+      experience: '',
+      state: '',
+      courseCategory: '',
+      course: '',
+      startTimeline: '',
+    };
 
     if (!formData.name.trim()) {
       errors.name = 'Full Name is required';
@@ -79,10 +173,39 @@ export const EnrollmentPage: React.FC<EnrollmentPageProps> = ({ onBackHome, defa
       isValid = false;
     }
 
+    if (!formData.qualification) {
+      errors.qualification = 'Highest Qualification is required';
+      isValid = false;
+    }
+
+    if (!formData.experience) {
+      errors.experience = 'Experience is required';
+      isValid = false;
+    }
+
+    if (!formData.state) {
+      errors.state = 'State or location is required';
+      isValid = false;
+    }
+
+    if (!formData.courseCategory) {
+      errors.courseCategory = 'Course is required';
+      isValid = false;
+    }
+
+    if (!formData.course) {
+      errors.course = 'Program is required';
+      isValid = false;
+    }
+
+    if (!formData.startTimeline) {
+      errors.startTimeline = 'Preferred start timeline is required';
+      isValid = false;
+    }
+
     setFormErrors(errors);
     return isValid;
   };
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (validateForm()) {
@@ -140,35 +263,56 @@ export const EnrollmentPage: React.FC<EnrollmentPageProps> = ({ onBackHome, defa
             <div className="enroll-info-pane reveal-on-scroll">
               <h2>Why Learn with DV Analytics?</h2>
               <p className="info-summary">
-                Get certified under industry-standard training curricula designed to prepare learners for modern corporate operations.
+                Build practical skills through flexible learning, expert-led training, continuous LMS access, personalized mentorship, and end-to-end career support.
               </p>
 
               <div className="enroll-features-list">
                 <div className="enroll-feature-item">
                   <div className="feat-text">
-                    <h4>Industry Expert Mentors</h4>
-                    <p>Learn directly from senior practitioners with decade-long experience in Data Science, AI, and Cybersecurity.</p>
+                    <h4>Live Online/Offline Classes</h4>
+                    <p>Learn through flexible online or classroom sessions with interactive, hands-on training and real-time doubt clearing. Choose the learning mode that best fits your schedule without compromising on practical experience.</p>
                   </div>
                 </div>
 
                 <div className="enroll-feature-item">
                   <div className="feat-text">
-                    <h4>Dynamic Career Support</h4>
-                    <p>Gain access to resume-building guides, interview preparation kits, and mock tests aligned with placements.</p>
+                    <h4>Classes by Industry Experts (Academic Background: IITs &amp; IIMs)</h4>
+                    <p>Get trained by experienced professionals with strong industry expertise and academic excellence from premier institutes. Learn industry best practices, real-world case studies, and practical applications directly from experts.</p>
                   </div>
                 </div>
 
                 <div className="enroll-feature-item">
                   <div className="feat-text">
-                    <h4>Hands-on Laboratory Labs</h4>
-                    <p>Practice theoretical concepts in offline cyber ranges, cloud environments, and industry datasets.</p>
+                    <h4>Post-Class LMS Access</h4>
+                    <p>Access recorded sessions, study materials, assignments, quizzes, and project resources anytime through the Learning Management System (LMS). Revise concepts at your own pace and continue learning even after the live classes are over.</p>
                   </div>
                 </div>
 
                 <div className="enroll-feature-item">
                   <div className="feat-text">
-                    <h4>Full LMS Platform Access</h4>
-                    <p>Access session recordings, assignments, assessments, templates, and learning materials 24/7.</p>
+                    <h4>Industry Mentorship</h4>
+                    <p>Receive one-on-one guidance from experienced mentors working in the {selectedCourseIndustry} industry. Get personalized career advice, project feedback, and interview preparation to accelerate your professional growth.</p>
+                  </div>
+                </div>
+
+                <div className="enroll-feature-item">
+                  <div className="feat-text">
+                    <h4>Resume &amp; Profile Building</h4>
+                    <p>Build an ATS-friendly resume and optimize your LinkedIn and GitHub profiles to attract recruiters. Showcase your projects, technical skills, certifications, and achievements in a professional manner.</p>
+                  </div>
+                </div>
+
+                <div className="enroll-feature-item">
+                  <div className="feat-text">
+                    <h4>Tests &amp; Mock Interviews</h4>
+                    <p>Evaluate your knowledge through regular assessments, coding tests, and practical assignments. Gain confidence with {selectedCourseIndustry} technical mock interviews based on real industry hiring processes.</p>
+                  </div>
+                </div>
+
+                <div className="enroll-feature-item">
+                  <div className="feat-text">
+                    <h4>Placement Support</h4>
+                    <p>Receive end-to-end placement assistance through job referrals, interview scheduling, and career guidance. Stay connected with hiring partners and receive support until you secure the right job opportunity.</p>
                   </div>
                 </div>
               </div>
@@ -223,12 +367,84 @@ export const EnrollmentPage: React.FC<EnrollmentPageProps> = ({ onBackHome, defa
                 </div>
 
                 <div className="form-group-item">
+                  <label htmlFor="qualification">Highest Qualification *</label>
+                  <select
+                    id="qualification"
+                    name="qualification"
+                    value={formData.qualification}
+                    onChange={handleInputChange}
+                    className={formErrors.qualification ? 'input-error' : ''}
+                  >
+                    <option value="">Select your highest qualification</option>
+                    <option value="diploma">Diploma</option>
+                    <option value="graduate">Graduate</option>
+                    <option value="postgraduate">Postgraduate</option>
+                    <option value="doctorate">Doctorate</option>
+                    <option value="other">Other</option>
+                  </select>
+                  {formErrors.qualification && <span className="error-text">{formErrors.qualification}</span>}
+                </div>
+
+                <div className="form-group-item">
+                  <label htmlFor="experience">Experience *</label>
+                  <select
+                    id="experience"
+                    name="experience"
+                    value={formData.experience}
+                    onChange={handleInputChange}
+                    className={formErrors.experience ? 'input-error' : ''}
+                  >
+                    <option value="">Select your experience</option>
+                    <option value="fresher">Fresher</option>
+                    <option value="less-than-1-year">Less than 1 year</option>
+                    <option value="1-3-years">1–3 years</option>
+                    <option value="3-5-years">3–5 years</option>
+                    <option value="5-10-years">5–10 years</option>
+                    <option value="more-than-10-years">More than 10 years</option>
+                  </select>
+                  {formErrors.experience && <span className="error-text">{formErrors.experience}</span>}
+                </div>
+
+                <div className="form-group-item">
+                  <label htmlFor="state">State / Location *</label>
+                  <select
+                    id="state"
+                    name="state"
+                    value={formData.state}
+                    onChange={handleInputChange}
+                    className={formErrors.state ? 'input-error' : ''}
+                  >
+                    <option value="">Select your state or location</option>
+                    {locations.map((location) => (
+                      <option key={location} value={location}>{location}</option>
+                    ))}
+                  </select>
+                  {formErrors.state && <span className="error-text">{formErrors.state}</span>}
+                </div>
+
+                <div className="form-group-item">
+                  <label htmlFor="courseCategory">Select Course *</label>
+                  <select
+                    id="courseCategory"
+                    name="courseCategory"
+                    value={formData.courseCategory}
+                    onChange={handleInputChange}
+                    className={formErrors.courseCategory ? 'input-error' : ''}
+                  >
+                    <option value="data-science">Data Science</option>
+                    <option value="cybersecurity">Cybersecurity</option>
+                  </select>
+                  {formErrors.courseCategory && <span className="error-text">{formErrors.courseCategory}</span>}
+                </div>
+
+                <div className="form-group-item">
                   <label htmlFor="course">Select Program *</label>
                   <select
                     id="course"
                     name="course"
                     value={formData.course}
                     onChange={handleInputChange}
+                    className={formErrors.course ? 'input-error' : ''}
                   >
                     {courses.map((course) => (
                       <option key={course.id} value={course.id}>
@@ -236,8 +452,26 @@ export const EnrollmentPage: React.FC<EnrollmentPageProps> = ({ onBackHome, defa
                       </option>
                     ))}
                   </select>
+                  {formErrors.course && <span className="error-text">{formErrors.course}</span>}
                 </div>
 
+                <div className="form-group-item">
+                  <label htmlFor="startTimeline">How Soon Do You Want to Start? *</label>
+                  <select
+                    id="startTimeline"
+                    name="startTimeline"
+                    value={formData.startTimeline}
+                    onChange={handleInputChange}
+                    className={formErrors.startTimeline ? 'input-error' : ''}
+                  >
+                    <option value="">Select your preferred start timeline</option>
+                    <option value="immediately">Immediately</option>
+                    <option value="within-10-days">Within 10 days</option>
+                    <option value="within-30-days">Within 30 days</option>
+                    <option value="more-than-1-month">More than 1 month</option>
+                  </select>
+                  {formErrors.startTimeline && <span className="error-text">{formErrors.startTimeline}</span>}
+                </div>
                 <div className="form-group-item">
                   <label>Preferred Batch Mode *</label>
                   <div className="radio-group-row">

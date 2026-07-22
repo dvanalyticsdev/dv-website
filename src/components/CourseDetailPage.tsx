@@ -79,6 +79,63 @@ const getCourseImages = (id: string): string[] => {
   return courseSuccessImages[normalizedId] || allSuccessImages;
 };
 
+type WhyDvBenefit = {
+  title: string;
+  description: string;
+  detail: string;
+};
+
+const courseIndustryLabels: Record<string, string> = {
+  apids: 'Data Science and AI',
+  apida: 'Data Analytics and AI',
+  specialist: 'Data Analytics',
+  aiml: 'AI, Machine Learning, Generative AI, and Agentic AI',
+  genai: 'Generative AI and Agentic AI',
+  apcs: 'Cybersecurity and Forensics',
+  days7_genai: 'Generative AI and Agentic AI',
+};
+
+const getWhyDvBenefits = (courseId: string): WhyDvBenefit[] => {
+  const industry = courseIndustryLabels[courseId.toLowerCase()] || 'technology';
+
+  return [
+    {
+      title: 'Live Online/Offline Classes',
+      description: 'Learn through flexible online or classroom sessions with interactive, hands-on training and real-time doubt clearing.',
+      detail: 'Choose the learning mode that best fits your schedule without compromising on practical experience.',
+    },
+    {
+      title: 'Classes by Industry Experts (Academic Background: IITs & IIMs)',
+      description: 'Get trained by experienced professionals with strong industry expertise and academic excellence from premier institutes.',
+      detail: 'Learn industry best practices, real-world case studies, and practical applications directly from experts.',
+    },
+    {
+      title: 'Post-Class LMS Access',
+      description: 'Access recorded sessions, study materials, assignments, quizzes, and project resources anytime through the Learning Management System (LMS).',
+      detail: 'Revise concepts at your own pace and continue learning even after the live classes are over.',
+    },
+    {
+      title: 'Industry Mentorship',
+      description: `Receive one-on-one guidance from experienced mentors working in the ${industry} industry.`,
+      detail: 'Get personalized career advice, project feedback, and interview preparation to accelerate your professional growth.',
+    },
+    {
+      title: 'Resume & Profile Building',
+      description: 'Build an ATS-friendly resume and optimize your LinkedIn and GitHub profiles to attract recruiters.',
+      detail: 'Showcase your projects, technical skills, certifications, and achievements in a professional manner.',
+    },
+    {
+      title: 'Tests & Mock Interviews',
+      description: 'Evaluate your knowledge through regular assessments, coding tests, and practical assignments.',
+      detail: `Gain confidence with ${industry} technical mock interviews based on real industry hiring processes.`,
+    },
+    {
+      title: 'Placement Support',
+      description: 'Receive end-to-end placement assistance through job referrals, interview scheduling, and career guidance.',
+      detail: 'Stay connected with hiring partners and receive support until you secure the right job opportunity.',
+    },
+  ];
+};
 interface CourseDetailPageProps {
   courseId: string;
   onBackHome: () => void;
@@ -94,6 +151,7 @@ export const CourseDetailPage: React.FC<CourseDetailPageProps> = ({ courseId, on
   const [expandedProjectDomains, setExpandedProjectDomains] = useState<number[]>([]);
   const [expandedCareerGroups, setExpandedCareerGroups] = useState<number[]>([]);
   const hasPlacementSupport = ['apids', 'apida', 'aiml'].includes(courseId.toLowerCase());
+  const whyDvBenefits = getWhyDvBenefits(courseId);
 
   const heroEnrollRef = useMagneticEffect(0.25);
   const bottomEnrollRef = useMagneticEffect(0.25);
@@ -237,7 +295,7 @@ export const CourseDetailPage: React.FC<CourseDetailPageProps> = ({ courseId, on
             </div>
             <div className="stat-card-content">
               <h4>Delivery</h4>
-              <p>Live Instructor-Led Online</p>
+              <p>Live Online/Offline Classes</p>
             </div>
           </div>
 
@@ -254,6 +312,8 @@ export const CourseDetailPage: React.FC<CourseDetailPageProps> = ({ courseId, on
             </div>
           </div>
         </div>
+
+
       </section>
 
       {/* 3. Course Overview & Practical Exposure */}
@@ -300,7 +360,32 @@ export const CourseDetailPage: React.FC<CourseDetailPageProps> = ({ courseId, on
         </div>
       </section>
 
-      {/* 4. Interactive Syllabus Accordion */}
+      {/* 4. Why DV Analytics */}
+      <section className="why-dv-section container reveal-on-scroll" aria-labelledby={`why-dv-title-${course.id}`}>
+          <div className="why-dv-heading-row">
+            <div>
+              <h2 id={`why-dv-title-${course.id}`} className="why-dv-title">Why DV Analytics?</h2>
+            </div>
+
+          </div>
+
+          <div className="why-dv-grid">
+            {whyDvBenefits.map((benefit, index) => (
+              <article className="why-dv-card" key={benefit.title}>
+                <span className="why-dv-number" aria-hidden="true">
+                  {String(index + 1).padStart(2, '0')}
+                </span>
+                <div className="why-dv-card-copy">
+                  <h3>{benefit.title}</h3>
+                  <p>{benefit.description}</p>
+                  <p>{benefit.detail}</p>
+                </div>
+              </article>
+            ))}
+          </div>
+      </section>
+
+      {/* 5. Interactive Syllabus Accordion */}
       <section className="course-syllabus-section container reveal-on-scroll">
         <div className="course-syllabus-banner">
           <div className="section-title-wrapper">

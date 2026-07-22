@@ -724,7 +724,7 @@ a {
 
 .hero-expertise-list {
   display: grid;
-  gap: 0.2rem;
+  gap: 0.3rem;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -736,17 +736,51 @@ a {
 
 .hero-expertise-list li {
   position: relative;
-  padding-left: 1.4rem;
+  padding: 0.18rem 0.45rem 0.18rem 1.75rem;
+  border-radius: 8px;
+  transition: transform 180ms ease, background-color 180ms ease;
 }
 
 .hero-expertise-list li::before {
   content: '';
   position: absolute;
-  top: 0.28em;
-  left: 0;
-  width: 0.62em;
-  height: 0.62em;
-  border: 2px solid currentColor;
+  top: 50%;
+  left: 0.12rem;
+  width: 0.82rem;
+  height: 0.82rem;
+  border: 2px solid #051f40;
+  border-radius: 3px;
+  background-color: #ffffff;
+  box-shadow:
+    0 3px 7px rgba(5, 31, 64, 0.28),
+    0 1px 2px rgba(5, 31, 64, 0.18);
+  transform: translateY(-50%);
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.hero-expertise-list li::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0.43rem;
+  width: 0.32rem;
+  height: 0.32rem;
+  border-radius: 1px;
+  background-color: #ef5323;
+  box-shadow: 0 1px 3px rgba(239, 83, 35, 0.35);
+  transform: translateY(-50%);
+}
+
+.hero-expertise-list li:hover {
+  background-color: rgba(5, 31, 64, 0.04);
+  transform: translateX(2px);
+}
+
+.hero-expertise-list li:hover::before {
+  box-shadow:
+    0 5px 11px rgba(5, 31, 64, 0.3),
+    0 2px 4px rgba(239, 83, 35, 0.16);
+  transform: translateY(-50%) scale(1.06);
 }
 
 .hero-audience-block {
@@ -1001,6 +1035,15 @@ a {
 }
 
 @media (max-width: 768px) {
+  .hero-expertise-list li {
+    padding: 0.18rem 0.25rem;
+  }
+
+  .hero-expertise-list li::before,
+  .hero-expertise-list li::after {
+    display: none;
+  }
+
   .page-wrapper {
     padding-top: 136px;
     gap: 2rem;
@@ -2836,21 +2879,17 @@ a {
   margin-top: 1rem;
 }
 
-/* Infinite Marquee Layout */
+/* Infinite multi-poster marquee */
 .marquee-wrapper {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
   width: 100%;
   overflow: hidden;
 }
 
 .marquee-row {
-  overflow: hidden;
-  width: 100%;
-  display: flex;
   position: relative;
-  /* Frosted fade mask on left and right edges */
+  display: flex;
+  width: 100%;
+  overflow: hidden;
   mask-image: linear-gradient(to right, transparent 0%, #000000 8%, #000000 92%, transparent 100%);
   -webkit-mask-image: linear-gradient(to right, transparent 0%, #000000 8%, #000000 92%, transparent 100%);
 }
@@ -2863,14 +2902,9 @@ a {
 }
 
 .marquee-left-dir .marquee-track {
-  animation: marqueeLeft 110s linear infinite; /* Adjusted speed for 360px card height */
+  animation: marqueeLeft 110s linear infinite;
 }
 
-.marquee-right-dir .marquee-track {
-  animation: marqueeRight 110s linear infinite;
-}
-
-/* Pause scroll animation on hover */
 .marquee-row:hover .marquee-track {
   animation-play-state: paused;
 }
@@ -2881,66 +2915,59 @@ a {
   gap: 1.5rem;
 }
 
-/* Story Card */
 .story-card {
-  flex-shrink: 0;
-  height: 360px; /* Balanced card size */
-  background: rgba(255, 255, 255, 0.8);
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  border-radius: 20px;
+  flex: 0 0 360px;
+  width: 360px;
+  height: 360px;
+  aspect-ratio: 1 / 1;
   overflow: hidden;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  border: 1px solid rgba(5, 31, 64, 0.1);
+  border-radius: 20px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 20px rgba(5, 31, 64, 0.06);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
 }
 
 .story-card:hover {
   transform: scale(1.02);
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.07);
-  border-color: rgba(0, 0, 0, 0.15);
+  box-shadow: 0 15px 35px rgba(5, 31, 64, 0.12);
 }
 
 .story-image {
-  height: 100%;
-  width: auto;
-  object-fit: contain;
   display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
 @keyframes marqueeLeft {
-  0% {
+  from {
     transform: translate3d(0, 0, 0);
   }
-  100% {
-    transform: translate3d(-50%, 0, 0);
+  to {
+    transform: translate3d(calc(-50% - 0.75rem), 0, 0);
   }
 }
 
-@keyframes marqueeRight {
-  0% {
-    transform: translate3d(-50%, 0, 0);
-  }
-  100% {
-    transform: translate3d(0, 0, 0);
-  }
-}
-
-/* Responsive adjustments */
 @media (max-width: 768px) {
   .success-stories-section {
     padding: 3.5rem 0;
   }
+
   .stories-title {
     font-size: var(--font-size-h2);
   }
+
   .story-card {
-    height: 260px; /* Balanced size on mobile */
+    flex-basis: 260px;
+    width: 260px;
+    height: 260px;
   }
-  .marquee-left-dir .marquee-track,
-  .marquee-right-dir .marquee-track {
-    animation-duration: 60s; /* Adjusted duration for mobile widths */
+
+  .marquee-left-dir .marquee-track {
+    animation-duration: 75s;
   }
 }
-
 /* Site Footer styling - Premium Card Theme */
 .site-footer {
   background-color: #f8fafc; /* Subtle slate off-white section background */

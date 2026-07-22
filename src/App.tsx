@@ -216,7 +216,7 @@ function App() {
               <div className="hero-desc hero-copy-block hero-audience-block">
                 <h2 className="hero-copy-title">Who Can:</h2>
                 <p className="hero-audience-text">
-                  Freshers | Graduates | Working Professionals | Career Switchers
+                  Freshers | Graduates (Technical &amp; Non-Technical) | Masters (Technical &amp; Non-Technical) | PhD | Working Professionals | Faculties | Govt Employees | Corporate Professionals | Researchers | Entrepreneurs | Career Transition Candidates
                 </p>
               </div>
             </div>
