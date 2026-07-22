@@ -671,8 +671,8 @@ a {
   display: flex;
   justify-content: center;
   align-items: center;
-  border: none;
-  padding-left: 0;
+  border-left: 1px solid #d1d5db;
+  padding-left: 2rem;
 }
 
 .hero-heading-become {
@@ -701,6 +701,64 @@ a {
   line-height: 0.98;
   color: #ef5323; /* DV logo orange */
   margin-bottom: 1.5rem;
+}
+
+.hero-front-page-heading {
+  margin-bottom: 2rem;
+  font-size: 2.8rem;
+  font-weight: 800;
+  line-height: 1.15;
+}
+
+.hero-copy-block {
+  margin-bottom: 1rem;
+}
+
+.hero-copy-title {
+  margin: 0 0 0.35rem;
+  color: inherit;
+  font-size: 1.3rem;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.hero-expertise-list {
+  display: grid;
+  gap: 0.2rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  color: inherit;
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+.hero-expertise-list li {
+  position: relative;
+  padding-left: 1.4rem;
+}
+
+.hero-expertise-list li::before {
+  content: '';
+  position: absolute;
+  top: 0.28em;
+  left: 0;
+  width: 0.62em;
+  height: 0.62em;
+  border: 2px solid currentColor;
+}
+
+.hero-audience-block {
+  margin-bottom: 3.5rem;
+}
+
+.hero-audience-text {
+  margin: 0;
+  color: inherit;
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.4;
 }
 
 .hero-desc {
@@ -892,7 +950,10 @@ a {
   }
   
   .hero-right {
+    width: 100%;
     border-left: none;
+    border-top: 1px solid #d1d5db;
+    padding-top: 3rem;
     padding-left: 0;
   }
   

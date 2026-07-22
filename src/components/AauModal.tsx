@@ -21,37 +21,37 @@ export const AauModal: React.FC<AauModalProps> = ({ isOpen, onClose, onSelectCou
       id: 'apids',
       title: 'Advanced Program in Industrial Data Science & AI (APIDS)',
       tagline: 'A comprehensive industry-oriented program covering the complete lifecycle of data-driven business solutions—from data collection to AI deployment in the cloud.',
-      poster: '/courses-poster/APIDS.jpeg'
+      poster: '/courses-poster/APIDS.png'
     },
     {
       id: 'apida',
       title: 'Advanced Program in Industrial Data Analytics & AI (APIDA)',
       tagline: 'A comprehensive industry-focused program combining Data Management, Business Intelligence, Machine Learning, and MLOps for analytics professionals.',
-      poster: '/courses-poster/APIDA.jpeg'
+      poster: '/courses-poster/APIDA.png'
     },
     {
       id: 'specialist',
       title: 'Data Analytics Specialist (DAS)',
       tagline: 'Build expertise in Data Analytics, Business Intelligence, Reporting, and Data Visualization with industry-standard tools.',
-      poster: '/courses-poster/DAS.jpeg'
+      poster: '/courses-poster/DAS.png'
     },
     {
       id: 'aiml',
       title: 'Advanced AI/ML with Generative AI & Agentic AI (AIML-GAA)',
       tagline: 'Master the complete AI lifecycle from data preparation and ML model development to Generative AI, Agentic AI, and enterprise-grade deployment.',
-      poster: '/courses-poster/Advance AIML.jpeg'
+      poster: '/courses-poster/Advance AIML.png'
     },
     {
       id: 'genai',
       title: 'Master Program in Generative AI & Agentic AI (MPGAA)',
       tagline: 'Specialize in Deep Learning, NLP, Generative AI, Agentic AI, and enterprise AI deployment for next-generation intelligent systems.',
-      poster: '/courses-poster/Gen AI.jpeg'
+      poster: '/courses-poster/Gen AI.png'
     },
     {
       id: 'apcs',
       title: 'Advanced Program in Cybersecurity & Forensics (APCF)',
       tagline: 'Comprehensive training in Cybersecurity, Ethical Hacking, Digital Forensics, Threat Intelligence, and Security Operations.',
-      poster: '/courses-poster/APCF.jpeg'
+      poster: '/courses-poster/APCF.png'
     }
   ];
 

@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 
 const slideshowImages = [
-  '/hero-stories/6th.jpeg',
-  '/hero-stories/1st.jpeg',
-  '/hero-stories/2nd.jpeg',
-  '/hero-stories/3rd.jpeg',
-  '/hero-stories/4th.jpeg',
-  '/hero-stories/5th.jpeg',
+  '/hero-stories/poster-1.png',
+  '/hero-stories/poster-2.png',
+  '/hero-stories/poster-3.png',
+  '/hero-stories/poster-4.png',
+  '/hero-stories/poster-5.png',
+  '/hero-stories/poster-6.png',
 ];
 
 const SLIDE_DURATION = 2000; // 2.0 seconds per slide (speeded up)

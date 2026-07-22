@@ -199,30 +199,24 @@ function App() {
         <section className="content-section" data-section="hero">
           <div className="hero-split">
             <div className="hero-left">
-              <h1 className="hero-heading-accent" style={{ marginBottom: '2rem', lineHeight: '1.15', fontSize: '2.8rem', fontWeight: '800' }}>
-                <span className="hero-heading-part-1">
-                  <span className="hero-heading-muted">Become an </span>
-                  <span className="hero-heading-white">Industry-Ready </span>
-                </span>
-                <span className="hero-heading-part-2">Data Scientist &amp; </span>
-                <span className="hero-heading-part-3">Cybersecurity Professional</span>
+              <h1 className="hero-heading-accent hero-front-page-heading">
+                Become an Industry-Ready Data Scientist &amp; Cybersecurity Professional
               </h1>
               
-              <div className="hero-desc" style={{ marginBottom: '2rem' }}>
-                <p style={{ fontWeight: '700', fontSize: '1.15rem', marginBottom: '0.35rem', color: 'inherit' }}>
-                  Master the Most In-Demand Technologies:
-                </p>
-                <p style={{ fontWeight: '600', fontSize: '1.0rem', opacity: 0.95, lineHeight: '1.4', color: 'inherit' }}>
-                  Data Analytics | Data Science | Machine Learning | Deep Learning | Generative AI | Agentic AI | Cybersecurity
-                </p>
+              <div className="hero-desc hero-copy-block">
+                <h2 className="hero-copy-title">Get an Expert in:</h2>
+                <ul className="hero-expertise-list">
+                  <li>Data Analytics + AI</li>
+                  <li>Data Science + Gen AI + Agentic AI</li>
+                  <li>Data Engineering + AI</li>
+                  <li>Cybersecurity + Forensic Specialist</li>
+                </ul>
               </div>
 
-              <div className="hero-desc" style={{ marginBottom: '3.5rem' }}>
-                <p style={{ fontWeight: '700', fontSize: '1.15rem', marginBottom: '0.35rem', color: 'inherit' }}>
-                  A Complete Career Transformation Journey
-                </p>
-                <p style={{ fontWeight: '600', fontSize: '1.0rem', opacity: 0.95, color: 'inherit' }}>
-                  For Freshers - Graduates - Working Professionals - Career Switchers
+              <div className="hero-desc hero-copy-block hero-audience-block">
+                <h2 className="hero-copy-title">Who Can:</h2>
+                <p className="hero-audience-text">
+                  Freshers | Graduates | Working Professionals | Career Switchers
                 </p>
               </div>
             </div>

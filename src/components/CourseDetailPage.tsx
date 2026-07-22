@@ -4,13 +4,13 @@ import { useMagneticEffect } from '../hooks/useMagneticEffect';
 import { AnimatedHeroGraphic } from './AnimatedHeroGraphic';
 
 const posterImages: Record<string, string> = {
-  apids: '/courses-poster/APIDS.jpeg',
-  apida: '/courses-poster/APIDA.jpeg',
-  aiml: '/courses-poster/Advance AIML.jpeg',
-  genai: '/courses-poster/Gen AI.jpeg',
-  specialist: '/courses-poster/DAS.jpeg',
-  apcs: '/courses-poster/APCF.jpeg',
-  days7_genai: '/courses-poster/7-days-genai.jpeg',
+  apids: '/courses-poster/APIDS.png',
+  apida: '/courses-poster/APIDA.png',
+  aiml: '/courses-poster/Advance AIML.png',
+  genai: '/courses-poster/Gen AI.png',
+  specialist: '/courses-poster/DAS.png',
+  apcs: '/courses-poster/APCF.png',
+  days7_genai: '/courses-poster/7-days-genai.png',
 };
 
 const heroImages: Record<string, string> = {
@@ -74,7 +74,7 @@ const getCourseImages = (id: string): string[] => {
     return allSuccessImages;
   }
   if (normalizedId === 'days7_genai') {
-    return ['/courses-poster/7-days-genai.jpeg', ...allSuccessImages];
+    return ['/courses-poster/7-days-genai.png', ...allSuccessImages];
   }
   return courseSuccessImages[normalizedId] || allSuccessImages;
 };
