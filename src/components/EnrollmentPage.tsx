@@ -46,6 +46,7 @@ const locations = [
   'Ladakh',
   'Lakshadweep',
   'Puducherry',
+  'Dubai',
 ];
 const courseIndustryLabels: Record<string, string> = {
   apids: 'Data Science and AI',

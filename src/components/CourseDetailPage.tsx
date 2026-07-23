@@ -20,7 +20,7 @@ const heroImages: Record<string, string> = {
   genai: '/course-hero/Gen AI.jpeg',
   specialist: '/course-hero/DAS.jpeg',
   apcs: '/course-hero/APCF.jpeg',
-  days7_genai: '/course-hero/7-days-genai.jpeg',
+  days7_genai: '/course-hero/7-days-genai.png',
 };
 
 const courseSuccessImages: Record<string, string[]> = {
