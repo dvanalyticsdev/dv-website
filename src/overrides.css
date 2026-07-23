@@ -1899,13 +1899,16 @@
 /* Mobile optimizations for course details */
 @media (max-width: 768px) {
   .course-hero-full {
-    height: 180px !important;
+    height: auto !important;
+    aspect-ratio: auto !important;
   }
+
   .course-hero-full-img {
-    height: 100% !important;
-    object-fit: cover !important;
-    object-position: left center !important;
+    height: auto !important;
+    object-fit: contain !important;
+    object-position: center !important;
   }
+
   .course-hero-full + .course-stats-section {
     margin-top: 1.5rem !important;
   }
@@ -3059,6 +3062,33 @@ button {
     transition: none;
   }
 }
+
+@media (max-width: 768px) {
+  .form-group-item input[type="text"],
+  .form-group-item input[type="email"],
+  .form-group-item input[type="tel"],
+  .form-group-item select,
+  .form-group-item textarea {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .chatbot-restore-pill {
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    padding: 0;
+    justify-content: center;
+    bottom: max(12px, env(safe-area-inset-bottom));
+    right: max(12px, env(safe-area-inset-right));
+  }
+
+  .chatbot-restore-pill .restore-pill-text {
+    display: none;
+  }
+}
+
 .hero-audience-text {
   max-width: 100%;
   overflow-wrap: anywhere;
