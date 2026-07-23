@@ -79,63 +79,70 @@ const getCourseImages = (id: string): string[] => {
   return courseSuccessImages[normalizedId] || allSuccessImages;
 };
 
-type WhyDvBenefit = {
-  title: string;
-  description: string;
-  detail: string;
+type CourseStatIcon = 'duration' | 'delivery' | 'lms' | 'projects' | 'profile' | 'support';
+
+type CourseStat = {
+  label: string;
+  value: string;
+  icon: CourseStatIcon;
 };
 
-const courseIndustryLabels: Record<string, string> = {
-  apids: 'Data Science and AI',
-  apida: 'Data Analytics and AI',
-  specialist: 'Data Analytics',
-  aiml: 'AI, Machine Learning, Generative AI, and Agentic AI',
-  genai: 'Generative AI and Agentic AI',
-  apcs: 'Cybersecurity and Forensics',
-  days7_genai: 'Generative AI and Agentic AI',
+const CourseStatGraphic: React.FC<{ icon: CourseStatIcon }> = ({ icon }) => {
+  if (icon === 'duration') {
+    return (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <circle cx="12" cy="12" r="10"/>
+        <polyline points="12 6 12 12 16 14"/>
+      </svg>
+    );
+  }
+
+  if (icon === 'delivery') {
+    return (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+        <line x1="8" y1="21" x2="16" y2="21"/>
+        <line x1="12" y1="17" x2="12" y2="21"/>
+      </svg>
+    );
+  }
+
+  if (icon === 'lms') {
+    return (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"/>
+      </svg>
+    );
+  }
+
+  if (icon === 'projects') {
+    return (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <rect x="3" y="7" width="18" height="13" rx="2"/>
+        <path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+        <path d="M3 12h18"/>
+      </svg>
+    );
+  }
+
+  if (icon === 'profile') {
+    return (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <circle cx="12" cy="8" r="4"/>
+        <path d="M4 21a8 8 0 0 1 16 0"/>
+      </svg>
+    );
+  }
+
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+      <polyline points="22 4 12 14.01 9 11.01"/>
+    </svg>
+  );
 };
 
-const getWhyDvBenefits = (courseId: string): WhyDvBenefit[] => {
-  const industry = courseIndustryLabels[courseId.toLowerCase()] || 'technology';
-
-  return [
-    {
-      title: 'Live Online/Offline Classes',
-      description: 'Learn through flexible online or classroom sessions with interactive, hands-on training and real-time doubt clearing.',
-      detail: 'Choose the learning mode that best fits your schedule without compromising on practical experience.',
-    },
-    {
-      title: 'Classes by Industry Experts (Academic Background: IITs & IIMs)',
-      description: 'Get trained by experienced professionals with strong industry expertise and academic excellence from premier institutes.',
-      detail: 'Learn industry best practices, real-world case studies, and practical applications directly from experts.',
-    },
-    {
-      title: 'Post-Class LMS Access',
-      description: 'Access recorded sessions, study materials, assignments, quizzes, and project resources anytime through the Learning Management System (LMS).',
-      detail: 'Revise concepts at your own pace and continue learning even after the live classes are over.',
-    },
-    {
-      title: 'Industry Mentorship',
-      description: `Receive one-on-one guidance from experienced mentors working in the ${industry} industry.`,
-      detail: 'Get personalized career advice, project feedback, and interview preparation to accelerate your professional growth.',
-    },
-    {
-      title: 'Resume & Profile Building',
-      description: 'Build an ATS-friendly resume and optimize your LinkedIn and GitHub profiles to attract recruiters.',
-      detail: 'Showcase your projects, technical skills, certifications, and achievements in a professional manner.',
-    },
-    {
-      title: 'Tests & Mock Interviews',
-      description: 'Evaluate your knowledge through regular assessments, coding tests, and practical assignments.',
-      detail: `Gain confidence with ${industry} technical mock interviews based on real industry hiring processes.`,
-    },
-    {
-      title: 'Placement Support',
-      description: 'Receive end-to-end placement assistance through job referrals, interview scheduling, and career guidance.',
-      detail: 'Stay connected with hiring partners and receive support until you secure the right job opportunity.',
-    },
-  ];
-};
 interface CourseDetailPageProps {
   courseId: string;
   onBackHome: () => void;
@@ -151,7 +158,43 @@ export const CourseDetailPage: React.FC<CourseDetailPageProps> = ({ courseId, on
   const [expandedProjectDomains, setExpandedProjectDomains] = useState<number[]>([]);
   const [expandedCareerGroups, setExpandedCareerGroups] = useState<number[]>([]);
   const hasPlacementSupport = ['apids', 'apida', 'aiml'].includes(courseId.toLowerCase());
-  const whyDvBenefits = getWhyDvBenefits(courseId);
+  const hasSixCourseStats = ['apids', 'apida', 'aiml', 'specialist', 'apcs'].includes(courseId.toLowerCase());
+  const isSevenDayProgram = courseId.toLowerCase() === 'days7_genai';
+  const isMpgAAProgram = courseId.toLowerCase() === 'genai';
+  const courseStatDuration = ['specialist', 'apcs'].includes(courseId.toLowerCase())
+    ? '2-3 Months'
+    : course?.duration ?? '';
+  const courseStats: CourseStat[] = isSevenDayProgram
+    ? [
+        { label: 'Duration', value: '7 Days (42 Hours)', icon: 'duration' },
+        { label: 'Delivery', value: 'Live Online/Offline Classes', icon: 'delivery' },
+        { label: 'Learning Access', value: 'LMS Access', icon: 'lms' },
+        { label: 'Projects', value: 'Industry Real-Time Projects Hands-on', icon: 'projects' },
+      ]
+    : isMpgAAProgram
+    ? [
+        { label: 'Duration', value: course?.duration ?? '', icon: 'duration' },
+        { label: 'Delivery', value: 'Live Online/Offline Classes', icon: 'delivery' },
+        { label: 'Learning Access', value: 'LMS Access', icon: 'lms' },
+        { label: 'Projects', value: 'Industry Real-Time Projects Hands-on', icon: 'projects' },
+        { label: 'Career Support', value: 'Career Mentorship & Guidance', icon: 'support' },
+      ]
+    : hasSixCourseStats
+    ? [
+        { label: 'Duration', value: courseStatDuration, icon: 'duration' },
+        { label: 'Delivery', value: 'Live Online/Offline Classes', icon: 'delivery' },
+        { label: 'Learning Access', value: 'LMS Access', icon: 'lms' },
+        { label: 'Projects', value: 'Industry Real-Time Projects Hands-on', icon: 'projects' },
+        { label: 'Career Readiness', value: 'Profile Building', icon: 'profile' },
+        ...(hasPlacementSupport
+          ? [{ label: 'Career Support', value: 'Placement Support', icon: 'support' as CourseStatIcon }]
+          : []),
+      ]
+    : [
+        { label: 'Duration', value: course?.duration ?? '', icon: 'duration' },
+        { label: 'Delivery', value: 'Live Online/Offline Classes', icon: 'delivery' },
+        { label: 'Career Support', value: 'Career Mentorship & Guidance', icon: 'support' },
+      ];
 
   const heroEnrollRef = useMagneticEffect(0.25);
   const bottomEnrollRef = useMagneticEffect(0.25);
@@ -272,45 +315,17 @@ export const CourseDetailPage: React.FC<CourseDetailPageProps> = ({ courseId, on
       {/* 2. Quick Stats Grid - 3 cards only */}
       <section className="course-stats-section container reveal-on-scroll">
         <div className="stats-cards-grid">
-          <div className="stat-card">
-            <div className="stat-icon-wrapper">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <circle cx="12" cy="12" r="10"/>
-                <polyline points="12 6 12 12 16 14"/>
-              </svg>
+          {courseStats.map((stat) => (
+            <div className="stat-card" key={stat.label}>
+              <div className="stat-icon-wrapper">
+                <CourseStatGraphic icon={stat.icon} />
+              </div>
+              <div className="stat-card-content">
+                <h4>{stat.label}</h4>
+                <p>{stat.value}</p>
+              </div>
             </div>
-            <div className="stat-card-content">
-              <h4>Duration</h4>
-              <p>{course.duration}</p>
-            </div>
-          </div>
-
-          <div className="stat-card">
-            <div className="stat-icon-wrapper">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
-                <line x1="8" y1="21" x2="16" y2="21"/>
-                <line x1="12" y1="17" x2="12" y2="21"/>
-              </svg>
-            </div>
-            <div className="stat-card-content">
-              <h4>Delivery</h4>
-              <p>Live Online/Offline Classes</p>
-            </div>
-          </div>
-
-          <div className="stat-card">
-            <div className="stat-icon-wrapper">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
-                <polyline points="22 4 12 14.01 9 11.01"/>
-              </svg>
-            </div>
-            <div className="stat-card-content">
-              <h4>Career Support</h4>
-              <p>{hasPlacementSupport ? '100% Placement Support' : 'Career Mentorship & Guidance'}</p>
-            </div>
-          </div>
+          ))}
         </div>
 
 
@@ -360,32 +375,7 @@ export const CourseDetailPage: React.FC<CourseDetailPageProps> = ({ courseId, on
         </div>
       </section>
 
-      {/* 4. Why DV Analytics */}
-      <section className="why-dv-section container reveal-on-scroll" aria-labelledby={`why-dv-title-${course.id}`}>
-          <div className="why-dv-heading-row">
-            <div>
-              <h2 id={`why-dv-title-${course.id}`} className="why-dv-title">Why DV Analytics?</h2>
-            </div>
-
-          </div>
-
-          <div className="why-dv-grid">
-            {whyDvBenefits.map((benefit, index) => (
-              <article className="why-dv-card" key={benefit.title}>
-                <span className="why-dv-number" aria-hidden="true">
-                  {String(index + 1).padStart(2, '0')}
-                </span>
-                <div className="why-dv-card-copy">
-                  <h3>{benefit.title}</h3>
-                  <p>{benefit.description}</p>
-                  <p>{benefit.detail}</p>
-                </div>
-              </article>
-            ))}
-          </div>
-      </section>
-
-      {/* 5. Interactive Syllabus Accordion */}
+      {/* 4. Interactive Syllabus Accordion */}
       <section className="course-syllabus-section container reveal-on-scroll">
         <div className="course-syllabus-banner">
           <div className="section-title-wrapper">
