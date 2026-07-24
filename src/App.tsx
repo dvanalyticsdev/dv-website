@@ -198,6 +198,17 @@ function App() {
       <div className="page-wrapper container">
         <section className="content-section" data-section="hero">
           <div className="hero-split">
+            <img
+              src="/mobile-industry-ready-poster.jpg"
+              alt="Become an industry-ready data scientist and cybersecurity professional"
+              className="hero-mobile-poster"
+              width="759"
+              height="1600"
+              loading="eager"
+              fetchPriority="high"
+              decoding="async"
+            />
+
             <div className="hero-left">
               <h1 className="hero-heading-accent hero-front-page-heading hero-desktop-heading">
                 Become an Industry-Ready Data Scientist &amp; Cybersecurity Professional
