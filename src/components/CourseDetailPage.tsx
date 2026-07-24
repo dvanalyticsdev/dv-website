@@ -388,7 +388,14 @@ export const CourseDetailPage: React.FC<CourseDetailPageProps> = ({ courseId, on
             const isExpanded = expandedModule === idx;
             return (
               <div key={idx} className={`accordion-item ${isExpanded ? 'active' : ''}`}>
-                <div className="accordion-trigger" onClick={() => toggleModule(idx)}>
+                <button
+                  type="button"
+                  className="accordion-trigger"
+                  id={`course-module-trigger-${idx}`}
+                  aria-expanded={isExpanded}
+                  aria-controls={`course-module-panel-${idx}`}
+                  onClick={() => toggleModule(idx)}
+                >
                   <div className="accordion-trigger-left">
                     <span className="module-index">0{idx + 1}</span>
                     <h3 className="module-title">{module.title}</h3>
@@ -398,9 +405,15 @@ export const CourseDetailPage: React.FC<CourseDetailPageProps> = ({ courseId, on
                       <path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="2.5" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
                     </svg>
                   </div>
-                </div>
+                </button>
 
-                <div className={`accordion-panel ${isExpanded ? 'expanded' : 'collapsed'}`}>
+                <div
+                  id={`course-module-panel-${idx}`}
+                  className={`accordion-panel ${isExpanded ? 'expanded' : 'collapsed'}`}
+                  role="region"
+                  aria-labelledby={`course-module-trigger-${idx}`}
+                  aria-hidden={!isExpanded}
+                >
                   <div style={{ minHeight: '0px' }}>
                     <div className="accordion-panel-content">
                       {module.description && <p className="module-desc">{module.description}</p>}

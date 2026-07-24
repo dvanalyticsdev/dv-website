@@ -335,8 +335,10 @@ export const EnrollmentPage: React.FC<EnrollmentPageProps> = ({ onBackHome, defa
                     onChange={handleInputChange}
                     placeholder="Enter your full name"
                     className={formErrors.name ? 'input-error' : ''}
+                    aria-invalid={Boolean(formErrors.name)}
+                    aria-describedby={formErrors.name ? 'name-error' : undefined}
                   />
-                  {formErrors.name && <span className="error-text">{formErrors.name}</span>}
+                  {formErrors.name && <span id="name-error" className="error-text" role="alert">{formErrors.name}</span>}
                 </div>
 
                 <div className="form-group-item">
@@ -349,8 +351,10 @@ export const EnrollmentPage: React.FC<EnrollmentPageProps> = ({ onBackHome, defa
                     onChange={handleInputChange}
                     placeholder="Enter your email address"
                     className={formErrors.email ? 'input-error' : ''}
+                    aria-invalid={Boolean(formErrors.email)}
+                    aria-describedby={formErrors.email ? 'email-error' : undefined}
                   />
-                  {formErrors.email && <span className="error-text">{formErrors.email}</span>}
+                  {formErrors.email && <span id="email-error" className="error-text" role="alert">{formErrors.email}</span>}
                 </div>
 
                 <div className="form-group-item">
@@ -363,8 +367,10 @@ export const EnrollmentPage: React.FC<EnrollmentPageProps> = ({ onBackHome, defa
                     onChange={handleInputChange}
                     placeholder="Enter your mobile number"
                     className={formErrors.phone ? 'input-error' : ''}
+                    aria-invalid={Boolean(formErrors.phone)}
+                    aria-describedby={formErrors.phone ? 'phone-error' : undefined}
                   />
-                  {formErrors.phone && <span className="error-text">{formErrors.phone}</span>}
+                  {formErrors.phone && <span id="phone-error" className="error-text" role="alert">{formErrors.phone}</span>}
                 </div>
 
                 <div className="form-group-item">
@@ -375,6 +381,8 @@ export const EnrollmentPage: React.FC<EnrollmentPageProps> = ({ onBackHome, defa
                     value={formData.qualification}
                     onChange={handleInputChange}
                     className={formErrors.qualification ? 'input-error' : ''}
+                    aria-invalid={Boolean(formErrors.qualification)}
+                    aria-describedby={formErrors.qualification ? 'qualification-error' : undefined}
                   >
                     <option value="">Select your highest qualification</option>
                     <option value="diploma">Diploma</option>
@@ -383,7 +391,7 @@ export const EnrollmentPage: React.FC<EnrollmentPageProps> = ({ onBackHome, defa
                     <option value="doctorate">Doctorate</option>
                     <option value="other">Other</option>
                   </select>
-                  {formErrors.qualification && <span className="error-text">{formErrors.qualification}</span>}
+                  {formErrors.qualification && <span id="qualification-error" className="error-text" role="alert">{formErrors.qualification}</span>}
                 </div>
 
                 <div className="form-group-item">
@@ -394,6 +402,8 @@ export const EnrollmentPage: React.FC<EnrollmentPageProps> = ({ onBackHome, defa
                     value={formData.experience}
                     onChange={handleInputChange}
                     className={formErrors.experience ? 'input-error' : ''}
+                    aria-invalid={Boolean(formErrors.experience)}
+                    aria-describedby={formErrors.experience ? 'experience-error' : undefined}
                   >
                     <option value="">Select your experience</option>
                     <option value="fresher">Fresher</option>
@@ -403,7 +413,7 @@ export const EnrollmentPage: React.FC<EnrollmentPageProps> = ({ onBackHome, defa
                     <option value="5-10-years">5–10 years</option>
                     <option value="more-than-10-years">More than 10 years</option>
                   </select>
-                  {formErrors.experience && <span className="error-text">{formErrors.experience}</span>}
+                  {formErrors.experience && <span id="experience-error" className="error-text" role="alert">{formErrors.experience}</span>}
                 </div>
 
                 <div className="form-group-item">
@@ -414,13 +424,15 @@ export const EnrollmentPage: React.FC<EnrollmentPageProps> = ({ onBackHome, defa
                     value={formData.state}
                     onChange={handleInputChange}
                     className={formErrors.state ? 'input-error' : ''}
+                    aria-invalid={Boolean(formErrors.state)}
+                    aria-describedby={formErrors.state ? 'state-error' : undefined}
                   >
                     <option value="">Select your state or location</option>
                     {locations.map((location) => (
                       <option key={location} value={location}>{location}</option>
                     ))}
                   </select>
-                  {formErrors.state && <span className="error-text">{formErrors.state}</span>}
+                  {formErrors.state && <span id="state-error" className="error-text" role="alert">{formErrors.state}</span>}
                 </div>
 
                 <div className="form-group-item">
@@ -431,11 +443,13 @@ export const EnrollmentPage: React.FC<EnrollmentPageProps> = ({ onBackHome, defa
                     value={formData.courseCategory}
                     onChange={handleInputChange}
                     className={formErrors.courseCategory ? 'input-error' : ''}
+                    aria-invalid={Boolean(formErrors.courseCategory)}
+                    aria-describedby={formErrors.courseCategory ? 'course-category-error' : undefined}
                   >
                     <option value="data-science">Data Science</option>
                     <option value="cybersecurity">Cybersecurity</option>
                   </select>
-                  {formErrors.courseCategory && <span className="error-text">{formErrors.courseCategory}</span>}
+                  {formErrors.courseCategory && <span id="course-category-error" className="error-text" role="alert">{formErrors.courseCategory}</span>}
                 </div>
 
                 <div className="form-group-item">
@@ -446,6 +460,8 @@ export const EnrollmentPage: React.FC<EnrollmentPageProps> = ({ onBackHome, defa
                     value={formData.course}
                     onChange={handleInputChange}
                     className={formErrors.course ? 'input-error' : ''}
+                    aria-invalid={Boolean(formErrors.course)}
+                    aria-describedby={formErrors.course ? 'course-error' : undefined}
                   >
                     {courses.map((course) => (
                       <option key={course.id} value={course.id}>
@@ -453,7 +469,7 @@ export const EnrollmentPage: React.FC<EnrollmentPageProps> = ({ onBackHome, defa
                       </option>
                     ))}
                   </select>
-                  {formErrors.course && <span className="error-text">{formErrors.course}</span>}
+                  {formErrors.course && <span id="course-error" className="error-text" role="alert">{formErrors.course}</span>}
                 </div>
 
                 <div className="form-group-item">
@@ -464,6 +480,8 @@ export const EnrollmentPage: React.FC<EnrollmentPageProps> = ({ onBackHome, defa
                     value={formData.startTimeline}
                     onChange={handleInputChange}
                     className={formErrors.startTimeline ? 'input-error' : ''}
+                    aria-invalid={Boolean(formErrors.startTimeline)}
+                    aria-describedby={formErrors.startTimeline ? 'start-timeline-error' : undefined}
                   >
                     <option value="">Select your preferred start timeline</option>
                     <option value="immediately">Immediately</option>
@@ -471,7 +489,7 @@ export const EnrollmentPage: React.FC<EnrollmentPageProps> = ({ onBackHome, defa
                     <option value="within-30-days">Within 30 days</option>
                     <option value="more-than-1-month">More than 1 month</option>
                   </select>
-                  {formErrors.startTimeline && <span className="error-text">{formErrors.startTimeline}</span>}
+                  {formErrors.startTimeline && <span id="start-timeline-error" className="error-text" role="alert">{formErrors.startTimeline}</span>}
                 </div>
                 <div className="form-group-item">
                   <label>Preferred Batch Mode *</label>

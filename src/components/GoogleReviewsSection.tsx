@@ -2,8 +2,14 @@ import React, { useEffect } from 'react';
 
 export const GoogleReviewsSection: React.FC = () => {
   useEffect(() => {
+    const scriptId = 'starwall-reviews-widget-script';
+    if (document.getElementById(scriptId)) {
+      return;
+    }
+
     // Dynamically create and load the Starwall widget script
     const script = document.createElement('script');
+    script.id = scriptId;
     script.src = "https://starwall.io/embed/PY8TAUeHoPn4Eo6z1oziP8wApJvqh4em/widget.js";
     script.async = true;
 
@@ -15,10 +21,8 @@ export const GoogleReviewsSection: React.FC = () => {
       document.body.appendChild(script);
     }
 
-    // Cleanup the script if the component unmounts
-    return () => {
-      script.remove();
-    };
+    // Keep the global widget script mounted so React Strict Mode and page
+    // transitions cannot execute its global declarations more than once.
   }, []);
 
   return (

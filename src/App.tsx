@@ -199,11 +199,14 @@ function App() {
         <section className="content-section" data-section="hero">
           <div className="hero-split">
             <div className="hero-left">
-              <h1 className="hero-heading-accent hero-front-page-heading">
+              <h1 className="hero-heading-accent hero-front-page-heading hero-desktop-heading">
                 Become an Industry-Ready Data Scientist &amp; Cybersecurity Professional
               </h1>
               
               <div className="hero-desc hero-copy-block">
+                <h1 className="hero-heading-accent hero-front-page-heading hero-mobile-heading">
+                  Become an Industry-Ready Data Scientist &amp; Cybersecurity Professional
+                </h1>
                 <h2 className="hero-copy-title">Get an Expert in:</h2>
                 <ul className="hero-expertise-list">
                   <li>Data Analytics + AI</li>

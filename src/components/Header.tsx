@@ -98,6 +98,9 @@ export const Header: React.FC<HeaderProps> = ({ onNavClick, activePage = 'home' 
         <a
           href="#courses"
           className={`dropdown-trigger ${coursesDropdownOpen ? 'open' : ''} ${activePage.startsWith('course-') ? 'active' : ''}`}
+          aria-haspopup="true"
+          aria-expanded={coursesDropdownOpen}
+          aria-controls="desktop-courses-menu"
           onClick={(e) => {
             e.preventDefault();
             setCoursesDropdownOpen(!coursesDropdownOpen);
@@ -109,7 +112,7 @@ export const Header: React.FC<HeaderProps> = ({ onNavClick, activePage = 'home' 
           </svg>
         </a>
 
-        <div className={`courses-dropdown-menu ${coursesDropdownOpen ? 'show' : ''}`}>
+        <div id="desktop-courses-menu" className={`courses-dropdown-menu ${coursesDropdownOpen ? 'show' : ''}`}>
           {coursesList.map((course) => (
             <a
               key={course.id}
@@ -138,6 +141,9 @@ export const Header: React.FC<HeaderProps> = ({ onNavClick, activePage = 'home' 
         <a
           href="#services"
           className={`dropdown-trigger ${servicesDropdownOpen ? 'open' : ''} ${activePage === 'services' || activePage.startsWith('service-') ? 'active' : ''}`}
+          aria-haspopup="true"
+          aria-expanded={servicesDropdownOpen}
+          aria-controls="desktop-services-menu"
           onClick={(e) => {
             e.preventDefault();
             if (onNavClick) onNavClick('services');
@@ -149,7 +155,7 @@ export const Header: React.FC<HeaderProps> = ({ onNavClick, activePage = 'home' 
           </svg>
         </a>
 
-        <div className={`services-dropdown-menu ${servicesDropdownOpen ? 'show' : ''}`}>
+        <div id="desktop-services-menu" className={`services-dropdown-menu ${servicesDropdownOpen ? 'show' : ''}`}>
           {servicesList.map((service) => (
             <a
               key={service.id}
@@ -269,6 +275,9 @@ export const Header: React.FC<HeaderProps> = ({ onNavClick, activePage = 'home' 
               <a
                 href="#courses"
                 className={`dropdown-trigger ${mobileCoursesOpen ? 'open' : ''}`}
+                aria-haspopup="true"
+                aria-expanded={mobileCoursesOpen}
+                aria-controls="mobile-courses-menu"
                 onClick={(e) => {
                   e.preventDefault();
                   setMobileCoursesOpen(!mobileCoursesOpen);
@@ -281,7 +290,7 @@ export const Header: React.FC<HeaderProps> = ({ onNavClick, activePage = 'home' 
                 </svg>
               </a>
 
-              <div className={`courses-dropdown-menu mobile-courses-dropdown ${mobileCoursesOpen ? 'show' : ''}`}>
+              <div id="mobile-courses-menu" className={`courses-dropdown-menu mobile-courses-dropdown ${mobileCoursesOpen ? 'show' : ''}`}>
                 {coursesList.map((course) => (
                   <a
                     key={course.id}
@@ -312,6 +321,9 @@ export const Header: React.FC<HeaderProps> = ({ onNavClick, activePage = 'home' 
                 <a
                   href="#services"
                   className={`dropdown-trigger ${mobileServicesOpen ? 'open' : ''} ${activePage.startsWith('service-') || activePage === 'services' ? 'active' : ''}`}
+                  aria-haspopup="true"
+                  aria-expanded={mobileServicesOpen}
+                  aria-controls="mobile-services-menu"
                   onClick={(e) => {
                     e.preventDefault();
                   }}
@@ -322,7 +334,7 @@ export const Header: React.FC<HeaderProps> = ({ onNavClick, activePage = 'home' 
                   </svg>
                 </a>
 
-                <div className={`services-dropdown-menu ${mobileServicesOpen ? 'show' : ''}`}>
+                <div id="mobile-services-menu" className={`services-dropdown-menu ${mobileServicesOpen ? 'show' : ''}`}>
                   {servicesList.map((service) => (
                     <a
                       key={service.id}

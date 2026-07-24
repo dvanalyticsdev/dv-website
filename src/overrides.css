@@ -1549,7 +1549,7 @@
   margin-top: -3rem !important;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 900px) {
   .blog-back-btn-row {
     margin-top: -2rem !important;
   }
@@ -1610,6 +1610,10 @@
   }
 }
 
+.hero-mobile-heading {
+  display: none;
+}
+
 /* Force dark blue background and white text for hero-left on all mobile/tablet views under 768px */
 @media (max-width: 768px) {
   .hero-left {
@@ -1637,6 +1641,14 @@
     margin-bottom: 1.25rem !important;
   }
 
+  .hero-desktop-heading {
+    display: none;
+  }
+
+  .hero-mobile-heading {
+    display: block;
+  }
+
   .hero-heading-accent .hero-heading-part-1,
   .hero-heading-accent .hero-heading-part-2,
   .hero-heading-accent .hero-heading-part-3,
@@ -1651,6 +1663,11 @@
   .hero-left > .hero-desc:nth-of-type(1) {
     order: 1 !important;
     margin-bottom: 0 !important;
+  }
+
+  .hero-left > .hero-desc:nth-of-type(1) > .hero-copy-title {
+    width: 100%;
+    text-align: center;
   }
 
   /* Target the second hero-desc (Journey block) and set order to 3 */
@@ -1779,7 +1796,7 @@
 }
 
 /* 3. Mobile Specific Overrides */
-@media (max-width: 768px) {
+@media (max-width: 900px) {
   /* Mobile Courses Dropdown Trigger Button */
   .mobile-courses-container .dropdown-trigger:hover,
   .mobile-courses-container .dropdown-trigger.open {
@@ -3108,4 +3125,77 @@ button {
   width: 0.42rem;
   height: 0.42rem;
   border-radius: 50%;
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .hero-expertise-list li {
+    padding-left: 0.25rem;
+  }
+
+  .hero-expertise-list li::after {
+    display: none;
+  }
+}
+
+/* Responsive QA: keyboard controls and reliable touch targets. */
+.accordion-trigger {
+  width: 100%;
+  border: 0;
+  font-family: inherit;
+  text-align: left;
+}
+
+@media (max-width: 900px) {
+  .mobile-courses-container > .dropdown-trigger,
+  .mobile-nav-panel .nav-item > a,
+  .mobile-enroll-btn,
+  .dropdown-item-link {
+    min-height: 44px;
+  }
+
+  .mobile-courses-container > .dropdown-trigger {
+    padding: 0.55rem 0.75rem;
+    border-radius: 12px;
+    white-space: nowrap;
+  }
+
+  .mobile-courses-dropdown {
+    width: min(290px, calc(100vw - 2rem)) !important;
+    max-height: min(65vh, 520px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  .slideshow-nav-btn,
+  .side-slider-arrow {
+    width: 44px !important;
+    height: 44px !important;
+  }
+
+  .slideshow-nav-btn {
+    opacity: 0.8;
+  }
+
+  .faq-tab-btn,
+  .career-card-top,
+  .view-details-btn,
+  .roadmap-btn,
+  .back-btn-link,
+  .chatbot-restore-pill,
+  .reviews-widget__carousel-btn {
+    min-height: 44px;
+  }
+
+  .reviews-widget__carousel-btn {
+    min-width: 44px;
+  }
+
+  .back-btn-link {
+    padding-block: 0.65rem;
+  }
+
+  .chatbot-minimize-btn {
+    width: 44px;
+    height: 44px;
+  }
 }

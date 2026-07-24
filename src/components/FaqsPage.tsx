@@ -319,6 +319,7 @@ export const FaqsPage: React.FC<FaqsPageProps> = ({ onEnroll }) => {
               <button
                 key={idx}
                 className={`faq-tab-btn ${activeCategory === idx ? 'active' : ''}`}
+                aria-pressed={activeCategory === idx}
                 onClick={() => {
                   setActiveCategory(idx);
                   setExpandedFaq(null); // Reset open accordion
@@ -339,7 +340,13 @@ export const FaqsPage: React.FC<FaqsPageProps> = ({ onEnroll }) => {
                 const isOpen = expandedFaq === item.id;
                 return (
                   <div key={item.id} className={`faq-accordion-card ${isOpen ? 'open' : ''}`}>
-                    <button className="faq-question-btn" onClick={() => toggleFaq(item.id)}>
+                    <button
+                      className="faq-question-btn"
+                      id={`faq-question-${item.id}`}
+                      aria-expanded={isOpen}
+                      aria-controls={`faq-answer-${item.id}`}
+                      onClick={() => toggleFaq(item.id)}
+                    >
                       <span>{item.question}</span>
                       <span className="faq-toggle-icon">
                         {isOpen ? (
@@ -355,7 +362,13 @@ export const FaqsPage: React.FC<FaqsPageProps> = ({ onEnroll }) => {
                       </span>
                     </button>
                     
-                    <div className={`faq-answer-panel ${isOpen ? 'open' : 'closed'}`}>
+                    <div
+                      id={`faq-answer-${item.id}`}
+                      className={`faq-answer-panel ${isOpen ? 'open' : 'closed'}`}
+                      role="region"
+                      aria-labelledby={`faq-question-${item.id}`}
+                      aria-hidden={!isOpen}
+                    >
                       <div style={{ minHeight: '0px' }}>
                         <div className="faq-answer-content">
                           {item.answer}
