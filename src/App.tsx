@@ -211,8 +211,11 @@ function App() {
 
             <div className="hero-left">
               <h1 className="hero-heading-accent hero-front-page-heading hero-desktop-heading">
-                Become an Industry-Ready Data Scientist &amp; Cybersecurity Professional
+                BECOME AN INDUSTRY-READY EXPERT DATA SCIENTIST AND CYBERSECURITY PROFESSIONAL
               </h1>
+              <h2 className="hero-desktop-subtitle">
+                ANY GRADUATE CAN BE AN IT PROFESSIONAL
+              </h2>
               
               <div className="hero-desc hero-copy-block">
                 <h1 className="hero-heading-accent hero-front-page-heading hero-mobile-heading">

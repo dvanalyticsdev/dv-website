@@ -710,6 +710,31 @@ a {
   line-height: 1.15;
 }
 
+.hero-desktop-subtitle {
+  display: none;
+}
+
+@media (min-width: 769px) {
+  .hero-desktop-heading {
+    margin-bottom: 0.75rem;
+    font-size: clamp(2.05rem, 2.7vw, 2.6rem);
+    line-height: 1.08;
+    text-wrap: balance;
+  }
+
+  .hero-desktop-subtitle {
+    display: block;
+    margin: 0 0 1.75rem;
+    color: #ef5323;
+    font-family: var(--font-family-heading);
+    font-size: clamp(1.05rem, 1.25vw, 1.3rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.25;
+    text-wrap: balance;
+  }
+}
+
 .hero-copy-block {
   margin-bottom: 1rem;
 }
