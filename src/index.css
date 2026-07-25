@@ -101,6 +101,13 @@ a {
   min-height: 80px;
 }
 
+.header-course-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-left: 0.25rem;
+}
+
 .mobile-header-stack {
   display: none;
 }
@@ -542,6 +549,12 @@ a {
     padding: 0 0.85rem 0.5rem 0.85rem;
   }
 
+  .mobile-course-actions {
+    display: grid;
+    gap: 0.7rem;
+    padding: 0 0.85rem 0.4rem 0.85rem;
+  }
+
   .mobile-enroll-btn {
     width: 100% !important;
     display: flex !important;
@@ -559,6 +572,10 @@ a {
 
   .mobile-enroll-btn:hover {
     background: #0066cc;
+  }
+
+  .mobile-brochure-btn {
+    width: 100%;
   }
 
   .mobile-nav-panel {
@@ -671,7 +688,7 @@ a {
   display: flex;
   justify-content: center;
   align-items: center;
-  border-left: 1px solid #d1d5db;
+  border-left: 1px solid #94a3b8;
   padding-left: 2rem;
 }
 
@@ -994,6 +1011,10 @@ a {
   animation: float 6s ease-in-out infinite;
 }
 
+.hero-image-container-home {
+  transform: translate(-18px, -18px);
+}
+
 .hero-image-img {
   width: 100%;
   height: auto;
@@ -1032,6 +1053,10 @@ a {
   
   .hero-image-container {
     max-width: 360px;
+  }
+
+  .hero-image-container-home {
+    transform: none;
   }
   
   .hero-badges-row {
@@ -3511,10 +3536,44 @@ a {
   white-space: nowrap;
 }
 
+.btn-header-brochure {
+  background-color: #ffffff;
+  color: #051f40;
+  border: 1px solid rgba(5, 31, 64, 0.18);
+  border-radius: 100px;
+  padding: 0.6rem 1.25rem;
+  font-size: var(--font-size-small);
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 28, 61, 0.08);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  white-space: nowrap;
+}
+
 .btn-enroll-header:hover {
   background-color: #001229;
   transform: translateY(-1.5px);
   box-shadow: 0 8px 20px rgba(0, 28, 61, 0.3);
+}
+
+.btn-header-brochure:hover {
+  background-color: #f8fafc;
+  transform: translateY(-1.5px);
+  box-shadow: 0 8px 20px rgba(0, 28, 61, 0.14);
+}
+
+.btn-header-brochure:disabled,
+.btn-download-syllabus:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.btn-header-brochure:disabled:hover,
+.btn-download-syllabus:disabled:hover {
+  transform: none;
+  box-shadow: none;
 }
 
 .btn-enroll-header:active {
@@ -3528,6 +3587,130 @@ a {
     text-align: center;
     padding: 0.55rem 1.4rem;
     font-size: var(--font-size-small);
+  }
+
+  .btn-header-brochure {
+    width: 100%;
+    max-width: 280px;
+    text-align: center;
+    padding: 0.55rem 1.4rem;
+    font-size: var(--font-size-small);
+  }
+}
+
+.brochure-modal-box {
+  width: min(420px, calc(100vw - 32px));
+  max-width: 420px;
+  border-radius: 22px;
+  max-height: none;
+  padding: 1.5rem 1.5rem 1.3rem;
+  overflow: visible;
+}
+
+.brochure-modal-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  padding-top: 0.15rem;
+}
+
+.brochure-modal-content h2 {
+  font-size: 1.55rem;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  color: #0f172a;
+}
+
+.brochure-course-pill {
+  display: inline-flex;
+  align-self: flex-start;
+  max-width: 100%;
+  padding: 0.55rem 0.8rem;
+  border-radius: 12px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  color: #475569;
+  font-size: 0.82rem;
+  font-weight: 600;
+  line-height: 1.45;
+}
+
+.brochure-modal-badge {
+  display: inline-flex;
+  align-self: flex-start;
+  padding: 0.32rem 0.72rem;
+  border-radius: 999px;
+  background: rgba(239, 83, 35, 0.12);
+  color: #ef5323;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+
+.brochure-support-text {
+  color: #64748b;
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+
+.brochure-form {
+  display: grid;
+  gap: 0.8rem;
+  margin-top: 0.2rem;
+}
+
+.brochure-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.brochure-form-group label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.brochure-form-group input {
+  width: 100%;
+  border: 1px solid #dbe4ee;
+  border-radius: 12px;
+  padding: 0.75rem 0.9rem;
+  font-size: 0.9rem;
+  color: #0f172a;
+  background: #ffffff;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.brochure-form-group input:focus {
+  border-color: rgba(239, 83, 35, 0.7);
+  box-shadow: 0 0 0 4px rgba(239, 83, 35, 0.12);
+}
+
+.brochure-submit-btn {
+  justify-content: center;
+  width: 100%;
+  margin-top: 0.15rem;
+  padding: 0.8rem 1rem;
+  border-radius: 14px;
+  font-size: 0.92rem;
+  box-shadow: 0 12px 24px rgba(239, 83, 35, 0.18);
+}
+
+.brochure-success-state {
+  align-items: flex-start;
+}
+
+@media (max-width: 640px) {
+  .brochure-modal-box {
+    width: min(360px, calc(100vw - 24px));
+    max-width: calc(100vw - 24px);
+    padding: 1.25rem 1.15rem 1.1rem;
+  }
+
+  .brochure-modal-content h2 {
+    font-size: 1.35rem;
   }
 }
 

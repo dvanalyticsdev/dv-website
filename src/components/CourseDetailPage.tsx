@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { coursesData } from '../data/coursesData';
+import { getCourseMeta } from '../data/courseMeta';
 import { useMagneticEffect } from '../hooks/useMagneticEffect';
 import { AnimatedHeroGraphic } from './AnimatedHeroGraphic';
 
@@ -147,10 +148,27 @@ interface CourseDetailPageProps {
   courseId: string;
   onBackHome: () => void;
   onEnroll: () => void;
+  onDownloadBrochure: () => void;
 }
 
-export const CourseDetailPage: React.FC<CourseDetailPageProps> = ({ courseId, onBackHome, onEnroll }) => {
+const normalizeProjectHeading = (domainLabel: string) => {
+  const cleanedLabel = domainLabel
+    .replace(/^tier\s*\d+\s*capstone\s*(project\s*\d+)?\s*[-—:]\s*/i, '')
+    .replace(/^industry\s*project\s*\d+\s*[-—:]\s*/i, '')
+    .replace(/\s+projects?$/i, '')
+    .trim();
+
+  return `Project Focus: ${cleanedLabel}`;
+};
+
+export const CourseDetailPage: React.FC<CourseDetailPageProps> = ({
+  courseId,
+  onBackHome,
+  onEnroll,
+  onDownloadBrochure,
+}) => {
   const course = coursesData[courseId.toUpperCase()];
+  const courseMeta = getCourseMeta(courseId);
   const [expandedModule, setExpandedModule] = useState<number | null>(0);
   const [isMobileView, setIsMobileView] = useState(
     () => typeof window !== 'undefined' && window.matchMedia('(max-width: 768px)').matches
@@ -273,7 +291,7 @@ export const CourseDetailPage: React.FC<CourseDetailPageProps> = ({ courseId, on
       
       {/* 1. Hero Banner Section */}
       {heroImages[courseId.toLowerCase()] ? (
-        <section className="course-hero-full" onClick={onEnroll} style={{ cursor: 'pointer', width: '100%', overflow: 'hidden' }}>
+        <section className="course-hero-full" style={{ width: '100%', overflow: 'hidden' }}>
           <img 
             src={heroImages[courseId.toLowerCase()]} 
             alt={`${course.title} Hero`} 
@@ -301,12 +319,17 @@ export const CourseDetailPage: React.FC<CourseDetailPageProps> = ({ courseId, on
 
               <div className="hero-cta-group">
                 <button ref={heroEnrollRef} className="btn btn-enroll-main" onClick={onEnroll}>Enroll Now</button>
-                <a href="/APIDS-Brochure.pdf" download="APIDS-Brochure.pdf" className="btn btn-download-syllabus">
+                <button
+                  type="button"
+                  className="btn btn-download-syllabus"
+                  onClick={onDownloadBrochure}
+                  disabled={!courseMeta?.brochurePath}
+                >
                   <svg viewBox="0 0 24 24" className="download-icon">
                     <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" stroke="currentColor" strokeWidth="2.5" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
                   </svg>
-                  Download Brochure
-                </a>
+                  {courseMeta?.brochurePath ? 'Download Brochure' : 'Brochure Coming Soon'}
+                </button>
               </div>
             </div>
             <div className="hero-right">
@@ -486,7 +509,7 @@ export const CourseDetailPage: React.FC<CourseDetailPageProps> = ({ courseId, on
                 onClick={() => toggleProjectDomain(idx)}
                 aria-expanded={isExpanded}
               >
-                <h3 className="domain-title">{domain.domain}</h3>
+                <h3 className="domain-title">{normalizeProjectHeading(domain.domain)}</h3>
                 {isMobileView && (
                   <span className={`mobile-collapsible-icon ${isExpanded ? 'is-open' : ''}`} aria-hidden="true">
                     <svg viewBox="0 0 24 24">

@@ -1,26 +1,31 @@
 import React, { useState, useEffect } from 'react';
+import { courseCatalog, getCourseMeta } from '../data/courseMeta';
 
 interface HeaderProps {
   onNavClick?: (page: string) => void;
   activePage?: string;
+  onCourseEnrollClick?: (courseId: string) => void;
+  onCourseBrochureClick?: (courseId: string) => void;
 }
 
-export const Header: React.FC<HeaderProps> = ({ onNavClick, activePage = 'home' }) => {
+export const Header: React.FC<HeaderProps> = ({
+  onNavClick,
+  activePage = 'home',
+  onCourseEnrollClick,
+  onCourseBrochureClick,
+}) => {
   const [coursesDropdownOpen, setCoursesDropdownOpen] = useState(false);
   const [servicesDropdownOpen, setServicesDropdownOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
   const [mobileCoursesOpen, setMobileCoursesOpen] = useState(false);
 
-  const coursesList = [
-    { id: 'course-apids', label: 'Advanced Program in Industrial Data Science & AI (APIDS)' },
-    { id: 'course-apida', label: 'Advanced Program in Industrial Data Analytics & AI (APIDA)' },
-    { id: 'course-specialist', label: 'Data Analytics Specialist (DAS)' },
-    { id: 'course-aiml', label: 'Advanced AI/ML with Generative AI & Agentic AI (AIML-GAA)' },
-    { id: 'course-genai', label: 'Master Program in Generative AI & Agentic AI (MPGAA)' },
-    { id: 'course-apcs', label: 'Advanced Program in Cybersecurity & Forensics (APCF)' },
-    { id: 'course-days7_genai', label: '7 Days Gen AI & Agentic AI Hands-on Master Program' }
-  ];
+  const coursesList = courseCatalog.map((course) => ({
+    id: `course-${course.id}`,
+    label: course.label,
+  }));
+  const activeCourseId = activePage.startsWith('course-') ? activePage.replace('course-', '') : null;
+  const activeCourse = getCourseMeta(activeCourseId ?? undefined);
 
   const servicesList = [
     { id: 'service-aics', label: 'AI Consulting Solutions' },
@@ -232,14 +237,34 @@ export const Header: React.FC<HeaderProps> = ({ onNavClick, activePage = 'home' 
             {renderNavList()}
           </nav>
 
-          <button
-            className="btn-enroll-header"
-            onClick={() => {
-              if (onNavClick) onNavClick('enroll');
-            }}
-          >
-            Enroll Now
-          </button>
+          <div className="header-course-actions">
+            {activeCourse ? (
+              <>
+                <button
+                  className="btn-enroll-header"
+                  onClick={() => onCourseEnrollClick?.(activeCourse.id)}
+                >
+                  Enroll Now
+                </button>
+                <button
+                  className="btn-header-brochure"
+                  onClick={() => onCourseBrochureClick?.(activeCourse.id)}
+                  disabled={!activeCourse.brochurePath}
+                >
+                  {activeCourse.brochurePath ? 'Download Brochure' : 'Brochure Coming Soon'}
+                </button>
+              </>
+            ) : (
+              <button
+                className="btn-enroll-header"
+                onClick={() => {
+                  if (onNavClick) onNavClick('enroll');
+                }}
+              >
+                Enroll Now
+              </button>
+            )}
+          </div>
         </div>
 
         <div className="mobile-header-stack">
@@ -312,6 +337,21 @@ export const Header: React.FC<HeaderProps> = ({ onNavClick, activePage = 'home' 
           {/* Drawer Menu Panel */}
           <nav className={`nav-panel mobile-nav-panel ${mobileMenuOpen ? 'mobile-open' : ''}`}>
             <ul className="nav-list">
+              {activeCourse ? (
+                <li className="nav-item mobile-course-actions">
+                  <button
+                    className="btn-header-brochure mobile-brochure-btn"
+                    onClick={() => {
+                      setMobileMenuOpen(false);
+                      onCourseBrochureClick?.(activeCourse.id);
+                    }}
+                    disabled={!activeCourse.brochurePath}
+                  >
+                    {activeCourse.brochurePath ? 'Download Brochure' : 'Brochure Coming Soon'}
+                  </button>
+                </li>
+              ) : null}
+
               <li 
                 className="nav-item dropdown-container services-dropdown-container"
                 onClick={() => {

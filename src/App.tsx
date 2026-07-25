@@ -18,6 +18,7 @@ import { ChatbotWidget } from './components/ChatbotWidget';
 import { useScrollReveal } from './hooks/useScrollReveal';
 import { CompaniesSection } from './components/CompaniesSection';
 import { AauModal } from './components/AauModal';
+import { BrochureLeadModal } from './components/BrochureLeadModal';
 import { SampleVideoSection } from './components/SampleVideoSection';
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
   const [robotClicked, setRobotClicked] = useState(false);
   const [hoveredSection, setHoveredSection] = useState<string | null>(null);
   const [isAauModalOpen, setIsAauModalOpen] = useState(false);
+  const [brochureCourseId, setBrochureCourseId] = useState<string | null>(null);
 
   // Global mousemove-based section detection
   const handleMouseMove = useCallback((e: MouseEvent) => {
@@ -110,6 +112,10 @@ function App() {
     }
   };
 
+  const handleOpenBrochure = (courseId: string) => {
+    setBrochureCourseId(courseId);
+  };
+
   const renderContent = () => {
     if (activePage.startsWith('course-')) {
       const courseId = activePage.replace('course-', '');
@@ -118,7 +124,8 @@ function App() {
           <CourseDetailPage 
             courseId={courseId} 
             onBackHome={() => setActivePage('home')} 
-            onEnroll={() => setActivePage(`enroll-${courseId}`)} 
+            onEnroll={() => setActivePage(`enroll-${courseId}`)}
+            onDownloadBrochure={() => handleOpenBrochure(courseId)}
           />
         </div>
       );
@@ -198,16 +205,18 @@ function App() {
       <div className="page-wrapper container">
         <section className="content-section" data-section="hero">
           <div className="hero-split">
-            <img
-              src="/mobile-industry-ready-poster.jpg"
-              alt="Become an industry-ready data scientist and cybersecurity professional"
-              className="hero-mobile-poster"
-              width="759"
-              height="1600"
-              loading="eager"
-              fetchPriority="high"
-              decoding="async"
-            />
+            <div className="hero-mobile-poster-frame">
+              <img
+                src="/mobile-industry-ready-poster.jpg"
+                alt="Become an industry-ready data scientist and cybersecurity professional"
+                className="hero-mobile-poster"
+                width="759"
+                height="1600"
+                loading="eager"
+                fetchPriority="high"
+                decoding="async"
+              />
+            </div>
 
             <div className="hero-left">
               <h1 className="hero-heading-accent hero-front-page-heading hero-desktop-heading">
@@ -239,9 +248,15 @@ function App() {
             </div>
 
             <div className="hero-right">
-              <div className="hero-image-container">
+              <div className="hero-image-container hero-image-container-home">
                 <AnimatedHeroGraphic />
               </div>
+            </div>
+          </div>
+
+          <div className="hero-mobile-slideshow">
+            <div className="hero-image-container">
+              <AnimatedHeroGraphic />
             </div>
           </div>
 
@@ -309,9 +324,14 @@ function App() {
   };
 
   return (
-    <div ref={scrollRevealRef}>
+      <div ref={scrollRevealRef}>
       <div className="page-progress-bar" key={activePage}></div>
-      <Header onNavClick={handleNavClick} activePage={activePage} />
+      <Header
+        onNavClick={handleNavClick}
+        activePage={activePage}
+        onCourseEnrollClick={(courseId) => setActivePage(`enroll-${courseId}`)}
+        onCourseBrochureClick={handleOpenBrochure}
+      />
       <main style={{ flexGrow: 1 }}>
         <div className="page-transition-wrapper" key={activePage}>
           {renderContent()}
@@ -333,6 +353,11 @@ function App() {
           setIsAauModalOpen(false);
           setActivePage('course-' + courseId);
         }}
+      />
+      <BrochureLeadModal
+        isOpen={Boolean(brochureCourseId)}
+        courseId={brochureCourseId}
+        onClose={() => setBrochureCourseId(null)}
       />
     </div>
   );

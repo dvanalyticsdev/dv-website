@@ -81,7 +81,7 @@ export const SampleVideoSection: React.FC<SampleVideoSectionProps> = ({ onEnroll
                 <div className="rating-score">4.9</div>
                 <div className="rating-details">
                   <div className="rating-label">STAR RATING</div>
-                  <div className="rating-students">9000+ Students Placed</div>
+                  <div className="rating-students">10000+ Students Placed</div>
                 </div>
                 <div className="rating-stars">
                   <svg className="star-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
