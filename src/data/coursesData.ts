@@ -10,9 +10,14 @@ export interface CourseModule {
   sections: SubSection[];
 }
 
+export interface IndustryProject {
+  title: string;
+  description?: string;
+}
+
 export interface ProjectDomain {
   domain: string;
-  projects: string[];
+  projects: Array<IndustryProject | string>;
 }
 
 export interface CareerLevel {
@@ -371,49 +376,153 @@ export const coursesData: Record<string, DetailedCourse> = {
     ],
     industryProjects: [
       {
-        domain: 'Banking & Financial Services',
+        domain: 'Banking & Finance',
         projects: [
-          'Credit Risk Analytics',
-          'Loan Default Prediction',
-          'Collection & Recovery Analytics',
+          {
+            title: 'Credit Risk Application Scorecard',
+            description: 'Develop Machine Learning models to predict whether a loan applicant is likely to repay or default using customer profile, income, credit bureau score, and financial history.',
+          },
+          {
+            title: 'IFRS 9 Expected Credit Loss (ECL)',
+            description: 'Build Probability of Default (PD), Loss Given Default (LGD), and Exposure at Default (EAD) models to estimate Expected Credit Loss for regulatory reporting and portfolio risk management.',
+          },
+          {
+            title: 'Credit Card Fraud Detection',
+            description: 'Detect fraudulent card transactions in real time using anomaly detection, Deep Learning, and behavioral analytics to minimize financial losses.',
+          },
+          {
+            title: 'Anti-Money Laundering (AML) Analytics',
+            description: 'Identify suspicious financial transactions, money laundering patterns, and high-risk customers using AI-driven transaction monitoring and network analysis.',
+          },
+          {
+            title: 'Agentic AI Loan Processing System',
+            description: 'Develop autonomous AI agents that automate document verification, credit assessment, loan approval workflows, customer communication, and compliance checks.',
+          },
         ],
       },
       {
         domain: 'Telecom',
         projects: [
-          'Customer Churn Prediction',
-          'Revenue Analytics',
-          'Customer Segmentation',
+          {
+            title: 'Customer Churn Prediction',
+            description: 'Predict subscribers likely to switch to competitors using usage behavior, recharge history, complaints, and service quality metrics.',
+          },
+          {
+            title: 'Network Fault Prediction',
+            description: 'Predict telecom network failures before they occur using equipment logs, IoT sensor data, and predictive maintenance algorithms.',
+          },
+          {
+            title: 'Telecom Fraud Detection',
+            description: 'Detect SIM fraud, subscription fraud, recharge fraud, and abnormal call patterns using Machine Learning and anomaly detection techniques.',
+          },
+          {
+            title: 'Customer Lifetime Value (CLV) Prediction',
+            description: 'Estimate the long-term value of each telecom customer to optimize retention strategies and marketing investments.',
+          },
+          {
+            title: 'Agentic AI Telecom Service Desk',
+            description: 'Build AI agents to automate complaint registration, technical troubleshooting, ticket routing, service updates, and customer support.',
+          },
         ],
       },
       {
-        domain: 'Retail & E-Commerce',
+        domain: 'E-Commerce',
         projects: [
-          'Sales Forecasting',
-          'Customer Analytics',
-          'Recommendation Engine',
+          {
+            title: 'Product Recommendation Engine',
+            description: 'Recommend personalized products using collaborative filtering, customer browsing history, purchase behavior, and AI recommendation algorithms.',
+          },
+          {
+            title: 'Customer Churn Prediction',
+            description: 'Predict customers who are likely to stop shopping and recommend personalized offers to improve customer retention.',
+          },
+          {
+            title: 'Dynamic Pricing Optimization',
+            description: 'Optimize product pricing based on demand, competitor pricing, customer behavior, and inventory levels using AI models.',
+          },
+          {
+            title: 'Demand Forecasting',
+            description: 'Forecast future product demand to optimize inventory planning, procurement, and warehouse management.',
+          },
+          {
+            title: 'AI Shopping Assistant (RAG)',
+            description: 'Develop a Generative AI assistant using Retrieval-Augmented Generation (RAG) to answer customer queries about products, orders, returns, and promotions.',
+          },
         ],
       },
       {
         domain: 'Healthcare',
         projects: [
-          'Patient Analytics',
-          'Claims Analytics',
+          {
+            title: 'Disease Risk Prediction',
+            description: 'Predict the likelihood of diseases such as diabetes, heart disease, cancer, and stroke using patient clinical and lifestyle data.',
+          },
+          {
+            title: 'Medical Image Analysis',
+            description: 'Detect diseases from X-rays, CT scans, MRI scans, and pathology images using Deep Learning and Computer Vision techniques.',
+          },
+          {
+            title: 'Patient Readmission Prediction',
+            description: 'Identify patients at risk of hospital readmission to improve treatment planning and reduce healthcare costs.',
+          },
+          {
+            title: 'Clinical Decision Support System',
+            description: 'Develop AI-powered systems that assist doctors with diagnosis, treatment recommendations, and patient risk assessment.',
+          },
+          {
+            title: 'Agentic AI Clinical Workflow Automation',
+            description: 'Build autonomous AI agents to automate appointment scheduling, patient follow-ups, report generation, and hospital workflow management.',
+          },
         ],
       },
       {
-        domain: 'Manufacturing',
+        domain: 'Manufacturing & Automobile',
         projects: [
-          'Predictive Maintenance',
-          'Quality Analytics',
+          {
+            title: 'Predictive Maintenance',
+            description: 'Predict equipment failures before breakdown using IoT sensors, machine data, and Machine Learning models to reduce downtime.',
+          },
+          {
+            title: 'Quality Defect Detection',
+            description: 'Automate product quality inspection using Computer Vision and Deep Learning to identify manufacturing defects in real time.',
+          },
+          {
+            title: 'Supply Chain Analytics',
+            description: 'Optimize procurement, inventory, logistics, and supplier performance using predictive analytics and AI.',
+          },
+          {
+            title: 'Digital Twin Analytics',
+            description: 'Create virtual AI-powered replicas of machines and production lines to simulate, monitor, and optimize manufacturing operations.',
+          },
+          {
+            title: 'Connected Vehicle Analytics',
+            description: 'Analyze telematics, GPS, and vehicle sensor data to improve safety, predictive maintenance, fleet management, and customer experience.',
+          },
         ],
       },
       {
-        domain: 'Generative AI',
+        domain: 'Pharmaceutical Industry',
         projects: [
-          'Enterprise Knowledge Assistant',
-          'AI Chatbot Development',
-          'Agentic AI Automation Platform',
+          {
+            title: 'Drug Discovery Analytics',
+            description: 'Use AI and Machine Learning to identify potential drug molecules, predict drug interactions, and accelerate the drug discovery process.',
+          },
+          {
+            title: 'Clinical Trial Success Prediction',
+            description: 'Predict the probability of successful clinical trial outcomes using historical trial data, patient characteristics, and treatment information.',
+          },
+          {
+            title: 'Pharmacovigilance Analytics',
+            description: 'Detect drug safety issues by analyzing adverse event reports, medical literature, and patient feedback using AI and NLP.',
+          },
+          {
+            title: 'Adverse Drug Reaction (ADR) Prediction',
+            description: 'Predict patients who are at risk of experiencing adverse drug reactions using clinical history and pharmacological data.',
+          },
+          {
+            title: 'Agentic AI Pharmacovigilance Automation',
+            description: 'Develop autonomous AI agents that process adverse event reports, generate regulatory documentation, prioritize safety cases, and automate pharmacovigilance workflows.',
+          },
         ],
       },
     ],
@@ -695,43 +804,153 @@ export const coursesData: Record<string, DetailedCourse> = {
     ],
     industryProjects: [
       {
-        domain: 'Banking & Financial Services',
+        domain: 'Banking & Finance Analytics & AI',
         projects: [
-          'Credit Risk Analytics',
-          'Loan Portfolio Analytics',
-          'Collections Analytics',
+          {
+            title: 'Credit Risk Analytics & Scorecard Development',
+            description: 'Develop application and behavioral scorecards to predict customer default risk using historical lending and credit bureau data.',
+          },
+          {
+            title: 'IFRS 9 Expected Credit Loss (ECL) Analytics',
+            description: 'Build Probability of Default (PD), Loss Given Default (LGD), and Exposure at Default (EAD) models for regulatory credit loss estimation.',
+          },
+          {
+            title: 'Fraud Detection & Transaction Monitoring',
+            description: 'Identify suspicious banking transactions using machine learning and anomaly detection to reduce financial fraud.',
+          },
+          {
+            title: 'Collections & Recovery Analytics',
+            description: 'Analyze delinquency trends, DPD buckets, collection efficiency, and recovery performance to optimize collection strategies.',
+          },
+          {
+            title: 'Gen AI Loan Processing Assistant',
+            description: 'Develop an AI-powered assistant to automate document verification, loan eligibility assessment, and customer query handling.',
+          },
         ],
       },
       {
-        domain: 'Retail & E-Commerce',
+        domain: 'Telecom Analytics & AI',
         projects: [
-          'Customer Segmentation',
-          'Sales Analytics',
-          'Product Performance Analytics',
+          {
+            title: 'Customer Churn Prediction',
+            description: 'Predict customers likely to leave using recharge history, usage behavior, complaints, and service quality metrics.',
+          },
+          {
+            title: 'Revenue & ARPU Analytics Dashboard',
+            description: 'Analyze Average Revenue Per User (ARPU), subscriber growth, recharge trends, and profitability across regions.',
+          },
+          {
+            title: 'Network Performance Analytics',
+            description: 'Monitor network uptime, call drops, internet speed, and service quality using real-time dashboards.',
+          },
+          {
+            title: 'Recharge Recommendation Engine',
+            description: 'Recommend personalized recharge plans based on customer usage patterns and spending behavior.',
+          },
+          {
+            title: 'AI Customer Support Chatbot',
+            description: 'Build a Gen AI chatbot to resolve telecom customer queries, troubleshoot issues, and automate support workflows.',
+          },
         ],
       },
       {
-        domain: 'Telecom',
+        domain: 'E-Commerce Analytics & AI',
         projects: [
-          'Customer Churn Analytics',
-          'Revenue Analytics',
-          'Campaign Performance Analytics',
+          {
+            title: 'Sales & Profitability Dashboard',
+            description: 'Analyze sales, revenue, profit, discounts, and product performance across categories and regions.',
+          },
+          {
+            title: 'Customer Lifetime Value (CLV) Prediction',
+            description: 'Estimate long-term customer value to support retention strategies and targeted marketing campaigns.',
+          },
+          {
+            title: 'Recommendation Engine',
+            description: 'Develop personalized product recommendations using collaborative and content-based filtering techniques.',
+          },
+          {
+            title: 'Demand Forecasting & Inventory Optimization',
+            description: 'Forecast product demand to optimize inventory levels and reduce stockouts or excess inventory.',
+          },
+          {
+            title: 'Gen AI Shopping Assistant',
+            description: 'Create an AI assistant to provide product recommendations, order tracking, and personalized shopping experiences.',
+          },
         ],
       },
       {
-        domain: 'Healthcare',
+        domain: 'Healthcare Analytics & AI',
         projects: [
-          'Patient Analytics',
-          'Claims Analytics',
-          'Operational Reporting',
+          {
+            title: 'Hospital Performance Dashboard',
+            description: 'Analyze patient admissions, bed occupancy, treatment outcomes, and hospital operational KPIs.',
+          },
+          {
+            title: 'Disease Risk Prediction Model',
+            description: 'Predict the likelihood of chronic diseases using patient demographics, medical history, and laboratory data.',
+          },
+          {
+            title: 'Healthcare Claims Fraud Detection',
+            description: 'Detect fraudulent insurance claims using anomaly detection and predictive analytics.',
+          },
+          {
+            title: 'Clinical Decision Support System',
+            description: 'Build AI models to assist doctors with diagnosis recommendations and treatment planning.',
+          },
+          {
+            title: 'Gen AI Medical Assistant',
+            description: 'Develop a medical AI assistant to summarize patient records, answer clinical queries, and support healthcare professionals.',
+          },
         ],
       },
       {
-        domain: 'Marketing',
+        domain: 'Manufacturing & Automobile Analytics & AI',
         projects: [
-          'Customer Lifetime Value',
-          'Campaign Analytics',
-          'Customer Acquisition Analytics',
+          {
+            title: 'Production Performance Dashboard',
+            description: 'Monitor production output, machine utilization, downtime, quality metrics, and Overall Equipment Effectiveness (OEE).',
+          },
+          {
+            title: 'Predictive Maintenance Analytics',
+            description: 'Predict machine failures using sensor data to minimize downtime and maintenance costs.',
+          },
+          {
+            title: 'Supply Chain & Inventory Analytics',
+            description: 'Analyze procurement, supplier performance, logistics, and inventory turnover to improve operational efficiency.',
+          },
+          {
+            title: 'Quality Inspection using Computer Vision',
+            description: 'Build AI models to automatically detect manufacturing defects using image processing techniques.',
+          },
+          {
+            title: 'AI Production Planning Assistant',
+            description: 'Develop an AI assistant for production scheduling, inventory planning, and manufacturing workflow optimization.',
+          },
+        ],
+      },
+      {
+        domain: 'Pharmaceutical Analytics & AI',
+        projects: [
+          {
+            title: 'Clinical Trial Analytics Dashboard',
+            description: 'Monitor patient enrollment, trial progress, adverse events, and study performance using interactive dashboards.',
+          },
+          {
+            title: 'Pharmacovigilance Analytics',
+            description: 'Analyze adverse drug reactions and safety reports to support regulatory compliance and patient safety.',
+          },
+          {
+            title: 'Medicine Sales Forecasting',
+            description: 'Predict pharmaceutical sales using historical sales data, seasonality, and market demand trends.',
+          },
+          {
+            title: 'Drug Distribution & Inventory Analytics',
+            description: 'Optimize medicine inventory, warehouse operations, and distributor performance across supply chains.',
+          },
+          {
+            title: 'Gen AI Medical Knowledge Assistant',
+            description: 'Build an AI assistant to summarize clinical research, answer drug-related questions, and support medical professionals with evidence-based insights.',
+          },
         ],
       },
     ],
@@ -930,41 +1149,153 @@ export const coursesData: Record<string, DetailedCourse> = {
     ],
     industryProjects: [
       {
-        domain: 'Banking Analytics',
+        domain: 'Banking & Finance',
         projects: [
-          'Loan Portfolio Analysis',
-          'Credit Card Analytics',
-          'Collection Analytics',
+          {
+            title: 'Credit Risk Portfolio Dashboard',
+            description: 'Analyze loan portfolio performance, NPAs, delinquency (DPD), approval rates, and customer risk segments using SQL and Power BI dashboards.',
+          },
+          {
+            title: 'Loan Application Analysis',
+            description: 'Analyze loan applications, approval/rejection trends, customer demographics, and branch-wise performance to support lending decisions.',
+          },
+          {
+            title: 'Collection & Recovery Analytics',
+            description: 'Monitor overdue accounts, recovery efficiency, collection performance, and delinquency trends using interactive dashboards.',
+          },
+          {
+            title: 'Customer Banking Analytics',
+            description: 'Analyze customer transactions, deposits, loans, product usage, and customer profitability to improve business growth.',
+          },
+          {
+            title: 'Branch Performance Dashboard',
+            description: 'Build executive dashboards showing branch-wise revenue, CASA growth, loans, customer acquisition, and operational KPIs.',
+          },
         ],
       },
       {
-        domain: 'Retail & E-Commerce',
+        domain: 'Telecom',
         projects: [
-          'Customer Analytics',
-          'Product Performance Analytics',
-          'Sales Dashboard Development',
+          {
+            title: 'Customer Churn Analysis Dashboard',
+            description: 'Analyze customer churn trends, recharge behavior, complaints, and service usage to identify retention opportunities.',
+          },
+          {
+            title: 'Revenue & ARPU Analytics',
+            description: 'Analyze Average Revenue Per User (ARPU), subscriber growth, recharge trends, and revenue performance.',
+          },
+          {
+            title: 'Network Performance Dashboard',
+            description: 'Monitor network uptime, call drops, data usage, and service quality across telecom regions.',
+          },
+          {
+            title: 'Customer Usage Analytics',
+            description: 'Analyze voice, SMS, internet usage, roaming, and recharge behavior for customer insights.',
+          },
+          {
+            title: 'Sales & Dealer Performance Dashboard',
+            description: 'Track SIM activations, dealer sales, recharge revenue, and regional performance using Power BI dashboards.',
+          },
         ],
       },
       {
-        domain: 'Telecom Analytics',
+        domain: 'E-Commerce',
         projects: [
-          'Revenue Analytics',
-          'Customer Segmentation',
-          'Churn Analysis',
+          {
+            title: 'Sales Performance Dashboard',
+            description: 'Analyze sales, revenue, profit, orders, and customer growth across products, regions, and time periods.',
+          },
+          {
+            title: 'Customer Purchase Analytics',
+            description: 'Analyze customer buying behavior, repeat purchases, customer lifetime value, and retention metrics.',
+          },
+          {
+            title: 'Product Performance Dashboard',
+            description: 'Monitor best-selling products, inventory movement, pricing, returns, and profitability.',
+          },
+          {
+            title: 'Marketing Campaign Analytics',
+            description: 'Analyze campaign ROI, conversions, customer acquisition cost, and digital marketing performance.',
+          },
+          {
+            title: 'Inventory & Supply Chain Dashboard',
+            description: 'Track stock availability, warehouse inventory, supplier performance, and product demand trends.',
+          },
         ],
       },
       {
-        domain: 'Healthcare Analytics',
+        domain: 'Healthcare',
         projects: [
-          'Patient Reporting',
-          'Operational Analytics',
+          {
+            title: 'Hospital Performance Dashboard',
+            description: 'Monitor admissions, discharges, occupancy, revenue, and operational KPIs across departments.',
+          },
+          {
+            title: 'Patient Analytics Dashboard',
+            description: 'Analyze patient demographics, disease trends, treatment outcomes, and hospital utilization.',
+          },
+          {
+            title: 'Healthcare Claims Analysis',
+            description: 'Analyze insurance claims, approval rates, claim amounts, fraud indicators, and reimbursement performance.',
+          },
+          {
+            title: 'Appointment & OPD Analytics',
+            description: 'Track appointments, no-shows, waiting times, doctor utilization, and patient satisfaction.',
+          },
+          {
+            title: 'Pharmacy Inventory Dashboard',
+            description: 'Monitor medicine inventory, expiry tracking, stock movement, and supplier performance.',
+          },
         ],
       },
       {
-        domain: 'Human Resources Analytics',
+        domain: 'Manufacturing & Automobile',
         projects: [
-          'Employee Performance Analytics',
-          'Workforce Reporting',
+          {
+            title: 'Production Performance Dashboard',
+            description: 'Analyze production output, machine utilization, downtime, quality, and Overall Equipment Effectiveness (OEE).',
+          },
+          {
+            title: 'Inventory Management Analytics',
+            description: 'Track raw materials, work-in-progress, finished goods inventory, and warehouse performance.',
+          },
+          {
+            title: 'Quality Control Dashboard',
+            description: 'Monitor defect rates, rejection percentages, inspection results, and product quality KPIs.',
+          },
+          {
+            title: 'Supply Chain Analytics',
+            description: 'Analyze procurement, supplier delivery, logistics efficiency, and inventory turnover.',
+          },
+          {
+            title: 'Vehicle Sales Dashboard',
+            description: 'Monitor vehicle sales, dealer performance, revenue, market share, and customer demand across regions.',
+          },
+        ],
+      },
+      {
+        domain: 'Pharmaceutical Industry',
+        projects: [
+          {
+            title: 'Pharmaceutical Sales Dashboard',
+            description: 'Analyze medicine sales, revenue, territory performance, product growth, and prescription trends.',
+          },
+          {
+            title: 'Inventory & Distribution Analytics',
+            description: 'Monitor medicine inventory, warehouse stock, distributor performance, and supply chain efficiency.',
+          },
+          {
+            title: 'Clinical Trial Dashboard',
+            description: 'Analyze patient enrollment, trial progress, adverse events, and clinical study performance.',
+          },
+          {
+            title: 'Medical Representative Performance Dashboard',
+            description: 'Track doctor visits, prescription generation, territory coverage, and sales KPIs.',
+          },
+          {
+            title: 'Drug Safety & Pharmacovigilance Dashboard',
+            description: 'Monitor adverse drug reactions, safety reports, compliance metrics, and regulatory reporting performance.',
+          },
         ],
       },
     ],
@@ -1252,51 +1583,87 @@ export const coursesData: Record<string, DetailedCourse> = {
     ],
     industryProjects: [
       {
-        domain: 'Banking & Financial Services',
+        domain: 'Tier 1 Capstone - Exploratory Data Analysis Dashboard',
         projects: [
-          'Credit Risk Prediction',
-          'Fraud Detection Systems',
-          'Customer Lifetime Value Prediction',
+          {
+            title: 'Project Name: Retail Sales EDA & Insights Dashboard',
+            description: 'Students perform a complete end-to-end EDA on a retail sales dataset using Python, SQL, and basic statistics. The project integrates all Tier 1 skills into one deliverable - a working interactive dashboard.',
+          },
+          {
+            title: 'Industry: Retail / E-commerce',
+            description: 'Retail and e-commerce business scenario focused on sales data exploration, reporting, and interactive insight generation.',
+          },
+          {
+            title: 'Process',
+            description: '1. Load and clean raw sales data using Pandas (handle nulls, duplicates, type mismatches) 2. Query and aggregate data using SQL (window functions, CTEs, group-by analysis) 3. Perform descriptive statistics - central tendency, dispersion, outlier detection 4. Apply probability concepts - distribution analysis on sales and revenue columns 5. Build visualisations - trend lines, category breakdowns, heatmaps using Matplotlib and Seaborn 6. Deploy as a Streamlit dashboard',
+          },
+          {
+            title: 'Outcome',
+            description: 'Interactive sales dashboard with filters by region, category, and date. Statistical summary report with outlier flags. SQL query library for repeat business reporting. Students demonstrate readiness to move into Machine Learning.',
+          },
         ],
       },
       {
-        domain: 'Retail & E-Commerce',
+        domain: 'Tier 2 Capstone - Machine Learning',
         projects: [
-          'Recommendation Engine',
-          'Customer Segmentation',
-          'Demand Forecasting',
+          {
+            title: 'ML Capstone - Customer Churn Prediction (Classification)',
+            description: 'Build a complete classification pipeline to predict which customers are likely to churn. This project covers the full ML workflow from statistical analysis to model deployment.',
+          },
+          {
+            title: 'Industry: Telecom, Banking, OTT, SaaS',
+            description: 'Customer-retention use case spanning subscription and service businesses where churn prediction directly supports business action.',
+          },
+          {
+            title: 'Process',
+            description: '1. Statistical analysis - t-test, chi-square, and correlation on customer features 2. EDA and data preprocessing - handle imbalanced churn labels 3. Feature engineering - RFM-style features, usage patterns 4. Model building - Logistic Regression, Random Forest, XGBoost 5. Handle class imbalance with SMOTE 6. Evaluate with ROC-AUC, F1, Precision-Recall curves 7. SHAP explainability - identify top churn drivers 8. Deploy as REST API using FastAPI',
+          },
+          {
+            title: 'Outcome',
+            description: 'Churn probability score per customer. Top 5 churn driver features via SHAP. REST API endpoint for CRM integration. Business report with retention recommendations.',
+          },
         ],
       },
       {
-        domain: 'Telecom',
+        domain: 'Tier 2 Capstone Project 1 - Sentiment Analysis API',
         projects: [
-          'Churn Prediction',
-          'Customer Intelligence',
-          'Revenue Optimization',
+          {
+            title: 'Capstone Project 1 - Sentiment Analysis API (Deep Learning NLP)',
+            description: 'Fine-tune a BERT model on product review data to classify sentiment. Students learn the full deep learning workflow from data prep to production API.',
+          },
+          {
+            title: 'Industry: E-commerce, Product Reviews, Social Media',
+            description: 'Text analytics and NLP use case focused on real-time sentiment classification for customer and product feedback.',
+          },
+          {
+            title: 'Process',
+            description: '1. Data collection and text preprocessing - tokenisation, cleaning 2. Fine-tune BERT on labelled review dataset using Hugging Face 3. Evaluate - accuracy, F1, confusion matrix 4. Build FastAPI REST endpoint for real-time inference 5. Dockerise the model service',
+          },
+          {
+            title: 'Outcome',
+            description: 'Production sentiment classification API. Real-time inference endpoint accepting raw text. Docker-ready model container. Students demonstrate readiness for Advanced tier.',
+          },
         ],
       },
       {
-        domain: 'Healthcare',
+        domain: 'Tier 2 Capstone Project 2 - Image Classification for Defect Detection',
         projects: [
-          'Disease Prediction Models',
-          'Medical Text Analytics',
-          'Patient Risk Assessment',
-        ],
-      },
-      {
-        domain: 'Generative AI',
-        projects: [
-          'Enterprise Knowledge Assistant',
-          'AI-Powered Chatbot',
-          'Intelligent Document Search System',
-        ],
-      },
-      {
-        domain: 'Agentic AI',
-        projects: [
-          'Multi-Agent Business Automation',
-          'Autonomous Research Agent',
-          'AI Workflow Automation Platform',
+          {
+            title: 'Capstone Project 2 - Image Classification for Defect Detection (Computer Vision)',
+            description: 'Build a transfer learning-based image classifier to detect product defects on a manufacturing line. Uses ResNet/EfficientNet with custom dataset.',
+          },
+          {
+            title: 'Industry: Manufacturing, Quality Control',
+            description: 'Computer-vision use case aimed at automated quality inspection and production defect detection.',
+          },
+          {
+            title: 'Process',
+            description: '1. Build and label custom defect image dataset 2. Apply data augmentation - flips, rotations, brightness 3. Fine-tune EfficientNet using transfer learning 4. Evaluate model performance - accuracy, precision per defect class 5. Build Streamlit app for quality inspection team 6. Dockerise and prepare for deployment',
+          },
+          {
+            title: 'Outcome',
+            description: 'Defect detection model with greater than 90% accuracy target. Streamlit app for factory floor teams. Docker container ready for edge deployment.',
+          },
         ],
       },
     ],
@@ -1559,46 +1926,88 @@ export const coursesData: Record<string, DetailedCourse> = {
     ],
     industryProjects: [
       {
-        domain: 'Enterprise Knowledge Assistant',
+        domain: 'Industry Project 1 — Multi-Agent Research and Report Generator',
         projects: [
-          'Internal ChatGPT for Organizations',
-          'Document Search & Question Answering',
+          {
+            title: 'Industry: Market Research, Consulting, Investment Banking, EdTech',
+            description: 'User gives a research topic. Multiple specialised agents work together — one searches the web, one analyses sources, one writes the report, one reviews and edits. Final output is a structured research report generated in minutes.',
+          },
+          {
+            title: 'Process',
+            description: '1. Build multi-agent system using CrewAI or LangGraph 2. Researcher agent — web search tool, source summarisation 3. Writer agent — structured long-form report generation 4. Reviewer agent — quality check, citation verification, hallucination detection 5. Build Streamlit interface for topic input and report download 6. FastAPI backend 7. Docker + ECR + EKS deployment 8. LangSmith full pipeline tracing and observability',
+          },
+          {
+            title: 'Outcome',
+            description: 'Automated research report generation in under 5 minutes. Streamlit interface for non-technical users. Full agent trace visibility via LangSmith. Production-deployed and scalable on AWS EKS.',
+          },
         ],
       },
       {
-        domain: 'AI Customer Support Agent',
+        domain: 'Industry Project 2 — Intelligent Customer Support Agent with Memory',
         projects: [
-          'Multilingual AI Chatbot',
-          'Customer Query Automation',
+          {
+            title: 'Industry: E-commerce, Banking, Telecom, Healthcare',
+            description: 'A customer support agent that handles queries, accesses customer history, resolves common issues automatically, and escalates complex cases to human agents — with full memory maintained across sessions.',
+          },
+          {
+            title: 'Process',
+            description: '1. Build LangChain or LangGraph agent with tool use — CRM lookup, order status, knowledge base search 2. CRM integration — reads customer history and account details 3. Implement short-term (session) and long-term (cross-session) memory using SQLite 4. Handle FAQs automatically; escalate complex issues with full context summary 5. Streaming responses via WebSocket for real-time chat feel 6. FastAPI REST endpoint + Streamlit or web chat interface 7. Docker + ECR + EKS deployment 8. Helicone cost tracking and CloudWatch monitoring',
+          },
+          {
+            title: 'Outcome',
+            description: 'Customer support agent resolving more than 70% of queries autonomously. Memory system maintaining context across sessions. Human escalation with full conversation summary. Cost tracking dashboard via Helicone.',
+          },
         ],
       },
       {
-        domain: 'AI Content Generation Platform',
+        domain: 'Industry Project 3 — SQL Analytics Agent',
         projects: [
-          'Automated Content Creation',
-          'Marketing Content Generation',
+          {
+            title: 'Industry: Sales Teams, Marketing, Finance, Any Company with a Database',
+            description: 'Business users ask questions in plain English. The agent translates to SQL, queries the database, generates insights, creates visualisations, and presents the answer in a readable format — no SQL knowledge required.',
+          },
+          {
+            title: 'Process',
+            description: '1. Build LangChain SQL agent connected to a PostgreSQL or SQLite database 2. Natural language to SQL translation with schema awareness 3. Query validation and guardrails — prevent destructive queries (DELETE, DROP) 4. Generate reports and visualisations using Matplotlib and Plotly 5. FastAPI endpoint for business teams and dashboards 6. Build Streamlit business dashboard 7. Docker + ECR + EKS deployment 8. LangSmith monitoring',
+          },
+          {
+            title: 'Outcome',
+            description: 'Business teams querying databases in plain English. Automated report and chart generation. Guardrails preventing data corruption. Significant reduction in dependency on data analysts for routine queries.',
+          },
         ],
       },
       {
-        domain: 'Agentic AI Business Assistant',
+        domain: 'Industry Project 4 — GenAI Content Pipeline with Agents',
         projects: [
-          'Autonomous Task Execution',
-          'Business Workflow Automation',
+          {
+            title: 'Industry: Marketing Agencies, EdTech, News Organisations, Product Companies',
+            description: 'An agentic pipeline that generates, reviews, and publishes content automatically. Given a topic — the system researches it, writes a blog post, creates social media variations, checks for brand tone, and schedules for publishing.',
+          },
+          {
+            title: 'Process',
+            description: '1. Build LangGraph workflow agent with specialised sub-agents 2. Research agent — web search, source gathering and summarisation 3. Writing agent — long-form blog post generation 4. Social agent — short-form variations for Twitter, LinkedIn, Instagram 5. Review agent — brand voice check, hallucination detection, tone alignment 6. Integration with CMS or email platform via API 7. FastAPI + Docker + ECR + EKS deployment 8. LangSmith full pipeline tracing',
+          },
+          {
+            title: 'Outcome',
+            description: 'End-to-end content generation pipeline from topic to publish-ready post. Multi-platform content variations in one run. Brand voice consistency enforced by review agent. Full observability of every agent step via LangSmith.',
+          },
         ],
       },
       {
-        domain: 'AI Research Assistant',
+        domain: 'Industry Project 5 — Document Intelligence System (Advanced RAG + Agents)',
         projects: [
-          'Document Summarization',
-          'Knowledge Discovery',
-          'Intelligent Information Retrieval',
-        ],
-      },
-      {
-        domain: 'Multi-Agent AI Platform',
-        projects: [
-          'Collaborative AI Agents',
-          'Enterprise Automation Systems',
+          {
+            title: 'Industry: Law Firms, Finance, Healthcare, HR',
+            description: 'An advanced version of the Tier 2 RAG capstone — now with agentic capabilities. The system not only answers questions but autonomously navigates multi-document knowledge bases, cross-references sources, flags contradictions, and generates executive summaries.',
+          },
+          {
+            title: 'Process',
+            description: '1. Upload and process multiple PDFs — financial reports, legal contracts, medical records 2. Advanced chunking with metadata — document type, date, section tags 3. Hybrid search — semantic + keyword with re-ranking 4. Agentic layer — agent decides which documents to retrieve, in what order, and when to ask clarifying questions 5. Cross-reference and contradiction detection across documents 6. Generate executive summary with source citations 7. FastAPI REST endpoint + Streamlit UI 8. Docker + ECR + EKS deployment with LangSmith monitoring',
+          },
+          {
+            title: 'Outcome',
+            description: 'Intelligent document Q&A with multi-document reasoning. Contradiction and inconsistency detection across sources. Executive summary generation with full citation trail. Production-deployed on AWS with full observability.',
+          },
         ],
       },
     ],

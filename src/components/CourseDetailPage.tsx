@@ -156,6 +156,7 @@ export const CourseDetailPage: React.FC<CourseDetailPageProps> = ({ courseId, on
     () => typeof window !== 'undefined' && window.matchMedia('(max-width: 768px)').matches
   );
   const [expandedProjectDomains, setExpandedProjectDomains] = useState<number[]>([]);
+  const [expandedProjectItems, setExpandedProjectItems] = useState<string[]>([]);
   const [expandedCareerGroups, setExpandedCareerGroups] = useState<number[]>([]);
   const hasPlacementSupport = ['apids', 'apida', 'aiml'].includes(courseId.toLowerCase());
   const hasSixCourseStats = ['apids', 'apida', 'aiml', 'specialist', 'apcs'].includes(courseId.toLowerCase());
@@ -217,6 +218,7 @@ export const CourseDetailPage: React.FC<CourseDetailPageProps> = ({ courseId, on
 
   useEffect(() => {
     setExpandedProjectDomains([]);
+    setExpandedProjectItems([]);
     setExpandedCareerGroups([]);
   }, [courseId]);
 
@@ -255,6 +257,14 @@ export const CourseDetailPage: React.FC<CourseDetailPageProps> = ({ courseId, on
 
     setExpandedCareerGroups((current) =>
       current.includes(index) ? current.filter((item) => item !== index) : [...current, index]
+    );
+  };
+
+  const toggleProjectItem = (projectKey: string) => {
+    setExpandedProjectItems((current) =>
+      current.includes(projectKey)
+        ? current.filter((item) => item !== projectKey)
+        : [...current, projectKey]
     );
   };
 
@@ -487,12 +497,55 @@ export const CourseDetailPage: React.FC<CourseDetailPageProps> = ({ courseId, on
               </button>
               <div className={`domain-projects-list ${isExpanded ? 'mobile-expanded' : 'mobile-collapsed'}`}>
                 <div className="domain-projects-inner">
-                {domain.projects.map((project, pIdx) => (
-                  <div key={pIdx} className="domain-project-item">
+                {domain.projects.map((project, pIdx) => {
+                  const projectDetails = typeof project === 'string'
+                    ? { title: project, description: '' }
+                    : project;
+                  const projectKey = `${course.id}-${idx}-${pIdx}`;
+                  const isProjectExpanded = expandedProjectItems.includes(projectKey);
+                  const descriptionPanelId = `project-description-${course.id}-${idx}-${pIdx}`;
+
+                  return (
+                  <div
+                    key={pIdx}
+                    className={`domain-project-item ${projectDetails.description ? 'has-description' : 'no-description'}`}
+                  >
                     <span className="domain-project-bullet">▸</span>
-                    <span>{project}</span>
+                    <div className="domain-project-content">
+                      {projectDetails.description ? (
+                        <>
+                          <button
+                            type="button"
+                            className={`domain-project-trigger ${isProjectExpanded ? 'is-open' : ''}`}
+                            onClick={() => toggleProjectItem(projectKey)}
+                            aria-expanded={isProjectExpanded}
+                            aria-controls={descriptionPanelId}
+                          >
+                            <span className="domain-project-title">{projectDetails.title}</span>
+                            <span className={`domain-project-toggle ${isProjectExpanded ? 'is-open' : ''}`} aria-hidden="true">
+                              <svg viewBox="0 0 24 24">
+                                <path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="2.1" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+                              </svg>
+                            </span>
+                          </button>
+                          <div
+                            id={descriptionPanelId}
+                            className={`domain-project-description-wrap ${isProjectExpanded ? 'is-open' : ''}`}
+                          >
+                            <div className="domain-project-description-inner">
+                              <p className="domain-project-description">{projectDetails.description}</p>
+                            </div>
+                          </div>
+                        </>
+                      ) : (
+                        <div className="domain-project-heading static-project">
+                          <span className="domain-project-title">{projectDetails.title}</span>
+                        </div>
+                      )}
+                    </div>
                   </div>
-                ))}
+                );
+                })}
                 </div>
               </div>
             </div>
