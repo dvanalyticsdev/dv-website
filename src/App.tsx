@@ -220,20 +220,20 @@ function App() {
 
             <div className="hero-left">
               <div className="hero-desktop-heading-group">
-                <p className="hero-desktop-kicker">Become</p>
+                <p className="hero-desktop-kicker">BECOME</p>
                 <h1 className="hero-heading-accent hero-front-page-heading hero-desktop-heading">
-                  <span>An Industry-Ready Expert</span>
-                  <span>Data Scientist And</span>
-                  <span>Cybersecurity Professional</span>
+                  <span>AN INDUSTRY-READY EXPERT</span>
+                  <span>DATA SCIENTIST AND</span>
+                  <span>CYBERSECURITY PROFESSIONAL</span>
                 </h1>
                 <h2 className="hero-desktop-subtitle">
-                  Any Graduate Can Be an IT Professional
+                  ANY GRADUATE CAN BE AN IT PROFESSIONAL
                 </h2>
               </div>
 
               <div className="hero-desc hero-copy-block">
                 <h1 className="hero-heading-accent hero-front-page-heading hero-mobile-heading">
-                  Become an Industry-Ready Data Scientist &amp; Cybersecurity Professional
+                  BECOME AN INDUSTRY-READY DATA SCIENTIST &amp; CYBERSECURITY PROFESSIONAL
                 </h1>
                 <h2 className="hero-copy-title">Get an Expert in:</h2>
                 <ul className="hero-expertise-list">
