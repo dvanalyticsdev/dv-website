@@ -55,7 +55,7 @@ export const SampleVideoSection: React.FC<SampleVideoSectionProps> = ({ onEnroll
                   onClick={() => setIsLmsModalOpen(true)}
                   aria-label="Glimpse of DV Analytics"
                 >
-                  WATCH SAMPLE CLASS VIDEO
+                  WATCH CLASS SAMPLE VIDEO
                   <svg className="btn-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/>
                   </svg>
@@ -78,10 +78,10 @@ export const SampleVideoSection: React.FC<SampleVideoSectionProps> = ({ onEnroll
 
               {/* Rating Card */}
               <div className="promo-rating-card">
-                <div className="rating-score">4.9</div>
+                <div className="rating-score">4.8</div>
                 <div className="rating-details">
                   <div className="rating-label">STAR RATING</div>
-                  <div className="rating-students">10000+ Students Placed</div>
+                  <div className="rating-students">10,300+ Students Trained</div>
                 </div>
                 <div className="rating-stars">
                   <svg className="star-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
@@ -96,15 +96,14 @@ export const SampleVideoSection: React.FC<SampleVideoSectionProps> = ({ onEnroll
                   <svg className="star-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
                     <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
                   </svg>
-                  {/* Half or nearly full star for 4.9 */}
-                  <svg className="star-icon star-90" width="18" height="18" viewBox="0 0 24 24">
+                  <svg className="star-icon star-80" width="18" height="18" viewBox="0 0 24 24">
                     <defs>
-                      <linearGradient id="grad-49">
-                        <stop offset="90%" stopColor="currentColor" />
-                        <stop offset="90%" stopColor="#e2e8f0" />
+                      <linearGradient id="grad-48">
+                        <stop offset="80%" stopColor="currentColor" />
+                        <stop offset="80%" stopColor="#e2e8f0" />
                       </linearGradient>
                     </defs>
-                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" fill="url(#grad-49)" />
+                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" fill="url(#grad-48)" />
                   </svg>
                 </div>
               </div>

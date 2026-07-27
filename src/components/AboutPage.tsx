@@ -158,9 +158,10 @@ export const AboutPage: React.FC = () => {
         </div>
         <div className="about-stats-image-container">
           <img 
-            src="/about-stats.jpeg" 
-            alt="DV Analytics Track Record Stats" 
+            src="/about-stats-poster.png" 
+            alt="DV Analytics we at a glance poster showing years of experience, students trained, batches, corporate partners, success rate, industry projects, and faculties" 
             className="about-stats-img"
+            loading="lazy"
           />
         </div>
       </section>
