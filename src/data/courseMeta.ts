@@ -13,10 +13,12 @@ export const courseCatalog: CourseMeta[] = [
   {
     id: 'apida',
     label: 'Advanced Program in Industrial Data Analytics & AI (APIDA)',
+    brochurePath: '/apida-brochure.pdf',
   },
   {
     id: 'specialist',
     label: 'Data Analytics Specialist (DAS)',
+    brochurePath: '/data-analytics-specialist-brochure.pdf',
   },
   {
     id: 'aiml',
@@ -31,6 +33,7 @@ export const courseCatalog: CourseMeta[] = [
   {
     id: 'apcs',
     label: 'Advanced Program in Cybersecurity & Forensics (APCF)',
+    brochurePath: '/apcf-brochure.pdf',
   },
   {
     id: 'days7_genai',
