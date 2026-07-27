@@ -3205,10 +3205,35 @@ button {
   display: none;
 }
 
+.hero-mobile-poster-frame,
+.hero-mobile-slideshow {
+  display: none;
+}
+
 @media (max-width: 768px) {
   .content-section[data-section="hero"] .hero-left,
   .content-section[data-section="hero"] .hero-right {
     display: none !important;
+  }
+
+  .page-wrapper {
+    padding-top: 118px !important;
+  }
+
+  .content-section[data-section="hero"] {
+    padding-top: 0 !important;
+  }
+
+  .hero-split {
+    gap: 0 !important;
+  }
+
+  .hero-mobile-poster-frame {
+    display: block;
+    width: 100%;
+    overflow: hidden;
+    border-radius: 0 0 20px 20px;
+    position: relative;
   }
 
   .hero-mobile-poster {
@@ -3216,7 +3241,78 @@ button {
     width: 100%;
     height: auto;
     max-width: 100%;
-    object-fit: contain;
-    object-position: center;
+    object-fit: cover;
+    object-position: top center;
+    transform: translateY(-2px);
+  }
+
+  .hero-mobile-poster-frame::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: 17px;
+    width: 112px;
+    height: 3px;
+    border-radius: 999px;
+    background: #1868e7;
+    transform: translateX(-50%);
+    pointer-events: none;
+  }
+
+  .hero-mobile-poster-frame::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 16px;
+    background: #ffffff;
+    pointer-events: none;
+  }
+
+  .hero-mobile-slideshow {
+    display: block;
+    margin-top: 1rem;
+  }
+
+  .hero-mobile-slideshow .hero-image-container {
+    max-width: 100%;
+  }
+
+  .hero-mobile-slideshow .hero-slideshow-card {
+    aspect-ratio: 1.32 / 1;
+  }
+
+  .hero-mobile-slideshow .slide-image-foreground {
+    object-fit: cover;
+    object-position: center top;
+  }
+
+  .content-section[data-section="hero"] .badges-header {
+    margin-top: 1.25rem;
+    padding-top: 1.25rem;
+  }
+
+  .content-section[data-section="hero"] .hero-badges-grid {
+    padding-top: 0.75rem;
+    margin-top: 0.5rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .page-wrapper {
+    padding-top: 108px !important;
+  }
+
+  .content-section[data-section="hero"] {
+    padding: 0 0.25rem 1.75rem !important;
+  }
+
+  .hero-mobile-poster-frame {
+    aspect-ratio: 759 / 1410;
+  }
+
+  .hero-mobile-poster {
+    height: 100%;
   }
 }
