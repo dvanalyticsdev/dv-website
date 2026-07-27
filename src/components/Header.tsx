@@ -337,21 +337,6 @@ export const Header: React.FC<HeaderProps> = ({
           {/* Drawer Menu Panel */}
           <nav className={`nav-panel mobile-nav-panel ${mobileMenuOpen ? 'mobile-open' : ''}`}>
             <ul className="nav-list">
-              {activeCourse ? (
-                <li className="nav-item mobile-course-actions">
-                  <button
-                    className="btn-header-brochure mobile-brochure-btn"
-                    onClick={() => {
-                      setMobileMenuOpen(false);
-                      onCourseBrochureClick?.(activeCourse.id);
-                    }}
-                    disabled={!activeCourse.brochurePath}
-                  >
-                    {activeCourse.brochurePath ? 'Download Brochure' : 'Brochure Coming Soon'}
-                  </button>
-                </li>
-              ) : null}
-
               <li 
                 className="nav-item dropdown-container services-dropdown-container"
                 onClick={() => {
@@ -431,19 +416,6 @@ export const Header: React.FC<HeaderProps> = ({
                 >
                   FAQs
                 </a>
-              </li>
-
-              {/* Enroll Now inside mobile menu only */}
-              <li className="nav-item mobile-enroll-nav-item">
-                <button
-                  className="btn-enroll-header mobile-enroll-btn"
-                  onClick={() => {
-                    setMobileMenuOpen(false);
-                    if (onNavClick) onNavClick('enroll');
-                  }}
-                >
-                  Enroll Now
-                </button>
               </li>
             </ul>
           </nav>
