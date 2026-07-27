@@ -680,16 +680,18 @@ a {
 }
 
 .hero-left {
-  flex: 1.1;
+  flex: 1.45;
+  min-width: 0;
 }
 
 .hero-right {
-  flex: 0.9;
+  flex: 0.75;
   display: flex;
   justify-content: center;
   align-items: center;
   border-left: 1px solid #94a3b8;
   padding-left: 2rem;
+  min-width: 0;
 }
 
 .hero-heading-become {
@@ -727,27 +729,58 @@ a {
   line-height: 1.15;
 }
 
+.hero-desktop-heading-group {
+  margin-bottom: 2rem;
+}
+
+.hero-desktop-kicker {
+  margin: 0 0 0.6rem;
+  color: #051f40;
+  font-family: var(--font-family-heading);
+  font-size: clamp(2.1rem, 2.8vw, 3.2rem);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.035em;
+}
+
 .hero-desktop-subtitle {
   display: none;
 }
 
 @media (min-width: 769px) {
+  .hero-split {
+    gap: 2.75rem;
+  }
+
+  .hero-left {
+    padding-left: 1.5rem;
+  }
+
   .hero-desktop-heading {
-    margin-bottom: 0.75rem;
-    font-size: clamp(1.95rem, 2.5vw, 2.45rem);
-    line-height: 1.08;
-    text-wrap: balance;
+    margin-bottom: 1rem;
+    font-size: clamp(3rem, 4.2vw, 4.55rem);
+    line-height: 0.95;
+    letter-spacing: -0.06em;
+    text-wrap: pretty;
+  }
+
+  .hero-desktop-heading span {
+    display: block;
   }
 
   .hero-desktop-subtitle {
     display: block;
     margin: 0 0 1.75rem;
     color: #051f40;
-    font-size: clamp(1.15rem, 1.35vw, 1.45rem);
-    font-weight: 800;
-    letter-spacing: 0.01em;
-    line-height: 1.25;
-    text-wrap: balance;
+    font-size: clamp(1.15rem, 1.6vw, 1.55rem);
+    font-weight: 500;
+    letter-spacing: -0.015em;
+    line-height: 1.45;
+    text-wrap: pretty;
+  }
+
+  .hero-left > * {
+    max-width: 100%;
   }
 }
 
@@ -1004,14 +1037,14 @@ a {
 .hero-image-container {
   position: relative;
   width: 100%;
-  max-width: 500px; /* A little bigger */
+  max-width: 580px;
   border-radius: 24px;
   overflow: visible; /* Prevent clipping during dragging */
   animation: float 6s ease-in-out infinite;
 }
 
 .hero-image-container-home {
-  transform: translate(-18px, -18px);
+  transform: translate(-8px, -12px) scale(1.08);
 }
 
 .hero-image-img {
@@ -3975,6 +4008,23 @@ a {
   gap: 1.5rem;
 }
 
+.course-stats-brochure-row {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 1.5rem;
+}
+
+.course-stats-brochure-btn {
+  background: #ffffff;
+  border-color: #dbe4f0;
+  color: #051f40;
+  box-shadow: 0 12px 30px rgba(5, 31, 64, 0.08);
+}
+
+.course-stats-brochure-btn:hover {
+  background: #f8fbff;
+}
+
 .stat-card {
   background: #ffffff;
   border: 1px solid #e2e8f0;
@@ -4810,7 +4860,29 @@ a {
     padding: 3.5rem 0;
   }
   .stat-card {
-    padding: 1.25rem;
+    padding: 0.95rem 1rem;
+    gap: 0.9rem;
+    border-radius: 18px;
+  }
+  .stat-icon-wrapper {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+  }
+  .stat-icon-wrapper svg {
+    width: 19px;
+    height: 19px;
+  }
+  .stat-card-content h4 {
+    font-size: 0.74rem;
+    margin-bottom: 0.08rem;
+  }
+  .stat-card-content p {
+    font-size: 0.9rem;
+    line-height: 1.35;
+  }
+  .course-stats-brochure-row {
+    justify-content: center;
   }
   .accordion-trigger {
     padding: 1.5rem;

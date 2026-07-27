@@ -360,7 +360,19 @@ export const CourseDetailPage: React.FC<CourseDetailPageProps> = ({
             </div>
           ))}
         </div>
-
+        <div className="course-stats-brochure-row">
+          <button
+            type="button"
+            className="btn btn-download-syllabus course-stats-brochure-btn"
+            onClick={onDownloadBrochure}
+            disabled={!courseMeta?.brochurePath}
+          >
+            <svg viewBox="0 0 24 24" className="download-icon">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" stroke="currentColor" strokeWidth="2.5" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+            {courseMeta?.brochurePath ? 'Download Brochure' : 'Brochure Coming Soon'}
+          </button>
+        </div>
 
       </section>
 

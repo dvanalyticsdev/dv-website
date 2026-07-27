@@ -156,7 +156,10 @@ export const Footer: React.FC = () => {
                   </div>
                   <h3 className="center-company">
                     <a href="https://www.agentifyaiglobal.com/" target="_blank" rel="noreferrer" className="center-link">
-                      Agentify AI Global
+                      <span className="center-company-stack">
+                        <span>Agentify AI</span>
+                        <span>Global</span>
+                      </span>
                     </a>
                   </h3>
                 </div>

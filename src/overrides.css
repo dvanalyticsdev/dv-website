@@ -95,10 +95,55 @@
   gap: 0.2rem !important;
 }
 
+.center-link-phone {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.center-company-stack {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 0.05rem;
+}
+
 /* Align heights of the footer panels on desktop */
 @media (min-width: 769px) {
   .center-card-footer-panel {
     min-height: 200px !important;
+  }
+
+  .center-card .footer-flex-row,
+  .center-card.bhubaneswar .footer-flex-row,
+  .center-card.dubai .footer-flex-row {
+    grid-template-columns: minmax(0, 1.08fr) minmax(0, 1.62fr) !important;
+    grid-template-areas:
+      "company address"
+      "phone email" !important;
+    grid-template-rows: minmax(0, 1fr) auto !important;
+    align-content: stretch;
+  }
+
+  .company-col {
+    min-height: 88px;
+  }
+
+  .company-col .center-company {
+    min-height: 78px;
+    display: flex;
+    align-items: flex-start;
+  }
+
+  .center-card.dubai .company-col .center-company {
+    justify-content: flex-start;
+  }
+
+  .address-col .info-text {
+    min-height: 104px;
+  }
+
+  .phone-col,
+  .email-col {
+    align-self: end;
   }
 }
 
