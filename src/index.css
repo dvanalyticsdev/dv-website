@@ -716,7 +716,7 @@ a {
   font-weight: 900;
   letter-spacing: -0.045em;
   line-height: 0.98;
-  color: #ef5323; /* DV logo orange */
+  color: #051f40; /* Company brand dark navy */
   margin-bottom: 1.5rem;
 }
 
@@ -742,7 +742,7 @@ a {
   .hero-desktop-subtitle {
     display: block;
     margin: 0 0 1.75rem;
-    color: #ef5323;
+    color: #051f40;
     font-size: clamp(1.15rem, 1.35vw, 1.45rem);
     font-weight: 800;
     letter-spacing: 0.01em;
