@@ -15,7 +15,7 @@ export const AboutPage: React.FC = () => {
       name: 'Debendra D Das',
       role: 'Co-Founder & Director',
       edu: 'MBA in IT and Business Analytics, FPM from IIMB & International School of Business Research (ISBR)',
-      img: 'https://agentifyaiglobal.com/wp-content/uploads/2026/01/debendra-das7.png',
+      img: '/debendra-d-das.png',
       bios: [
         'Mr. Das comes with 18+ years of industry experience in the Data Science field, having worked across Healthcare, Telecom, Retail Markets, and Banking Credit Risk domains.',
         'He has trained more than 1800 data science resources across corporate cohorts and individuals for more than a decade now.',
@@ -158,9 +158,10 @@ export const AboutPage: React.FC = () => {
         </div>
         <div className="about-stats-image-container">
           <img 
-            src="/about-stats.jpeg" 
-            alt="DV Analytics Track Record Stats" 
+            src="/about-stats-poster.png" 
+            alt="DV Analytics we at a glance poster showing years of experience, students trained, batches, corporate partners, success rate, industry projects, and faculties" 
             className="about-stats-img"
+            loading="lazy"
           />
         </div>
       </section>

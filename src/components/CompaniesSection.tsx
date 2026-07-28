@@ -29,7 +29,7 @@ export const CompaniesSection: React.FC = () => {
         {/* Section Header */}
         <div className="companies-header">
           <span className="companies-subtitle">Career Placements</span>
-          <h2 className="companies-title">Companies That Hire You</h2>
+          <h2 className="companies-title">Companies That Hires You</h2>
           <div className="companies-header-line"></div>
         </div>
 
