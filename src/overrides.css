@@ -3325,11 +3325,16 @@ button {
   }
 
   .hero-mobile-slideshow .hero-slideshow-card {
-    aspect-ratio: 1.32 / 1;
+    aspect-ratio: 4 / 3;
+    background: #ffffff;
+  }
+
+  .hero-mobile-slideshow .slideshow-slide {
+    padding: 0.35rem 2.65rem;
   }
 
   .hero-mobile-slideshow .slide-image-foreground {
-    object-fit: cover;
+    object-fit: contain;
     object-position: center top;
   }
 
@@ -3354,10 +3359,10 @@ button {
   }
 
   .hero-mobile-poster-frame {
-    aspect-ratio: 759 / 1410;
+    aspect-ratio: auto;
   }
 
   .hero-mobile-poster {
-    height: 100%;
+    height: auto;
   }
 }
