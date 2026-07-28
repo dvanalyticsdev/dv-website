@@ -1127,7 +1127,7 @@ a {
   }
 
   .page-wrapper {
-    padding-top: 136px;
+    padding-top: calc(136px + env(safe-area-inset-top, 0px));
     gap: 2rem;
   }
 
@@ -1162,7 +1162,7 @@ a {
 
 @media (max-width: 640px) {
   .page-wrapper {
-    padding-top: 140px;
+    padding-top: calc(140px + env(safe-area-inset-top, 0px));
     padding-bottom: 48px;
     gap: 1.75rem;
   }
