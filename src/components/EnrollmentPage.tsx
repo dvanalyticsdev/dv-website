@@ -58,6 +58,10 @@ const courseIndustryLabels: Record<string, string> = {
   apcs: 'Cybersecurity and Forensics',
 };
 
+const getCrmElementorWebhookUrl = () => (
+  import.meta.env.VITE_CRM_ELEMENTOR_WEBHOOK_URL?.trim() || ''
+);
+
 interface EnrollmentPageProps {
   onBackHome: () => void;
   defaultCourseId?: string;
@@ -99,8 +103,11 @@ export const EnrollmentPage: React.FC<EnrollmentPageProps> = ({ onBackHome, defa
   });
 
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState('');
 
   const selectedCourseIndustry = courseIndustryLabels[formData.course] || 'technology';
+  const selectedCourseLabel = courses.find(c => c.id === formData.course)?.label || '';
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -129,6 +136,8 @@ export const EnrollmentPage: React.FC<EnrollmentPageProps> = ({ onBackHome, defa
         [name]: value,
       };
     });
+
+    setSubmitError('');
 
     if (name in formErrors) {
       setFormErrors((current) => ({
@@ -207,13 +216,74 @@ export const EnrollmentPage: React.FC<EnrollmentPageProps> = ({ onBackHome, defa
     setFormErrors(errors);
     return isValid;
   };
-  const handleSubmit = (e: React.FormEvent) => {
+
+  const buildElementorPayload = () => {
+    const now = new Date();
+    const payload = new URLSearchParams();
+
+    payload.set('form_id', 'dv_website_enrollment');
+    payload.set('form_name', 'DV Website Enrollment Form');
+    payload.set('lead_type', 'admission');
+    payload.set('intent', 'enroll');
+    payload.set('source_type', 'website');
+    payload.set('pipeline', 'admission');
+    payload.set('name', formData.name.trim());
+    payload.set('email', formData.email.trim());
+    payload.set('phone', formData.phone.trim());
+    payload.set('highest_qualification', formData.qualification.trim());
+    payload.set('qualification', formData.qualification.trim());
+    payload.set('experience', formData.experience.trim());
+    payload.set('state', formData.state.trim());
+    payload.set('course', formData.course.trim());
+    payload.set('course_id', formData.course.trim());
+    payload.set('course_name', selectedCourseLabel);
+    payload.set('program', selectedCourseLabel);
+    payload.set('selected_course', selectedCourseLabel);
+    payload.set('course_category', formData.courseCategory.trim());
+    payload.set('start_timeline', formData.startTimeline.trim());
+    payload.set('preferred_batch', formData.batch.trim());
+    payload.set('message', formData.message.trim());
+    payload.set('page_url', window.location.href);
+    payload.set('date', now.toISOString().slice(0, 10));
+    payload.set('time', now.toISOString().slice(11, 19));
+    payload.set('user_agent', window.navigator.userAgent);
+    payload.set('powered_by', 'DV Analytics website');
+
+    return payload;
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (validateForm()) {
-      // Simulate API submit
-      setTimeout(() => {
-        setIsSubmitted(true);
-      }, 400);
+    setSubmitError('');
+
+    if (!validateForm()) {
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      const webhookUrl = getCrmElementorWebhookUrl();
+
+      if (!webhookUrl) {
+        throw new Error('CRM webhook URL is not configured for this website.');
+      }
+
+      const response = await fetch(webhookUrl, {
+        method: 'POST',
+        body: buildElementorPayload(),
+      });
+
+      if (!response.ok) {
+        const payload = await response.json().catch(() => null);
+        throw new Error(payload?.error || 'Unable to submit your enrollment query right now.');
+      }
+
+      setIsSubmitted(true);
+    } catch (error) {
+      setSubmitError(error instanceof Error ? error.message : 'Unable to submit your enrollment query right now.');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -243,7 +313,7 @@ export const EnrollmentPage: React.FC<EnrollmentPageProps> = ({ onBackHome, defa
             </div>
             <h2>Submission Successful!</h2>
             <p className="success-msg-main">
-              Thank you for enrolling. Your query for **{courses.find(c => c.id === formData.course)?.label}** has been received successfully.
+              Thank you for enrolling. Your query for <strong>{selectedCourseLabel}</strong> has been received successfully.
             </p>
             <div className="advisor-contact-alert">
               <p>
@@ -531,8 +601,10 @@ export const EnrollmentPage: React.FC<EnrollmentPageProps> = ({ onBackHome, defa
                   />
                 </div>
 
-                <button ref={submitRef} type="submit" className="btn-submit-enroll">
-                  Submit Admissions Query
+                {submitError && <span className="error-text" role="alert">{submitError}</span>}
+
+                <button ref={submitRef} type="submit" className="btn-submit-enroll" disabled={isSubmitting}>
+                  {isSubmitting ? 'Submitting...' : 'Submit Admissions Query'}
                 </button>
 
               </form>
