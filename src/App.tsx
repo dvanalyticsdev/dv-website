@@ -220,20 +220,20 @@ function App() {
 
             <div className="hero-left">
               <div className="hero-desktop-heading-group">
-                <p className="hero-desktop-kicker">BECOME</p>
+                <p className="hero-desktop-kicker">Become</p>
                 <h1 className="hero-heading-accent hero-front-page-heading hero-desktop-heading">
-                  <span>AN INDUSTRY-READY EXPERT</span>
-                  <span>DATA SCIENTIST AND</span>
-                  <span>CYBERSECURITY PROFESSIONAL</span>
+                  <span>An industry-ready expert</span>
+                  <span>data scientist and</span>
+                  <span>cybersecurity professional</span>
                 </h1>
                 <h2 className="hero-desktop-subtitle">
-                  ANY GRADUATE CAN BE AN IT PROFESSIONAL
+                  Any graduate can be an IT professional
                 </h2>
               </div>
 
               <div className="hero-desc hero-copy-block">
                 <h1 className="hero-heading-accent hero-front-page-heading hero-mobile-heading">
-                  BECOME AN INDUSTRY-READY DATA SCIENTIST &amp; CYBERSECURITY PROFESSIONAL
+                  Become an industry-ready data scientist &amp; cybersecurity professional
                 </h1>
                 <h2 className="hero-copy-title">Get an Expert in:</h2>
                 <ul className="hero-expertise-list">
@@ -247,7 +247,7 @@ function App() {
               <div className="hero-desc hero-copy-block hero-audience-block">
                 <h2 className="hero-copy-title">Who Can:</h2>
                 <p className="hero-audience-text">
-                  Freshers | Graduates (Technical &amp; Non-Technical) | Masters | Working Professionals | Entrepreneurs
+                  Freshers | Graduates (Technical &amp; Non-Technical) | Masters (Technical &amp; Non-Technical) | Working Professionals | Reachers | Entrepreneurs
                 </p>
               </div>
             </div>
