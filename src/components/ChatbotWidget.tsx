@@ -21,9 +21,9 @@ interface ChatbotWidgetProps {
 }
 
 const initialAssistantMessage =
-  "Hi! I'm Eva, your Agentify AI Guide. I can help you with anything on our site—from details on our training programs and career roadmaps, to enterprise AI services, office locations, and our mission. What can I help you find today?";
+  "Hi! I'm Eva, your DV Analytics guide. I can help you with courses, career roadmaps, enterprise AI services, company information, office locations, and FAQs. What would you like to know?";
 
-export const ChatbotWidget: React.FC<ChatbotWidgetProps> = ({ 
+export const ChatbotWidget: React.FC<ChatbotWidgetProps> = ({
   activePage,
   robotPose,
   robotClicked,
@@ -63,9 +63,8 @@ export const ChatbotWidget: React.FC<ChatbotWidgetProps> = ({
       }
 
       const dx = e.clientX - robotCenterX;
-      const dy = robotCenterY - e.clientY; // Invert Y so up is positive
+      const dy = robotCenterY - e.clientY;
 
-      // Normalize by 250px reference radius, mapping tracking to [-1.2, 1.2]
       setRelativeMouse({
         x: dx / 250,
         y: dy / 250,
@@ -196,7 +195,6 @@ export const ChatbotWidget: React.FC<ChatbotWidgetProps> = ({
           content: data.answer,
         },
       ]);
-
     } catch (error) {
       setMessages((current) => [
         ...current,
@@ -313,7 +311,6 @@ export const ChatbotWidget: React.FC<ChatbotWidgetProps> = ({
         </div>
       ) : null}
 
-      {/* Minimized restore pill */}
       {isMinimized && !isOpen && (
         <motion.button
           className="chatbot-restore-pill"
@@ -330,9 +327,8 @@ export const ChatbotWidget: React.FC<ChatbotWidgetProps> = ({
         </motion.button>
       )}
 
-      {/* Full robot widget */}
       {!isMinimized && (
-        <motion.div 
+        <motion.div
           className={`chatbot-shell ${isOpen ? 'open' : ''}`}
           drag={!isOpen}
           dragMomentum={false}
@@ -341,17 +337,17 @@ export const ChatbotWidget: React.FC<ChatbotWidgetProps> = ({
         >
           {!isOpen && (
             <div className="robot-widget-container" ref={widgetRef}>
-              <RobotSpeechBubbles 
-                pose={robotPose} 
-                isClicked={robotClicked} 
+              <RobotSpeechBubbles
+                pose={robotPose}
+                isClicked={robotClicked}
                 onClick={() => setIsOpen(true)}
                 hoveredSection={hoveredSection}
                 onMinimize={() => setIsMinimized(true)}
               />
-              <RobotCanvas 
-                pose={robotPose} 
-                onRobotClick={onRobotClick} 
-                mini={true} 
+              <RobotCanvas
+                pose={robotPose}
+                onRobotClick={onRobotClick}
+                mini={true}
                 blinkTrigger={blinkTrigger}
                 globalMouse={relativeMouse}
               />

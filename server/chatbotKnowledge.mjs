@@ -240,10 +240,11 @@ export async function runRetrievalPreview({ message, page, courseId, history } =
 
 async function buildKnowledgeBase(snapshot) {
   const courseDocuments = await collectCourseDocuments(snapshot.roots);
+  const companyProfileDocuments = collectCompanyProfileDocuments(snapshot.roots);
   const sourceDocuments = collectSourceDocuments(snapshot.files);
   const faqEntries = buildFaqEntries(sourceDocuments, courseDocuments);
   const contactEntries = buildContactEntries(sourceDocuments);
-  const documents = [...courseDocuments, ...sourceDocuments];
+  const documents = [...courseDocuments, ...companyProfileDocuments, ...sourceDocuments];
   const chunks = buildChunks(documents);
   const { docFrequency, avgChunkLength } = buildInvertedStats(chunks);
 
@@ -274,6 +275,51 @@ async function buildKnowledgeBase(snapshot) {
       ],
     },
   };
+}
+
+function collectCompanyProfileDocuments(roots) {
+  const documents = [];
+
+  for (const root of roots) {
+    const aboutPath = path.resolve(root, 'src', 'components', 'AboutPage.tsx');
+
+    if (!fs.existsSync(aboutPath)) {
+      continue;
+    }
+
+    const raw = fs.readFileSync(aboutPath, 'utf8');
+    const extracted = extractMeaningfulText(raw);
+    const brand = getRepoLabel(root);
+    const importantLines = extracted.filter((line) =>
+      /who we are|our story|mission|vision|purpose|values|leadership|co-founder|director|lead data scientist|democratizing|leading brand|empower/i.test(line),
+    );
+
+    documents.push({
+      id: `${brand.toLowerCase()}-company-profile`,
+      kind: 'about',
+      subtype: 'company-profile',
+      brand,
+      repoRoot: root,
+      repoLabel: brand,
+      title: `${brand} Company Profile`,
+      relativePath: path.relative(root, aboutPath),
+      summary: importantLines[0] ?? extracted[0] ?? `${brand} company profile`,
+      text: [...importantLines, ...extracted].filter(Boolean).join('\n'),
+      keywords: buildKeywordHints([
+        brand,
+        'about',
+        'company',
+        'mission',
+        'vision',
+        'leadership',
+        'founder',
+        ...importantLines,
+      ]),
+      pageHints: ['about', 'home'],
+    });
+  }
+
+  return documents;
 }
 
 async function collectCourseDocuments(roots) {
@@ -654,6 +700,14 @@ function classifyIntent({ message, page, history }) {
     };
   }
 
+  if (hasAny(text, ['tell me about', 'dv analytics', 'agentify ai', 'agentifyai'])) {
+    return {
+      label: 'company-info',
+      rationale: 'The query is explicitly asking about one of the brands or company background.',
+      primaryKind: 'about',
+    };
+  }
+
   if (hasAny(text, ['compare', 'which course', 'which program', 'career path', 'roadmap', 'certification', 'eligibility', 'what will i learn', 'jobs does this course'])) {
     return {
       label: 'course-guidance',
@@ -702,6 +756,12 @@ function classifyIntent({ message, page, history }) {
 }
 
 function selectFeaturedCourses({ knowledge, retrievedChunks, courseId, message }) {
+  const messageText = String(message ?? '').toLowerCase();
+
+  if (hasAny(messageText, ['tell me about', 'dv analytics', 'agentify ai', 'mission', 'vision', 'leadership', 'founder'])) {
+    return [];
+  }
+
   if (courseId) {
     const direct = knowledge.courseMap.get(String(courseId).toLowerCase());
     return direct ? [direct] : [];
@@ -720,7 +780,6 @@ function selectFeaturedCourses({ knowledge, retrievedChunks, courseId, message }
     return fromChunks.slice(0, MAX_COURSES_IN_CONTEXT);
   }
 
-  const messageText = String(message ?? '').toLowerCase();
   return knowledge.documents
     .filter((item) => item.kind === 'course')
     .filter((item) => {
