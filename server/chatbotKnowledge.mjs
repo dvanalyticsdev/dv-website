@@ -4,7 +4,10 @@ import process from 'node:process';
 import { pathToFileURL } from 'node:url';
 
 const DV_ROOT = process.cwd();
-const AGENTIFY_ROOT = path.resolve(DV_ROOT, '..', 'agentifyaiglobal');
+const SITE_CONFIG = {
+  brand: 'DV Analytics',
+  blockedBrands: ['agentify', 'agentify ai', 'agentifyai'],
+};
 const CACHE_DIR = path.resolve(DV_ROOT, 'scratch', 'chatbot-cache');
 const EMBEDDING_CACHE_PATH = path.resolve(CACHE_DIR, 'embeddings.json');
 
@@ -56,7 +59,8 @@ export function buildHealthPayload() {
     ok: true,
     configured: Boolean(process.env.GEMINI_API_KEY),
     embeddingConfigured: Boolean(process.env.GEMINI_API_KEY),
-    knowledgeRoots: [DV_ROOT, AGENTIFY_ROOT],
+    knowledgeRoots: [DV_ROOT],
+    brand: SITE_CONFIG.brand,
   };
 }
 
@@ -275,11 +279,12 @@ async function buildKnowledgeBase(snapshot) {
     faqs: faqEntries,
     policies: {
       botRole:
-        'Eva is a grounded domain assistant for DV Analytics and Agentify AI. She should guide users through courses, certifications, services, company information, blogs, FAQs, roadmaps, LMS benefits, and contact details using retrieved evidence only.',
+        'Eva is a grounded domain assistant for DV Analytics. She should guide users through DV Analytics courses, certifications, services, company information, blogs, FAQs, roadmaps, LMS benefits, and contact details using retrieved evidence only.',
       restrictedActions: [
         'Do not invent fees, scholarship amounts, schedules, or admissions outcomes.',
         'Do not claim a policy exists unless retrieved evidence supports it.',
         'Do not act like a human counselor or take payments.',
+        'Do not answer for other brands or mix information from other companies into DV Analytics replies.',
       ],
       humanOnlyTopics: [
         'Final fee confirmation',
@@ -305,11 +310,17 @@ function collectCompanyProfileDocuments(roots) {
     const raw = fs.readFileSync(aboutPath, 'utf8');
     const extracted = extractMeaningfulText(raw);
     const brand = getRepoLabel(root);
+    const narrativeLines = extracted.filter((line) =>
+      line.length > 40 &&
+      /[a-z]/i.test(line) &&
+      !/[{}<>]/.test(line) &&
+      !/\bstyle\b|backgroundimage|viewbox|strokewidth|fill=|stroke=/i.test(line),
+    );
     const importantLines = extracted.filter((line) =>
       /who we are|our story|mission|vision|purpose|values|leadership|co-founder|director|lead data scientist|democratizing|leading brand|empower/i.test(line),
     );
     const summaryCandidate =
-      extracted.find((line) =>
+      narrativeLines.find((line) =>
         line.length > 60 &&
         !/^(mission|vision|values|who we are|our story|leadership|co-founder|director)$/i.test(line) &&
         !/co-founder|director|lead data scientist$/i.test(line),
@@ -318,11 +329,12 @@ function collectCompanyProfileDocuments(roots) {
         line.length > 60 &&
         !/co-founder|director|lead data scientist$/i.test(line),
       ) ??
+      narrativeLines[0] ??
       extracted[0];
     const summary = summaryCandidate ?? `${brand} company profile`;
     const highlights = dedupePreserveOrder(
       importantLines
-        .concat(extracted.filter((line) => line.length > 60))
+        .concat(narrativeLines.filter((line) => line.length > 60))
         .filter((line) => line.length > 24)
         .slice(0, 10),
     );
@@ -927,7 +939,7 @@ function dedupeFaqs(faqs) {
 }
 
 function collectSourceSnapshot() {
-  const roots = [DV_ROOT, AGENTIFY_ROOT].filter((root) => fs.existsSync(root));
+  const roots = [DV_ROOT].filter((root) => fs.existsSync(root));
   const files = [];
 
   for (const root of roots) {
@@ -1028,12 +1040,8 @@ function inferPageHints(relativePath, text) {
 function inferBrand(repoRoot, text) {
   const normalized = String(text ?? '').toLowerCase();
 
-  if (repoRoot === AGENTIFY_ROOT || normalized.includes('agentify')) {
-    return 'Agentify AI';
-  }
-
   if (normalized.includes('dv analytics') || normalized.includes('dv data')) {
-    return 'DV Analytics';
+    return SITE_CONFIG.brand;
   }
 
   return getRepoLabel(repoRoot);
@@ -1059,11 +1067,20 @@ function describePage(page) {
 }
 
 function getOwningRoot(filePath) {
-  return filePath.startsWith(AGENTIFY_ROOT) ? AGENTIFY_ROOT : DV_ROOT;
+  return DV_ROOT;
 }
 
 function getRepoLabel(root) {
-  return root === AGENTIFY_ROOT ? 'Agentify AI' : 'DV Analytics';
+  return root === DV_ROOT ? SITE_CONFIG.brand : SITE_CONFIG.brand;
+}
+
+export function detectBlockedBrandQuery(value) {
+  const text = String(value ?? '').toLowerCase();
+  return SITE_CONFIG.blockedBrands.find((brand) => matchesPhrase(text, brand)) ?? null;
+}
+
+export function getSiteBrand() {
+  return SITE_CONFIG.brand;
 }
 
 function normalizePage(page) {
@@ -1165,6 +1182,18 @@ function isMeaningfulLiteral(text) {
   }
 
   if (!/[a-z]/i.test(text)) {
+    return false;
+  }
+
+  if (/[<>]/.test(text)) {
+    return false;
+  }
+
+  if (/\bstyle\b|backgroundimage|viewbox|strokewidth|fill=|stroke=/i.test(text)) {
+    return false;
+  }
+
+  if (text.includes('-') && /^[a-z- ]+$/i.test(text) && !/[.?!,:&]/.test(text)) {
     return false;
   }
 

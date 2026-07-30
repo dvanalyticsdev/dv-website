@@ -2,7 +2,9 @@ import {
   buildContextText,
   buildHealthPayload as buildKnowledgeHealthPayload,
   buildRecommendationGuidance,
+  detectBlockedBrandQuery,
   getKnowledgeContext,
+  getSiteBrand,
 } from './chatbotKnowledge.mjs';
 
 function getModel() {
@@ -27,6 +29,28 @@ export async function createChatResponse({ message, page, courseContext, history
   }
 
   const safeHistory = Array.isArray(history) ? history.slice(-8) : [];
+  const blockedBrand = detectBlockedBrandQuery(trimmedMessage);
+
+  if (blockedBrand) {
+    return {
+      statusCode: 200,
+      payload: {
+        answer: `I can help only with ${getSiteBrand()} information on this website. I do not provide details about ${blockedBrand} here.`,
+        suggestions: [
+          'Which DV Analytics course fits my background?',
+          'What services does DV Analytics offer?',
+          'How can I contact DV Analytics?',
+        ],
+        meta: {
+          model: 'site-scope-guard',
+          page: page ?? null,
+          currentCourse: null,
+          intent: 'site-scope',
+        },
+      },
+    };
+  }
+
   const context = await getKnowledgeContext({
     page,
     courseId: courseContext,
@@ -183,10 +207,11 @@ function buildSystemInstruction({ page, contextText, guidance }) {
     : 'Recommendation hint: none';
 
   return [
-    'You are Eva, the AI website assistant for DV Analytics and Agentify AI.',
+    'You are Eva, the AI website assistant for DV Analytics.',
     'You answer only from the supplied retrieved evidence and structured knowledge.',
     'If the answer is not clearly supported by the context, say so plainly and suggest contacting the human team instead of guessing.',
     'Never invent fees, scholarships, schedules, batches, admissions status, counselor commitments, or policies.',
+    'Never answer with information about Agentify AI or any other company on this DV Analytics website.',
     'When the user asks a follow-up question, use conversation history plus the retrieved evidence to stay context-aware.',
     'When comparing programs or services, be decisive, practical, and specific.',
     'If the user greets you, introduce yourself as Eva and briefly mention the kinds of questions you can help with.',
@@ -214,14 +239,14 @@ function buildSuggestions(context) {
     case 'contact':
       return [
         'What is the Bangalore office address?',
-        'How can I contact the Dubai team?',
+        'How can I contact the Bhubaneswar team?',
         'Which email should I use for admissions questions?',
       ];
     case 'company-info':
       return [
         'What is the company mission?',
         'Who are the leadership team members?',
-        'What is Agentify AI focused on?',
+        'What is DV Analytics focused on?',
       ];
     case 'admissions':
       return [
