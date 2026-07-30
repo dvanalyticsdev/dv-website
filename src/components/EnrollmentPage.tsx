@@ -6,6 +6,7 @@ const courses = [
   { id: 'apids', category: 'data-science', label: 'Data Science + Gen AI + Agentic AI' },
   { id: 'aiml', category: 'data-science', label: 'AIML with Gen AI & Agentic AI' },
   { id: 'days7_genai', category: 'data-science', label: '7 Days GEN AI + Agentic AI Master program' },
+  { id: 'fde', category: 'data-science', label: 'AI Forward Deployed Engineer (FDE)' },
   { id: 'apcs', category: 'cybersecurity', label: 'Cybersecurity+ Forensics' },
 ];
 
@@ -55,6 +56,7 @@ const courseIndustryLabels: Record<string, string> = {
   aiml: 'AI, Machine Learning, Generative AI, and Agentic AI',
   genai: 'Generative AI and Agentic AI',
   days7_genai: 'Generative AI and Agentic AI',
+  fde: 'AI solution deployment',
   apcs: 'Cybersecurity and Forensics',
 };
 

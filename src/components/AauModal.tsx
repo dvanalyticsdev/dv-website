@@ -52,6 +52,12 @@ export const AauModal: React.FC<AauModalProps> = ({ isOpen, onClose, onSelectCou
       title: 'Advanced Program in Cybersecurity & Forensics (APCF)',
       tagline: 'Comprehensive training in Cybersecurity, Ethical Hacking, Digital Forensics, Threat Intelligence, and Security Operations.',
       poster: '/courses-poster/APCF.png'
+    },
+    {
+      id: 'fde',
+      title: 'AI Forward Deployed Engineer (FDE)',
+      tagline: 'Build and deploy client-ready AI solutions across LLMs, RAG, agents, data, cloud, and production operations.',
+      poster: '/courses-poster/ai-forward-deployment-engineer.png'
     }
   ];
 

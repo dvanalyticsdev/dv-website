@@ -247,7 +247,8 @@ function App() {
               <div className="hero-desc hero-copy-block hero-audience-block">
                 <h2 className="hero-copy-title">Who Can:</h2>
                 <p className="hero-audience-text">
-                  Freshers | Graduates (Technical &amp; Non-Technical) | Masters (Technical &amp; Non-Technical) | Working Professionals | Reachers | Entrepreneurs
+                  <span>Freshers | Graduates (Technical &amp; Non-Technical)</span>
+                  <span>Masters (Technical &amp; Non-Technical) | Working Professionals | Reachers | Entrepreneurs</span>
                 </p>
               </div>
             </div>

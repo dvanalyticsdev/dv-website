@@ -2443,6 +2443,342 @@ export const coursesData: Record<string, DetailedCourse> = {
     ],
     careerAdvantage: 'The Advanced Program in Cybersecurity & Forensics (APCF) equips learners with practical expertise in Ethical Hacking, Penetration Testing, SOC Operations, Digital Forensics, Threat Intelligence, Cloud Security, and Incident Response. The program develops industry-ready professionals capable of protecting organizations from cyber threats, investigating cybercrimes, and building secure digital environments across industries worldwide.',
   },
+  FDE: {
+    id: 'fde',
+    title: 'AI Forward Deployed Engineer (FDE)',
+    tagline: 'Build client-ready AI solutions inside real business environments across LLMs, RAG, agents, data, cloud, and production operations.',
+    overview: 'The AI Forward Deployed Engineer (FDE) program prepares learners to become hybrid engineer-consultants who work directly with clients to build and ship practical AI solutions in real environments.\n\nLearners build depth across the four FDE pillars: AI, Data, Cloud, and Software Engineering. The program covers modern GenAI foundations, LLMs, prompt engineering, RAG, vector databases, agents, MCP, AI-assisted software engineering, data pipelines, AI system design, cloud deployment, enterprise delivery, and LLMOps.',
+    duration: '3 Months',
+    practicalExposure: [
+      'Live instructor-led training',
+      'Hands-on labs and MCQs',
+      'Rapid AI prototyping exercises',
+      'RAG and agent development labs',
+      'MCP and workflow automation practice',
+      'Cloud deployment and CI/CD practice',
+      'Production LLMOps and monitoring labs',
+      'Portfolio building, case studies, GitHub projects, and LinkedIn branding',
+    ],
+    expertiseAreas: [
+      'Forward Deployed Engineering',
+      'Generative AI and LLM Applications',
+      'RAG, Vector Databases, and AI Agents',
+      'AI Workflow Automation and MCP',
+      'Data Engineering and AI System Design',
+      'Cloud Architecture and Production LLMOps',
+      'Enterprise AI Delivery and Consulting',
+    ],
+    theme: 'indigo',
+    modules: [
+      {
+        title: 'Module 1: What is a Forward Deployed Engineer?',
+        sections: [
+          {
+            title: 'FDE Role and Mindset',
+            topics: [
+              'What is an FDE? The intersection of engineering, consulting, and AI',
+              'FDE vs SWE: FDEs build for clients, SWEs build products',
+              'The FDE mindset: speed over perfection and empathy over assumptions',
+              'FDE skillset: AI, Data, Cloud, and Software Engineering as the four pillars',
+              'Delivery method: concepts, MCQs, and labs',
+            ],
+          },
+        ],
+      },
+      {
+        title: 'Module 2: AI and GenAI Foundations',
+        sections: [
+          {
+            title: 'Modern AI Foundations',
+            topics: [
+              'Generative AI and the AI to ML to DL to GenAI evolution',
+              'Transformers, tokens, and tokenization',
+              'Customizing AI with pre-training, fine-tuning, RAG, open models, and closed models',
+              'AI application lifecycle: idea, prototype, evaluation, production, and monitoring',
+            ],
+          },
+        ],
+      },
+      {
+        title: 'Module 3: Working with LLMs',
+        sections: [
+          {
+            title: 'LLM Development Decisions',
+            topics: [
+              'How LLMs work and how context windows affect solution design',
+              'Hallucination causes and mitigation strategies',
+              'Model selection for FDEs using the cost, speed, and quality triangle',
+              'API vs self-hosted deployment, cost, latency, compliance, and scale',
+            ],
+          },
+        ],
+      },
+      {
+        title: 'Module 4: Prompt Engineering Essentials',
+        sections: [
+          {
+            title: 'Enterprise Prompting Patterns',
+            topics: [
+              'Prompt engineering overview and quality drivers',
+              'Zero-shot, few-shot, chain-of-thought, and prompt chaining',
+              'System prompts, structured output, JSON mode, temperature, and controls',
+              'Evaluation, A/B testing, classification, extraction, summarization, and transformation',
+            ],
+          },
+        ],
+      },
+      {
+        title: 'Module 5: RAG and Vector Databases',
+        sections: [
+          {
+            title: 'Retrieval-Augmented Generation',
+            topics: [
+              'RAG foundations, embeddings, and vector databases',
+              'Building a RAG pipeline: chunking, similarity search, ingest, embed, store, retrieve, and generate',
+              'Retrieval strategies, metadata filtering, Top-K, MMR, and re-ranking',
+              'Advanced RAG: self-query, HyDE, corrective RAG, and RAPTOR',
+              'RAG evaluation with faithfulness, answer relevance, context recall, and RAGAS',
+            ],
+          },
+        ],
+      },
+      {
+        title: 'Module 6: AI Agents and Orchestration',
+        sections: [
+          {
+            title: 'Agentic Systems',
+            topics: [
+              'Agents as LLM plus tools, memory, and decision loop',
+              'Tool calling through JSON schema',
+              'ReAct, planning, reflection, and memory patterns',
+              'Multi-agent systems, supervisor-worker patterns, peer agents, LangChain, and LangGraph',
+              'Agent observability, tool call logging, trace review, and token usage measurement',
+            ],
+          },
+          {
+            title: 'Lab: Research Agent',
+            topics: [
+              'Accept a research question',
+              'Search the web using a web search tool',
+              'Read relevant pages using a URL reader tool',
+              'Synthesize findings into a structured report',
+              'Save output to a file',
+            ],
+          },
+        ],
+      },
+      {
+        title: 'Module 7: MCP and AI Workflow Automation',
+        sections: [
+          {
+            title: 'Tool-Connected AI Workflows',
+            topics: [
+              'Model Context Protocol (MCP) as a standard protocol for safe external tool use',
+              'MCP vs REST API',
+              'MCP components: host, client, and server',
+              'Building an MCP server to expose databases, APIs, and file-system tools',
+              'Workflow automation with directed graphs, triggers, scheduled patterns, and human checkpoints',
+            ],
+          },
+        ],
+      },
+      {
+        title: 'Module 8: AI-Assisted Software Engineering',
+        sections: [
+          {
+            title: 'AI-First Software Delivery',
+            topics: [
+              'AI-first SDLC: prompt, generate, review, refine, and ship',
+              'Claude Code, Cursor, and GitHub Copilot for accelerated engineering',
+              'Rapid prototyping from zero to working demo',
+              'AI code review before pull request submission',
+              'AI debugging with errors and stack traces',
+              'Lab: build a full feature in 2 hours using AI tools',
+            ],
+          },
+        ],
+      },
+      {
+        title: 'Module 9: Data Engineering and System Design for AI',
+        sections: [
+          {
+            title: 'AI Data Layer and System Design',
+            topics: [
+              'Data engineering fundamentals for AI solutions',
+              'ETL vs ELT and modern warehouse-first workflows',
+              'Data lake, lakehouse, and medallion architecture',
+              'Batch vs streaming and AI data pipelines',
+              'Data quality, schema validation, and freshness monitoring',
+              'Platform landscape: Databricks, Snowflake, dbt, Airflow, and Kafka',
+              'AI system design fundamentals: requirements, components, data flow, and interfaces',
+              'Feature stores, vector stores, caches, scalability, reliability, queues, retries, and graceful degradation',
+            ],
+          },
+        ],
+      },
+      {
+        title: 'Module 10: Cloud Architecture and AI Deployment',
+        sections: [
+          {
+            title: 'Production AI Deployment',
+            topics: [
+              'Cloud-native principles and AWS Well-Architected pillars',
+              'AI platform deployment with EC2, Lambda, ECS, Bedrock, and SageMaker',
+              'Microservices, APIs, Docker, Kubernetes, and serverless AI',
+              'Model serving, inference infrastructure, endpoints, autoscaling, GPU vs CPU, and batching',
+              'Blue-green, canary, and rolling deployment strategies',
+              'Infrastructure as Code with Terraform or CloudFormation',
+              'CI/CD with GitHub Actions',
+              'Observability, logs, metrics, tracing, latency, cost, drift dashboards, IAM, VPC isolation, and secrets',
+              'Lab: deploy an AI service end-to-end with container, cloud, CI/CD, and monitoring',
+            ],
+          },
+        ],
+      },
+      {
+        title: 'Module 11: Enterprise AI and FDE Delivery',
+        sections: [
+          {
+            title: 'Client-Facing AI Delivery',
+            topics: [
+              'Forward Deployed Engineer delivery model',
+              'Converting business problems into AI-driven technical solutions',
+              'Requirements gathering and stakeholder discovery',
+              'Client workshops and requirement analysis sessions',
+              'Problem translation framework for enterprise AI projects',
+              'Solution design based on business objectives',
+              'Rapid AI prototypes and proof-of-concepts',
+              'Technical storytelling and solution presentation',
+              'Enterprise AI project planning and delivery best practices',
+              'Communication for technical and non-technical stakeholders',
+              'Technical briefs, solution proposals, implementation roadmaps, case studies, and portfolio building',
+            ],
+          },
+        ],
+      },
+      {
+        title: 'Module 12: LLMOps and Production Operations',
+        sections: [
+          {
+            title: 'Operating Live LLM Systems',
+            topics: [
+              'LLMOps vs MLOps and what changes in production LLM systems',
+              'Model versioning, registry, promotion, rollback, and audit',
+              'Prompt and configuration management with feature flags',
+              'Guardrails, safety, PII redaction, moderation, and production filtering',
+              'Online evaluation, A/B testing, and human-in-the-loop feedback loops',
+              'Cost management and FinOps for AI with token and GPU cost monitoring',
+              'Scaling, resilience, request queuing, caching, and fallback models',
+              'Environment and release strategy across dev, staging, and production',
+              'Monitoring, drift, incident response, alerting, and on-call runbooks',
+              'Lab: operate a live AI system with versioning, guardrails, cost tracking, and monitoring',
+            ],
+          },
+        ],
+      },
+    ],
+    industryProjects: [
+      {
+        domain: 'AI Agent Projects',
+        projects: [
+          {
+            title: 'Research Agent',
+            description: 'Build an AI agent that accepts a research question, searches the web, reads relevant pages, synthesizes findings, and saves a structured report.',
+          },
+          {
+            title: 'Enterprise RAG Assistant',
+            description: 'Design and build a retrieval-augmented system with chunking, embeddings, vector search, metadata filtering, generation, and evaluation.',
+          },
+        ],
+      },
+      {
+        domain: 'Deployment Projects',
+        projects: [
+          {
+            title: 'End-to-End AI Service Deployment',
+            description: 'Containerize and deploy an AI service with cloud infrastructure, CI/CD, monitoring, and production-ready endpoint design.',
+          },
+          {
+            title: 'Live LLMOps System',
+            description: 'Add prompt versioning, guardrails, cost tracking, release strategy, observability, and incident response practices to a deployed LLM application.',
+          },
+        ],
+      },
+      {
+        domain: 'Enterprise Delivery Projects',
+        projects: [
+          {
+            title: 'Client AI Solution Blueprint',
+            description: 'Translate a business problem into requirements, solution architecture, technical brief, implementation roadmap, and proof-of-concept plan.',
+          },
+          {
+            title: 'AI System Design Case Study',
+            description: 'Architect an end-to-end enterprise RAG or agent system covering data flow, interfaces, reliability, queues, retries, and graceful degradation.',
+          },
+        ],
+      },
+    ],
+    programOutcome: [
+      'Understand the Forward Deployed Engineer role and delivery model',
+      'Translate messy business problems into AI-driven technical requirements',
+      'Build practical AI prototypes, RAG systems, and agentic applications',
+      'Work with LLM APIs, model selection, prompts, structured output, and evaluations',
+      'Design AI data layers using pipelines, vector stores, caches, and reliable system patterns',
+      'Build MCP-enabled tools and AI workflow automations',
+      'Deploy AI services using cloud-native architecture, containers, CI/CD, and monitoring',
+      'Operate production LLM systems with guardrails, versioning, observability, cost controls, and incident response',
+      'Create a portfolio with case studies, GitHub projects, and enterprise AI delivery artifacts',
+    ],
+    careers: [
+      {
+        level: 'Forward Deployed and AI Engineering Roles',
+        roles: [
+          'Forward Deployed Engineer',
+          'AI Engineer',
+          'AI Solutions Engineer',
+          'Generative AI Engineer',
+          'Agentic AI Developer',
+          'LLM Engineer',
+        ],
+      },
+      {
+        level: 'Enterprise AI and Consulting Roles',
+        roles: [
+          'Enterprise AI Consultant',
+          'AI Solution Architect',
+          'AI Implementation Consultant',
+          'AI Automation Engineer',
+          'Technical Solutions Consultant',
+        ],
+      },
+      {
+        level: 'Production AI Roles',
+        roles: [
+          'LLMOps Engineer',
+          'AI Platform Engineer',
+          'Cloud AI Engineer',
+          'AI Product Engineer',
+          'AI Systems Designer',
+        ],
+      },
+    ],
+    whoShouldJoin: [
+      'Software Engineers',
+      'AI Engineers',
+      'Data Scientists',
+      'Data Analysts',
+      'Data Engineers',
+      'Cloud Engineers',
+      'Business Analysts',
+      'Product Managers',
+      'Project Managers',
+      'Consultants',
+      'Entrepreneurs',
+      'Fresh Graduates',
+      'Working Professionals from Any Industry',
+    ],
+    careerAdvantage: 'The AI Forward Deployed Engineer program gives learners a rare combination of client-facing delivery skills and production AI engineering depth. Graduates can move beyond demo-building into real enterprise AI implementation, where they can gather requirements, prototype quickly, integrate with data and tools, deploy to cloud, and operate LLM systems reliably in production.',
+  },
   DAYS7_GENAI: {
     id: 'days7_genai',
     title: '7 Days Gen AI & Agentic AI Hands-on Master Program',

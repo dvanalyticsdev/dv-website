@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useGlowCard } from '../hooks/useGlowCard';
 
 const posterImages: Record<string, string> = {
@@ -9,6 +9,7 @@ const posterImages: Record<string, string> = {
   specialist: '/courses-poster/DAS.png',
   apcs: '/courses-poster/APCF.png',
   days7_genai: '/courses-poster/7-days-genai.png',
+  fde: '/courses-poster/ai-forward-deployment-engineer.png',
 };
 
 interface Module {
@@ -36,8 +37,11 @@ interface ProgramsSectionProps {
   onViewDetails?: (courseId: string) => void;
 }
 
+type CourseTerm = 'long' | 'mid' | 'short';
+
 export const ProgramsSection: React.FC<ProgramsSectionProps> = ({ onViewDetails }) => {
   const sliderRef = useRef<HTMLDivElement>(null);
+  const [activeTerm, setActiveTerm] = useState<CourseTerm>('long');
 
   const programs: Program[] = [
     {
@@ -439,8 +443,91 @@ export const ProgramsSection: React.FC<ProgramsSectionProps> = ({ onViewDetails 
         'LLM Engineer', 'AI Product Manager', 'AI Consultant',
         'AI Solutions Architect', 'AI Automation Engineer'
       ]
+    },
+    {
+      id: 'fde',
+      title: 'AI Forward Deployed Engineer (FDE)',
+      shortTitle: 'AI Forward Deployed Engineer',
+      tagline: 'Build and deploy client-ready AI solutions across LLMs, RAG, agents, data, cloud, and production operations.',
+      theme: 'indigo',
+      bulletPoints: [
+        'FDE delivery mindset: engineering, consulting, and AI',
+        'LLMs, prompt engineering, RAG, vector databases, and agents',
+        'MCP, AI workflow automation, and AI-assisted software engineering',
+        'Data engineering, AI system design, cloud deployment, and CI/CD',
+        'Enterprise AI delivery, LLMOps, guardrails, monitoring, and cost control'
+      ],
+      duration: '3 Months',
+      delivery: 'Live Online/Offline Classes',
+      overview: 'The AI Forward Deployed Engineer program prepares learners to work directly with clients, translate real business problems into technical requirements, and ship production-ready AI solutions in live environments.',
+      modules: [
+        {
+          title: 'FDE Foundations',
+          topics: [
+            'FDE vs Software Engineer and the client-embedded delivery model',
+            'FDE mindset: speed, empathy, and business translation',
+            'Four pillars: AI, Data, Cloud, and Software Engineering'
+          ]
+        },
+        {
+          title: 'AI, LLMs, RAG, and Agents',
+          topics: [
+            'GenAI foundations, transformers, tokens, and model selection',
+            'Prompt engineering, structured output, evaluations, and enterprise patterns',
+            'RAG pipelines, vector databases, advanced retrieval, and RAG evaluation',
+            'Agentic patterns, multi-agent systems, LangChain, and LangGraph'
+          ]
+        },
+        {
+          title: 'Deployment and Enterprise Delivery',
+          topics: [
+            'MCP servers, workflow automation, and human checkpoints',
+            'AI-assisted software engineering with rapid prototyping and code review',
+            'Data engineering, system design, cloud architecture, Docker, Kubernetes, and CI/CD',
+            'LLMOps, guardrails, monitoring, drift, resilience, and production operations'
+          ]
+        }
+      ],
+      projects: [
+        'Research Agent with web search, page reading, synthesis, and report generation',
+        'Enterprise RAG or agent system architecture with data flow and interfaces',
+        'End-to-end deployed AI service with container, cloud, CI/CD, and monitoring',
+        'Production LLM system with versioning, guardrails, cost tracking, and observability'
+      ],
+      tools: [
+        'Python', 'LLM APIs', 'Vector Databases', 'LangChain', 'LangGraph',
+        'MCP', 'Docker', 'Kubernetes', 'AWS', 'Terraform',
+        'GitHub Actions', 'Databricks', 'Snowflake', 'dbt', 'Airflow'
+      ],
+      careers: [
+        'Forward Deployed Engineer', 'AI Solutions Engineer', 'AI Engineer',
+        'Enterprise AI Consultant', 'LLMOps Engineer', 'AI Solution Architect'
+      ]
     }
   ];
+
+  const termTabs: Array<{ id: CourseTerm; label: string }> = [
+    { id: 'long', label: 'Long Term Course' },
+    { id: 'mid', label: 'Mid Term Course' },
+    { id: 'short', label: 'Short Term Course' },
+  ];
+
+  const programTerms: Record<string, CourseTerm> = {
+    apids: 'long',
+    apida: 'long',
+    aiml: 'mid',
+    genai: 'mid',
+    fde: 'mid',
+    specialist: 'mid',
+    apcs: 'mid',
+    days7_genai: 'short',
+  };
+
+  const filteredPrograms = programs.filter((program) => programTerms[program.id] === activeTerm);
+
+  useEffect(() => {
+    sliderRef.current?.scrollTo({ left: 0, behavior: 'smooth' });
+  }, [activeTerm]);
 
   const slide = (direction: 'left' | 'right') => {
     if (sliderRef.current) {
@@ -459,6 +546,21 @@ export const ProgramsSection: React.FC<ProgramsSectionProps> = ({ onViewDetails 
         </div>
       </div>
 
+      <div className="benefits-tab-switcher course-term-tabs reveal-on-scroll delay-1" role="tablist" aria-label="Course duration filters">
+        {termTabs.map((tab) => (
+          <button
+            key={tab.id}
+            type="button"
+            role="tab"
+            aria-selected={activeTerm === tab.id}
+            className={`tab-btn ${activeTerm === tab.id ? 'active' : ''}`}
+            onClick={() => setActiveTerm(tab.id)}
+          >
+            {tab.label}
+          </button>
+        ))}
+      </div>
+
       <div className="slider-outer-wrapper">
         <button className="side-slider-arrow prev" onClick={() => slide('left')} aria-label="Previous programs">
           <svg viewBox="0 0 24 24">
@@ -468,7 +570,7 @@ export const ProgramsSection: React.FC<ProgramsSectionProps> = ({ onViewDetails 
 
         <div className="slider-container">
           <div className="slider-track" ref={sliderRef}>
-            {programs.map((program, idx) => (
+            {filteredPrograms.map((program, idx) => (
               <ProgramCard 
                 key={program.id} 
                 program={program} 
@@ -510,7 +612,7 @@ const ProgramCard: React.FC<ProgramCardProps> = ({ program, onViewDetails, index
 
   return (
     <div 
-      className="program-card-wrapper reveal-on-scroll" 
+      className="program-card-wrapper" 
       style={{ transitionDelay: `${0.05 * (index + 1)}s` }}
     >
       <div 

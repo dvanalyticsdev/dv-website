@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { coursesData } from '../data/coursesData';
+import { coursesData } from '../data/coursesData.ts';
 import { getCourseMeta } from '../data/courseMeta';
 import { useMagneticEffect } from '../hooks/useMagneticEffect';
 import { AnimatedHeroGraphic } from './AnimatedHeroGraphic';
@@ -12,6 +12,7 @@ const posterImages: Record<string, string> = {
   specialist: '/courses-poster/DAS.png',
   apcs: '/courses-poster/APCF.png',
   days7_genai: '/courses-poster/7-days-genai.png',
+  fde: '/courses-poster/ai-forward-deployment-engineer.png',
 };
 
 const heroImages: Record<string, string> = {
@@ -22,6 +23,7 @@ const heroImages: Record<string, string> = {
   specialist: '/course-hero/DAS.jpeg',
   apcs: '/course-hero/APCF.jpeg',
   days7_genai: '/course-hero/7-days-genai.png',
+  fde: '/course-hero/ai-forward-deployment-engineer.png',
 };
 
 const courseSuccessImages: Record<string, string[]> = {
@@ -76,6 +78,9 @@ const getCourseImages = (id: string): string[] => {
   }
   if (normalizedId === 'days7_genai') {
     return ['/courses-poster/7-days-genai.png', ...allSuccessImages];
+  }
+  if (normalizedId === 'fde') {
+    return ['/courses-poster/ai-forward-deployment-engineer.png', ...allSuccessImages];
   }
   return courseSuccessImages[normalizedId] || allSuccessImages;
 };
@@ -167,7 +172,9 @@ export const CourseDetailPage: React.FC<CourseDetailPageProps> = ({
   onEnroll,
   onDownloadBrochure,
 }) => {
-  const course = coursesData[courseId.toUpperCase()];
+  const course = coursesData[courseId.toUpperCase()] || Object.values(coursesData).find(
+    (courseItem) => courseItem.id.toLowerCase() === courseId.toLowerCase()
+  );
   const courseMeta = getCourseMeta(courseId);
   const [expandedModule, setExpandedModule] = useState<number | null>(0);
   const [isMobileView, setIsMobileView] = useState(
@@ -177,7 +184,7 @@ export const CourseDetailPage: React.FC<CourseDetailPageProps> = ({
   const [expandedProjectItems, setExpandedProjectItems] = useState<string[]>([]);
   const [expandedCareerGroups, setExpandedCareerGroups] = useState<number[]>([]);
   const hasPlacementSupport = ['apids', 'apida', 'aiml'].includes(courseId.toLowerCase());
-  const hasSixCourseStats = ['apids', 'apida', 'aiml', 'specialist', 'apcs'].includes(courseId.toLowerCase());
+  const hasSixCourseStats = ['apids', 'apida', 'aiml', 'specialist', 'apcs', 'fde'].includes(courseId.toLowerCase());
   const isSevenDayProgram = courseId.toLowerCase() === 'days7_genai';
   const isMpgAAProgram = courseId.toLowerCase() === 'genai';
   const courseStatDuration = ['specialist', 'apcs'].includes(courseId.toLowerCase())

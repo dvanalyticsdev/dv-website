@@ -3217,6 +3217,78 @@ button {
   overflow-wrap: anywhere;
 }
 
+/* Course duration tabs in the programs carousel. */
+.course-term-tabs {
+  margin: 0 auto 0.5rem !important;
+  width: min(100%, 780px);
+}
+
+.course-term-tabs .tab-btn {
+  min-width: 0;
+  flex: 1 1 0;
+}
+
+@media (max-width: 768px) {
+  .course-term-tabs {
+    width: 100%;
+    gap: 0.55rem !important;
+    margin-bottom: 0.25rem !important;
+  }
+
+  .course-term-tabs .tab-btn {
+    padding: 0.75rem 0.65rem !important;
+    font-size: clamp(0.72rem, 3vw, 0.86rem) !important;
+    line-height: 1.15;
+    white-space: normal;
+  }
+}
+
+/* Homepage desktop hero: reduce the extra air below the fixed header. */
+@media (min-width: 769px) {
+  .content-section[data-section="hero"] {
+    padding-top: 1.5rem !important;
+  }
+
+  .content-section[data-section="hero"] .hero-split {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+    gap: 0 !important;
+    align-items: center !important;
+  }
+
+  .content-section[data-section="hero"] .hero-left {
+    padding-left: 0 !important;
+    padding-right: 2.5rem !important;
+  }
+
+  .content-section[data-section="hero"] .hero-right {
+    width: 100% !important;
+    min-height: 100% !important;
+    padding-left: 2.5rem !important;
+    border-left: 1px solid #94a3b8 !important;
+    justify-content: center !important;
+  }
+
+  .content-section[data-section="hero"] .hero-image-container-home {
+    width: min(100%, 640px) !important;
+    max-width: none !important;
+    transform: translate(0, -6px) scale(1.04) !important;
+    transform-origin: center center !important;
+  }
+
+  .hero-audience-text {
+    display: grid;
+    gap: 0.15rem;
+    overflow-wrap: normal;
+  }
+
+  .hero-audience-text span {
+    display: block;
+    white-space: normal;
+    overflow-wrap: normal;
+  }
+}
+
 /* Homepage expertise list: orange dots only on desktop */
 .hero-expertise-list li {
   padding-left: 1.25rem;

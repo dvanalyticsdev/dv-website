@@ -40,6 +40,11 @@ export const courseCatalog: CourseMeta[] = [
     label: '7 Days Gen AI & Agentic AI Hands-on Master Program',
     brochurePath: '/7-days-genai-brochure.pdf',
   },
+  {
+    id: 'fde',
+    label: 'AI Forward Deployed Engineer (FDE)',
+    brochurePath: '/ai-forward-deployment-engineer-brochure.pdf',
+  },
 ];
 
 export const getCourseMeta = (courseId?: string): CourseMeta | undefined =>
