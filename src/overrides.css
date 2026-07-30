@@ -3196,22 +3196,6 @@ button {
   }
 }
 
-@media (max-width: 480px) {
-  .chatbot-restore-pill {
-    width: 44px;
-    height: 44px;
-    min-width: 44px;
-    padding: 0;
-    justify-content: center;
-    bottom: max(12px, env(safe-area-inset-bottom));
-    right: max(12px, env(safe-area-inset-right));
-  }
-
-  .chatbot-restore-pill .restore-pill-text {
-    display: none;
-  }
-}
-
 .hero-audience-text {
   max-width: 100%;
   overflow-wrap: anywhere;
@@ -3359,7 +3343,6 @@ button {
   .view-details-btn,
   .roadmap-btn,
   .back-btn-link,
-  .chatbot-restore-pill,
   .reviews-widget__carousel-btn {
     min-height: 44px;
   }
@@ -3370,11 +3353,6 @@ button {
 
   .back-btn-link {
     padding-block: 0.65rem;
-  }
-
-  .chatbot-minimize-btn {
-    width: 44px;
-    height: 44px;
   }
 }
 

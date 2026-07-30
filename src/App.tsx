@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useEffect, useState } from 'react';
 import { Header } from './components/Header';
 import { AnimatedHeroGraphic } from './components/AnimatedHeroGraphic';
 import { ProgramsSection } from './components/ProgramsSection';
@@ -14,7 +14,6 @@ import { FaqsPage } from './components/FaqsPage';
 import { EnrollmentPage } from './components/EnrollmentPage';
 import { AboutPage } from './components/AboutPage';
 import { BlogsPage } from './components/BlogsPage';
-import { ChatbotWidget } from './components/ChatbotWidget';
 import { useScrollReveal } from './hooks/useScrollReveal';
 import { CompaniesSection } from './components/CompaniesSection';
 import { AauModal } from './components/AauModal';
@@ -24,85 +23,12 @@ import { SampleVideoSection } from './components/SampleVideoSection';
 function App() {
   const [activePage, setActivePage] = useState('home');
   const scrollRevealRef = useScrollReveal(activePage);
-  const [robotPose, setRobotPose] = useState<'idle' | 'wave' | 'programs' | 'benefits' | 'roadmap' | 'footer'>('idle');
-  const [robotClicked, setRobotClicked] = useState(false);
-  const [hoveredSection, setHoveredSection] = useState<string | null>(null);
   const [isAauModalOpen, setIsAauModalOpen] = useState(false);
   const [brochureCourseId, setBrochureCourseId] = useState<string | null>(null);
-
-  // Global mousemove-based section detection
-  const handleMouseMove = useCallback((e: MouseEvent) => {
-    const elements = document.elementsFromPoint(e.clientX, e.clientY);
-    let foundSection: string | null = null;
-    for (const el of elements) {
-      const section = (el as HTMLElement).dataset?.section;
-      if (section) {
-        foundSection = section;
-        break;
-      }
-    }
-    setHoveredSection(foundSection);
-  }, []);
-
-  useEffect(() => {
-    window.addEventListener('mousemove', handleMouseMove, { passive: true });
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, [handleMouseMove]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [activePage]);
-
-  useEffect(() => {
-    if (activePage !== 'home') return;
-
-    const handleScroll = () => {
-      const scrollY = window.scrollY;
-      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-      const scrollPercent = docHeight > 0 ? (scrollY / docHeight) * 100 : 0;
-
-      const programsElem = document.getElementById('programs-section');
-      const benefitsElem = document.getElementById('benefits-section');
-      const roadmapElem = document.getElementById('roadmap-section');
-
-      const buffer = 320; // trigger early when scrolling near
-
-      if (scrollPercent > 88) {
-        setRobotPose('footer');
-      } else if (roadmapElem && scrollY > roadmapElem.offsetTop - buffer) {
-        setRobotPose('roadmap');
-      } else if (benefitsElem && scrollY > benefitsElem.offsetTop - buffer) {
-        setRobotPose('benefits');
-      } else if (programsElem && scrollY > programsElem.offsetTop - buffer) {
-        setRobotPose('programs');
-      } else {
-        setRobotPose('idle');
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll();
-
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [activePage]);
-
-  const [blinkTrigger, setBlinkTrigger] = useState(0);
-
-  useEffect(() => {
-    const handleGlobalClick = () => {
-      setBlinkTrigger((prev) => prev + 1);
-    };
-    window.addEventListener('click', handleGlobalClick);
-    return () => window.removeEventListener('click', handleGlobalClick);
-  }, []);
-
-
-  const handleRobotClick = () => {
-    setRobotClicked(true);
-    setTimeout(() => {
-      setRobotClicked(false);
-    }, 1800);
-  };
 
   const handleNavClick = (pageId: string) => {
     if (pageId === 'aau') {
@@ -121,9 +47,9 @@ function App() {
       const courseId = activePage.replace('course-', '');
       return (
         <div data-section="course-detail">
-          <CourseDetailPage 
-            courseId={courseId} 
-            onBackHome={() => setActivePage('home')} 
+          <CourseDetailPage
+            courseId={courseId}
+            onBackHome={() => setActivePage('home')}
             onEnroll={() => setActivePage(`enroll-${courseId}`)}
             onDownloadBrochure={() => handleOpenBrochure(courseId)}
           />
@@ -136,9 +62,9 @@ function App() {
       const defaultCourseId = courseId !== 'enroll' ? courseId : undefined;
       return (
         <div data-section="enrollment">
-          <EnrollmentPage 
-            onBackHome={() => setActivePage('home')} 
-            defaultCourseId={defaultCourseId} 
+          <EnrollmentPage
+            onBackHome={() => setActivePage('home')}
+            defaultCourseId={defaultCourseId}
           />
         </div>
       );
@@ -156,8 +82,8 @@ function App() {
       const serviceId = activePage.replace('service-', '');
       return (
         <div data-section="service-detail">
-          <ServiceDetailPage 
-            serviceId={serviceId} 
+          <ServiceDetailPage
+            serviceId={serviceId}
             onBackHome={() => setActivePage('home')}
             onNavigate={(page) => setActivePage(page)}
           />
@@ -168,9 +94,7 @@ function App() {
     if (activePage === 'faqs') {
       return (
         <div data-section="faqs">
-          <FaqsPage 
-            onEnroll={() => setActivePage('enroll')} 
-          />
+          <FaqsPage onEnroll={() => setActivePage('enroll')} />
         </div>
       );
     }
@@ -194,7 +118,7 @@ function App() {
               This section is currently under development.
             </p>
             <button className="btn btn-primary" onClick={() => setActivePage('home')}>
-              ← Back to Homepage
+              Back to Homepage
             </button>
           </section>
         </div>
@@ -272,7 +196,7 @@ function App() {
 
           <div className="hero-badges-grid">
             <div className="hero-badge-card badge-experts">
-              <img 
+              <img
                 src="/hero-section-logo/card-experts.png"
                 alt="Trained by Industry Experts"
                 loading="lazy"
@@ -280,7 +204,7 @@ function App() {
             </div>
 
             <div className="hero-badge-card badge-projects">
-              <img 
+              <img
                 src="/hero-section-logo/card-projects.png"
                 alt="Industry Project Hands-On"
                 loading="lazy"
@@ -288,7 +212,7 @@ function App() {
             </div>
 
             <div className="hero-badge-card badge-lms">
-              <img 
+              <img
                 src="/hero-section-logo/card-lms.png"
                 alt="LMS Access 24/7"
                 loading="lazy"
@@ -296,7 +220,7 @@ function App() {
             </div>
 
             <div className="hero-badge-card badge-placement">
-              <img 
+              <img
                 src="/hero-section-logo/card-placement.png"
                 alt="Placement Support"
                 loading="lazy"
@@ -330,7 +254,7 @@ function App() {
   };
 
   return (
-      <div ref={scrollRevealRef}>
+    <div ref={scrollRevealRef}>
       <div className="page-progress-bar" key={activePage}></div>
       <Header
         onNavClick={handleNavClick}
@@ -344,20 +268,12 @@ function App() {
         </div>
       </main>
       <Footer />
-      <ChatbotWidget 
-        activePage={activePage} 
-        robotPose={robotPose}
-        robotClicked={robotClicked}
-        onRobotClick={handleRobotClick}
-        blinkTrigger={blinkTrigger}
-        hoveredSection={hoveredSection}
-      />
       <AauModal
         isOpen={isAauModalOpen}
         onClose={() => setIsAauModalOpen(false)}
         onSelectCourse={(courseId) => {
           setIsAauModalOpen(false);
-          setActivePage('course-' + courseId);
+          setActivePage(`course-${courseId}`);
         }}
       />
       <BrochureLeadModal
