@@ -89,6 +89,7 @@ export async function getKnowledgeContext({ page, courseId, message, history } =
   });
   const relevantFaqs = selectRelevantFaqs(knowledge.faqs, queryText);
   const contactEntries = knowledge.contacts.slice(0, 6);
+  const companyProfiles = selectCompanyProfiles(knowledge.documents, queryText, normalizedPage);
 
   return {
     page: normalizedPage,
@@ -99,6 +100,7 @@ export async function getKnowledgeContext({ page, courseId, message, history } =
     featuredCourses,
     relevantFaqs,
     contactEntries,
+    companyProfiles,
     policies: knowledge.policies,
     knowledgeStats: {
       documents: knowledge.documents.length,
@@ -188,6 +190,16 @@ export function buildContextText(context) {
     .map((entry) => `${entry.title}: ${entry.summary}`)
     .join('\n');
 
+  const companyBlock = context.companyProfiles
+    .map((profile) =>
+      [
+        `Company: ${profile.brand}`,
+        `Summary: ${profile.summary}`,
+        `Highlights: ${profile.highlights.join(' | ')}`,
+      ].join('\n'),
+    )
+    .join('\n\n');
+
   return [
     `Current page: ${context.page}`,
     `Current page description: ${context.pageDescription}`,
@@ -207,6 +219,9 @@ export function buildContextText(context) {
     '',
     'Relevant FAQs:',
     faqBlock || 'No FAQ matched.',
+    '',
+    'Company profiles:',
+    companyBlock || 'No company profile matched.',
     '',
     'Contact summary:',
     contactBlock || 'No contact information extracted.',
@@ -293,6 +308,24 @@ function collectCompanyProfileDocuments(roots) {
     const importantLines = extracted.filter((line) =>
       /who we are|our story|mission|vision|purpose|values|leadership|co-founder|director|lead data scientist|democratizing|leading brand|empower/i.test(line),
     );
+    const summaryCandidate =
+      extracted.find((line) =>
+        line.length > 60 &&
+        !/^(mission|vision|values|who we are|our story|leadership|co-founder|director)$/i.test(line) &&
+        !/co-founder|director|lead data scientist$/i.test(line),
+      ) ??
+      importantLines.find((line) =>
+        line.length > 60 &&
+        !/co-founder|director|lead data scientist$/i.test(line),
+      ) ??
+      extracted[0];
+    const summary = summaryCandidate ?? `${brand} company profile`;
+    const highlights = dedupePreserveOrder(
+      importantLines
+        .concat(extracted.filter((line) => line.length > 60))
+        .filter((line) => line.length > 24)
+        .slice(0, 10),
+    );
 
     documents.push({
       id: `${brand.toLowerCase()}-company-profile`,
@@ -303,7 +336,7 @@ function collectCompanyProfileDocuments(roots) {
       repoLabel: brand,
       title: `${brand} Company Profile`,
       relativePath: path.relative(root, aboutPath),
-      summary: importantLines[0] ?? extracted[0] ?? `${brand} company profile`,
+      summary,
       text: [...importantLines, ...extracted].filter(Boolean).join('\n'),
       keywords: buildKeywordHints([
         brand,
@@ -316,6 +349,7 @@ function collectCompanyProfileDocuments(roots) {
         ...importantLines,
       ]),
       pageHints: ['about', 'home'],
+      highlights,
     });
   }
 
@@ -803,6 +837,35 @@ function selectRelevantFaqs(faqs, query) {
     .sort((a, b) => b.score - a.score)
     .slice(0, 6)
     .filter((faq) => faq.score > 0 || faq.alwaysInclude);
+}
+
+function selectCompanyProfiles(documents, queryText, page) {
+  const query = String(queryText ?? '').toLowerCase();
+  const profiles = documents.filter((doc) => doc.subtype === 'company-profile');
+
+  const scored = profiles
+    .map((profile) => {
+      let score = 0;
+
+      if (page === 'about') score += 2;
+      if (query.includes(profile.brand.toLowerCase())) score += 4;
+      if (hasAny(query, ['tell me about', 'mission', 'vision', 'leadership', 'founder', 'company', 'who we are'])) {
+        score += 3;
+      }
+
+      return {
+        ...profile,
+        score,
+      };
+    })
+    .filter((profile) => profile.score > 0)
+    .sort((a, b) => b.score - a.score);
+
+  return scored.slice(0, 2).map((profile) => ({
+    brand: profile.brand,
+    summary: profile.summary,
+    highlights: profile.highlights ?? [],
+  }));
 }
 
 function buildFaqEntries(documents, courseDocuments) {

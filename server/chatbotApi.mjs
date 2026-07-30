@@ -18,11 +18,6 @@ export function buildHealthPayload() {
 
 export async function createChatResponse({ message, page, courseContext, history }) {
   const trimmedMessage = String(message ?? '').trim();
-  const apiKey = process.env.GEMINI_API_KEY;
-
-  if (!apiKey) {
-    throw new Error('Server is missing GEMINI_API_KEY. Add it to your environment before starting the chatbot server.');
-  }
 
   if (!trimmedMessage) {
     return {
@@ -42,6 +37,34 @@ export async function createChatResponse({ message, page, courseContext, history
     message: trimmedMessage,
     history: safeHistory,
   });
+
+  const fallbackAnswer = buildDeterministicAnswer({
+    message: trimmedMessage,
+    context,
+  });
+
+  if (fallbackAnswer) {
+    return {
+      statusCode: 200,
+      payload: {
+        answer: fallbackAnswer,
+        suggestions: buildSuggestions(context),
+        meta: {
+          model: 'deterministic-company-fallback',
+          page: page ?? null,
+          currentCourse: context.currentCourse?.idAlias ?? null,
+          intent: context.intent.label,
+          knowledgeStats: context.knowledgeStats,
+        },
+      },
+    };
+  }
+
+  const apiKey = process.env.GEMINI_API_KEY;
+
+  if (!apiKey) {
+    throw new Error('Server is missing GEMINI_API_KEY. Add it to your environment before starting the chatbot server.');
+  }
 
   const answer = await queryGemini({
     apiKey,
@@ -213,6 +236,53 @@ function buildSuggestions(context) {
         'What services do you offer for enterprises?',
       ];
   }
+}
+
+function buildDeterministicAnswer({ message, context }) {
+  const text = String(message ?? '').toLowerCase();
+
+  if (context.intent.label !== 'company-info') {
+    return null;
+  }
+
+  const profile =
+    context.companyProfiles.find((item) => text.includes(item.brand.toLowerCase())) ??
+    context.companyProfiles[0];
+
+  if (!profile) {
+    return null;
+  }
+
+  const descriptionLines = profile.highlights.filter((line) =>
+    /leading|training|consulting|bridging the gap|empower|democratiz|education|corporate demands|industry-relevant|practical training|inclusive|ethical|autonomous intelligence/i.test(line),
+  );
+  const leadershipLines = profile.highlights.filter((line) =>
+    /co-founder|director|lead|leader|team|ph\.d|iit|iimb/i.test(line),
+  );
+  const missionLines = profile.highlights.filter((line) =>
+    /mission|vision|purpose|values|empower|democratiz|leading brand/i.test(line),
+  );
+  const descriptionText = dedupeText(descriptionLines).slice(0, 2).join(' ');
+  const leadershipText = dedupeText(leadershipLines).slice(0, 3).join(' ');
+  const missionText = dedupeText(missionLines).slice(0, 3).join(' ');
+
+  if (includesAny(text, ['leadership', 'leader', 'founder', 'team', 'who leads', 'who are'])) {
+    return `${profile.brand} leadership information on the site includes ${leadershipText || profile.summary}.`.trim();
+  }
+
+  if (includesAny(text, ['mission', 'vision', 'purpose', 'values'])) {
+    return `${profile.brand} is described on the site as follows: ${missionText || descriptionText || profile.summary}`.trim();
+  }
+
+  return `${profile.brand} is described on the site as ${descriptionText || profile.summary}${leadershipText ? ` Leadership highlights include ${leadershipText}.` : '.'}`.trim();
+}
+
+function includesAny(text, phrases) {
+  return phrases.some((phrase) => text.includes(phrase));
+}
+
+function dedupeText(lines) {
+  return [...new Set(lines.map((line) => line.trim()).filter(Boolean))];
 }
 
 function normalizeAssistantAnswer(answer) {
