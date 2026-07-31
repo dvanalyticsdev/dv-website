@@ -3210,6 +3210,8 @@ button {
 .course-term-tabs .tab-btn {
   min-width: 0;
   flex: 1 1 0;
+  justify-content: center;
+  text-align: center;
 }
 
 @media (max-width: 768px) {
