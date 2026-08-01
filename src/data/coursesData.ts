@@ -2448,7 +2448,7 @@ export const coursesData: Record<string, DetailedCourse> = {
     title: 'AI Forward Deployed Engineer (FDE)',
     tagline: 'Build client-ready AI solutions inside real business environments across LLMs, RAG, agents, data, cloud, and production operations.',
     overview: 'The AI Forward Deployed Engineer (FDE) program prepares learners to become hybrid engineer-consultants who work directly with clients to build and ship practical AI solutions in real environments.\n\nLearners build depth across the four FDE pillars: AI, Data, Cloud, and Software Engineering. The program covers modern GenAI foundations, LLMs, prompt engineering, RAG, vector databases, agents, MCP, AI-assisted software engineering, data pipelines, AI system design, cloud deployment, enterprise delivery, and LLMOps.',
-    duration: '3 Months',
+    duration: '6 Months',
     practicalExposure: [
       'Live instructor-led training',
       'Hands-on labs and MCQs',

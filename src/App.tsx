@@ -20,6 +20,26 @@ import { AauModal } from './components/AauModal';
 import { BrochureLeadModal } from './components/BrochureLeadModal';
 import { SampleVideoSection } from './components/SampleVideoSection';
 
+const heroPosterModules = import.meta.glob('/public/hero-stories/*.{png,jpg,jpeg,webp,avif}', {
+  eager: true,
+  query: '?url',
+  import: 'default',
+});
+
+const allowedHeroPosterPaths = [
+  '/public/hero-stories/poster-8.png',
+  '/public/hero-stories/6th.jpeg',
+  '/public/hero-stories/career-gap.png',
+  '/public/hero-stories/poster-2.png',
+  '/public/hero-stories/poster-4.png',
+  '/public/hero-stories/poster-6.png',
+];
+
+const heroPosterImages = allowedHeroPosterPaths
+  .map((filePath) => heroPosterModules[filePath] as string | undefined)
+  .filter((assetUrl): assetUrl is string => Boolean(assetUrl))
+  .map((assetUrl) => assetUrl.replace('/public/', '/'));
+
 function App() {
   const [activePage, setActivePage] = useState('home');
   const scrollRevealRef = useScrollReveal(activePage);
@@ -179,14 +199,14 @@ function App() {
 
             <div className="hero-right">
               <div className="hero-image-container hero-image-container-home">
-                <AnimatedHeroGraphic />
+                <AnimatedHeroGraphic images={heroPosterImages} />
               </div>
             </div>
           </div>
 
           <div className="hero-mobile-slideshow">
             <div className="hero-image-container">
-              <AnimatedHeroGraphic />
+              <AnimatedHeroGraphic images={heroPosterImages} />
             </div>
           </div>
 

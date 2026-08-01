@@ -457,7 +457,7 @@ export const ProgramsSection: React.FC<ProgramsSectionProps> = ({ onViewDetails 
         'Data engineering, AI system design, cloud deployment, and CI/CD',
         'Enterprise AI delivery, LLMOps, guardrails, monitoring, and cost control'
       ],
-      duration: '3 Months',
+      duration: '6 Months',
       delivery: 'Live Online/Offline Classes',
       overview: 'The AI Forward Deployed Engineer program prepares learners to work directly with clients, translate real business problems into technical requirements, and ship production-ready AI solutions in live environments.',
       modules: [
@@ -515,10 +515,10 @@ export const ProgramsSection: React.FC<ProgramsSectionProps> = ({ onViewDetails 
   const programTerms: Record<string, CourseTerm> = {
     apids: 'long',
     apida: 'long',
+    fde: 'long',
     aiml: 'mid',
     genai: 'mid',
-    fde: 'mid',
-    specialist: 'mid',
+    specialist: 'short',
     apcs: 'mid',
     days7_genai: 'short',
   };
