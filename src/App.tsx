@@ -19,6 +19,7 @@ import { CompaniesSection } from './components/CompaniesSection';
 import { AauModal } from './components/AauModal';
 import { BrochureLeadModal } from './components/BrochureLeadModal';
 import { SampleVideoSection } from './components/SampleVideoSection';
+import { SkillPackageExplorer } from './components/SkillPackageExplorer';
 
 const heroPosterModules = import.meta.glob('/public/hero-stories/*.{png,jpg,jpeg,webp,avif}', {
   eager: true,
@@ -40,6 +41,8 @@ const heroPosterImages = allowedHeroPosterPaths
   .filter((assetUrl): assetUrl is string => Boolean(assetUrl))
   .map((assetUrl) => assetUrl.replace('/public/', '/'));
 
+const paymentPageUrl = 'https://dvanalyticsmds.com/payment/';
+
 function App() {
   const [activePage, setActivePage] = useState('home');
   const scrollRevealRef = useScrollReveal(activePage);
@@ -49,6 +52,12 @@ function App() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [activePage]);
+
+  useEffect(() => {
+    if (window.location.pathname.replace(/\/$/, '') === '/payment') {
+      setActivePage('payment');
+    }
+  }, []);
 
   const handleNavClick = (pageId: string) => {
     if (pageId === 'aau') {
@@ -127,6 +136,24 @@ function App() {
       );
     }
 
+    if (activePage === 'payment') {
+      return (
+        <div className="page-wrapper container">
+          <section className="content-section" style={{ padding: '3.5rem', textAlign: 'center' }}>
+            <h2 style={{ fontSize: '2.25rem', marginBottom: '1.5rem', color: '#000000', fontWeight: '800' }}>
+              Payment Page
+            </h2>
+            <p style={{ color: 'var(--text-secondary)', fontSize: '1.15rem', marginBottom: '2.5rem', fontWeight: '300' }}>
+              Continue to the secure DV Analytics payment form.
+            </p>
+            <a className="btn btn-primary" href={paymentPageUrl}>
+              Open Payment Page
+            </a>
+          </section>
+        </div>
+      );
+    }
+
     if (activePage !== 'home') {
       return (
         <div className="page-wrapper container">
@@ -194,6 +221,7 @@ function App() {
                   <span>Freshers | Graduates (Technical &amp; Non-Technical)</span>
                   <span>Masters (Technical &amp; Non-Technical) | Working Professionals | Reachers | Entrepreneurs</span>
                 </p>
+                <SkillPackageExplorer onViewDetails={(courseId) => setActivePage(`course-${courseId}`)} />
               </div>
             </div>
 
@@ -209,6 +237,11 @@ function App() {
               <AnimatedHeroGraphic images={heroPosterImages} />
             </div>
           </div>
+
+          <SkillPackageExplorer
+            className="skill-package-explorer-mobile"
+            onViewDetails={(courseId) => setActivePage(`course-${courseId}`)}
+          />
 
           <div className="badges-header">
             <h2 className="badges-title">Learners Benefit</h2>

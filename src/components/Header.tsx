@@ -89,6 +89,28 @@ export const Header: React.FC<HeaderProps> = ({
     }
   };
 
+  const renderContactActions = (variant: 'desktop' | 'mobile') => (
+    <div className={`header-contact-actions header-contact-actions-${variant}`}>
+      <a className="header-contact-btn call" href="tel:+919019030033" aria-label="Call 9019 030 033" title="Call 9019 030 033">
+        <svg className="header-contact-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.86 19.86 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.86 19.86 0 0 1 2.12 4.2 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.12.91.33 1.8.63 2.65a2 2 0 0 1-.45 2.11L8.02 9.75a16 16 0 0 0 6.23 6.23l1.27-1.27a2 2 0 0 1 2.11-.45c.85.3 1.74.51 2.65.63A2 2 0 0 1 22 16.92Z" />
+        </svg>
+      </a>
+      <a
+        className="header-contact-btn whatsapp"
+        href="https://wa.me/918249430414"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Chat on WhatsApp at 8249430414"
+        title="WhatsApp 8249430414"
+      >
+        <svg className="header-contact-icon whatsapp-icon" viewBox="0 0 448 512" aria-hidden="true">
+          <path d="M380.9 97.1C339 55.1 283.2 32 223.9 32 101 32 1 132 1 254.8c0 39.3 10.2 77.7 29.6 111.5L0 480l116.4-30.5c32.7 17.8 69.5 27.2 107.4 27.2h.1c122.8 0 222.8-100 222.8-222.8 0-59.5-23.2-115.4-65.8-156.8ZM223.9 439.1c-33.7 0-66.7-9.1-95.5-26.2l-6.8-4-69 18.1 18.4-67.3-4.4-6.9c-18.8-29.8-28.8-64.1-28.8-99.9 0-102.6 83.5-186.2 186.1-186.2 49.7 0 96.4 19.4 131.6 54.6 35.2 35.3 54.6 82.1 54.5 131.8 0 102.6-83.5 186-186.1 186Zm101.9-139.3c-5.6-2.8-33.1-16.3-38.2-18.2-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18.2-17.6 21.9-3.2 3.7-6.5 4.2-12.1 1.4-33.1-16.5-54.8-29.5-76.6-66.8-5.8-10 5.8-9.3 16.5-30.9 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2s-9.7 1.4-14.8 6.9c-5.1 5.6-19.4 19-19.4 46.3s19.9 53.7 22.7 57.4c2.8 3.7 39.1 59.7 94.8 83.7 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 33.1-13.5 37.8-26.5 4.7-13 4.7-24.1 3.2-26.5-1.3-2.5-5-3.9-10.6-6.7Z" />
+        </svg>
+      </a>
+    </div>
+  );
+
   const renderNavList = () => (
     <ul className="nav-list">
       <li 
@@ -222,8 +244,9 @@ export const Header: React.FC<HeaderProps> = ({
   );
 
   return (
-    <header className="site-header" data-section="header">
-      <div className="header-container">
+    <>
+      <header className="site-header" data-section="header">
+        <div className="header-container">
         <div className="desktop-header-row">
           <a href="/" className="logo-link" onClick={(e) => {
             e.preventDefault();
@@ -246,6 +269,7 @@ export const Header: React.FC<HeaderProps> = ({
                 >
                   Enroll Now
                 </button>
+                {renderContactActions('desktop')}
                 <button
                   className="btn-header-brochure"
                   onClick={() => onCourseBrochureClick?.(activeCourse.id)}
@@ -255,14 +279,17 @@ export const Header: React.FC<HeaderProps> = ({
                 </button>
               </>
             ) : (
-              <button
-                className="btn-enroll-header"
-                onClick={() => {
-                  if (onNavClick) onNavClick('enroll');
-                }}
-              >
-                Enroll Now
-              </button>
+              <>
+                <button
+                  className="btn-enroll-header"
+                  onClick={() => {
+                    if (onNavClick) onNavClick('enroll');
+                  }}
+                >
+                  Enroll Now
+                </button>
+                {renderContactActions('desktop')}
+              </>
             )}
           </div>
         </div>
@@ -417,10 +444,33 @@ export const Header: React.FC<HeaderProps> = ({
                   FAQs
                 </a>
               </li>
+
+              <li className="mobile-enroll-nav-item">
+                <button
+                  type="button"
+                  className="mobile-enroll-btn"
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    if (activeCourse) {
+                      onCourseEnrollClick?.(activeCourse.id);
+                    } else if (onNavClick) {
+                      onNavClick('enroll');
+                    }
+                  }}
+                >
+                  Enroll Now
+                </button>
+              </li>
             </ul>
           </nav>
         </div>
+
+        </div>
+      </header>
+
+      <div className="mobile-floating-contact-actions">
+        {renderContactActions('mobile')}
       </div>
-    </header>
+    </>
   );
 };
