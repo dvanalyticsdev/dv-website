@@ -3659,3 +3659,161 @@ button {
     height: auto;
   }
 }
+
+/* ==========================================================================
+   Global orange interaction system
+   Keeps component geometry and motion intact while standardizing brand color.
+   #d64218 provides AA contrast (4.51:1) against white text.
+   ========================================================================== */
+:root {
+  --brand-orange-button: #d64218;
+  --brand-orange-button-hover: #c83d12;
+  --brand-orange-button-active: #b9340f;
+  --brand-orange-button-focus: rgba(239, 83, 35, 0.42);
+  --brand-orange-button-shadow: rgba(214, 66, 24, 0.28);
+}
+
+/* Primary CTAs, form actions, card actions and selected interactive tabs. */
+:is(
+  .btn-primary,
+  .btn-enroll-header,
+  .mobile-enroll-btn,
+  .btn-header-brochure,
+  .btn-enroll-main,
+  .course-stats-brochure-btn,
+  .btn-enroll-bottom,
+  .btn-submit-enroll,
+  .view-details-btn,
+  .modal-action-btn.primary,
+  .aau-card-btn,
+  .btn-view-all-industries,
+  .btn-reviews-primary,
+  .btn-watch-video,
+  .btn-go-lms,
+  .read-more-blog-btn,
+  .benefits-tab-switcher .tab-btn.active,
+  .roadmap-btn.active,
+  .faq-tab-btn.active
+) {
+  background: var(--brand-orange-button) !important;
+  border-color: var(--brand-orange-button) !important;
+  color: #ffffff !important;
+}
+
+:is(
+  .btn-primary,
+  .btn-enroll-header,
+  .mobile-enroll-btn,
+  .btn-header-brochure,
+  .btn-enroll-main,
+  .course-stats-brochure-btn,
+  .btn-enroll-bottom,
+  .btn-submit-enroll,
+  .view-details-btn,
+  .modal-action-btn.primary,
+  .aau-card-btn,
+  .btn-view-all-industries,
+  .btn-reviews-primary,
+  .btn-watch-video,
+  .btn-go-lms,
+  .read-more-blog-btn,
+  .benefits-tab-switcher .tab-btn.active,
+  .roadmap-btn.active,
+  .faq-tab-btn.active
+):not(:disabled):hover {
+  background: var(--brand-orange-button-hover) !important;
+  border-color: var(--brand-orange-button-hover) !important;
+  color: #ffffff !important;
+}
+
+:is(
+  .btn-primary,
+  .btn-enroll-header,
+  .mobile-enroll-btn,
+  .btn-header-brochure,
+  .btn-enroll-main,
+  .course-stats-brochure-btn,
+  .btn-enroll-bottom,
+  .btn-submit-enroll,
+  .view-details-btn,
+  .modal-action-btn.primary,
+  .aau-card-btn,
+  .btn-view-all-industries,
+  .btn-reviews-primary,
+  .btn-watch-video,
+  .btn-go-lms,
+  .read-more-blog-btn,
+  .benefits-tab-switcher .tab-btn.active,
+  .roadmap-btn.active,
+  .faq-tab-btn.active
+):not(:disabled):active {
+  background: var(--brand-orange-button-active) !important;
+  border-color: var(--brand-orange-button-active) !important;
+  color: #ffffff !important;
+}
+
+/* Navigation selection and hover states shown in the desktop/mobile header. */
+.site-header .nav-item > a:hover,
+.site-header .nav-item > a.active,
+.site-header .nav-item > a.open,
+.site-header .dropdown-item-link:hover,
+.mobile-courses-container .dropdown-trigger:hover,
+.mobile-courses-container .dropdown-trigger.open {
+  background-color: var(--brand-orange-button) !important;
+  color: #ffffff !important;
+}
+
+.site-header .nav-item > a.active:hover,
+.site-header .nav-item > a.open:hover,
+.site-header .dropdown-item-link:hover,
+.mobile-courses-container .dropdown-trigger.open:hover {
+  background-color: var(--brand-orange-button-hover) !important;
+}
+
+/* Expandable controls and image navigation use the same orange state palette. */
+.accordion-trigger:hover,
+.accordion-item.active .accordion-trigger,
+.faq-tab-btn:hover,
+.slideshow-nav-btn:hover,
+.promo-play-btn {
+  background-color: var(--brand-orange-button) !important;
+  background: var(--brand-orange-button) !important;
+  color: #ffffff !important;
+}
+
+.accordion-item.active .accordion-trigger:hover,
+.faq-tab-btn.active:hover,
+.slideshow-nav-btn:active,
+.promo-play-btn:hover {
+  background-color: var(--brand-orange-button-hover) !important;
+  background: var(--brand-orange-button-hover) !important;
+}
+
+.promo-play-btn:active {
+  background-color: var(--brand-orange-button-active) !important;
+  background: var(--brand-orange-button-active) !important;
+}
+
+.promo-play-btn .pulse-ring {
+  border-color: var(--brand-orange-button) !important;
+}
+
+/* Inactive segmented controls remain secondary, with orange interaction cues. */
+.benefits-tab-switcher .tab-btn:not(.active):hover,
+.roadmap-btn:not(.active):hover,
+.side-slider-arrow:hover {
+  border-color: var(--brand-orange-button) !important;
+  color: var(--brand-orange-button) !important;
+}
+
+/* Preserve each control's focus geometry while applying the brand focus color. */
+:is(
+  button,
+  [role='button'],
+  .btn,
+  .btn-go-lms,
+  .site-header .nav-item > a,
+  .site-header .dropdown-item-link
+):focus-visible {
+  outline-color: var(--brand-orange-button-focus) !important;
+}

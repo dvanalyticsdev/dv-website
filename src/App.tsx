@@ -28,6 +28,8 @@ const heroPosterModules = import.meta.glob('/public/hero-stories/*.{png,jpg,jpeg
 });
 
 const allowedHeroPosterPaths = [
+  '/public/hero-stories/fde-student.jpg',
+  '/public/hero-stories/fde-professional.png',
   '/public/hero-stories/poster-8.png',
   '/public/hero-stories/6th.jpeg',
   '/public/hero-stories/career-gap.png',
