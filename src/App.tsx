@@ -56,8 +56,11 @@ function App() {
   }, [activePage]);
 
   useEffect(() => {
-    if (window.location.pathname.replace(/\/$/, '') === '/payment') {
-      setActivePage('payment');
+    const paymentRedirectPaths = ['/payment', '/payment/index.php'];
+    const currentPath = window.location.pathname.replace(/\/$/, '');
+
+    if (paymentRedirectPaths.includes(currentPath)) {
+      window.location.replace(`${paymentPageUrl}${window.location.search}`);
     }
   }, []);
 
