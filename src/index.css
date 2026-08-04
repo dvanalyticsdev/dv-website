@@ -388,6 +388,10 @@ a {
   min-width: 240px;
 }
 
+.courses-dropdown-shell-desktop {
+  padding-right: 1.2rem;
+}
+
 .courses-category-list {
   display: flex;
   flex-direction: column;
@@ -433,7 +437,7 @@ a {
   flex-direction: column;
   position: absolute;
   top: -0.5rem;
-  left: calc(100% + 0.35rem);
+  left: 100%;
   width: min(390px, calc(100vw - 2rem));
   max-height: min(70vh, 620px);
   overflow-y: auto;
@@ -443,6 +447,15 @@ a {
   border-radius: 14px;
   background: rgba(255, 255, 255, 0.98);
   box-shadow: 0 14px 34px rgba(0, 0, 0, 0.16);
+}
+
+.courses-submenu::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 100%;
+  width: 1.2rem;
+  height: 100%;
 }
 
 .courses-submenu.show {

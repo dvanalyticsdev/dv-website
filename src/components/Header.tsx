@@ -70,6 +70,13 @@ export const Header: React.FC<HeaderProps> = ({
     }, 180);
   };
 
+  const openCoursesDropdown = () => {
+    setCoursesDropdownOpen(true);
+    setActiveCourseGroupId((currentGroupId) => currentGroupId ?? courseGroups[0]?.id ?? null);
+    clearCourseGroupHoverTimeout();
+    setServicesDropdownOpen(false);
+  };
+
   // Close dropdown on click outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -137,7 +144,7 @@ export const Header: React.FC<HeaderProps> = ({
   };
 
   const renderCourseGroups = (variant: 'desktop' | 'mobile') => {
-    const activeGroup = courseGroups.find((group) => group.id === activeCourseGroupId);
+    const activeGroup = courseGroups.find((group) => group.id === activeCourseGroupId) ?? courseGroups[0];
 
     return (
       <div className={`courses-dropdown-shell courses-dropdown-shell-${variant}`}>
@@ -171,30 +178,21 @@ export const Header: React.FC<HeaderProps> = ({
           })}
         </div>
 
-        <div
-          className={`courses-submenu ${activeGroup ? 'show' : ''}`}
-          onMouseEnter={clearCourseGroupHoverTimeout}
-        >
-          {activeGroup ? (
-            <>
-              <div className="courses-submenu-heading">{activeGroup.title}</div>
-              {activeGroup.courses.map((course) => (
-                <a
-                  key={course.id}
-                  href={`#${course.id}`}
-                  className="dropdown-item-link"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    handleCourseClick(course.id);
-                  }}
-                >
-                  {course.label}
-                </a>
-              ))}
-            </>
-          ) : (
-            <div className="courses-submenu-empty">Select a section</div>
-          )}
+        <div className="courses-submenu show" onMouseEnter={clearCourseGroupHoverTimeout}>
+          <div className="courses-submenu-heading">{activeGroup.title}</div>
+          {activeGroup.courses.map((course) => (
+            <a
+              key={course.id}
+              href={`#${course.id}`}
+              className="dropdown-item-link"
+              onClick={(e) => {
+                e.preventDefault();
+                handleCourseClick(course.id);
+              }}
+            >
+              {course.label}
+            </a>
+          ))}
         </div>
       </div>
     );
@@ -228,10 +226,7 @@ export const Header: React.FC<HeaderProps> = ({
         className="nav-item dropdown-container courses-dropdown-container"
         onMouseEnter={() => {
           if (window.innerWidth > 768) {
-            setCoursesDropdownOpen(true);
-            setActiveCourseGroupId(null);
-            clearCourseGroupHoverTimeout();
-            setServicesDropdownOpen(false);
+            openCoursesDropdown();
           }
         }}
       >
@@ -244,8 +239,10 @@ export const Header: React.FC<HeaderProps> = ({
           onClick={(e) => {
             e.preventDefault();
             const nextOpen = !coursesDropdownOpen;
-            setCoursesDropdownOpen(nextOpen);
-            if (!nextOpen) {
+            if (nextOpen) {
+              openCoursesDropdown();
+            } else {
+              setCoursesDropdownOpen(false);
               setActiveCourseGroupId(null);
               clearCourseGroupHoverTimeout();
             }
@@ -440,7 +437,9 @@ export const Header: React.FC<HeaderProps> = ({
                   e.preventDefault();
                   const nextOpen = !mobileCoursesOpen;
                   setMobileCoursesOpen(nextOpen);
-                  if (!nextOpen) {
+                  if (nextOpen) {
+                    setActiveCourseGroupId(courseGroups[0]?.id ?? null);
+                  } else {
                     setActiveCourseGroupId(null);
                   }
                   setMobileMenuOpen(false); // Close menu drawer when opening courses
