@@ -43,7 +43,7 @@ const heroPosterImages = allowedHeroPosterPaths
   .filter((assetUrl): assetUrl is string => Boolean(assetUrl))
   .map((assetUrl) => assetUrl.replace('/public/', '/'));
 
-const paymentPageUrl = 'https://dvanalyticsmds.com/payment/index.php';
+const paymentPageUrl = 'https://dvpayment.page.gd/';
 
 function App() {
   const [activePage, setActivePage] = useState('home');
