@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { courseCatalog, getCourseMeta } from '../data/courseMeta';
+import { getCourseMeta, liveTrainingCourses, selfPacedCourses } from '../data/courseMeta';
 
 interface HeaderProps {
   onNavClick?: (page: string) => void;
@@ -19,11 +19,26 @@ export const Header: React.FC<HeaderProps> = ({
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
   const [mobileCoursesOpen, setMobileCoursesOpen] = useState(false);
+  const [activeCourseGroupId, setActiveCourseGroupId] = useState<string | null>(null);
 
-  const coursesList = courseCatalog.map((course) => ({
-    id: `course-${course.id}`,
-    label: course.label,
-  }));
+  const courseGroups = [
+    {
+      id: 'live',
+      title: 'Live Training Classes',
+      courses: liveTrainingCourses.map((course) => ({
+        id: `course-${course.id}`,
+        label: course.label,
+      })),
+    },
+    {
+      id: 'self-paced',
+      title: 'Self Paced Learning',
+      courses: selfPacedCourses.map((course) => ({
+        id: `course-${course.id}`,
+        label: course.label,
+      })),
+    },
+  ].filter((group) => group.courses.length > 0);
   const activeCourseId = activePage.startsWith('course-') ? activePage.replace('course-', '') : null;
   const activeCourse = getCourseMeta(activeCourseId ?? undefined);
 
@@ -40,6 +55,7 @@ export const Header: React.FC<HeaderProps> = ({
       if (!target.closest('.courses-dropdown-container')) {
         setCoursesDropdownOpen(false);
         setMobileCoursesOpen(false);
+        setActiveCourseGroupId(null);
       }
       if (!target.closest('.services-dropdown-container')) {
         setServicesDropdownOpen(false);
@@ -59,6 +75,7 @@ export const Header: React.FC<HeaderProps> = ({
     setServicesDropdownOpen(false);
     setMobileServicesOpen(false);
     setMobileCoursesOpen(false);
+    setActiveCourseGroupId(null);
   }, [activePage]);
 
   useEffect(() => {
@@ -66,6 +83,7 @@ export const Header: React.FC<HeaderProps> = ({
       if (window.innerWidth > 768) {
         setMobileMenuOpen(false);
         setMobileCoursesOpen(false);
+        setActiveCourseGroupId(null);
       }
     };
 
@@ -75,6 +93,8 @@ export const Header: React.FC<HeaderProps> = ({
 
   const handleCourseClick = (courseId: string) => {
     setCoursesDropdownOpen(false);
+    setMobileCoursesOpen(false);
+    setActiveCourseGroupId(null);
     setMobileMenuOpen(false);
     if (onNavClick) {
       onNavClick(courseId);
@@ -87,6 +107,65 @@ export const Header: React.FC<HeaderProps> = ({
     if (onNavClick) {
       onNavClick(serviceId);
     }
+  };
+
+  const renderCourseGroups = (variant: 'desktop' | 'mobile') => {
+    const activeGroup = courseGroups.find((group) => group.id === activeCourseGroupId);
+
+    return (
+      <div className={`courses-dropdown-shell courses-dropdown-shell-${variant}`}>
+        <div className="courses-category-list">
+          {courseGroups.map((group) => {
+            const isActive = activeCourseGroupId === group.id;
+
+            return (
+              <button
+                type="button"
+                className={`courses-category-btn ${isActive ? 'active' : ''}`}
+                key={group.id}
+                aria-expanded={isActive}
+                onMouseEnter={() => {
+                  if (variant === 'desktop') {
+                    setActiveCourseGroupId(group.id);
+                  }
+                }}
+                onClick={() => {
+                  setActiveCourseGroupId(isActive && variant === 'mobile' ? null : group.id);
+                }}
+              >
+                <span>{group.title}</span>
+                <svg className="courses-category-arrow" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" stroke="currentColor" strokeWidth="2.4" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </button>
+            );
+          })}
+        </div>
+
+        <div className={`courses-submenu ${activeGroup ? 'show' : ''}`}>
+          {activeGroup ? (
+            <>
+              <div className="courses-submenu-heading">{activeGroup.title}</div>
+              {activeGroup.courses.map((course) => (
+                <a
+                  key={course.id}
+                  href={`#${course.id}`}
+                  className="dropdown-item-link"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleCourseClick(course.id);
+                  }}
+                >
+                  {course.label}
+                </a>
+              ))}
+            </>
+          ) : (
+            <div className="courses-submenu-empty">Select a section</div>
+          )}
+        </div>
+      </div>
+    );
   };
 
   const renderContactActions = (variant: 'desktop' | 'mobile') => (
@@ -118,6 +197,7 @@ export const Header: React.FC<HeaderProps> = ({
         onMouseEnter={() => {
           if (window.innerWidth > 768) {
             setCoursesDropdownOpen(true);
+            setActiveCourseGroupId(null);
             setServicesDropdownOpen(false);
           }
         }}
@@ -130,7 +210,11 @@ export const Header: React.FC<HeaderProps> = ({
           aria-controls="desktop-courses-menu"
           onClick={(e) => {
             e.preventDefault();
-            setCoursesDropdownOpen(!coursesDropdownOpen);
+            const nextOpen = !coursesDropdownOpen;
+            setCoursesDropdownOpen(nextOpen);
+            if (!nextOpen) {
+              setActiveCourseGroupId(null);
+            }
           }}
         >
           All Courses
@@ -140,19 +224,7 @@ export const Header: React.FC<HeaderProps> = ({
         </a>
 
         <div id="desktop-courses-menu" className={`courses-dropdown-menu ${coursesDropdownOpen ? 'show' : ''}`}>
-          {coursesList.map((course) => (
-            <a
-              key={course.id}
-              href={`#${course.id}`}
-              className="dropdown-item-link"
-              onClick={(e) => {
-                e.preventDefault();
-                handleCourseClick(course.id);
-              }}
-            >
-              {course.label}
-            </a>
-          ))}
+          {renderCourseGroups('desktop')}
         </div>
       </li>
 
@@ -332,7 +404,11 @@ export const Header: React.FC<HeaderProps> = ({
                 aria-controls="mobile-courses-menu"
                 onClick={(e) => {
                   e.preventDefault();
-                  setMobileCoursesOpen(!mobileCoursesOpen);
+                  const nextOpen = !mobileCoursesOpen;
+                  setMobileCoursesOpen(nextOpen);
+                  if (!nextOpen) {
+                    setActiveCourseGroupId(null);
+                  }
                   setMobileMenuOpen(false); // Close menu drawer when opening courses
                 }}
               >
@@ -343,20 +419,7 @@ export const Header: React.FC<HeaderProps> = ({
               </a>
 
               <div id="mobile-courses-menu" className={`courses-dropdown-menu mobile-courses-dropdown ${mobileCoursesOpen ? 'show' : ''}`}>
-                {coursesList.map((course) => (
-                  <a
-                    key={course.id}
-                    href={`#${course.id}`}
-                    className="dropdown-item-link"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      setMobileCoursesOpen(false);
-                      handleCourseClick(course.id);
-                    }}
-                  >
-                    {course.label}
-                  </a>
-                ))}
+                {renderCourseGroups('mobile')}
               </div>
             </div>
           </div>

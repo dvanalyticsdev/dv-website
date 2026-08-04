@@ -13,6 +13,7 @@ const posterImages: Record<string, string> = {
   apcs: '/courses-poster/APCF.png',
   days7_genai: '/courses-poster/7-days-genai.png',
   fde: '/courses-poster/ai-forward-deployment-engineer.png',
+  flp: '/courses-poster/FLP.png',
 };
 
 const heroImages: Record<string, string> = {

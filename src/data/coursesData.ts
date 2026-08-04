@@ -2983,4 +2983,240 @@ export const coursesData: Record<string, DetailedCourse> = {
     ],
     careerAdvantage: 'The 7 Days Generative AI & Agentic AI Hands-on Master Program prepares participants to build production-ready AI solutions and autonomous agents. By graduating with three complete portfolio-ready AI applications on GitHub, participants can immediately showcase enterprise AI capabilities to recruiters and employers hiring for modern AI engineering and automation roles.',
   },
+  FLP: {
+    id: 'flp',
+    title: 'Flexi Learning Program in Data Science & AI (FLP)',
+    tagline: 'Self-paced Data Science, Gen AI, and Agentic AI learning with live crash courses, projects, mentorship, and long-term LMS access.',
+    overview: 'The Flexi Learning Program is designed for students and working professionals who want to build career-ready skills in Data Science, Generative AI, and Agentic AI at their own pace.\n\nThe program combines self-paced LMS learning with on-demand live crash courses, live industry projects, one-to-one mentorship, profile and resume building, and 3-year access to learning resources and recordings.',
+    duration: 'Flexible - Learn at Your Own Pace',
+    practicalExposure: [
+      'Self-paced LMS learning',
+      'On-demand live crash courses',
+      'Live industry projects',
+      'One-to-one mentorship',
+      'Profile and resume building',
+      '3-year LMS access',
+      'Interview preparation and coaching',
+      'Portfolio building with real industry projects',
+    ],
+    expertiseAreas: [
+      'Data Science Fundamentals and Advanced Concepts',
+      'Data Engineering and Visualization',
+      'Machine Learning and Deep Learning',
+      'Generative AI Models and Applications',
+      'Agentic AI, Intelligent Agents, and Automation',
+      'AI Ethics, Security, and Future Trends',
+    ],
+    theme: 'teal',
+    modules: [
+      {
+        title: 'Module 1: Introduction to Data Science and Excel',
+        sections: [
+          {
+            title: 'Data Science and Excel Foundations',
+            topics: [
+              'Overview of data science and analytics',
+              'Excel basics and advanced functions',
+              'Data cleaning and transformation',
+              'Pivot tables and charts',
+              'Analysis ToolPak',
+              'Power Query',
+              'Macros and VBA basics',
+            ],
+          },
+        ],
+      },
+      {
+        title: 'Module 2: SQL for Data Analysis',
+        sections: [
+          {
+            title: 'Database Querying and Analytics',
+            topics: [
+              'Databases and SQL fundamentals',
+              'Basic queries, joins, unions, and subqueries',
+              'Aggregation and grouping',
+              'Window functions, CTEs, CASE, and NULL handling',
+              'DML, tables, views, and temporary tables',
+              'Query optimization',
+              'Cohort, customer, funnel, and time-series analysis projects',
+            ],
+          },
+        ],
+      },
+      {
+        title: 'Module 3: Data Visualization with Tableau',
+        sections: [
+          {
+            title: 'Tableau Dashboards and Storytelling',
+            topics: [
+              'Tableau fundamentals',
+              'Core charts and visualizations',
+              'Dimensions and measures',
+              'Advanced charts',
+              'Maps and geospatial analysis',
+              'Dashboards and stories',
+              'Best practices and performance optimization',
+            ],
+          },
+        ],
+      },
+      {
+        title: 'Module 4: Business Intelligence with Power BI',
+        sections: [
+          {
+            title: 'Power BI Reporting and Analytics',
+            topics: [
+              'Power BI suite overview',
+              'Power Query',
+              'Data modeling',
+              'DAX calculations',
+              'Visual reports and dashboards',
+              'Power BI Service and collaboration',
+              'Dataflows, AI insights, streaming, and embedding',
+            ],
+          },
+        ],
+      },
+      {
+        title: 'Module 5: Python Programming for Data Science',
+        sections: [
+          {
+            title: 'Python Analytics Toolkit',
+            topics: [
+              'Python setup, syntax, and control flow',
+              'Functions and modules',
+              'Core data structures',
+              'NumPy and Pandas',
+              'Matplotlib, Seaborn, and Plotly',
+              'Exploratory data analysis',
+              'Web scraping and APIs',
+              'Object-oriented programming basics',
+            ],
+          },
+        ],
+      },
+      {
+        title: 'Module 6: Machine Learning with Python',
+        sections: [
+          {
+            title: 'Applied Machine Learning',
+            topics: [
+              'Machine learning fundamentals',
+              'Scikit-learn workflows',
+              'Supervised regression',
+              'Classification models',
+              'Unsupervised learning',
+              'Ensemble methods',
+              'Model evaluation, tuning, and AutoML',
+            ],
+          },
+        ],
+      },
+      {
+        title: 'Module 7: Deep Learning and Neural Networks',
+        sections: [
+          {
+            title: 'Neural Networks and Advanced AI',
+            topics: [
+              'Neural network foundations',
+              'TensorFlow and Keras',
+              'Convolutional neural networks',
+              'RNN, LSTM, and GRU models',
+              'Autoencoders, GANs, and style transfer',
+              'NLP with deep learning',
+              'Transformers and BERT',
+            ],
+          },
+        ],
+      },
+      {
+        title: 'Module 8: GenAI, Advanced LLM Models, and LangChain Applications',
+        sections: [
+          {
+            title: 'LLM Application Development',
+            topics: [
+              'Hugging Face LLMs',
+              'LangChain fundamentals',
+              'Model I/O, loaders, and parsers',
+              'RAG with ChromaDB and chains',
+              'Memory and chatbots',
+              'Agents and tools',
+            ],
+          },
+        ],
+      },
+      {
+        title: 'Module 9: Agentic AI',
+        sections: [
+          {
+            title: 'Intelligent Agents and Automation',
+            topics: [
+              'Agentic AI foundations',
+              'Perception, reasoning, planning, action, and memory',
+              'Prompting and evaluation for agents',
+              'AutoGen, CrewAI, LangChain, and LlamaIndex',
+              'AutoGen and CrewAI projects',
+              'n8n agent automation',
+              'Model Context Protocol',
+            ],
+          },
+        ],
+      },
+    ],
+    industryProjects: [
+      {
+        domain: 'Retail Marketing',
+        projects: ['Build analytics and AI workflows for customer behavior, campaign insights, and retail decision-making.'],
+      },
+      {
+        domain: 'Healthcare',
+        projects: ['Apply data science and AI methods to healthcare analytics and operational intelligence use cases.'],
+      },
+      {
+        domain: 'Telecom',
+        projects: ['Work on telecom analytics use cases involving customers, service patterns, and performance insights.'],
+      },
+      {
+        domain: 'Banking',
+        projects: ['Build portfolio-ready analytics and AI projects for banking data, risk, customers, and business reporting.'],
+      },
+      {
+        domain: 'E-Commerce',
+        projects: ['Create e-commerce analytics projects covering sales, customers, funnels, and AI-assisted recommendations.'],
+      },
+    ],
+    programOutcome: [
+      'Learn and practice at your own pace without disrupting work or studies',
+      'Build a strong Data Science, Gen AI, and Agentic AI foundation',
+      'Engage in live projects and crash courses',
+      'Create a professional profile and project portfolio',
+      'Prepare for interviews with expert coaching',
+      'Stay relevant with evolving AI technologies',
+    ],
+    careers: [
+      {
+        level: 'Analytics and BI Roles',
+        roles: ['Data Analyst', 'BI Analyst', 'Analytics Associate', 'Business Analyst'],
+      },
+      {
+        level: 'Data Science and AI Roles',
+        roles: ['Junior Data Scientist', 'Data Scientist', 'Machine Learning Engineer', 'AI Engineer'],
+      },
+      {
+        level: 'Generative AI and Agentic AI Roles',
+        roles: ['GenAI Developer', 'Agentic AI Developer', 'LLM Application Developer', 'AI Automation Specialist'],
+      },
+    ],
+    whoShouldJoin: [
+      'Students preparing for a future-proof career',
+      'Working professionals looking to transition into AI and Data Science',
+      'Tech enthusiasts eager to explore modern AI trends',
+      'Learners who need a flexible self-paced format',
+    ],
+    careerAdvantage: 'The Flexi Learning Program gives learners the freedom to build industry-ready Data Science and AI skills at their own pace while still getting access to live projects, expert mentorship, profile building, and interview preparation.',
+    certifications: [
+      'DV Analytics Flexi Learning Program Certificate',
+      'Portfolio and project readiness support',
+    ],
+  },
 };
