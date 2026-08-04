@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { getCourseMeta, liveTrainingCourses, selfPacedCourses } from '../data/courseMeta';
 
 interface HeaderProps {
@@ -20,6 +20,7 @@ export const Header: React.FC<HeaderProps> = ({
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
   const [mobileCoursesOpen, setMobileCoursesOpen] = useState(false);
   const [activeCourseGroupId, setActiveCourseGroupId] = useState<string | null>(null);
+  const courseGroupHoverTimeoutRef = useRef<number | null>(null);
 
   const courseGroups = [
     {
@@ -48,6 +49,27 @@ export const Header: React.FC<HeaderProps> = ({
     { id: 'service-crhta', label: 'Corporate Resource Hiring & Talent Augmentation' }
   ];
 
+  const clearCourseGroupHoverTimeout = () => {
+    if (courseGroupHoverTimeoutRef.current !== null) {
+      window.clearTimeout(courseGroupHoverTimeoutRef.current);
+      courseGroupHoverTimeoutRef.current = null;
+    }
+  };
+
+  const handleCourseGroupHover = (groupId: string) => {
+    clearCourseGroupHoverTimeout();
+
+    if (!activeCourseGroupId) {
+      setActiveCourseGroupId(groupId);
+      return;
+    }
+
+    courseGroupHoverTimeoutRef.current = window.setTimeout(() => {
+      setActiveCourseGroupId(groupId);
+      courseGroupHoverTimeoutRef.current = null;
+    }, 180);
+  };
+
   // Close dropdown on click outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -67,6 +89,10 @@ export const Header: React.FC<HeaderProps> = ({
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
+  }, []);
+
+  useEffect(() => {
+    return clearCourseGroupHoverTimeout;
   }, []);
 
   useEffect(() => {
@@ -95,6 +121,7 @@ export const Header: React.FC<HeaderProps> = ({
     setCoursesDropdownOpen(false);
     setMobileCoursesOpen(false);
     setActiveCourseGroupId(null);
+    clearCourseGroupHoverTimeout();
     setMobileMenuOpen(false);
     if (onNavClick) {
       onNavClick(courseId);
@@ -126,10 +153,12 @@ export const Header: React.FC<HeaderProps> = ({
                 aria-expanded={isActive}
                 onMouseEnter={() => {
                   if (variant === 'desktop') {
-                    setActiveCourseGroupId(group.id);
+                    handleCourseGroupHover(group.id);
                   }
                 }}
+                onMouseLeave={clearCourseGroupHoverTimeout}
                 onClick={() => {
+                  clearCourseGroupHoverTimeout();
                   setActiveCourseGroupId(isActive && variant === 'mobile' ? null : group.id);
                 }}
               >
@@ -142,7 +171,10 @@ export const Header: React.FC<HeaderProps> = ({
           })}
         </div>
 
-        <div className={`courses-submenu ${activeGroup ? 'show' : ''}`}>
+        <div
+          className={`courses-submenu ${activeGroup ? 'show' : ''}`}
+          onMouseEnter={clearCourseGroupHoverTimeout}
+        >
           {activeGroup ? (
             <>
               <div className="courses-submenu-heading">{activeGroup.title}</div>
@@ -198,6 +230,7 @@ export const Header: React.FC<HeaderProps> = ({
           if (window.innerWidth > 768) {
             setCoursesDropdownOpen(true);
             setActiveCourseGroupId(null);
+            clearCourseGroupHoverTimeout();
             setServicesDropdownOpen(false);
           }
         }}
@@ -214,6 +247,7 @@ export const Header: React.FC<HeaderProps> = ({
             setCoursesDropdownOpen(nextOpen);
             if (!nextOpen) {
               setActiveCourseGroupId(null);
+              clearCourseGroupHoverTimeout();
             }
           }}
         >

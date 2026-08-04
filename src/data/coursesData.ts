@@ -2986,18 +2986,16 @@ export const coursesData: Record<string, DetailedCourse> = {
   FLP: {
     id: 'flp',
     title: 'Flexi Learning Program in Data Science & AI (FLP)',
-    tagline: 'Self-paced Data Science, Gen AI, and Agentic AI learning with live crash courses, projects, mentorship, and long-term LMS access.',
-    overview: 'The Flexi Learning Program is designed for students and working professionals who want to build career-ready skills in Data Science, Generative AI, and Agentic AI at their own pace.\n\nThe program combines self-paced LMS learning with on-demand live crash courses, live industry projects, one-to-one mentorship, profile and resume building, and 3-year access to learning resources and recordings.',
+    tagline: 'Self-paced Data Science, Gen AI, and Agentic AI learning with structured LMS access and practical assignments.',
+    overview: 'The Flexi Learning Program is designed for students and working professionals who want to build Data Science, Generative AI, and Agentic AI skills at their own pace.\n\nThe program provides structured self-paced LMS learning, recorded lessons, study resources, practice exercises, and module-wise assignments for flexible learning.',
     duration: 'Flexible - Learn at Your Own Pace',
     practicalExposure: [
       'Self-paced LMS learning',
-      'On-demand live crash courses',
-      'Live industry projects',
-      'One-to-one mentorship',
-      'Profile and resume building',
-      '3-year LMS access',
-      'Interview preparation and coaching',
-      'Portfolio building with real industry projects',
+      'Recorded lessons and study resources',
+      'Practice exercises and assignments',
+      'Module-wise learning path',
+      'Data Science, Gen AI, and Agentic AI fundamentals',
+      'Flexible revision access',
     ],
     expertiseAreas: [
       'Data Science Fundamentals and Advanced Concepts',
@@ -3188,9 +3186,8 @@ export const coursesData: Record<string, DetailedCourse> = {
     programOutcome: [
       'Learn and practice at your own pace without disrupting work or studies',
       'Build a strong Data Science, Gen AI, and Agentic AI foundation',
-      'Engage in live projects and crash courses',
-      'Create a professional profile and project portfolio',
-      'Prepare for interviews with expert coaching',
+      'Practice with structured exercises and assignments',
+      'Strengthen core analytics, ML, and AI concepts',
       'Stay relevant with evolving AI technologies',
     ],
     careers: [
@@ -3213,10 +3210,9 @@ export const coursesData: Record<string, DetailedCourse> = {
       'Tech enthusiasts eager to explore modern AI trends',
       'Learners who need a flexible self-paced format',
     ],
-    careerAdvantage: 'The Flexi Learning Program gives learners the freedom to build industry-ready Data Science and AI skills at their own pace while still getting access to live projects, expert mentorship, profile building, and interview preparation.',
+    careerAdvantage: 'The Flexi Learning Program gives learners the freedom to build Data Science and AI skills at their own pace through structured lessons, learning resources, and practical assignments.',
     certifications: [
       'DV Analytics Flexi Learning Program Certificate',
-      'Portfolio and project readiness support',
     ],
   },
 };

@@ -43,7 +43,21 @@ const heroPosterImages = allowedHeroPosterPaths
   .filter((assetUrl): assetUrl is string => Boolean(assetUrl))
   .map((assetUrl) => assetUrl.replace('/public/', '/'));
 
-const paymentPageUrl = 'https://dvanalyticsmds.com/payment/';
+const configuredPaymentUrl = import.meta.env.VITE_PAYMENT_PAGE_URL?.trim() || '';
+
+const isSelfPaymentUrl = (url: string) => {
+  if (!url) {
+    return true;
+  }
+
+  try {
+    const parsedUrl = new URL(url, window.location.origin);
+    return parsedUrl.pathname.replace(/\/$/, '') === '/payment'
+      && parsedUrl.origin === window.location.origin;
+  } catch {
+    return true;
+  }
+};
 
 function App() {
   const [activePage, setActivePage] = useState('home');
@@ -145,12 +159,25 @@ function App() {
             <h2 style={{ fontSize: '2.25rem', marginBottom: '1.5rem', color: '#000000', fontWeight: '800' }}>
               Payment Page
             </h2>
-            <p style={{ color: 'var(--text-secondary)', fontSize: '1.15rem', marginBottom: '2.5rem', fontWeight: '300' }}>
-              Continue to the secure DV Analytics payment form.
-            </p>
-            <a className="btn btn-primary" href={paymentPageUrl}>
-              Open Payment Page
-            </a>
+            {isSelfPaymentUrl(configuredPaymentUrl) ? (
+              <>
+                <p style={{ color: 'var(--text-secondary)', fontSize: '1.15rem', marginBottom: '2.5rem', fontWeight: '300' }}>
+                  The payment link is being updated. Please contact DV Analytics to complete your enrollment.
+                </p>
+                <a className="btn btn-primary" href="tel:+919019030033">
+                  Call 9019 030 033
+                </a>
+              </>
+            ) : (
+              <>
+                <p style={{ color: 'var(--text-secondary)', fontSize: '1.15rem', marginBottom: '2.5rem', fontWeight: '300' }}>
+                  Continue to the secure DV Analytics payment form.
+                </p>
+                <a className="btn btn-primary" href={configuredPaymentUrl} target="_blank" rel="noopener noreferrer">
+                  Open Payment Page
+                </a>
+              </>
+            )}
           </section>
         </div>
       );

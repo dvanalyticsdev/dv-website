@@ -188,6 +188,7 @@ export const CourseDetailPage: React.FC<CourseDetailPageProps> = ({
   const hasSixCourseStats = ['apids', 'apida', 'aiml', 'specialist', 'apcs', 'fde'].includes(courseId.toLowerCase());
   const isSevenDayProgram = courseId.toLowerCase() === 'days7_genai';
   const isMpgAAProgram = courseId.toLowerCase() === 'genai';
+  const isFlexiLearningProgram = courseId.toLowerCase() === 'flp';
   const courseStatDuration = ['specialist', 'apcs'].includes(courseId.toLowerCase())
     ? '2-3 Months'
     : course?.duration ?? '';
@@ -205,6 +206,12 @@ export const CourseDetailPage: React.FC<CourseDetailPageProps> = ({
         { label: 'Learning Access', value: 'LMS Access', icon: 'lms' },
         { label: 'Projects', value: 'Industry Real-Time Projects Hands-on', icon: 'projects' },
         { label: 'Career Support', value: 'Career Mentorship & Guidance', icon: 'support' },
+      ]
+    : isFlexiLearningProgram
+    ? [
+        { label: 'Duration', value: course?.duration ?? '', icon: 'duration' },
+        { label: 'Learning Mode', value: 'Self-Paced Learning', icon: 'lms' },
+        { label: 'Focus', value: 'Data Science, Gen AI & Agentic AI', icon: 'projects' },
       ]
     : hasSixCourseStats
     ? [
@@ -308,7 +315,7 @@ export const CourseDetailPage: React.FC<CourseDetailPageProps> = ({
           />
         </section>
       ) : (
-        <section className="course-hero">
+        <section className={`course-hero ${isFlexiLearningProgram ? 'course-hero-flp' : ''}`}>
           <div className="course-hero-overlay"></div>
           <div className="course-hero-content container hero-split">
             <div className="hero-left">

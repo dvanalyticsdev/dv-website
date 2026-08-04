@@ -433,7 +433,7 @@ a {
   flex-direction: column;
   position: absolute;
   top: -0.5rem;
-  left: calc(100% + 0.75rem);
+  left: calc(100% + 0.35rem);
   width: min(390px, calc(100vw - 2rem));
   max-height: min(70vh, 620px);
   overflow-y: auto;
@@ -4356,6 +4356,14 @@ a {
   .course-hero .hero-image-container {
     margin: 0;
     transform: translateX(2.25rem);
+  }
+
+  .course-hero-flp .hero-right {
+    justify-content: center;
+  }
+
+  .course-hero-flp .hero-image-container {
+    transform: none;
   }
 }
 
