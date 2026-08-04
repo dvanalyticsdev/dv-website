@@ -43,7 +43,7 @@ export const Footer: React.FC = () => {
                     </svg>
                   </div>
                   <p className="info-text">
-                    #52, 2nd Floor:<br />
+                    #52, 3rd Floor:<br />
                     Malleshpalya Maruthinagar Bengaluru.<br />
                     Bangalore 560075<br />
                     India
