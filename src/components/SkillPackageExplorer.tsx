@@ -2,7 +2,7 @@ import { useEffect, useId, useMemo, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { coursesData } from '../data/coursesData';
 
-type CourseId = 'apids' | 'apida' | 'specialist' | 'aiml' | 'genai' | 'apcs' | 'days7_genai' | 'fde';
+type CourseId = 'apids' | 'apida' | 'specialist' | 'aiml' | 'apcs' | 'fde';
 type CourseDataId = Uppercase<CourseId>;
 
 interface SkillOption {
@@ -14,9 +14,7 @@ interface SkillOption {
 interface CourseRecommendation {
   id: CourseId;
   title: string;
-  expectedPackage: string;
-  fit: string;
-  roles: string[];
+  expectedPackage: string[];
 }
 
 interface SkillPackageExplorerProps {
@@ -26,80 +24,78 @@ interface SkillPackageExplorerProps {
 
 const skillOptions: SkillOption[] = [
   { id: 'sql', label: 'SQL', weights: { specialist: 3, apida: 3, apids: 2 } },
-  { id: 'excel-bi', label: 'Excel / Power BI / Tableau', weights: { specialist: 4, apida: 4, apids: 2 } },
-  { id: 'python', label: 'Python', weights: { apida: 2, apids: 3, aiml: 3, genai: 2, fde: 2 } },
-  { id: 'statistics', label: 'Statistics', weights: { apida: 3, apids: 3, aiml: 2 } },
+  { id: 'python', label: 'Python Programming', weights: { apida: 2, apids: 3, aiml: 3, fde: 2 } },
+  { id: 'sas', label: 'SAS Programming', weights: { apida: 2, apids: 2 } },
+  { id: 'pyspark-scala', label: 'PySpark / Scala', weights: { apids: 3, fde: 2 } },
+  { id: 'excel-ai', label: 'Excel + AI', weights: { specialist: 4, apida: 4, apids: 2 } },
+  { id: 'power-bi', label: 'Power BI', weights: { specialist: 4, apida: 4, apids: 2 } },
+  { id: 'tableau', label: 'Tableau', weights: { specialist: 4, apida: 4, apids: 2 } },
+  { id: 'statistics', label: 'Python Statistics', weights: { apida: 3, apids: 3, aiml: 2 } },
+  { id: 'data-analysis', label: 'Data Analysis', weights: { specialist: 4, apida: 4, apids: 2 } },
+  { id: 'data-visualization', label: 'Data Visualization', weights: { specialist: 4, apida: 4, apids: 2 } },
   { id: 'machine-learning', label: 'Machine Learning', weights: { apida: 2, apids: 4, aiml: 4, fde: 2 } },
-  { id: 'deep-learning', label: 'Deep Learning / NLP', weights: { apids: 3, aiml: 4, genai: 4 } },
-  { id: 'genai', label: 'Generative AI', weights: { apids: 3, aiml: 4, genai: 5, days7_genai: 4, fde: 4 } },
-  { id: 'agentic-ai', label: 'Agentic AI', weights: { aiml: 4, genai: 5, days7_genai: 5, fde: 5 } },
-  { id: 'cloud-mlops', label: 'Cloud / MLOps / LLMOps', weights: { apids: 4, aiml: 4, genai: 3, fde: 5 } },
+  { id: 'deep-learning', label: 'Deep Learning', weights: { apids: 3, aiml: 4 } },
+  { id: 'nlp', label: 'Natural Language Processing (NLP)', weights: { apids: 3, aiml: 4 } },
+  { id: 'computer-vision', label: 'Computer Vision', weights: { apids: 2, apida: 1, aiml: 3 } },
+  { id: 'genai', label: 'Generative AI', weights: { apids: 3, aiml: 4, fde: 4 } },
+  { id: 'agentic-ai', label: 'Agentic AI', weights: { aiml: 4, fde: 5, apids: 2 } },
+  { id: 'prompt-engineering', label: 'Prompt Engineering', weights: { aiml: 3, fde: 5, apids: 2 } },
+  { id: 'llms', label: 'LLMs', weights: { aiml: 4, fde: 5, apids: 2 } },
+  { id: 'rag-vector-db', label: 'RAG / Vector Databases', weights: { aiml: 4, fde: 5, apids: 3 } },
+  { id: 'mlops', label: 'MLOps', weights: { apida: 2, apids: 4, aiml: 4, fde: 4 } },
+  { id: 'llmops', label: 'LLMOps', weights: { apids: 3, aiml: 4, fde: 5 } },
+  { id: 'aiops', label: 'AIOps', weights: { apids: 3, fde: 3 } },
+  { id: 'cloud-platforms', label: 'Cloud Platforms', weights: { apids: 4, aiml: 3, fde: 5, apcs: 2 } },
   { id: 'data-engineering', label: 'Data Engineering', weights: { apids: 4, apida: 2, fde: 4 } },
+  { id: 'system-design', label: 'AI System Design', weights: { fde: 5, aiml: 2, apids: 2 } },
+  { id: 'ai-workflow-automation', label: 'AI Workflow Automation / MCP', weights: { fde: 5, aiml: 3 } },
+  { id: 'client-delivery', label: 'Client-Facing AI Delivery', weights: { fde: 5, aiml: 2 } },
+  { id: 'banking-analytics', label: 'Banking / Credit Risk Analytics', weights: { apida: 3, apids: 3, specialist: 2 } },
+  { id: 'fraud-analytics', label: 'Fraud / AML Analytics', weights: { apids: 3, apida: 3, specialist: 2, apcs: 1 } },
+  { id: 'forecasting', label: 'Forecasting / Churn / CLV', weights: { apids: 3, apida: 3, specialist: 2, aiml: 2 } },
+  { id: 'dashboarding', label: 'Dashboarding & Reporting', weights: { specialist: 4, apida: 4, apids: 2 } },
+  { id: 'networking-security', label: 'Networking & Security Fundamentals', weights: { apcs: 5 } },
   { id: 'cybersecurity', label: 'Cybersecurity / SOC', weights: { apcs: 5 } },
+  { id: 'linux-windows-security', label: 'Linux / Windows Security', weights: { apcs: 5 } },
+  { id: 'web-security', label: 'Web Application Security', weights: { apcs: 5 } },
   { id: 'ethical-hacking', label: 'Ethical Hacking / Forensics', weights: { apcs: 5 } },
-  { id: 'client-delivery', label: 'Client Solution Delivery', weights: { fde: 5, genai: 2, aiml: 2 } },
+  { id: 'cloud-security', label: 'AWS / Azure / GCP Security', weights: { apcs: 5, fde: 1 } },
+  { id: 'incident-response', label: 'Incident Response / Threat Intelligence', weights: { apcs: 5 } },
+  { id: 'grc', label: 'Governance, Risk & Compliance (GRC)', weights: { apcs: 5 } },
 ];
 
 const courseRecommendations: Record<CourseId, CourseRecommendation> = {
   apids: {
     id: 'apids',
     title: 'Advanced Program in Industrial Data Science & AI (APIDS)',
-    expectedPackage: '6-12 LPA fresher | 12-25+ LPA experienced',
-    fit: 'Best for a complete Data Science, AI, GenAI, and cloud deployment path.',
-    roles: ['Data Scientist', 'AI Engineer', 'ML Engineer'],
+    expectedPackage: ['Fresher: 8-15 LPA', '1-5 YOE: 10-25 LPA', '5-10 YOE: 20-40 LPA', '10+ YOE: 40 LPA-1 Cr+'],
   },
   apida: {
     id: 'apida',
     title: 'Advanced Program in Industrial Data Analytics & AI (APIDA)',
-    expectedPackage: '4-8 LPA fresher | 8-14+ LPA experienced',
-    fit: 'Best for analytics, BI, reporting, statistics, and ML-based decision work.',
-    roles: ['Data Analyst', 'BI Analyst', 'Analytics Consultant'],
+    expectedPackage: ['Fresher: 6-10 LPA', '1-5 YOE: 8-20 LPA', '5-10 YOE: 15-30 LPA', '10+ YOE: 20-50 LPA'],
   },
   specialist: {
     id: 'specialist',
     title: 'Data Analytics Specialist (DAS)',
-    expectedPackage: '3-6 LPA fresher | 6-10+ LPA experienced',
-    fit: 'Best for a fast practical path into SQL, Excel, Power BI, Tableau, and dashboards.',
-    roles: ['Data Analyst', 'MIS Analyst', 'Reporting Analyst'],
+    expectedPackage: ['Fresher: 5-8 LPA', '1-5 YOE: 6-15 LPA', '5-10 YOE: 10-20 LPA', '10+ YOE: 20-40 LPA'],
   },
   aiml: {
     id: 'aiml',
     title: 'Advanced AI/ML with Generative AI & Agentic AI (AIML-GAA)',
-    expectedPackage: '6-12 LPA fresher | 15-30+ LPA experienced',
-    fit: 'Best for learners targeting ML, Deep Learning, GenAI, Agentic AI, and MLOps roles.',
-    roles: ['ML Engineer', 'AI Engineer', 'MLOps Engineer'],
-  },
-  genai: {
-    id: 'genai',
-    title: 'Master Program in Generative AI & Agentic AI (MPGAA)',
-    expectedPackage: '8-16 LPA entry | 18-35+ LPA experienced',
-    fit: 'Best for specialized GenAI, RAG, LLMOps, and autonomous agent product work.',
-    roles: ['Generative AI Engineer', 'LLM Engineer', 'AI Product Developer'],
+    expectedPackage: ['Fresher: 8-12 LPA', '1-5 YOE: 10-20 LPA', '5-10 YOE: 20-80 LPA', '10+ YOE: 40-80 LPA+'],
   },
   apcs: {
     id: 'apcs',
     title: 'Advanced Program in Cybersecurity & Forensics (APCF)',
-    expectedPackage: '3.5-7 LPA fresher | 8-15+ LPA experienced',
-    fit: 'Best for cybersecurity, SOC, ethical hacking, cloud security, and forensics.',
-    roles: ['SOC Analyst', 'Cybersecurity Analyst', 'Penetration Tester'],
-  },
-  days7_genai: {
-    id: 'days7_genai',
-    title: '7 Days Gen AI & Agentic AI Hands-on Master Program',
-    expectedPackage: 'Skill upgrade for 6-12+ LPA AI-adjacent roles',
-    fit: 'Best for a short intensive GenAI and Agentic AI hands-on upgrade.',
-    roles: ['AI Automation Engineer', 'AI Consultant', 'GenAI Builder'],
+    expectedPackage: ['Fresher: 3-5 LPA', '1-5 YOE: 4-15 LPA', '5-10 YOE: 15-30 LPA', '10+ YOE: 25-40 LPA+'],
   },
   fde: {
     id: 'fde',
     title: 'AI Forward Deployment Engineer (FDE)',
-    expectedPackage: '8-18 LPA entry | 18-40+ LPA experienced',
-    fit: 'Best for client-facing AI engineering, RAG, agents, data, cloud, and production delivery.',
-    roles: ['AI Forward Deployment Engineer', 'AI Solutions Engineer', 'Enterprise AI Consultant'],
+    expectedPackage: ['Fresher: 10-15 LPA', '1-5 YOE: 10-30 LPA', '5-10 YOE: 25-50 LPA', '10+ YOE: 50 LPA-1 Cr+'],
   },
 };
-
-const defaultRecommendations: CourseId[] = ['apida', 'apids', 'apcs'];
 
 const getCourseData = (courseId: CourseId) =>
   coursesData[courseId.toUpperCase() as CourseDataId] ||
@@ -136,7 +132,7 @@ export const SkillPackageExplorer: React.FC<SkillPackageExplorerProps> = ({ onVi
 
   const recommendations = useMemo(() => {
     if (selectedSkills.length === 0) {
-      return defaultRecommendations.map((id) => ({ ...courseRecommendations[id], score: 0 }));
+      return [];
     }
 
     const scores = selectedSkills.reduce<Partial<Record<CourseId, number>>>((acc, skillId) => {
@@ -157,7 +153,7 @@ export const SkillPackageExplorer: React.FC<SkillPackageExplorerProps> = ({ onVi
         score: score || 0,
       }))
       .sort((a, b) => b.score - a.score)
-      .slice(0, 3);
+      .slice(0, 4);
   }, [selectedSkills]);
 
   const toggleSkill = (skillId: string) => {
@@ -176,6 +172,17 @@ export const SkillPackageExplorer: React.FC<SkillPackageExplorerProps> = ({ onVi
     setIsOpen(false);
     onViewDetails?.(courseId);
   };
+
+  const renderExpectedPackage = (ranges: string[]) => (
+    <div className="expected-package">
+      <span>Expected package</span>
+      <div className="salary-range-list">
+        {ranges.map((range) => (
+          <span key={range}>{range}</span>
+        ))}
+      </div>
+    </div>
+  );
 
   const modalContent = (
     <div className="skill-package-modal" role="presentation" onClick={() => setIsOpen(false)}>
@@ -234,30 +241,42 @@ export const SkillPackageExplorer: React.FC<SkillPackageExplorerProps> = ({ onVi
 
           <div className="package-result-panel">
             <div className="skill-panel-heading">
-              <h3>{selectedSkills.length > 0 ? 'Recommended path' : 'Popular paths'}</h3>
+              <h3>Recommended courses</h3>
               <span>{selectedSkills.length} selected</span>
             </div>
 
+            {recommendations.length > 0 && (
+              <div className="best-course-wrap">
+                {(() => {
+                  const recommendation = recommendations[0];
+                  const course = getCourseData(recommendation.id);
+
+                  return (
+                    <article className="course-recommendation-card best-course-card" key={recommendation.id}>
+                      <div className="recommendation-rank">Best suitable course</div>
+                      <h4>{course?.title || recommendation.title}</h4>
+                      {renderExpectedPackage(recommendation.expectedPackage)}
+                      <button
+                        type="button"
+                        className="view-details-btn recommendation-details-btn"
+                        onClick={() => handleViewDetails(recommendation.id)}
+                      >
+                        View Details Course
+                      </button>
+                    </article>
+                  );
+                })()}
+              </div>
+            )}
+
             <div className="course-recommendation-list">
-              {recommendations.map((recommendation, index) => {
+              {recommendations.slice(1).map((recommendation) => {
                 const course = getCourseData(recommendation.id);
 
                 return (
                   <article className="course-recommendation-card" key={recommendation.id}>
-                    <div className="recommendation-rank">
-                      {selectedSkills.length > 0 && index === 0 ? 'Best match' : `Option ${index + 1}`}
-                    </div>
                     <h4>{course?.title || recommendation.title}</h4>
-                    <p>{recommendation.fit}</p>
-                    <div className="expected-package">
-                      <span>Expected package</span>
-                      <strong>{recommendation.expectedPackage}</strong>
-                    </div>
-                    <div className="recommended-roles">
-                      {recommendation.roles.map((role) => (
-                        <span key={role}>{role}</span>
-                      ))}
-                    </div>
+                    {renderExpectedPackage(recommendation.expectedPackage)}
                     <button
                       type="button"
                       className="view-details-btn recommendation-details-btn"
@@ -270,9 +289,11 @@ export const SkillPackageExplorer: React.FC<SkillPackageExplorerProps> = ({ onVi
               })}
             </div>
 
-            <p className="package-note">
-              Packages are indicative CTC ranges and vary by city, company, experience, portfolio, and interview performance.
-            </p>
+            {selectedSkills.length > 0 && (
+              <p className="package-note">
+                Packages are indicative CTC ranges and vary by city, company, experience, portfolio, and interview performance.
+              </p>
+            )}
           </div>
         </div>
       </div>
