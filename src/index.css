@@ -1253,9 +1253,9 @@ a {
 .skill-package-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 1.15rem;
-  flex: 1 1 auto;
-  min-height: 0;
+  gap: 1.65rem;
+  flex: 0 0 auto;
+  min-height: auto;
   overflow: visible;
 }
 
@@ -1279,6 +1279,7 @@ a {
 .package-result-panel {
   overflow: visible;
   min-height: 150px;
+  margin-top: 0.75rem;
   z-index: 1;
 }
 
@@ -1319,6 +1320,7 @@ a {
   display: flex;
   flex-wrap: wrap;
   gap: 0.48rem;
+  padding-bottom: 1rem;
 }
 
 .skill-chip {
