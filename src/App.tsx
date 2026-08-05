@@ -216,7 +216,7 @@ function App() {
                   <li>Data Analytics + AI</li>
                   <li>Data Science + Gen AI + Agentic AI</li>
                   <li>Data Engineering + AI</li>
-                  <li>Cybersecurity + Forensic Specialist</li>
+                  <li>AI Integrated Cybersecurity + Forensic Specialist</li>
                   <li>AI + Forward Deployment Engineer</li>
                 </ul>
               </div>

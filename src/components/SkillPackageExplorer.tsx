@@ -11,6 +11,11 @@ interface SkillOption {
   weights: Partial<Record<CourseId, number>>;
 }
 
+interface SkillCategory {
+  title: string;
+  skillIds: string[];
+}
+
 interface CourseRecommendation {
   id: CourseId;
   title: string;
@@ -63,6 +68,62 @@ const skillOptions: SkillOption[] = [
   { id: 'incident-response', label: 'Incident Response / Threat Intelligence', weights: { apcs: 5 } },
   { id: 'grc', label: 'Governance, Risk & Compliance (GRC)', weights: { apcs: 5 } },
 ];
+
+const skillCategories: SkillCategory[] = [
+  {
+    title: 'Data Management',
+    skillIds: ['sql', 'python', 'sas', 'pyspark-scala'],
+  },
+  {
+    title: 'Data Analytics & Visualization',
+    skillIds: [
+      'excel-ai',
+      'power-bi',
+      'tableau',
+      'statistics',
+      'data-analysis',
+      'data-visualization',
+      'dashboarding',
+    ],
+  },
+  {
+    title: 'Data Mining',
+    skillIds: [
+      'machine-learning',
+      'deep-learning',
+      'nlp',
+      'computer-vision',
+      'genai',
+      'agentic-ai',
+      'prompt-engineering',
+      'llms',
+      'rag-vector-db',
+      'banking-analytics',
+      'fraud-analytics',
+      'forecasting',
+    ],
+  },
+  {
+    title: 'Deployment',
+    skillIds: ['mlops', 'llmops', 'aiops', 'cloud-platforms', 'system-design', 'ai-workflow-automation', 'client-delivery'],
+  },
+  {
+    title: 'Data Engineering',
+    skillIds: [
+      'data-engineering',
+      'networking-security',
+      'cybersecurity',
+      'linux-windows-security',
+      'web-security',
+      'ethical-hacking',
+      'cloud-security',
+      'incident-response',
+      'grc',
+    ],
+  },
+];
+
+const skillOptionById = new Map(skillOptions.map((skill) => [skill.id, skill]));
 
 const courseRecommendations: Record<CourseId, CourseRecommendation> = {
   apids: {
@@ -220,28 +281,38 @@ export const SkillPackageExplorer: React.FC<SkillPackageExplorerProps> = ({ onVi
               )}
             </div>
 
-            <div className="skill-chip-grid" aria-label="Select skills">
-              {skillOptions.map((skill) => {
-                const isSelected = selectedSkills.includes(skill.id);
+            <div className="skill-category-grid" aria-label="Select skills">
+              {skillCategories.map((category) => (
+                <section className="skill-category-group" key={category.title}>
+                  <h4>{category.title}</h4>
+                  <div className="skill-chip-grid">
+                    {category.skillIds.map((skillId) => {
+                      const skill = skillOptionById.get(skillId);
+                      if (!skill) return null;
 
-                return (
-                  <button
-                    key={skill.id}
-                    type="button"
-                    className={`skill-chip ${isSelected ? 'selected' : ''}`}
-                    aria-pressed={isSelected}
-                    onClick={() => toggleSkill(skill.id)}
-                  >
-                    {skill.label}
-                  </button>
-                );
-              })}
+                      const isSelected = selectedSkills.includes(skill.id);
+
+                      return (
+                        <button
+                          key={skill.id}
+                          type="button"
+                          className={`skill-chip ${isSelected ? 'selected' : ''}`}
+                          aria-pressed={isSelected}
+                          onClick={() => toggleSkill(skill.id)}
+                        >
+                          {skill.label}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </section>
+              ))}
             </div>
           </div>
 
           <div className="package-result-panel">
             <div className="skill-panel-heading">
-              <h3>Recommended courses</h3>
+              <h3>{recommendations.length > 0 ? 'Best suitable course' : 'Recommended courses'}</h3>
               <span>{selectedSkills.length} selected</span>
             </div>
 
@@ -253,7 +324,6 @@ export const SkillPackageExplorer: React.FC<SkillPackageExplorerProps> = ({ onVi
 
                   return (
                     <article className="course-recommendation-card best-course-card" key={recommendation.id}>
-                      <div className="recommendation-rank">Best suitable course</div>
                       <h4>{course?.title || recommendation.title}</h4>
                       {renderExpectedPackage(recommendation.expectedPackage)}
                       <button
