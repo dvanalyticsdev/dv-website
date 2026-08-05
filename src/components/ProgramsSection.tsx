@@ -446,8 +446,8 @@ export const ProgramsSection: React.FC<ProgramsSectionProps> = ({ onViewDetails 
     },
     {
       id: 'fde',
-      title: 'AI Forward Deployed Engineer (FDE)',
-      shortTitle: 'AI Forward Deployed Engineer',
+      title: 'AI Forward Deployment Engineer (FDE)',
+      shortTitle: 'AI Forward Deployment Engineer',
       tagline: 'Build and deploy client-ready AI solutions across LLMs, RAG, agents, data, cloud, and production operations.',
       theme: 'indigo',
       bulletPoints: [
@@ -459,7 +459,7 @@ export const ProgramsSection: React.FC<ProgramsSectionProps> = ({ onViewDetails 
       ],
       duration: '6 Months',
       delivery: 'Live Online/Offline Classes',
-      overview: 'The AI Forward Deployed Engineer program prepares learners to work directly with clients, translate real business problems into technical requirements, and ship production-ready AI solutions in live environments.',
+      overview: 'The AI Forward Deployment Engineer program prepares learners to work directly with clients, translate real business problems into technical requirements, and ship production-ready AI solutions in live environments.',
       modules: [
         {
           title: 'FDE Foundations',
@@ -500,7 +500,7 @@ export const ProgramsSection: React.FC<ProgramsSectionProps> = ({ onViewDetails 
         'GitHub Actions', 'Databricks', 'Snowflake', 'dbt', 'Airflow'
       ],
       careers: [
-        'Forward Deployed Engineer', 'AI Solutions Engineer', 'AI Engineer',
+        'Forward Deployment Engineer', 'AI Solutions Engineer', 'AI Engineer',
         'Enterprise AI Consultant', 'LLMOps Engineer', 'AI Solution Architect'
       ]
     }
@@ -606,7 +606,7 @@ const ProgramCard: React.FC<ProgramCardProps> = ({ program, onViewDetails, index
     purple: 'rgba(124, 58, 237, 0.12)',
     indigo: 'rgba(79, 70, 229, 0.12)',
     magenta: 'rgba(219, 39, 119, 0.12)',
-    orange: 'rgba(234, 88, 12, 0.12)',
+    orange: 'rgba(239, 83, 35, 0.12)',
     teal: 'rgba(13, 148, 136, 0.12)'
   };
 

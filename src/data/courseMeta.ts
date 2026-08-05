@@ -50,7 +50,7 @@ export const courseCatalog: CourseMeta[] = [
   },
   {
     id: 'fde',
-    label: 'AI Forward Deployed Engineer (FDE)',
+    label: 'AI Forward Deployment Engineer (FDE)',
     brochurePath: '/ai-forward-deployment-engineer-brochure.pdf',
     category: 'live',
   },

@@ -6,7 +6,7 @@ const courses = [
   { id: 'apids', category: 'data-science', label: 'Data Science + Gen AI + Agentic AI' },
   { id: 'aiml', category: 'data-science', label: 'AIML with Gen AI & Agentic AI' },
   { id: 'days7_genai', category: 'data-science', label: '7 Days GEN AI + Agentic AI Master program' },
-  { id: 'fde', category: 'data-science', label: 'AI Forward Deployed Engineer (FDE)' },
+  { id: 'fde', category: 'data-science', label: 'AI Forward Deployment Engineer (FDE)' },
   { id: 'apcs', category: 'cybersecurity', label: 'Cybersecurity+ Forensics' },
 ];
 

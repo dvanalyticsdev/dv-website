@@ -2445,9 +2445,9 @@ export const coursesData: Record<string, DetailedCourse> = {
   },
   FDE: {
     id: 'fde',
-    title: 'AI Forward Deployed Engineer (FDE)',
+    title: 'AI Forward Deployment Engineer (FDE)',
     tagline: 'Build client-ready AI solutions inside real business environments across LLMs, RAG, agents, data, cloud, and production operations.',
-    overview: 'The AI Forward Deployed Engineer (FDE) program prepares learners to become hybrid engineer-consultants who work directly with clients to build and ship practical AI solutions in real environments.\n\nLearners build depth across the four FDE pillars: AI, Data, Cloud, and Software Engineering. The program covers modern GenAI foundations, LLMs, prompt engineering, RAG, vector databases, agents, MCP, AI-assisted software engineering, data pipelines, AI system design, cloud deployment, enterprise delivery, and LLMOps.',
+    overview: 'The AI Forward Deployment Engineer (FDE) program prepares learners to become hybrid engineer-consultants who work directly with clients to build and ship practical AI solutions in real environments.\n\nLearners build depth across the four FDE pillars: AI, Data, Cloud, and Software Engineering. The program covers modern GenAI foundations, LLMs, prompt engineering, RAG, vector databases, agents, MCP, AI-assisted software engineering, data pipelines, AI system design, cloud deployment, enterprise delivery, and LLMOps.',
     duration: '6 Months',
     practicalExposure: [
       'Live instructor-led training',
@@ -2460,7 +2460,7 @@ export const coursesData: Record<string, DetailedCourse> = {
       'Portfolio building, case studies, GitHub projects, and LinkedIn branding',
     ],
     expertiseAreas: [
-      'Forward Deployed Engineering',
+      'Forward Deployment Engineering',
       'Generative AI and LLM Applications',
       'RAG, Vector Databases, and AI Agents',
       'AI Workflow Automation and MCP',
@@ -2471,7 +2471,7 @@ export const coursesData: Record<string, DetailedCourse> = {
     theme: 'indigo',
     modules: [
       {
-        title: 'Module 1: What is a Forward Deployed Engineer?',
+        title: 'Module 1: What is a Forward Deployment Engineer?',
         sections: [
           {
             title: 'FDE Role and Mindset',
@@ -2641,7 +2641,7 @@ export const coursesData: Record<string, DetailedCourse> = {
           {
             title: 'Client-Facing AI Delivery',
             topics: [
-              'Forward Deployed Engineer delivery model',
+              'Forward Deployment Engineer delivery model',
               'Converting business problems into AI-driven technical solutions',
               'Requirements gathering and stakeholder discovery',
               'Client workshops and requirement analysis sessions',
@@ -2719,7 +2719,7 @@ export const coursesData: Record<string, DetailedCourse> = {
       },
     ],
     programOutcome: [
-      'Understand the Forward Deployed Engineer role and delivery model',
+      'Understand the Forward Deployment Engineer role and delivery model',
       'Translate messy business problems into AI-driven technical requirements',
       'Build practical AI prototypes, RAG systems, and agentic applications',
       'Work with LLM APIs, model selection, prompts, structured output, and evaluations',
@@ -2731,9 +2731,9 @@ export const coursesData: Record<string, DetailedCourse> = {
     ],
     careers: [
       {
-        level: 'Forward Deployed and AI Engineering Roles',
+        level: 'Forward Deployment and AI Engineering Roles',
         roles: [
-          'Forward Deployed Engineer',
+          'Forward Deployment Engineer',
           'AI Engineer',
           'AI Solutions Engineer',
           'Generative AI Engineer',
@@ -2777,7 +2777,7 @@ export const coursesData: Record<string, DetailedCourse> = {
       'Fresh Graduates',
       'Working Professionals from Any Industry',
     ],
-    careerAdvantage: 'The AI Forward Deployed Engineer program gives learners a rare combination of client-facing delivery skills and production AI engineering depth. Graduates can move beyond demo-building into real enterprise AI implementation, where they can gather requirements, prototype quickly, integrate with data and tools, deploy to cloud, and operate LLM systems reliably in production.',
+    careerAdvantage: 'The AI Forward Deployment Engineer program gives learners a rare combination of client-facing delivery skills and production AI engineering depth. Graduates can move beyond demo-building into real enterprise AI implementation, where they can gather requirements, prototype quickly, integrate with data and tools, deploy to cloud, and operate LLM systems reliably in production.',
   },
   DAYS7_GENAI: {
     id: 'days7_genai',

@@ -3668,14 +3668,14 @@ button {
 /* ==========================================================================
    Global orange interaction system
    Keeps component geometry and motion intact while standardizing brand color.
-   #d64218 provides AA contrast (4.51:1) against white text.
+   #ef5323 is sampled from the DV Analytics logo and used consistently.
    ========================================================================== */
 :root {
-  --brand-orange-button: #d64218;
-  --brand-orange-button-hover: #c83d12;
-  --brand-orange-button-active: #b9340f;
+  --brand-orange-button: #ef5323;
+  --brand-orange-button-hover: #ef5323;
+  --brand-orange-button-active: #ef5323;
   --brand-orange-button-focus: rgba(239, 83, 35, 0.42);
-  --brand-orange-button-shadow: rgba(214, 66, 24, 0.28);
+  --brand-orange-button-shadow: rgba(239, 83, 35, 0.28);
 }
 
 /* Primary CTAs, form actions, card actions and selected interactive tabs. */
@@ -3825,21 +3825,21 @@ button {
 .slideshow-nav-btn {
   background: rgba(255, 255, 255, 0.96) !important;
   border-color: rgba(239, 83, 35, 0.82) !important;
-  color: #d64218 !important;
+  color: #ef5323 !important;
   box-shadow: 0 10px 26px rgba(5, 49, 92, 0.14);
 }
 
 .slideshow-nav-btn:hover {
   background: #fff8f5 !important;
   border-color: #ef5323 !important;
-  color: #c83d12 !important;
+  color: #ef5323 !important;
   box-shadow: 0 12px 30px rgba(5, 49, 92, 0.18);
 }
 
 .slideshow-nav-btn:active {
   background: #fff1eb !important;
-  border-color: #d64218 !important;
-  color: #b9340f !important;
+  border-color: #ef5323 !important;
+  color: #ef5323 !important;
 }
 
 .slideshow-nav-btn:focus-visible {

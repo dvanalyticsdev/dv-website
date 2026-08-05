@@ -8111,7 +8111,7 @@ a {
 }
 
 .btn-watch-video:hover {
-  background-color: #d64218;
+  background-color: #ef5323;
   transform: translateY(-2px);
   box-shadow: 0 8px 24px rgba(239, 83, 35, 0.45);
 }
@@ -8200,20 +8200,20 @@ a {
   width: 90px;
   height: 90px;
   border-radius: 50%;
-  background-color: #dc2626;
+  background-color: #ef5323;
   border: none;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 10px 25px rgba(220, 38, 38, 0.4);
+  box-shadow: 0 10px 25px rgba(239, 83, 35, 0.4);
 }
 
 .promo-play-btn:hover {
   transform: scale(1.08);
-  background-color: #ef4444;
-  box-shadow: 0 12px 30px rgba(239, 68, 68, 0.55);
+  background-color: #ef5323;
+  box-shadow: 0 12px 30px rgba(239, 83, 35, 0.55);
 }
 
 .play-triangle {
@@ -8233,7 +8233,7 @@ a {
   right: 0;
   bottom: 0;
   border-radius: 50%;
-  border: 2px solid #dc2626;
+  border: 2px solid #ef5323;
   animation: pulsePlay 2.5s infinite ease-out;
   opacity: 0;
   pointer-events: none;
@@ -8434,7 +8434,7 @@ a {
 }
 
 .btn-go-lms:hover {
-  background-color: #d64218;
+  background-color: #ef5323;
   transform: translateY(-1px);
   box-shadow: 0 6px 20px rgba(239, 83, 35, 0.3);
 }

@@ -92,10 +92,10 @@ const courseRecommendations: Record<CourseId, CourseRecommendation> = {
   },
   fde: {
     id: 'fde',
-    title: 'AI Forward Deployed Engineer (FDE)',
+    title: 'AI Forward Deployment Engineer (FDE)',
     expectedPackage: '8-18 LPA entry | 18-40+ LPA experienced',
     fit: 'Best for client-facing AI engineering, RAG, agents, data, cloud, and production delivery.',
-    roles: ['AI Forward Deployed Engineer', 'AI Solutions Engineer', 'Enterprise AI Consultant'],
+    roles: ['AI Forward Deployment Engineer', 'AI Solutions Engineer', 'Enterprise AI Consultant'],
   },
 };
 

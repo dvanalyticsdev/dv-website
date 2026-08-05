@@ -55,7 +55,7 @@ export const AauModal: React.FC<AauModalProps> = ({ isOpen, onClose, onSelectCou
     },
     {
       id: 'fde',
-      title: 'AI Forward Deployed Engineer (FDE)',
+      title: 'AI Forward Deployment Engineer (FDE)',
       tagline: 'Build and deploy client-ready AI solutions across LLMs, RAG, agents, data, cloud, and production operations.',
       poster: '/courses-poster/ai-forward-deployment-engineer.png'
     }
