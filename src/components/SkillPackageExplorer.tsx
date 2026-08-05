@@ -281,17 +281,19 @@ export const SkillPackageExplorer: React.FC<SkillPackageExplorerProps> = ({ onVi
 
   return (
     <div className={`skill-package-explorer ${className}`}>
-      <button
-        type="button"
-        className="skill-package-trigger"
-        aria-haspopup="dialog"
-        aria-expanded={isOpen}
-        aria-controls={panelId}
-        onClick={() => setIsOpen((current) => !current)}
-      >
-        Explore skills and packages
-        <span className="skill-package-trigger-icon" aria-hidden="true">{isOpen ? '-' : '+'}</span>
-      </button>
+      <div className="skill-package-cta-wrap">
+        <button
+          type="button"
+          className="skill-package-trigger"
+          aria-haspopup="dialog"
+          aria-expanded={isOpen}
+          aria-controls={panelId}
+          onClick={() => setIsOpen((current) => !current)}
+        >
+          Explore Skills and Salary
+          <span className="skill-package-trigger-icon" aria-hidden="true">{isOpen ? '-' : '+'}</span>
+        </button>
+      </div>
 
       {isOpen && canUsePortal && createPortal(modalContent, document.body)}
     </div>
