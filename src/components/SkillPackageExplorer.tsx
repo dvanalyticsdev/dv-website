@@ -32,6 +32,7 @@ const skillOptions: SkillOption[] = [
   { id: 'python', label: 'Python Programming', weights: { apida: 2, apids: 3, aiml: 3, fde: 2 } },
   { id: 'sas', label: 'SAS Programming', weights: { apida: 2, apids: 2 } },
   { id: 'pyspark-scala', label: 'PySpark / Scala', weights: { apids: 3, fde: 2 } },
+  { id: 'databricks', label: 'Databricks', weights: { apids: 3, apida: 2, fde: 3 } },
   { id: 'excel-ai', label: 'Excel + AI', weights: { specialist: 4, apida: 4, apids: 2 } },
   { id: 'power-bi', label: 'Power BI', weights: { specialist: 4, apida: 4, apids: 2 } },
   { id: 'tableau', label: 'Tableau', weights: { specialist: 4, apida: 4, apids: 2 } },
@@ -53,7 +54,10 @@ const skillOptions: SkillOption[] = [
   { id: 'cloud-platforms', label: 'Cloud Platforms', weights: { apids: 4, aiml: 3, fde: 5, apcs: 2 } },
   { id: 'data-engineering', label: 'Data Engineering', weights: { apids: 4, apida: 2, fde: 4 } },
   { id: 'system-design', label: 'AI System Design', weights: { fde: 5, aiml: 2, apids: 2 } },
+  { id: 'system-design-general', label: 'System Design', weights: { fde: 4, apids: 3, aiml: 2, apcs: 1 } },
+  { id: 'forward-deployment', label: 'Forward Deployment Engineering', weights: { fde: 5, apids: 2, aiml: 1 } },
   { id: 'ai-workflow-automation', label: 'AI Workflow Automation / MCP', weights: { fde: 5, aiml: 3 } },
+  { id: 'api-development', label: 'API Development', weights: { fde: 4, apids: 3, aiml: 2, apida: 1 } },
   { id: 'client-delivery', label: 'Client-Facing AI Delivery', weights: { fde: 5, aiml: 2 } },
   { id: 'banking-analytics', label: 'Banking / Credit Risk Analytics', weights: { apida: 3, apids: 3, specialist: 2 } },
   { id: 'fraud-analytics', label: 'Fraud / AML Analytics', weights: { apids: 3, apida: 3, specialist: 2, apcs: 1 } },
@@ -72,7 +76,7 @@ const skillOptions: SkillOption[] = [
 const skillCategories: SkillCategory[] = [
   {
     title: 'Data Management',
-    skillIds: ['sql', 'python', 'sas', 'pyspark-scala'],
+    skillIds: ['sql', 'python', 'sas', 'pyspark-scala', 'databricks'],
   },
   {
     title: 'Data Analytics & Visualization',
@@ -105,7 +109,18 @@ const skillCategories: SkillCategory[] = [
   },
   {
     title: 'Deployment',
-    skillIds: ['mlops', 'llmops', 'aiops', 'cloud-platforms', 'system-design', 'ai-workflow-automation', 'client-delivery'],
+    skillIds: [
+      'mlops',
+      'llmops',
+      'aiops',
+      'cloud-platforms',
+      'system-design',
+      'system-design-general',
+      'forward-deployment',
+      'ai-workflow-automation',
+      'api-development',
+      'client-delivery',
+    ],
   },
   {
     title: 'Data Engineering',
