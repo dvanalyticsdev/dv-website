@@ -20,6 +20,7 @@ import { AauModal } from './components/AauModal';
 import { BrochureLeadModal } from './components/BrochureLeadModal';
 import { SampleVideoSection } from './components/SampleVideoSection';
 import { SkillPackageExplorer } from './components/SkillPackageExplorer';
+import { getPageFromPath, getPathFromPage } from './utils/routes';
 
 const heroPosterModules = import.meta.glob('/public/hero-stories/*.{png,jpg,jpeg,webp,avif}', {
   eager: true,
@@ -46,12 +47,17 @@ const heroPosterImages = allowedHeroPosterPaths
 const paymentPageUrl = 'https://dvpayment.page.gd/';
 
 function App() {
-  const [activePage, setActivePage] = useState('home');
+  const [activePage, setActivePage] = useState(() => getPageFromPath(window.location.pathname));
   const scrollRevealRef = useScrollReveal(activePage);
   const [isAauModalOpen, setIsAauModalOpen] = useState(false);
   const [brochureCourseId, setBrochureCourseId] = useState<string | null>(null);
 
   useEffect(() => {
+    if (activePage === 'courses') {
+      document.getElementById('programs-section')?.scrollIntoView({ block: 'start' });
+      return;
+    }
+
     window.scrollTo(0, 0);
   }, [activePage]);
 
@@ -64,11 +70,31 @@ function App() {
     }
   }, []);
 
+  useEffect(() => {
+    const handlePopState = () => {
+      setActivePage(getPageFromPath(window.location.pathname));
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
+
+  const navigateToPage = (pageId: string) => {
+    const nextPath = getPathFromPage(pageId);
+    const currentPath = `${window.location.pathname}${window.location.search}${window.location.hash}`;
+
+    if (currentPath !== nextPath) {
+      window.history.pushState({}, '', nextPath);
+    }
+
+    setActivePage(pageId);
+  };
+
   const handleNavClick = (pageId: string) => {
     if (pageId === 'aau') {
       setIsAauModalOpen(true);
     } else {
-      setActivePage(pageId);
+      navigateToPage(pageId);
     }
   };
 
@@ -83,8 +109,8 @@ function App() {
         <div data-section="course-detail">
           <CourseDetailPage
             courseId={courseId}
-            onBackHome={() => setActivePage('home')}
-            onEnroll={() => setActivePage(`enroll-${courseId}`)}
+            onBackHome={() => navigateToPage('home')}
+            onEnroll={() => navigateToPage(`enroll-${courseId}`)}
             onDownloadBrochure={() => handleOpenBrochure(courseId)}
           />
         </div>
@@ -97,7 +123,7 @@ function App() {
       return (
         <div data-section="enrollment">
           <EnrollmentPage
-            onBackHome={() => setActivePage('home')}
+            onBackHome={() => navigateToPage('home')}
             defaultCourseId={defaultCourseId}
           />
         </div>
@@ -109,7 +135,7 @@ function App() {
     }
 
     if (activePage === 'services') {
-      return <div data-section="services"><ServicesPage onNavigate={(page) => setActivePage(page)} /></div>;
+      return <div data-section="services"><ServicesPage onNavigate={navigateToPage} /></div>;
     }
 
     if (activePage.startsWith('service-')) {
@@ -118,8 +144,8 @@ function App() {
         <div data-section="service-detail">
           <ServiceDetailPage
             serviceId={serviceId}
-            onBackHome={() => setActivePage('home')}
-            onNavigate={(page) => setActivePage(page)}
+            onBackHome={() => navigateToPage('home')}
+            onNavigate={navigateToPage}
           />
         </div>
       );
@@ -128,7 +154,7 @@ function App() {
     if (activePage === 'faqs') {
       return (
         <div data-section="faqs">
-          <FaqsPage onEnroll={() => setActivePage('enroll')} />
+          <FaqsPage onEnroll={() => navigateToPage('enroll')} />
         </div>
       );
     }
@@ -159,7 +185,7 @@ function App() {
       );
     }
 
-    if (activePage !== 'home') {
+    if (activePage !== 'home' && activePage !== 'courses') {
       return (
         <div className="page-wrapper container">
           <section className="content-section" style={{ padding: '3.5rem', textAlign: 'center' }}>
@@ -169,7 +195,7 @@ function App() {
             <p style={{ color: 'var(--text-secondary)', fontSize: '1.15rem', marginBottom: '2.5rem', fontWeight: '300' }}>
               This section is currently under development.
             </p>
-            <button className="btn btn-primary" onClick={() => setActivePage('home')}>
+            <button className="btn btn-primary" onClick={() => navigateToPage('home')}>
               Back to Homepage
             </button>
           </section>
@@ -227,7 +253,7 @@ function App() {
                   <span>Freshers | Graduates (Technical &amp; Non-Technical)</span>
                   <span>Masters (Technical &amp; Non-Technical) | Working Professionals | Reachers | Entrepreneurs</span>
                 </p>
-                <SkillPackageExplorer onViewDetails={(courseId) => setActivePage(`course-${courseId}`)} />
+                <SkillPackageExplorer onViewDetails={(courseId) => navigateToPage(`course-${courseId}`)} />
               </div>
             </div>
 
@@ -246,7 +272,7 @@ function App() {
 
           <SkillPackageExplorer
             className="skill-package-explorer-mobile"
-            onViewDetails={(courseId) => setActivePage(`course-${courseId}`)}
+            onViewDetails={(courseId) => navigateToPage(`course-${courseId}`)}
           />
 
           <div className="badges-header">
@@ -288,10 +314,10 @@ function App() {
           </div>
         </section>
 
-        <SampleVideoSection onEnroll={() => setActivePage('enroll')} />
+        <SampleVideoSection onEnroll={() => navigateToPage('enroll')} />
 
         <div id="programs-section" data-section="programs">
-          <ProgramsSection onViewDetails={(courseId) => setActivePage(`course-${courseId}`)} />
+          <ProgramsSection onViewDetails={(courseId) => navigateToPage(`course-${courseId}`)} />
         </div>
         <div id="benefits-section" data-section="benefits">
           <BenefitsSection />
@@ -318,7 +344,7 @@ function App() {
       <Header
         onNavClick={handleNavClick}
         activePage={activePage}
-        onCourseEnrollClick={(courseId) => setActivePage(`enroll-${courseId}`)}
+        onCourseEnrollClick={(courseId) => navigateToPage(`enroll-${courseId}`)}
         onCourseBrochureClick={handleOpenBrochure}
       />
       <main style={{ flexGrow: 1 }}>
@@ -332,7 +358,7 @@ function App() {
         onClose={() => setIsAauModalOpen(false)}
         onSelectCourse={(courseId) => {
           setIsAauModalOpen(false);
-          setActivePage(`course-${courseId}`);
+          navigateToPage(`course-${courseId}`);
         }}
       />
       <BrochureLeadModal

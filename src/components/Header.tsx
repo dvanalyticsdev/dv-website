@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { getCourseMeta, liveTrainingCourses, selfPacedCourses } from '../data/courseMeta';
+import { getPathFromPage } from '../utils/routes';
 
 interface HeaderProps {
   onNavClick?: (page: string) => void;
@@ -183,7 +184,7 @@ export const Header: React.FC<HeaderProps> = ({
           {activeGroup.courses.map((course) => (
             <a
               key={course.id}
-              href={`#${course.id}`}
+              href={getPathFromPage(course.id)}
               className="dropdown-item-link"
               onClick={(e) => {
                 e.preventDefault();
@@ -231,8 +232,8 @@ export const Header: React.FC<HeaderProps> = ({
         }}
       >
         <a
-          href="#courses"
-          className={`dropdown-trigger ${coursesDropdownOpen ? 'open' : ''} ${activePage.startsWith('course-') ? 'active' : ''}`}
+          href={getPathFromPage('courses')}
+          className={`dropdown-trigger ${coursesDropdownOpen ? 'open' : ''} ${activePage === 'courses' || activePage.startsWith('course-') ? 'active' : ''}`}
           aria-haspopup="true"
           aria-expanded={coursesDropdownOpen}
           aria-controls="desktop-courses-menu"
@@ -269,7 +270,7 @@ export const Header: React.FC<HeaderProps> = ({
         }}
       >
         <a
-          href="#services"
+          href={getPathFromPage('services')}
           className={`dropdown-trigger ${servicesDropdownOpen ? 'open' : ''} ${activePage === 'services' || activePage.startsWith('service-') ? 'active' : ''}`}
           aria-haspopup="true"
           aria-expanded={servicesDropdownOpen}
@@ -289,7 +290,7 @@ export const Header: React.FC<HeaderProps> = ({
           {servicesList.map((service) => (
             <a
               key={service.id}
-              href={`#${service.id}`}
+              href={getPathFromPage(service.id)}
               className="dropdown-item-link"
               onClick={(e) => {
                 e.preventDefault();
@@ -304,7 +305,7 @@ export const Header: React.FC<HeaderProps> = ({
 
       <li className="nav-item">
         <a
-          href="#about"
+          href={getPathFromPage('about')}
           className={activePage === 'about' ? 'active' : ''}
           onClick={(e) => {
             e.preventDefault();
@@ -318,7 +319,7 @@ export const Header: React.FC<HeaderProps> = ({
 
       <li className="nav-item">
         <a
-          href="#blogs"
+          href={getPathFromPage('blogs')}
           className={activePage === 'blogs' ? 'active' : ''}
           onClick={(e) => {
             e.preventDefault();
@@ -332,7 +333,7 @@ export const Header: React.FC<HeaderProps> = ({
 
       <li className="nav-item">
         <a
-          href="#faqs"
+          href={getPathFromPage('faqs')}
           className={activePage === 'faqs' ? 'active' : ''}
           onClick={(e) => {
             e.preventDefault();
@@ -351,7 +352,7 @@ export const Header: React.FC<HeaderProps> = ({
       <header className="site-header" data-section="header">
         <div className="header-container">
         <div className="desktop-header-row">
-          <a href="/" className="logo-link" onClick={(e) => {
+          <a href={getPathFromPage('home')} className="logo-link" onClick={(e) => {
             e.preventDefault();
             setMobileMenuOpen(false);
             if (onNavClick) onNavClick('home');
@@ -416,7 +417,7 @@ export const Header: React.FC<HeaderProps> = ({
             </button>
 
             {/* 2. Center: Logo */}
-            <a href="/" className="logo-link mobile-logo-link" onClick={(e) => {
+            <a href={getPathFromPage('home')} className="logo-link mobile-logo-link" onClick={(e) => {
               e.preventDefault();
               setMobileMenuOpen(false);
               setMobileServicesOpen(false);
@@ -428,7 +429,7 @@ export const Header: React.FC<HeaderProps> = ({
             {/* 3. Right: Courses Dropdown */}
             <div className="mobile-courses-container courses-dropdown-container">
               <a
-                href="#courses"
+                href={getPathFromPage('courses')}
                 className={`dropdown-trigger ${mobileCoursesOpen ? 'open' : ''}`}
                 aria-haspopup="true"
                 aria-expanded={mobileCoursesOpen}
@@ -467,7 +468,7 @@ export const Header: React.FC<HeaderProps> = ({
                 }}
               >
                 <a
-                  href="#services"
+                  href={getPathFromPage('services')}
                   className={`dropdown-trigger ${mobileServicesOpen ? 'open' : ''} ${activePage.startsWith('service-') || activePage === 'services' ? 'active' : ''}`}
                   aria-haspopup="true"
                   aria-expanded={mobileServicesOpen}
@@ -501,7 +502,7 @@ export const Header: React.FC<HeaderProps> = ({
 
               <li className="nav-item">
                 <a
-                  href="#about"
+                  href={getPathFromPage('about')}
                   className={activePage === 'about' ? 'active' : ''}
                   onClick={(e) => {
                     e.preventDefault();
@@ -515,7 +516,7 @@ export const Header: React.FC<HeaderProps> = ({
 
               <li className="nav-item">
                 <a
-                  href="#blogs"
+                  href={getPathFromPage('blogs')}
                   className={activePage === 'blogs' ? 'active' : ''}
                   onClick={(e) => {
                     e.preventDefault();
@@ -529,7 +530,7 @@ export const Header: React.FC<HeaderProps> = ({
 
               <li className="nav-item">
                 <a
-                  href="#faqs"
+                  href={getPathFromPage('faqs')}
                   className={activePage === 'faqs' ? 'active' : ''}
                   onClick={(e) => {
                     e.preventDefault();
