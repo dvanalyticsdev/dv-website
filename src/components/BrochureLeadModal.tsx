@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { createPortal } from 'react-dom';
+import { getCrmCourseMapping } from '../data/crmCourseMapping';
 import { getCourseMeta } from '../data/courseMeta';
 
 interface BrochureLeadModalProps {
@@ -20,17 +21,26 @@ const initialFormState: FormState = {
   phone: '',
 };
 
+const getCrmElementorWebhookUrl = () => (
+  import.meta.env.VITE_CRM_ELEMENTOR_WEBHOOK_URL?.trim() || ''
+);
+
 export const BrochureLeadModal: React.FC<BrochureLeadModalProps> = ({ courseId, isOpen, onClose }) => {
   const [formData, setFormData] = useState<FormState>(initialFormState);
   const [errors, setErrors] = useState<FormState>(initialFormState);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState('');
   const course = useMemo(() => getCourseMeta(courseId ?? undefined), [courseId]);
+  const crmCourse = useMemo(() => getCrmCourseMapping(courseId), [courseId]);
 
   useEffect(() => {
     if (!isOpen) {
       setFormData(initialFormState);
       setErrors(initialFormState);
       setIsSubmitted(false);
+      setIsSubmitting(false);
+      setSubmitError('');
     }
   }, [isOpen]);
 
@@ -79,10 +89,47 @@ export const BrochureLeadModal: React.FC<BrochureLeadModalProps> = ({ courseId, 
       [name]: value,
     }));
 
+    setSubmitError('');
     setErrors((current) => ({
       ...current,
       [name]: '',
     }));
+  };
+
+  const buildElementorPayload = () => {
+    const now = new Date();
+    const payload = new URLSearchParams();
+    const courseLabel = crmCourse?.crmCourseLabel || course.label;
+    const crmCourseId = crmCourse?.crmCourseId || course.id;
+
+    payload.set('form_id', `dv_website_brochure_${crmCourseId}`);
+    payload.set('form_name', `DV Website Brochure Form - ${courseLabel}`);
+    payload.set('lead_type', 'admission');
+    payload.set('intent', 'brochure');
+    payload.set('source_type', 'website');
+    payload.set('pipeline', 'admission');
+    payload.set('name', formData.name.trim());
+    payload.set('email', formData.email.trim());
+    payload.set('phone', formData.phone.trim());
+    payload.set('course', courseLabel);
+    payload.set('course_id', crmCourseId);
+    payload.set('course_code', courseLabel);
+    payload.set('course_name', courseLabel);
+    payload.set('program', courseLabel);
+    payload.set('selected_course', courseLabel);
+    payload.set('crm_course_id', crmCourseId);
+    payload.set('crm_course_label', courseLabel);
+    payload.set('crm_course_name', crmCourse?.crmCourseName || course.label);
+    payload.set('website_course_id', course.id);
+    payload.set('website_course_label', course.label);
+    payload.set('brochure_path', course.brochurePath || '');
+    payload.set('page_url', window.location.href);
+    payload.set('date', now.toISOString().slice(0, 10));
+    payload.set('time', now.toISOString().slice(11, 19));
+    payload.set('user_agent', window.navigator.userAgent);
+    payload.set('powered_by', 'DV Analytics website');
+
+    return payload;
   };
 
   const triggerDownload = () => {
@@ -99,14 +146,40 @@ export const BrochureLeadModal: React.FC<BrochureLeadModalProps> = ({ courseId, 
     document.body.removeChild(downloadLink);
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setSubmitError('');
+
     if (!validateForm()) {
       return;
     }
 
-    setIsSubmitted(true);
-    triggerDownload();
+    setIsSubmitting(true);
+
+    try {
+      const webhookUrl = getCrmElementorWebhookUrl();
+
+      if (!webhookUrl) {
+        throw new Error('CRM webhook URL is not configured for this website.');
+      }
+
+      const response = await fetch(webhookUrl, {
+        method: 'POST',
+        body: buildElementorPayload(),
+      });
+
+      if (!response.ok) {
+        const payload = await response.json().catch(() => null);
+        throw new Error(payload?.error || 'Unable to submit your brochure request right now.');
+      }
+
+      setIsSubmitted(true);
+      triggerDownload();
+    } catch (error) {
+      setSubmitError(error instanceof Error ? error.message : 'Unable to submit your brochure request right now.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return createPortal(
@@ -197,8 +270,10 @@ export const BrochureLeadModal: React.FC<BrochureLeadModalProps> = ({ courseId, 
                 {errors.email ? <span className="error-text">{errors.email}</span> : null}
               </div>
 
-              <button type="submit" className="btn btn-enroll-main brochure-submit-btn">
-                Download Brochure
+              {submitError ? <span className="error-text" role="alert">{submitError}</span> : null}
+
+              <button type="submit" className="btn btn-enroll-main brochure-submit-btn" disabled={isSubmitting}>
+                {isSubmitting ? 'Submitting...' : 'Download Brochure'}
               </button>
             </form>
           </div>

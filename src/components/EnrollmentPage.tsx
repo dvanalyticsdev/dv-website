@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useMagneticEffect } from '../hooks/useMagneticEffect';
+import { getCrmCourseMapping } from '../data/crmCourseMapping';
 
 const courses = [
   { id: 'apida', category: 'data-science', label: 'Data Analytics + AI' },
@@ -110,6 +111,7 @@ export const EnrollmentPage: React.FC<EnrollmentPageProps> = ({ onBackHome, defa
 
   const selectedCourseIndustry = courseIndustryLabels[formData.course] || 'technology';
   const selectedCourseLabel = courses.find(c => c.id === formData.course)?.label || '';
+  const selectedCrmCourse = getCrmCourseMapping(formData.course);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -236,11 +238,17 @@ export const EnrollmentPage: React.FC<EnrollmentPageProps> = ({ onBackHome, defa
     payload.set('qualification', formData.qualification.trim());
     payload.set('experience', formData.experience.trim());
     payload.set('state', formData.state.trim());
-    payload.set('course', formData.course.trim());
-    payload.set('course_id', formData.course.trim());
-    payload.set('course_name', selectedCourseLabel);
-    payload.set('program', selectedCourseLabel);
-    payload.set('selected_course', selectedCourseLabel);
+    payload.set('course', selectedCrmCourse?.crmCourseLabel || selectedCourseLabel);
+    payload.set('course_id', selectedCrmCourse?.crmCourseId || formData.course.trim());
+    payload.set('course_code', selectedCrmCourse?.crmCourseLabel || formData.course.trim());
+    payload.set('course_name', selectedCrmCourse?.crmCourseLabel || selectedCourseLabel);
+    payload.set('program', selectedCrmCourse?.crmCourseLabel || selectedCourseLabel);
+    payload.set('selected_course', selectedCrmCourse?.crmCourseLabel || selectedCourseLabel);
+    payload.set('crm_course_id', selectedCrmCourse?.crmCourseId || formData.course.trim());
+    payload.set('crm_course_label', selectedCrmCourse?.crmCourseLabel || selectedCourseLabel);
+    payload.set('crm_course_name', selectedCrmCourse?.crmCourseName || selectedCourseLabel);
+    payload.set('website_course_id', formData.course.trim());
+    payload.set('website_course_label', selectedCourseLabel);
     payload.set('course_category', formData.courseCategory.trim());
     payload.set('start_timeline', formData.startTimeline.trim());
     payload.set('preferred_batch', formData.batch.trim());
