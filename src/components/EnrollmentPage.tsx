@@ -61,9 +61,9 @@ const courseIndustryLabels: Record<string, string> = {
   apcs: 'Cybersecurity and Forensics',
 };
 
-const getCrmElementorWebhookUrl = () => (
-  import.meta.env.VITE_CRM_ELEMENTOR_WEBHOOK_URL?.trim() || ''
-);
+const CRM_ELEMENTOR_WEBHOOK_URL = 'https://crm.dvanalyticsmds.in/api/webhook/elementor-lead';
+
+const getCrmElementorWebhookUrl = () => CRM_ELEMENTOR_WEBHOOK_URL;
 
 interface EnrollmentPageProps {
   onBackHome: () => void;

@@ -21,9 +21,9 @@ const initialFormState: FormState = {
   phone: '',
 };
 
-const getCrmElementorWebhookUrl = () => (
-  import.meta.env.VITE_CRM_ELEMENTOR_WEBHOOK_URL?.trim() || ''
-);
+const CRM_ELEMENTOR_WEBHOOK_URL = 'https://crm.dvanalyticsmds.in/api/webhook/elementor-lead';
+
+const getCrmElementorWebhookUrl = () => CRM_ELEMENTOR_WEBHOOK_URL;
 
 export const BrochureLeadModal: React.FC<BrochureLeadModalProps> = ({ courseId, isOpen, onClose }) => {
   const [formData, setFormData] = useState<FormState>(initialFormState);
