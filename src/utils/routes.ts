@@ -34,6 +34,7 @@ export const getPageFromPath = (pathname: string) => {
   if (normalizedPath === '/services') return 'services';
   if (parts[0] === 'services' && parts[1]) return serviceIdBySlug[parts[1]] ?? `service-${parts[1]}`;
   if (normalizedPath === '/who-we-are') return 'about';
+  if (normalizedPath === '/meet-our-alumni') return 'alumni';
   if (normalizedPath === '/journal') return 'blogs';
   if (normalizedPath === '/faqs') return 'faqs';
   if (normalizedPath === '/enroll') return 'enroll';
@@ -47,6 +48,7 @@ export const getPathFromPage = (pageId: string) => {
   if (pageId === 'courses') return '/courses';
   if (pageId === 'services') return '/services';
   if (pageId === 'about') return '/who-we-are';
+  if (pageId === 'alumni') return '/meet-our-alumni';
   if (pageId === 'blogs') return '/journal';
   if (pageId === 'faqs') return '/faqs';
   if (pageId === 'enroll') return '/enroll';

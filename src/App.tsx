@@ -14,6 +14,7 @@ import { FaqsPage } from './components/FaqsPage';
 import { EnrollmentPage } from './components/EnrollmentPage';
 import { AboutPage } from './components/AboutPage';
 import { BlogsPage } from './components/BlogsPage';
+import { AlumniPage } from './components/AlumniPage';
 import { useScrollReveal } from './hooks/useScrollReveal';
 import { CompaniesSection } from './components/CompaniesSection';
 import { AauModal } from './components/AauModal';
@@ -132,6 +133,10 @@ function App() {
 
     if (activePage === 'about') {
       return <div data-section="about"><AboutPage /></div>;
+    }
+
+    if (activePage === 'alumni') {
+      return <div data-section="alumni"><AlumniPage onEnroll={() => navigateToPage('enroll')} /></div>;
     }
 
     if (activePage === 'services') {

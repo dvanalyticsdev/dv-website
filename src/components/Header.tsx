@@ -319,6 +319,20 @@ export const Header: React.FC<HeaderProps> = ({
 
       <li className="nav-item">
         <a
+          href={getPathFromPage('alumni')}
+          className={activePage === 'alumni' ? 'active' : ''}
+          onClick={(e) => {
+            e.preventDefault();
+            setMobileMenuOpen(false);
+            if (onNavClick) onNavClick('alumni');
+          }}
+        >
+          Meet Our Alumni
+        </a>
+      </li>
+
+      <li className="nav-item">
+        <a
           href={getPathFromPage('blogs')}
           className={activePage === 'blogs' ? 'active' : ''}
           onClick={(e) => {
@@ -511,6 +525,20 @@ export const Header: React.FC<HeaderProps> = ({
                   }}
                 >
                   Who We Are
+                </a>
+              </li>
+
+              <li className="nav-item">
+                <a
+                  href={getPathFromPage('alumni')}
+                  className={activePage === 'alumni' ? 'active' : ''}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setMobileMenuOpen(false);
+                    if (onNavClick) onNavClick('alumni');
+                  }}
+                >
+                  Meet Our Alumni
                 </a>
               </li>
 

@@ -1,0 +1,608 @@
+/* Alumni Page Styles */
+
+.alumni-page-container {
+  padding-bottom: 0;
+  background-color: #f8fafc; /* light theme background */
+}
+
+/* Hero Section */
+.alumni-hero-section {
+  position: relative;
+  height: 420px;
+  background-color: #051f40;
+  background-image: url('/about-hero-bg.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  overflow: hidden;
+  margin-top: 80px; /* matches header height */
+}
+
+.alumni-hero-overlay {
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(to bottom, rgba(5, 31, 64, 0.75), rgba(3, 12, 24, 0.85));
+  pointer-events: none;
+}
+
+.alumni-hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 850px !important;
+  padding: 0 1.5rem;
+}
+
+.alumni-subtitle {
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: #ef5323; /* primary accent color */
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+  display: block;
+}
+
+.alumni-title {
+  font-size: var(--font-size-display);
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: -1px;
+  line-height: 1.1;
+  margin-bottom: 1.5rem;
+}
+
+.alumni-title-underline {
+  height: 4px;
+  width: 80px;
+  background: linear-gradient(90deg, #ef5323, #ef7e23);
+  margin: 0 auto 2rem auto;
+  border-radius: 2px;
+}
+
+.alumni-lead {
+  font-size: var(--font-size-lead);
+  color: #94a3b8;
+  line-height: 1.6;
+  font-weight: 400;
+}
+
+/* Main Section */
+.alumni-main-section {
+  padding: 4rem 1.5rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* Search and Filters Bar */
+.alumni-controls-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.alumni-search-box {
+  position: relative;
+  width: 100%;
+}
+
+.search-icon {
+  position: absolute;
+  left: 1.25rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1.25rem;
+  height: 1.25rem;
+  color: #64748b;
+  pointer-events: none;
+}
+
+.alumni-search-input {
+  width: 100%;
+  padding: 1.1rem 1.25rem 1.1rem 3.25rem;
+  font-size: 1rem;
+  color: #1e293b;
+  background-color: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  transition: all 0.25s ease;
+  outline: none;
+}
+
+.alumni-search-input:focus {
+  border-color: #ef5323;
+  box-shadow: 0 0 0 4px rgba(239, 83, 35, 0.12);
+}
+
+.clear-search-btn {
+  position: absolute;
+  right: 1.25rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #94a3b8;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+}
+
+.clear-search-btn:hover {
+  color: #ef5323;
+}
+
+/* Tabs */
+.alumni-filter-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.filter-tab-btn {
+  padding: 0.75rem 1.25rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #475569;
+  background-color: #e2e8f0;
+  border: 1px solid #cbd5e1;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.filter-tab-btn:hover {
+  background-color: #cbd5e1;
+  color: #0f172a;
+}
+
+.filter-tab-btn.active {
+  background-color: #ef5323;
+  color: #ffffff;
+  border-color: #ef5323;
+  box-shadow: 0 4px 12px rgba(239, 83, 35, 0.2);
+}
+
+/* Results Count */
+.alumni-results-info {
+  font-size: 0.92rem;
+  color: #64748b;
+  margin-bottom: 2.5rem;
+  font-weight: 500;
+  border-bottom: 1px solid #e2e8f0;
+  padding-bottom: 0.75rem;
+}
+
+/* Alumni Grid */
+.alumni-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 2.5rem;
+}
+
+/* Alumni Card - Redesigned to match the 3rd mockup */
+.alumni-card {
+  position: relative;
+  background-color: #ffffff;
+  border-radius: 24px;
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  padding: 2.5rem 1.75rem 2rem 1.75rem;
+  box-shadow: 0 10px 30px rgba(5, 31, 64, 0.03), 0 2px 6px rgba(5, 31, 64, 0.02);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), 
+              box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+  height: 100%;
+  background-image: radial-gradient(rgba(15, 23, 42, 0.01) 1px, transparent 1px);
+  background-size: 16px 16px;
+}
+
+.alumni-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 25px 45px rgba(5, 31, 64, 0.09), 0 8px 16px rgba(5, 31, 64, 0.03);
+}
+
+/* Ornate Corner Waves */
+.card-decor-wave {
+  position: absolute;
+  width: 105px;
+  height: 105px;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.card-decor-wave.top-left {
+  top: 0;
+  left: 0;
+}
+
+.card-decor-wave.bottom-right {
+  bottom: 0;
+  right: 0;
+}
+
+.card-decor-wave svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* Grid Dots Accents */
+.card-decor-dots {
+  position: absolute;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.45;
+}
+
+.card-decor-dots.left {
+  left: 1rem;
+  top: 6.5rem;
+}
+
+.card-decor-dots.right {
+  right: 1rem;
+  top: 6.5rem;
+}
+
+/* Confetti details */
+.card-decor-confetti {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 2px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.card-decor-confetti.confetti-top {
+  background-color: #fbbf24; /* gold */
+  top: 3.5rem;
+  left: 5.5rem;
+  transform: rotate(15deg);
+}
+
+.card-decor-confetti.confetti-mid {
+  background-color: #fbbf24;
+  top: 7rem;
+  right: 5rem;
+  transform: rotate(45deg);
+}
+
+/* Sparkle stars */
+.card-decor-sparkle {
+  position: absolute;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.card-decor-sparkle.sparkle-left {
+  left: 2.8rem;
+  top: 3.8rem;
+}
+
+.card-decor-sparkle.sparkle-right {
+  right: 2.5rem;
+  top: 2.8rem;
+}
+
+/* Circular Portrait */
+.alumni-avatar-container {
+  width: 144px;
+  height: 144px;
+  border-radius: 50%;
+  border: 4px solid #ffffff;
+  outline: 2.5px solid #051f40;
+  margin: 1rem auto 1.5rem auto;
+  position: relative;
+  z-index: 2;
+  box-shadow: 0 10px 25px rgba(5, 31, 64, 0.12);
+  overflow: hidden;
+  background-color: #ffffff;
+  transition: transform 0.4s ease;
+}
+
+.alumni-card:hover .alumni-avatar-container {
+  transform: scale(1.03);
+}
+
+.alumni-avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+/* Card Body */
+.alumni-card-body {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  align-items: center;
+}
+
+.alumni-card-name {
+  font-size: 1.45rem;
+  font-weight: 900;
+  color: #051f40; /* dark blue */
+  margin-bottom: 0.25rem;
+  letter-spacing: -0.5px;
+}
+
+/* Horizontal line with circle divider */
+.alumni-card-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 75%;
+  margin: 0.5rem auto 1.5rem auto;
+}
+
+.alumni-card-divider .divider-line {
+  height: 1.5px;
+  background-color: #051f40;
+  flex-grow: 1;
+  opacity: 0.75;
+}
+
+.alumni-card-divider .divider-circle {
+  width: 7px;
+  height: 7px;
+  background-color: #051f40;
+  border-radius: 50%;
+}
+
+/* Information Layout Blocks */
+.alumni-info-block {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.95rem;
+  text-align: left;
+  width: 100%;
+  margin-bottom: 1.15rem;
+}
+
+.alumni-info-icon-wrapper {
+  flex-shrink: 0;
+  width: 2.25rem;
+  height: 2.25rem;
+  background-color: #f1f5f9;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #051f40;
+  border: 1px solid #e2e8f0;
+}
+
+.alumni-info-icon {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.alumni-info-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.alumni-info-label {
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: #051f40;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+}
+
+.alumni-info-degree {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #1e293b;
+  line-height: 1.35;
+}
+
+.alumni-info-college {
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: #64748b;
+}
+
+.alumni-info-company {
+  font-size: 1rem;
+  font-weight: 800;
+  color: #ef5323; /* Bright orange company text */
+  line-height: 1.3;
+}
+
+/* LinkedIn Profile Link styling */
+.alumni-linkedin-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 1.5rem;
+  text-decoration: none;
+  width: 100%;
+  cursor: pointer;
+}
+
+.linkedin-icon-wrapper {
+  width: 2.25rem;
+  height: 2.25rem;
+  color: #0077b5; /* LinkedIn brand color */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease;
+}
+
+.alumni-linkedin-link:hover .linkedin-icon-wrapper {
+  transform: scale(1.15);
+}
+
+.linkedin-svg-large {
+  width: 100%;
+  height: 100%;
+}
+
+.linkedin-text-cta {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #475569;
+  border-bottom: 1.5px dashed #cbd5e1;
+  padding-bottom: 1px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: all 0.2s ease;
+}
+
+.alumni-linkedin-link:hover .linkedin-text-cta {
+  color: #0077b5;
+  border-bottom-color: #0077b5;
+}
+
+.alumni-linkedin-disabled {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #94a3b8;
+  font-style: italic;
+  margin-top: 1.85rem;
+  text-align: center;
+}
+
+/* No Results State */
+.alumni-no-results {
+  text-align: center;
+  padding: 5rem 1.5rem;
+  background-color: #ffffff;
+  border-radius: 24px;
+  border: 2px dashed #cbd5e1;
+}
+
+.no-results-icon {
+  width: 4rem;
+  height: 4rem;
+  color: #94a3b8;
+  margin-bottom: 1.5rem;
+}
+
+.alumni-no-results h3 {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 0.5rem;
+}
+
+.alumni-no-results p {
+  color: #64748b;
+  margin-bottom: 1.75rem;
+}
+
+/* Call to Action Section */
+.alumni-cta-section {
+  background-color: #051f40;
+  color: #ffffff;
+  padding: 6rem 1.5rem;
+  background-image: linear-gradient(135deg, #051f40 0%, #030c18 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.alumni-cta-container {
+  position: relative;
+  z-index: 2;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.alumni-cta-section h2 {
+  font-size: 2.25rem;
+  font-weight: 800;
+  margin-bottom: 1.25rem;
+  letter-spacing: -0.5px;
+}
+
+.alumni-cta-section p {
+  font-size: 1.125rem;
+  color: #94a3b8;
+  margin-bottom: 2.5rem;
+  line-height: 1.6;
+  font-weight: 300;
+}
+
+.btn-large {
+  padding: 1.1rem 2.5rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  background-color: #ef5323;
+  color: #ffffff;
+  border: none;
+  box-shadow: 0 4px 15px rgba(239, 83, 35, 0.35);
+}
+
+.btn-large:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(239, 83, 35, 0.45);
+  background-color: #f0643b;
+}
+
+/* Responsive Queries */
+@media (max-width: 768px) {
+  .alumni-hero-section {
+    height: 340px;
+    margin-top: 70px;
+  }
+
+  .alumni-title {
+    font-size: 2rem;
+  }
+
+  .alumni-lead {
+    font-size: 1rem;
+  }
+
+  .alumni-main-section {
+    padding: 3rem 1rem;
+  }
+
+  .alumni-filter-tabs {
+    gap: 0.5rem;
+  }
+
+  .filter-tab-btn {
+    padding: 0.6rem 1rem;
+    font-size: 0.82rem;
+  }
+
+  .alumni-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    max-width: 400px;
+    margin: 0 auto;
+  }
+
+  .alumni-cta-section {
+    padding: 4rem 1rem;
+  }
+
+  .alumni-cta-section h2 {
+    font-size: 1.75rem;
+  }
+
+  .alumni-cta-section p {
+    font-size: 1rem;
+  }
+}
