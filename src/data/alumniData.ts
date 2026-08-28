@@ -12,6 +12,16 @@ export interface Alumni {
 
 export const alumniData: Alumni[] = [
   {
+    "name": "Dr. Rajender Nagpal",
+    "company": "CBA",
+    "qualification": "FPM (Phd)",
+    "linkedin": "https://www.linkedin.com/in/dr-rajender-nagpal-43375617?utm_source=share_via&utm_content=profile&utm_medium=member_android",
+    "image": "/alumni-pictures/dr-rajender-nagpal.jpeg",
+    "objectPosition": "center 15%",
+    "isFormal": true,
+    "logo": "/companies/commbank.png"
+  },
+  {
     "name": "PADMINI PADHIARY",
     "company": "First Citizens India",
     "qualification": "Bachelors in Technology",
@@ -39,7 +49,7 @@ export const alumniData: Alumni[] = [
     "image": "/alumni-pictures/harshagowda-s.jpeg",
     "objectPosition": "center 10%",
     "isFormal": true,
-    "logo": "/companies/wellsfargo.svg"
+    "logo": "/companies/wellsfargo.png"
   },
   {
     "name": "Dibya Ranjan Sahoo",
@@ -79,7 +89,7 @@ export const alumniData: Alumni[] = [
     "image": "/alumni-pictures/abinash-mohapatra.jpeg",
     "objectPosition": "center 12%",
     "isFormal": true,
-    "logo": "/companies/wellsfargo.svg"
+    "logo": "/companies/wellsfargo.png"
   },
   {
     "name": "SAPAN KUMAR PARIDA",
@@ -187,7 +197,7 @@ export const alumniData: Alumni[] = [
     "qualification": "MTech, West Bengal",
     "linkedin": "https://www.linkedin.com/in/debopriya-talukdar-b2185520a",
     "image": "/alumni-pictures/debopriya-talukdar.jpeg",
-    "logo": "/companies/wellsfargo.svg",
+    "logo": "/companies/wellsfargo.png",
     "isFormal": true,
     "objectPosition": "center 15%"
   },
@@ -197,20 +207,10 @@ export const alumniData: Alumni[] = [
     "qualification": "MBA, Odisha",
     "linkedin": "https://www.linkedin.com/in/nrusingha-nath-kar-a897b333?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
     "image": "/alumni-pictures/nrusingha-nath-kar.jpeg",
-    "logo": "/companies/wellsfargo.svg",
+    "logo": "/companies/wellsfargo.png",
     "isFormal": true,
     "objectPosition": "center 15%",
     "transform": "scale(1.25)"
-  },
-  {
-    "name": "Dr. Rajender Nagpal",
-    "company": "CBA",
-    "qualification": "FPM (Phd)",
-    "linkedin": "https://www.linkedin.com/in/dr-rajender-nagpal-43375617?utm_source=share_via&utm_content=profile&utm_medium=member_android",
-    "image": "/alumni-pictures/dr-rajender-nagpal.jpeg",
-    "objectPosition": "center 15%",
-    "isFormal": false,
-    "logo": "/companies/commbank.png"
   },
   {
     "name": "Banti Bikrant Pradhan",
@@ -220,7 +220,7 @@ export const alumniData: Alumni[] = [
     "image": "/alumni-pictures/banti-bikrant-pradhan.jpeg",
     "objectPosition": "center 15%",
     "isFormal": false,
-    "logo": "/companies/wellsfargo.svg"
+    "logo": "/companies/wellsfargo.png"
   },
   {
     "name": "Jagannath Das",

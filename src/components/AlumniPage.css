@@ -427,15 +427,23 @@
 .alumni-company-logo-wrapper {
   display: flex;
   align-items: center;
+  gap: 0.5rem;
   height: 38px;
   margin-top: 0.15rem;
 }
 
 .alumni-company-logo {
   height: 100%;
-  max-width: 150px;
+  max-width: 90px;
   object-fit: contain;
   object-position: left;
+}
+
+.alumni-company-name-text {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: #1e293b;
+  line-height: 1.25;
 }
 
 /* LinkedIn Profile Link styling */
@@ -690,12 +698,18 @@
   }
 
   .alumni-company-logo-wrapper {
-    height: 22px;
+    height: 24px;
+    gap: 0.35rem;
     margin-top: 0.05rem;
   }
 
   .alumni-company-logo {
-    max-width: 80px;
+    max-width: 45px;
+  }
+
+  .alumni-company-name-text {
+    font-size: 0.72rem;
+    font-weight: 800;
   }
 
   .alumni-linkedin-link {

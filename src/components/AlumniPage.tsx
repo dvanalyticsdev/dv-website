@@ -205,13 +205,9 @@ export const AlumniPage: React.FC<AlumniPageProps> = ({ onEnroll }) => {
                             className="alumni-company-logo"
                             onError={(e) => {
                               e.currentTarget.style.display = 'none';
-                              const sibling = e.currentTarget.nextElementSibling as HTMLElement;
-                              if (sibling) {
-                                sibling.style.display = 'block';
-                              }
                             }}
                           />
-                          <div className="alumni-info-company" style={{ display: 'none' }}>{alumnus.company}</div>
+                          <span className="alumni-company-name-text">{alumnus.company}</span>
                         </div>
                       ) : (
                         <div className="alumni-info-company">{alumnus.company}</div>
