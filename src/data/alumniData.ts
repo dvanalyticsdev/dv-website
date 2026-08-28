@@ -213,6 +213,26 @@ export const alumniData: Alumni[] = [
     "transform": "scale(1.25)"
   },
   {
+    "name": "VAIDEHI TRIVEDI",
+    "company": "JPMC",
+    "qualification": "B.TECH",
+    "linkedin": "https://www.linkedin.com/in/vaidehi-trivedi23/",
+    "image": "/alumni-pictures/vaidehi-trivedi.jpeg",
+    "isFormal": true,
+    "logo": "/companies/jpmorgan.png",
+    "objectPosition": "center 25%"
+  },
+  {
+    "name": "SHUSHANK SINGH",
+    "company": "E&Y",
+    "qualification": "MBA",
+    "linkedin": "https://www.linkedin.com/in/shushank-singh-063b573a1/",
+    "image": "/alumni-pictures/shushank-singh.jpeg",
+    "isFormal": true,
+    "logo": null,
+    "objectPosition": "center 15%"
+  },
+  {
     "name": "BANTI BIKRANT PRADHAN",
     "company": "WELLS FARGO",
     "qualification": "B.E. (MECHANICAL ENGINEERING)",
@@ -351,5 +371,45 @@ export const alumniData: Alumni[] = [
     "objectPosition": "center 15%",
     "isFormal": false,
     "logo": "/companies/afsol.png"
+  },
+  {
+    "name": "SANKET MOHANTY",
+    "company": "HSBC",
+    "qualification": "BBA",
+    "linkedin": "https://www.linkedin.com/in/sanket-mohanty-/",
+    "image": "/alumni-pictures/sanket-mohanty.jpeg",
+    "isFormal": false,
+    "logo": "/companies/hsbc.svg",
+    "objectPosition": "center 15%"
+  },
+  {
+    "name": "RHYTHM PATEL",
+    "company": "PAYPAL",
+    "qualification": "B.TECH",
+    "linkedin": "https://www.linkedin.com/in/rhythm-patel-238244128/",
+    "image": "/alumni-pictures/rhythm-patel.jpeg",
+    "isFormal": false,
+    "logo": null,
+    "objectPosition": "center 15%"
+  },
+  {
+    "name": "VIVEK KUMAR",
+    "company": "ANZ",
+    "qualification": "B.TECH",
+    "linkedin": "https://www.linkedin.com/in/vivek-kumar-7a3b05280/",
+    "image": "/alumni-pictures/vivek-kumar.jpeg",
+    "isFormal": false,
+    "logo": null,
+    "objectPosition": "center 15%"
+  },
+  {
+    "name": "AVINASH KUMAR",
+    "company": "HDFC ERGO",
+    "qualification": "B.TECH",
+    "linkedin": "https://www.linkedin.com/in/avinash-kumar-417ab5255/",
+    "image": "/alumni-pictures/avinash-kumar.jpeg",
+    "isFormal": false,
+    "logo": null,
+    "objectPosition": "center 15%"
   }
 ];
