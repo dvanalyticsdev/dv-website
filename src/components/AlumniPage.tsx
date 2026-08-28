@@ -196,7 +196,7 @@ export const AlumniPage: React.FC<AlumniPageProps> = ({ onEnroll }) => {
                       </svg>
                     </div>
                     <div className="alumni-info-content">
-                      <div className="alumni-info-label">COMPANY GOT HIRED</div>
+                      <div className="alumni-info-label">COMPANY</div>
                       {alumnus.logo ? (
                         <div className="alumni-company-logo-wrapper">
                           <img 
