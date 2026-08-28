@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 40" width="180" height="40">
+  <!-- HDFC part in deep blue -->
+  <text x="5" y="28" font-family="system-ui, -apple-system, sans-serif" font-weight="900" font-size="24" fill="#1c3f94" letter-spacing="0.5">HDFC</text>
+  <!-- ERGO part in red -->
+  <text x="82" y="28" font-family="system-ui, -apple-system, sans-serif" font-weight="900" font-size="24" fill="#d1121d" letter-spacing="0.5">ERGO</text>
+</svg>

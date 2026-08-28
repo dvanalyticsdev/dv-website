@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 40" width="120" height="40">
+  <text x="5" y="29" font-family="system-ui, -apple-system, sans-serif" font-weight="900" font-size="28" fill="#004b87" letter-spacing="1">ANZ</text>
+  <rect x="75" y="10" width="8" height="20" rx="2" fill="#007dbd" transform="rotate(25, 75, 10)" opacity="0.9" />
+  <rect x="87" y="7" width="8" height="23" rx="2" fill="#00b4f1" transform="rotate(25, 87, 7)" opacity="0.9" />
+  <rect x="99" y="4" width="8" height="26" rx="2" fill="#004b87" transform="rotate(25, 99, 4)" opacity="0.9" />
+</svg>

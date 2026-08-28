@@ -229,7 +229,7 @@ export const alumniData: Alumni[] = [
     "linkedin": "https://www.linkedin.com/in/shushank-singh-063b573a1/",
     "image": "/alumni-pictures/shushank-singh.jpeg",
     "isFormal": true,
-    "logo": null,
+    "logo": "/companies/ey.svg",
     "objectPosition": "center 15%"
   },
   {
@@ -389,7 +389,7 @@ export const alumniData: Alumni[] = [
     "linkedin": "https://www.linkedin.com/in/rhythm-patel-238244128/",
     "image": "/alumni-pictures/rhythm-patel.jpeg",
     "isFormal": false,
-    "logo": null,
+    "logo": "/companies/paypal.svg",
     "objectPosition": "center 15%"
   },
   {
@@ -399,7 +399,7 @@ export const alumniData: Alumni[] = [
     "linkedin": "https://www.linkedin.com/in/vivek-kumar-7a3b05280/",
     "image": "/alumni-pictures/vivek-kumar.jpeg",
     "isFormal": false,
-    "logo": null,
+    "logo": "/companies/anz.svg",
     "objectPosition": "center 15%"
   },
   {
@@ -409,7 +409,7 @@ export const alumniData: Alumni[] = [
     "linkedin": "https://www.linkedin.com/in/avinash-kumar-417ab5255/",
     "image": "/alumni-pictures/avinash-kumar.jpeg",
     "isFormal": false,
-    "logo": null,
+    "logo": "/companies/hdfcergo.svg",
     "objectPosition": "center 15%"
   }
 ];
