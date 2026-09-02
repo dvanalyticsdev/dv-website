@@ -4210,4 +4210,25 @@ button {
   margin-left: 0.3rem;
 }
 
+/* Mobile top header Enroll Now button styling */
+.mobile-top-enroll-btn {
+  background: linear-gradient(135deg, #ef5323 0%, #d43b0d 100%) !important;
+  color: #ffffff !important;
+  padding: 0.45rem 1rem !important;
+  font-size: 0.85rem !important;
+  font-weight: 700 !important;
+  border-radius: 100px !important;
+  box-shadow: 0 4px 12px rgba(239, 83, 35, 0.35) !important;
+  border: none !important;
+  width: auto !important;
+  max-width: none !important;
+  cursor: pointer !important;
+  white-space: nowrap !important;
+}
+
+.mobile-top-enroll-btn:active {
+  transform: scale(0.96) !important;
+}
+
+
 

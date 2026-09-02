@@ -1,0 +1,254 @@
+/* ==========================================================================
+   Persistent Floating 'Get a Call Now' Button & Modal Styles
+   ========================================================================== */
+
+/* Floating trigger button anchored on right middle edge */
+.get-call-btn-trigger {
+  position: fixed;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2400;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #ef5323 0%, #d43b0d 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: 12px 0 0 12px;
+  padding: 14px 10px;
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: 0.3px;
+  cursor: pointer;
+  box-shadow: -4px 2px 18px rgba(239, 83, 35, 0.45), -2px 0 8px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+}
+
+.get-call-btn-trigger:hover {
+  background: linear-gradient(135deg, #ff6333 0%, #ef5323 100%);
+  box-shadow: -6px 4px 24px rgba(239, 83, 35, 0.6), -3px 0 12px rgba(0, 0, 0, 0.3);
+  padding-left: 14px;
+}
+
+.get-call-btn-trigger:active {
+  transform: translateY(-50%) scale(0.97);
+}
+
+.get-call-btn-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+}
+
+.get-call-btn-text {
+  white-space: nowrap;
+}
+
+/* Modal Overlay & Box */
+.call-modal-overlay {
+  z-index: 2600 !important;
+}
+
+.call-modal-box {
+  max-width: 500px !important;
+  border-radius: 20px !important;
+  background: #ffffff;
+  box-shadow: 0 25px 50px -12px rgba(5, 31, 64, 0.35);
+  position: relative;
+  overflow: hidden;
+  animation: callModalPopIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes callModalPopIn {
+  from {
+    opacity: 0;
+    transform: scale(0.92) translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.call-modal-content {
+  padding: 2.25rem 2rem 2rem 2rem;
+}
+
+.call-modal-header {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.call-modal-header h2 {
+  font-size: 1.65rem;
+  font-weight: 800;
+  color: #051f40;
+  margin: 0 0 0.4rem 0;
+}
+
+.call-modal-header p {
+  font-size: 0.925rem;
+  color: #556987;
+  margin: 0;
+}
+
+/* Form inputs */
+.call-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+}
+
+.call-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  text-align: left;
+}
+
+.call-form-group label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #051f40;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.call-form-group input,
+.call-form-group select {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-size: 0.95rem;
+  border: 1.5px solid #d1d5db;
+  border-radius: 10px;
+  background-color: #f9fafb;
+  color: #1f2937;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  box-sizing: border-box;
+}
+
+.call-form-group input:focus,
+.call-form-group select:focus {
+  outline: none;
+  border-color: #ef5323;
+  background-color: #ffffff;
+  box-shadow: 0 0 0 3px rgba(239, 83, 35, 0.15);
+}
+
+.call-form-group input.input-error,
+.call-form-group select.input-error {
+  border-color: #ef4444;
+  background-color: #fef2f2;
+}
+
+.error-text {
+  font-size: 0.8rem;
+  color: #ef4444;
+  font-weight: 600;
+  margin-top: 2px;
+}
+
+.call-global-error {
+  text-align: center;
+  padding: 0.5rem;
+  background: #fef2f2;
+  border-radius: 8px;
+  border: 1px solid #fca5a5;
+}
+
+.call-submit-btn {
+  margin-top: 0.5rem;
+  width: 100%;
+  padding: 0.85rem;
+  font-size: 1rem;
+  font-weight: 700;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #ef5323 0%, #d43b0d 100%);
+  color: #ffffff;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.2s ease;
+}
+
+.call-submit-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px rgba(239, 83, 35, 0.35);
+}
+
+.call-submit-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Success State */
+.call-success-state {
+  text-align: center;
+  padding: 2.5rem 2rem 2rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.call-modal-icon-badge {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: #f0fdf4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+  box-shadow: 0 4px 14px rgba(34, 197, 94, 0.2);
+}
+
+.call-success-state h2 {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #051f40;
+  margin-bottom: 0.5rem;
+}
+
+.call-success-state p {
+  font-size: 0.95rem;
+  color: #4b5563;
+  margin-bottom: 0.5rem;
+  line-height: 1.5;
+}
+
+.call-support-text {
+  font-size: 0.875rem !important;
+  color: #6b7280 !important;
+  margin-bottom: 1.5rem !important;
+}
+
+.call-success-state button {
+  min-width: 140px;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .get-call-btn-trigger {
+    padding: 12px 8px;
+    font-size: 0.85rem;
+    border-radius: 10px 0 0 10px;
+  }
+
+  .get-call-btn-icon {
+    width: 20px;
+    height: 20px;
+  }
+
+  .call-modal-content {
+    padding: 1.75rem 1.25rem 1.5rem 1.25rem;
+  }
+
+  .call-modal-header h2 {
+    font-size: 1.35rem;
+  }
+}

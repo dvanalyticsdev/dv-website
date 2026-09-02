@@ -19,6 +19,7 @@ import { useScrollReveal } from './hooks/useScrollReveal';
 import { CompaniesSection } from './components/CompaniesSection';
 import { AauModal } from './components/AauModal';
 import { BrochureLeadModal } from './components/BrochureLeadModal';
+import { GetACallButton } from './components/GetACallButton';
 import { SampleVideoSection } from './components/SampleVideoSection';
 import { SkillPackageExplorer } from './components/SkillPackageExplorer';
 import { getPageFromPath, getPathFromPage } from './utils/routes';
@@ -371,6 +372,7 @@ function App() {
         courseId={brochureCourseId}
         onClose={() => setBrochureCourseId(null)}
       />
+      <GetACallButton />
     </div>
   );
 }

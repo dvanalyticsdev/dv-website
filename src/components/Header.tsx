@@ -440,16 +440,29 @@ export const Header: React.FC<HeaderProps> = ({
               <img src="/logo.png" alt="DV Analytics Logo" className="logo-image mobile-logo-image" />
             </a>
 
-            {/* 3. Right: Courses Dropdown */}
-            <div className="mobile-courses-container courses-dropdown-container">
-              <a
-                href={getPathFromPage('courses')}
-                className={`dropdown-trigger ${mobileCoursesOpen ? 'open' : ''}`}
-                aria-haspopup="true"
-                aria-expanded={mobileCoursesOpen}
-                aria-controls="mobile-courses-menu"
-                onClick={(e) => {
-                  e.preventDefault();
+            {/* 3. Right: Enroll Now Button */}
+            <button
+              type="button"
+              className="btn-enroll-header mobile-top-enroll-btn"
+              onClick={() => {
+                setMobileMenuOpen(false);
+                if (activeCourse) {
+                  onCourseEnrollClick?.(activeCourse.id);
+                } else if (onNavClick) {
+                  onNavClick('enroll');
+                }
+              }}
+            >
+              Enroll Now
+            </button>
+          </div>
+
+          {/* Drawer Menu Panel */}
+          <nav className={`nav-panel mobile-nav-panel ${mobileMenuOpen ? 'mobile-open' : ''}`}>
+            <ul className="nav-list">
+              <li 
+                className="nav-item dropdown-container courses-dropdown-container"
+                onClick={() => {
                   const nextOpen = !mobileCoursesOpen;
                   setMobileCoursesOpen(nextOpen);
                   if (nextOpen) {
@@ -457,24 +470,29 @@ export const Header: React.FC<HeaderProps> = ({
                   } else {
                     setActiveCourseGroupId(null);
                   }
-                  setMobileMenuOpen(false); // Close menu drawer when opening courses
                 }}
               >
-                All Courses
-                <svg className={`chevron-icon ${mobileCoursesOpen ? 'rotated' : ''}`} viewBox="0 0 24 24">
-                  <path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="2.5" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-              </a>
+                <a
+                  href={getPathFromPage('courses')}
+                  className={`dropdown-trigger ${mobileCoursesOpen ? 'open' : ''}`}
+                  aria-haspopup="true"
+                  aria-expanded={mobileCoursesOpen}
+                  aria-controls="mobile-courses-menu"
+                  onClick={(e) => {
+                    e.preventDefault();
+                  }}
+                >
+                  All Courses
+                  <svg className={`chevron-icon ${mobileCoursesOpen ? 'rotated' : ''}`} viewBox="0 0 24 24">
+                    <path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="2.5" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </a>
 
-              <div id="mobile-courses-menu" className={`courses-dropdown-menu mobile-courses-dropdown ${mobileCoursesOpen ? 'show' : ''}`}>
-                {renderCourseGroups('mobile')}
-              </div>
-            </div>
-          </div>
+                <div id="mobile-courses-menu" className={`courses-dropdown-menu mobile-courses-dropdown ${mobileCoursesOpen ? 'show' : ''}`}>
+                  {renderCourseGroups('mobile')}
+                </div>
+              </li>
 
-          {/* Drawer Menu Panel */}
-          <nav className={`nav-panel mobile-nav-panel ${mobileMenuOpen ? 'mobile-open' : ''}`}>
-            <ul className="nav-list">
               <li 
                 className="nav-item dropdown-container services-dropdown-container"
                 onClick={() => {
@@ -568,23 +586,6 @@ export const Header: React.FC<HeaderProps> = ({
                 >
                   FAQs
                 </a>
-              </li>
-
-              <li className="mobile-enroll-nav-item">
-                <button
-                  type="button"
-                  className="mobile-enroll-btn"
-                  onClick={() => {
-                    setMobileMenuOpen(false);
-                    if (activeCourse) {
-                      onCourseEnrollClick?.(activeCourse.id);
-                    } else if (onNavClick) {
-                      onNavClick('enroll');
-                    }
-                  }}
-                >
-                  Enroll Now
-                </button>
               </li>
             </ul>
           </nav>
