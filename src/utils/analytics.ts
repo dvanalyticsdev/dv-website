@@ -20,6 +20,7 @@ const trackingParamNames = [
 
 const attributionStorageKey = 'dv_attribution';
 const gaMeasurementId = 'G-827GCWFLV6';
+let lastTrackedPageLocation = '';
 
 export const getAttribution = () => {
   const params = new URLSearchParams(window.location.search);
@@ -99,6 +100,12 @@ export const trackEvent = (eventName: string, params: AnalyticsParams = {}) => {
 };
 
 export const trackPageView = (pageId: string) => {
+  if (lastTrackedPageLocation === window.location.href) {
+    return;
+  }
+
+  lastTrackedPageLocation = window.location.href;
+
   const payload = {
     page_id: pageId,
     page_path: window.location.pathname,
@@ -107,5 +114,5 @@ export const trackPageView = (pageId: string) => {
   };
 
   window.dataLayer?.push({ event: 'page_view', ...payload });
-  window.gtag?.('event', 'page_view', payload);
+  window.gtag?.('config', gaMeasurementId, payload);
 };
