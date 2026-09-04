@@ -614,7 +614,7 @@ export const blogsData: BlogPost[] = [
     "title": "Data Science Job Market in Bangalore 2026: Trends, Employers and Skills Required",
     "excerpt": "Its 2026 and if you step into any tech park in Bangalore, you will notice a subtle shift. The conversations around no longer refer to just building features and launching apps, ...",
     "date": "July 2, 2026",
-    "author": "big product companies",
+    "author": "DV Editorial Team",
     "image": "/blogs/_ds_job_market.jpg",
     "readTime": "7 min read",
     "sections": [
@@ -685,7 +685,7 @@ export const blogsData: BlogPost[] = [
     "title": "Data Science with Agentic AI as a Career Path",
     "excerpt": "A lot of people imagine a data science role as someone sitting in front of a screen, writing code, cleaning data, and building models all day. That picture is not wrong, but it ...",
     "date": "June 29, 2026",
-    "author": "step",
+    "author": "DV Editorial Team",
     "image": "/blogs/agenticai_career.jpg",
     "readTime": "7 min read",
     "sections": [
@@ -913,7 +913,7 @@ export const blogsData: BlogPost[] = [
     "title": "Gen AI and Agentic AI – The New Job Frontier",
     "excerpt": "Data science has been a popular career choice for some time now. But in 2026, one can quietly see signs of a visible shift taking place in the way how work is actually carried o...",
     "date": "June 17, 2026",
-    "author": "reporting and communication",
+    "author": "DV Editorial Team",
     "image": "/blogs/ds_with_genai_career_path.jpg",
     "readTime": "5 min read",
     "sections": [
@@ -1108,7 +1108,7 @@ export const blogsData: BlogPost[] = [
     "title": "How Data Science is enhanced by Gen AI and Agentic AI",
     "excerpt": "A few months ago, a young analyst in Bangalore shared something interesting during a casual conversation. He said that earlier his day used to begin with writing long queries, c...",
     "date": "June 8, 2026",
-    "author": "Gen AI and Agentic AI",
+    "author": "DV Editorial Team",
     "image": "/blogs/ds_enhns_ai.jpg",
     "readTime": "6 min read",
     "sections": [
@@ -1465,7 +1465,7 @@ export const blogsData: BlogPost[] = [
     "title": "The Biggest Mistake Career Switchers Make When Learning AI",
     "excerpt": "About a year ago, I met a professional who had spent more than a decade working in operations.",
     "date": "May 21, 2026",
-    "author": "watching",
+    "author": "DV Editorial Team",
     "image": "/blogs/career_switchers_mistake_when_learning_ai.jpg",
     "readTime": "5 min read",
     "sections": [
@@ -1607,7 +1607,7 @@ export const blogsData: BlogPost[] = [
     "title": "The ROI of a Data Science Certification: Is It Worth the Investment",
     "excerpt": "A working professional once asked a question during a counselling session that many people silently think about before enrolling in a data science course. He said, “I understand...",
     "date": "May 15, 2026",
-    "author": "accident",
+    "author": "DV Editorial Team",
     "image": "/blogs/dscert_roi.jpg",
     "readTime": "6 min read",
     "sections": [
@@ -1736,7 +1736,7 @@ export const blogsData: BlogPost[] = [
     "title": "What Next After a Data Analytics Course in Bangalore",
     "excerpt": "In the digital age of today, users generate a high amount of data. Right from online interactions and social media activity to the more complex workings of industries and scient...",
     "date": "May 9, 2026",
-    "author": "visiting dvanalyticsmds",
+    "author": "DV Editorial Team",
     "image": "/blogs/nextblr_da_course.jpg",
     "readTime": "5 min read",
     "sections": [
@@ -1826,7 +1826,7 @@ export const blogsData: BlogPost[] = [
     "title": "Why Most Data Science Portfolios Fail Before the Interview Starts",
     "excerpt": "A few months ago, I was reviewing portfolios for a group of students preparing for Data Science interviews. One portfolio immediately caught my attention. It had everything that...",
     "date": "May 6, 2026",
-    "author": "long lists of technologies",
+    "author": "DV Editorial Team",
     "image": "/blogs/dsportfoliofail.jpg",
     "readTime": "7 min read",
     "sections": [

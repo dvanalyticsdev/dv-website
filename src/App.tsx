@@ -1,50 +1,43 @@
-import { useEffect, useState } from 'react';
+import { lazy, Suspense, useEffect, useState } from 'react';
 import { Header } from './components/Header';
 import { AnimatedHeroGraphic } from './components/AnimatedHeroGraphic';
-import { ProgramsSection } from './components/ProgramsSection';
-import { BenefitsSection } from './components/BenefitsSection';
-import { RoadmapSection } from './components/RoadmapSection';
-import { SuccessStories } from './components/SuccessStories';
-import { GoogleReviewsSection } from './components/GoogleReviewsSection';
 import { Footer } from './components/Footer';
-import { CourseDetailPage } from './components/CourseDetailPage';
-import { ServicesPage } from './components/ServicesPage';
-import { ServiceDetailPage } from './components/ServiceDetailPage';
-import { FaqsPage } from './components/FaqsPage';
-import { EnrollmentPage } from './components/EnrollmentPage';
-import { AboutPage } from './components/AboutPage';
-import { BlogsPage } from './components/BlogsPage';
-import { AlumniPage } from './components/AlumniPage';
 import { useScrollReveal } from './hooks/useScrollReveal';
-import { CompaniesSection } from './components/CompaniesSection';
 import { AauModal } from './components/AauModal';
 import { BrochureLeadModal } from './components/BrochureLeadModal';
 import { GetACallButton } from './components/GetACallButton';
-import { SampleVideoSection } from './components/SampleVideoSection';
 import { SkillPackageExplorer } from './components/SkillPackageExplorer';
-import { getPageFromPath, getPathFromPage } from './utils/routes';
+import { getPageFromPath } from './utils/routes';
+import { applySeoForPage, routePathByPageId } from './utils/seo';
+import { initAnalytics, trackEvent, trackPageView } from './utils/analytics';
 
-const heroPosterModules = import.meta.glob('/public/hero-stories/*.{png,jpg,jpeg,webp,avif}', {
-  eager: true,
-  query: '?url',
-  import: 'default',
-});
+const ProgramsSection = lazy(() => import('./components/ProgramsSection').then((module) => ({ default: module.ProgramsSection })));
+const BenefitsSection = lazy(() => import('./components/BenefitsSection').then((module) => ({ default: module.BenefitsSection })));
+const RoadmapSection = lazy(() => import('./components/RoadmapSection').then((module) => ({ default: module.RoadmapSection })));
+const SuccessStories = lazy(() => import('./components/SuccessStories').then((module) => ({ default: module.SuccessStories })));
+const GoogleReviewsSection = lazy(() => import('./components/GoogleReviewsSection').then((module) => ({ default: module.GoogleReviewsSection })));
+const CourseDetailPage = lazy(() => import('./components/CourseDetailPage').then((module) => ({ default: module.CourseDetailPage })));
+const ServicesPage = lazy(() => import('./components/ServicesPage').then((module) => ({ default: module.ServicesPage })));
+const ServiceDetailPage = lazy(() => import('./components/ServiceDetailPage').then((module) => ({ default: module.ServiceDetailPage })));
+const FaqsPage = lazy(() => import('./components/FaqsPage').then((module) => ({ default: module.FaqsPage })));
+const EnrollmentPage = lazy(() => import('./components/EnrollmentPage').then((module) => ({ default: module.EnrollmentPage })));
+const AboutPage = lazy(() => import('./components/AboutPage').then((module) => ({ default: module.AboutPage })));
+const BlogsPage = lazy(() => import('./components/BlogsPage').then((module) => ({ default: module.BlogsPage })));
+const AlumniPage = lazy(() => import('./components/AlumniPage').then((module) => ({ default: module.AlumniPage })));
+const CompaniesSection = lazy(() => import('./components/CompaniesSection').then((module) => ({ default: module.CompaniesSection })));
+const SampleVideoSection = lazy(() => import('./components/SampleVideoSection').then((module) => ({ default: module.SampleVideoSection })));
+const SeoLandingPage = lazy(() => import('./components/SeoLandingPage').then((module) => ({ default: module.SeoLandingPage })));
 
-const allowedHeroPosterPaths = [
-  '/public/hero-stories/fde-student.jpg',
-  '/public/hero-stories/fde-professional.png',
-  '/public/hero-stories/poster-8.png',
-  '/public/hero-stories/6th.jpeg',
-  '/public/hero-stories/career-gap.png',
-  '/public/hero-stories/poster-2.png',
-  '/public/hero-stories/poster-4.png',
-  '/public/hero-stories/poster-6.png',
+const heroPosterImages = [
+  '/hero-stories/fde-student.jpg',
+  '/hero-stories/fde-professional.png',
+  '/hero-stories/poster-8.png',
+  '/hero-stories/6th.jpeg',
+  '/hero-stories/career-gap.png',
+  '/hero-stories/poster-2.png',
+  '/hero-stories/poster-4.png',
+  '/hero-stories/poster-6.png',
 ];
-
-const heroPosterImages = allowedHeroPosterPaths
-  .map((filePath) => heroPosterModules[filePath] as string | undefined)
-  .filter((assetUrl): assetUrl is string => Boolean(assetUrl))
-  .map((assetUrl) => assetUrl.replace('/public/', '/'));
 
 const paymentPageUrl = 'https://dvpayment.page.gd/';
 
@@ -53,6 +46,34 @@ function App() {
   const scrollRevealRef = useScrollReveal(activePage);
   const [isAauModalOpen, setIsAauModalOpen] = useState(false);
   const [brochureCourseId, setBrochureCourseId] = useState<string | null>(null);
+
+  useEffect(() => {
+    initAnalytics();
+
+    const handleContactClick = (event: MouseEvent) => {
+      const link = (event.target as HTMLElement).closest('a');
+      if (!link) return;
+
+      const href = link.getAttribute('href') ?? '';
+      if (href.startsWith('tel:')) {
+        trackEvent('click_phone', { phone_link: href.replace('tel:', '') });
+      }
+      if (href.includes('wa.me') || href.includes('whatsapp')) {
+        trackEvent('click_whatsapp', { whatsapp_link: href });
+      }
+      if (href.startsWith('mailto:')) {
+        trackEvent('click_email', { email_link: href.replace('mailto:', '') });
+      }
+    };
+
+    document.addEventListener('click', handleContactClick);
+    return () => document.removeEventListener('click', handleContactClick);
+  }, []);
+
+  useEffect(() => {
+    applySeoForPage(activePage);
+    trackPageView(activePage);
+  }, [activePage]);
 
   useEffect(() => {
     if (activePage === 'courses') {
@@ -82,7 +103,7 @@ function App() {
   }, []);
 
   const navigateToPage = (pageId: string) => {
-    const nextPath = getPathFromPage(pageId);
+    const nextPath = routePathByPageId(pageId);
     const currentPath = `${window.location.pathname}${window.location.search}${window.location.hash}`;
 
     if (currentPath !== nextPath) {
@@ -96,12 +117,30 @@ function App() {
     if (pageId === 'aau') {
       setIsAauModalOpen(true);
     } else {
+      trackEvent('click_navigation', { target_page: pageId });
       navigateToPage(pageId);
     }
   };
 
   const handleOpenBrochure = (courseId: string) => {
+    trackEvent('click_download_brochure', { course_id: courseId });
     setBrochureCourseId(courseId);
+  };
+
+  const handleEnrollClick = (courseId?: string, source = 'unknown') => {
+    trackEvent('click_enroll_now', {
+      course_id: courseId ?? 'general',
+      cta_source: source,
+    });
+    navigateToPage(courseId ? `enroll-${courseId}` : 'enroll');
+  };
+
+  const handleViewCourseClick = (courseId: string, source: string) => {
+    trackEvent('click_view_course', {
+      course_id: courseId,
+      cta_source: source,
+    });
+    navigateToPage(`course-${courseId}`);
   };
 
   const renderContent = () => {
@@ -112,7 +151,7 @@ function App() {
           <CourseDetailPage
             courseId={courseId}
             onBackHome={() => navigateToPage('home')}
-            onEnroll={() => navigateToPage(`enroll-${courseId}`)}
+            onEnroll={() => handleEnrollClick(courseId, 'course_detail')}
             onDownloadBrochure={() => handleOpenBrochure(courseId)}
           />
         </div>
@@ -137,7 +176,7 @@ function App() {
     }
 
     if (activePage === 'alumni') {
-      return <div data-section="alumni"><AlumniPage onEnroll={() => navigateToPage('enroll')} /></div>;
+      return <div data-section="alumni"><AlumniPage onEnroll={() => handleEnrollClick(undefined, 'alumni')} /></div>;
     }
 
     if (activePage === 'services') {
@@ -160,15 +199,19 @@ function App() {
     if (activePage === 'faqs') {
       return (
         <div data-section="faqs">
-          <FaqsPage onEnroll={() => navigateToPage('enroll')} />
+          <FaqsPage onEnroll={() => handleEnrollClick(undefined, 'faqs')} />
         </div>
       );
     }
 
-    if (activePage === 'blogs') {
+    if (activePage === 'blogs' || activePage.startsWith('blog-')) {
       return (
         <div data-section="blogs">
-          <BlogsPage />
+          <BlogsPage
+            activePage={activePage}
+            onOpenBlog={(blogPageId) => navigateToPage(blogPageId)}
+            onBackToBlogs={() => navigateToPage('blogs')}
+          />
         </div>
       );
     }
@@ -187,6 +230,32 @@ function App() {
               Open Payment Page
             </a>
           </section>
+        </div>
+      );
+    }
+
+    if (activePage === 'not-found') {
+      return (
+        <div className="page-wrapper container">
+          <section className="content-section" style={{ padding: '3.5rem', textAlign: 'center' }}>
+            <h1 style={{ fontSize: '2.25rem', marginBottom: '1.5rem', color: '#000000', fontWeight: '800' }}>
+              Page Not Found
+            </h1>
+            <p style={{ color: 'var(--text-secondary)', fontSize: '1.15rem', marginBottom: '2.5rem', fontWeight: '300' }}>
+              The page you are looking for is not available.
+            </p>
+            <button className="btn btn-primary" onClick={() => navigateToPage('home')}>
+              Back to Homepage
+            </button>
+          </section>
+        </div>
+      );
+    }
+
+    if (activePage.startsWith('lp-')) {
+      return (
+        <div data-section="seo-landing">
+          <SeoLandingPage pageId={activePage} onNavigate={navigateToPage} />
         </div>
       );
     }
@@ -240,9 +309,9 @@ function App() {
               </div>
 
               <div className="hero-desc hero-copy-block">
-                <h1 className="hero-heading-accent hero-front-page-heading hero-mobile-heading">
+                <p className="hero-heading-accent hero-front-page-heading hero-mobile-heading">
                   Become an industry-ready data scientist &amp; cybersecurity professional
-                </h1>
+                </p>
                 <h2 className="hero-copy-title">Get an Expert in:</h2>
                 <ul className="hero-expertise-list">
                   <li>Data Analytics + AI</li>
@@ -259,7 +328,7 @@ function App() {
                   <span>Freshers | Graduates (Technical &amp; Non-Technical)</span>
                   <span>Masters (Technical &amp; Non-Technical) | Working Professionals | Reachers | Entrepreneurs</span>
                 </p>
-                <SkillPackageExplorer onViewDetails={(courseId) => navigateToPage(`course-${courseId}`)} />
+                <SkillPackageExplorer onViewDetails={(courseId) => handleViewCourseClick(courseId, 'hero_skill_package')} />
               </div>
             </div>
 
@@ -278,7 +347,7 @@ function App() {
 
           <SkillPackageExplorer
             className="skill-package-explorer-mobile"
-            onViewDetails={(courseId) => navigateToPage(`course-${courseId}`)}
+            onViewDetails={(courseId) => handleViewCourseClick(courseId, 'mobile_skill_package')}
           />
 
           <div className="badges-header">
@@ -320,10 +389,10 @@ function App() {
           </div>
         </section>
 
-        <SampleVideoSection onEnroll={() => navigateToPage('enroll')} />
+        <SampleVideoSection onEnroll={() => handleEnrollClick(undefined, 'sample_video')} />
 
         <div id="programs-section" data-section="programs">
-          <ProgramsSection onViewDetails={(courseId) => navigateToPage(`course-${courseId}`)} />
+          <ProgramsSection onViewDetails={(courseId) => handleViewCourseClick(courseId, 'programs_section')} />
         </div>
         <div id="benefits-section" data-section="benefits">
           <BenefitsSection />
@@ -350,12 +419,14 @@ function App() {
       <Header
         onNavClick={handleNavClick}
         activePage={activePage}
-        onCourseEnrollClick={(courseId) => navigateToPage(`enroll-${courseId}`)}
+        onCourseEnrollClick={(courseId) => handleEnrollClick(courseId, 'header')}
         onCourseBrochureClick={handleOpenBrochure}
       />
       <main style={{ flexGrow: 1 }}>
         <div className="page-transition-wrapper" key={activePage}>
-          {renderContent()}
+          <Suspense fallback={<div className="route-loading" aria-label="Loading page content" />}>
+            {renderContent()}
+          </Suspense>
         </div>
       </main>
       <Footer />

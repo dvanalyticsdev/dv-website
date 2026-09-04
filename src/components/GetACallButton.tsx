@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import './GetACallButton.css';
+import { appendAttributionToPayload, getAttribution, trackEvent } from '../utils/analytics';
 
 const COURSE_OPTIONS = [
   'Advanced Program in Industrial Data Science & AI (APIDS)',
@@ -15,7 +16,6 @@ const COURSE_OPTIONS = [
 ];
 
 const DEFAULT_GOOGLE_SHEET_WEBHOOK =
-  import.meta.env.VITE_GOOGLE_SHEET_WEBHOOK_URL ||
   'https://script.google.com/macros/s/AKfycbwXqmtKC4zYtmWUJT71D0Z7ZzBKp7qPLLDeOTGkbH5P1FVLN6f_VZ4Y7y6lhBuqvBc/exec';
 const CRM_WEBHOOK_URL = 'https://crm.dvanalyticsmds.in/api/webhook/elementor-lead';
 
@@ -86,7 +86,13 @@ export const GetACallButton: React.FC = () => {
     e.preventDefault();
     setSubmitError('');
 
-    if (!validate()) return;
+    if (!validate()) {
+      trackEvent('form_validation_error', {
+        form_name: 'get_a_call',
+        course_name: formData.course,
+      });
+      return;
+    }
 
     setIsSubmitting(true);
 
@@ -95,6 +101,10 @@ export const GetACallButton: React.FC = () => {
       phone: formData.phone.trim(),
       course: formData.course,
       submittedAt: new Date().toISOString(),
+      landingPageUrl: window.location.origin + window.location.pathname,
+      currentPageUrl: window.location.href,
+      referrer: document.referrer,
+      attribution: getAttribution(),
     };
 
     let postSuccess = false;
@@ -127,6 +137,7 @@ export const GetACallButton: React.FC = () => {
       crmParams.set('course', formData.course);
       crmParams.set('course_interested', formData.course);
       crmParams.set('page_url', window.location.href);
+      appendAttributionToPayload(crmParams);
 
       await fetch(CRM_WEBHOOK_URL, {
         method: 'POST',
@@ -141,7 +152,14 @@ export const GetACallButton: React.FC = () => {
 
     if (postSuccess || !DEFAULT_GOOGLE_SHEET_WEBHOOK) {
       setIsSubmitted(true);
+      trackEvent('submit_get_a_call_form', {
+        course_name: formData.course,
+      });
     } else {
+      trackEvent('form_submit_error', {
+        form_name: 'get_a_call',
+        course_name: formData.course,
+      });
       setSubmitError('Unable to submit request. Please try again.');
     }
   };
@@ -152,7 +170,10 @@ export const GetACallButton: React.FC = () => {
       <button
         type="button"
         className="get-call-btn-trigger"
-        onClick={() => setIsOpen(true)}
+        onClick={() => {
+          trackEvent('click_get_a_call', { cta_source: 'floating_button' });
+          setIsOpen(true);
+        }}
         aria-label="Get a Call Now"
       >
         <span className="get-call-btn-icon" aria-hidden="true">

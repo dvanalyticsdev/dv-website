@@ -519,7 +519,7 @@ export const Header: React.FC<HeaderProps> = ({
                   {servicesList.map((service) => (
                     <a
                       key={service.id}
-                      href={`#${service.id}`}
+                      href={getPathFromPage(service.id)}
                       className="dropdown-item-link"
                       onClick={(e) => {
                         e.preventDefault();

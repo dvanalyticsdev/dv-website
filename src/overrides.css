@@ -3920,6 +3920,210 @@ button {
   color: #475569;
 }
 
+.seo-landing-page {
+  background: #f7fafc;
+  color: #051f40;
+  overflow: hidden;
+}
+
+.seo-landing-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 0.82fr) minmax(480px, 1.18fr);
+  gap: 3.25rem;
+  align-items: center;
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 5.5rem 1.5rem 2.25rem;
+}
+
+.seo-landing-copy {
+  min-width: 0;
+}
+
+.seo-landing-copy .section-subtitle {
+  display: block;
+  line-height: 1.4;
+}
+
+.seo-landing-title {
+  margin: 0.8rem 0 1rem;
+  color: #051f40;
+  font-size: 3.25rem;
+  line-height: 1.08;
+  font-weight: 900;
+  letter-spacing: 0;
+}
+
+.seo-landing-description {
+  max-width: 620px;
+  color: #334155;
+  font-size: 1.1rem;
+  line-height: 1.7;
+}
+
+.seo-landing-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.seo-landing-media {
+  background: #ffffff;
+  border: 1px solid rgba(5, 31, 64, 0.08);
+  border-radius: 8px;
+  box-shadow: 0 24px 56px rgba(5, 31, 64, 0.14);
+  overflow: hidden;
+}
+
+.seo-landing-media img {
+  width: 100%;
+  display: block;
+  aspect-ratio: 3 / 1;
+  object-fit: contain;
+  object-position: center;
+  background: #ffffff;
+}
+
+.seo-landing-section {
+  padding: 2rem 1.5rem;
+}
+
+.seo-landing-grid,
+.seo-landing-content-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.seo-landing-grid {
+  max-width: 1240px;
+  margin: 0 auto;
+}
+
+.seo-landing-content-grid {
+  max-width: 1240px;
+  margin: 0 auto;
+  align-items: stretch;
+}
+
+.seo-landing-point {
+  display: flex;
+  gap: 0.8rem;
+  align-items: flex-start;
+  min-height: 78px;
+  padding: 1.15rem 1.25rem;
+  border: 1px solid rgba(5, 31, 64, 0.12);
+  border-radius: 8px;
+  background: #ffffff;
+  color: #0f172a;
+  font-weight: 700;
+  line-height: 1.45;
+  box-shadow: 0 10px 24px rgba(5, 31, 64, 0.05);
+}
+
+.seo-landing-check-icon {
+  position: relative;
+  flex: 0 0 1.15rem;
+  width: 1.15rem;
+  height: 1.15rem;
+  margin-top: 0.15rem;
+  border-radius: 999px;
+  background: #ef5323;
+}
+
+.seo-landing-check-icon::after {
+  content: "";
+  position: absolute;
+  left: 0.38rem;
+  top: 0.23rem;
+  width: 0.32rem;
+  height: 0.56rem;
+  border: solid #ffffff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.seo-landing-info-card {
+  padding: 1.55rem;
+  border: 1px solid rgba(5, 31, 64, 0.1);
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: 0 12px 28px rgba(5, 31, 64, 0.05);
+}
+
+.seo-landing-info-card h2,
+.seo-landing-faq-question {
+  margin: 0 0 0.7rem;
+  color: #051f40;
+  font-size: 1.25rem;
+  line-height: 1.25;
+}
+
+.seo-landing-info-card p,
+.seo-landing-faqs p {
+  margin: 0;
+  color: #475569;
+  line-height: 1.7;
+}
+
+.seo-landing-faqs {
+  display: grid;
+  gap: 0.9rem;
+  max-width: 920px;
+  margin: 1.5rem auto 0;
+}
+
+.seo-landing-faq-card {
+  padding: 1.3rem 1.5rem;
+  border: 1px solid rgba(5, 31, 64, 0.12);
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: 0 10px 24px rgba(5, 31, 64, 0.05);
+}
+
+@media (max-width: 768px) {
+  .seo-landing-hero,
+  .seo-landing-grid,
+  .seo-landing-content-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .seo-landing-hero {
+    padding: calc(96px + env(safe-area-inset-top, 0px)) 1rem 1.5rem;
+    gap: 1.5rem;
+  }
+
+  .seo-landing-copy .section-subtitle {
+    font-size: 0.76rem;
+    line-height: 1.45;
+  }
+
+  .seo-landing-title {
+    margin-top: 0.65rem;
+    font-size: 2.15rem;
+    line-height: 1.08;
+  }
+
+  .seo-landing-media img {
+    aspect-ratio: 16 / 9;
+    object-fit: contain;
+  }
+
+  .seo-landing-description {
+    font-size: 1rem;
+  }
+
+  .seo-landing-actions .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .seo-landing-section {
+    padding: 1.4rem 1rem;
+  }
+}
+
 .btn-google-review-link {
   display: inline-flex;
   align-items: center;
@@ -4230,5 +4434,6 @@ button {
   transform: scale(0.96) !important;
 }
 
-
-
+.route-loading {
+  min-height: 45vh;
+}

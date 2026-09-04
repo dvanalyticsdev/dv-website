@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { getCrmCourseMapping } from '../data/crmCourseMapping';
 import { getCourseMeta } from '../data/courseMeta';
+import { appendAttributionToPayload, trackEvent } from '../utils/analytics';
 
 interface BrochureLeadModalProps {
   courseId?: string | null;
@@ -124,6 +125,7 @@ export const BrochureLeadModal: React.FC<BrochureLeadModalProps> = ({ courseId, 
     payload.set('website_course_label', course.label);
     payload.set('brochure_path', course.brochurePath || '');
     payload.set('page_url', window.location.href);
+    appendAttributionToPayload(payload);
     payload.set('date', now.toISOString().slice(0, 10));
     payload.set('time', now.toISOString().slice(11, 19));
     payload.set('user_agent', window.navigator.userAgent);
@@ -151,6 +153,10 @@ export const BrochureLeadModal: React.FC<BrochureLeadModalProps> = ({ courseId, 
     setSubmitError('');
 
     if (!validateForm()) {
+      trackEvent('form_validation_error', {
+        form_name: 'brochure',
+        course_id: course.id,
+      });
       return;
     }
 
@@ -174,8 +180,16 @@ export const BrochureLeadModal: React.FC<BrochureLeadModalProps> = ({ courseId, 
       }
 
       setIsSubmitted(true);
+      trackEvent('submit_brochure_form', {
+        course_id: course.id,
+        course_name: course.label,
+      });
       triggerDownload();
     } catch (error) {
+      trackEvent('form_submit_error', {
+        form_name: 'brochure',
+        course_id: course.id,
+      });
       setSubmitError(error instanceof Error ? error.message : 'Unable to submit your brochure request right now.');
     } finally {
       setIsSubmitting(false);

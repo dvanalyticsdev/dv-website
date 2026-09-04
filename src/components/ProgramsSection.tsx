@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useGlowCard } from '../hooks/useGlowCard';
+import { getPathFromPage } from '../utils/routes';
 
 const posterImages: Record<string, string> = {
   apids: '/courses-poster/APIDS.png',
@@ -629,12 +630,16 @@ const ProgramCard: React.FC<ProgramCardProps> = ({ program, onViewDetails, index
           />
         </div>
 
-        <button 
+        <a
           className="view-details-btn" 
-          onClick={() => onViewDetails && onViewDetails(program.id)}
+          href={getPathFromPage(`course-${program.id}`)}
+          onClick={(event) => {
+            event.preventDefault();
+            onViewDetails?.(program.id);
+          }}
         >
           View Details
-        </button>
+        </a>
       </div>
     </div>
   );

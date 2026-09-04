@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useMagneticEffect } from '../hooks/useMagneticEffect';
 import { getCrmCourseMapping } from '../data/crmCourseMapping';
+import { appendAttributionToPayload, trackEvent } from '../utils/analytics';
 
 const courses = [
   { id: 'apida', category: 'data-science', label: 'Data Analytics + AI' },
@@ -254,6 +255,7 @@ export const EnrollmentPage: React.FC<EnrollmentPageProps> = ({ onBackHome, defa
     payload.set('preferred_batch', formData.batch.trim());
     payload.set('message', formData.message.trim());
     payload.set('page_url', window.location.href);
+    appendAttributionToPayload(payload);
     payload.set('date', now.toISOString().slice(0, 10));
     payload.set('time', now.toISOString().slice(11, 19));
     payload.set('user_agent', window.navigator.userAgent);
@@ -267,6 +269,10 @@ export const EnrollmentPage: React.FC<EnrollmentPageProps> = ({ onBackHome, defa
     setSubmitError('');
 
     if (!validateForm()) {
+      trackEvent('form_validation_error', {
+        form_name: 'enroll',
+        course_id: formData.course,
+      });
       return;
     }
 
@@ -290,7 +296,16 @@ export const EnrollmentPage: React.FC<EnrollmentPageProps> = ({ onBackHome, defa
       }
 
       setIsSubmitted(true);
+      trackEvent('submit_enroll_form', {
+        course_id: formData.course,
+        course_name: selectedCourseLabel,
+        course_category: formData.courseCategory,
+      });
     } catch (error) {
+      trackEvent('form_submit_error', {
+        form_name: 'enroll',
+        course_id: formData.course,
+      });
       setSubmitError(error instanceof Error ? error.message : 'Unable to submit your enrollment query right now.');
     } finally {
       setIsSubmitting(false);

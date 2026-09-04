@@ -14,6 +14,13 @@ const courseIdBySlug = Object.fromEntries(
   Object.entries(courseSlugById).map(([courseId, slug]) => [slug, courseId])
 );
 
+export const slugify = (value: string) =>
+  value
+    .toLowerCase()
+    .replace(/&/g, 'and')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+
 export const serviceSlugById: Record<string, string> = {
   'service-aics': 'ai-consulting-solutions',
   'service-ccs': 'corporate-consulting-services',
@@ -22,6 +29,19 @@ export const serviceSlugById: Record<string, string> = {
 
 const serviceIdBySlug = Object.fromEntries(
   Object.entries(serviceSlugById).map(([serviceId, slug]) => [slug, serviceId])
+);
+
+export const seoLandingPageSlugById: Record<string, string> = {
+  'lp-data-science-course-bangalore': 'data-science-course-bangalore',
+  'lp-data-analytics-course-bangalore': 'data-analytics-course-bangalore',
+  'lp-data-analytics-course-bhubaneswar': 'data-analytics-course-bhubaneswar',
+  'lp-generative-ai-course': 'generative-ai-course',
+  'lp-agentic-ai-course': 'agentic-ai-course',
+  'lp-cybersecurity-course': 'cybersecurity-course',
+};
+
+const seoLandingPageIdBySlug = Object.fromEntries(
+  Object.entries(seoLandingPageSlugById).map(([pageId, slug]) => [slug, pageId])
 );
 
 export const getPageFromPath = (pathname: string) => {
@@ -36,11 +56,14 @@ export const getPageFromPath = (pathname: string) => {
   if (normalizedPath === '/who-we-are') return 'about';
   if (normalizedPath === '/meet-our-alumni') return 'alumni';
   if (normalizedPath === '/journal') return 'blogs';
+  if (parts[0] === 'journal' && parts[1]) return `blog-${parts[1]}`;
   if (normalizedPath === '/faqs') return 'faqs';
   if (normalizedPath === '/enroll') return 'enroll';
   if (parts[0] === 'enroll' && parts[1]) return `enroll-${courseIdBySlug[parts[1]] ?? parts[1]}`;
+  if (normalizedPath === '/payment' || normalizedPath === '/payment/index.php') return 'payment';
+  if (parts[0] && seoLandingPageIdBySlug[parts[0]]) return seoLandingPageIdBySlug[parts[0]];
 
-  return 'home';
+  return 'not-found';
 };
 
 export const getPathFromPage = (pageId: string) => {
@@ -52,6 +75,8 @@ export const getPathFromPage = (pageId: string) => {
   if (pageId === 'blogs') return '/journal';
   if (pageId === 'faqs') return '/faqs';
   if (pageId === 'enroll') return '/enroll';
+  if (pageId === 'payment') return '/payment';
+  if (pageId === 'not-found') return '/404';
 
   if (pageId.startsWith('course-')) {
     const courseId = pageId.replace('course-', '');
@@ -65,6 +90,14 @@ export const getPathFromPage = (pageId: string) => {
 
   if (pageId.startsWith('service-')) {
     return `/services/${serviceSlugById[pageId] ?? pageId.replace('service-', '')}`;
+  }
+
+  if (pageId.startsWith('blog-')) {
+    return `/journal/${pageId.replace('blog-', '')}`;
+  }
+
+  if (pageId.startsWith('lp-')) {
+    return `/${seoLandingPageSlugById[pageId] ?? pageId.replace('lp-', '')}`;
   }
 
   return '/';
