@@ -16,6 +16,15 @@ const escapeAttribute = (value) =>
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;');
 
+const analyticsBlock = `<!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-827GCWFLV6"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-827GCWFLV6', { send_page_view: false });
+    </script>`;
+
 const seoBlock = (route) => {
   const pageId = getPageFromPath(route);
   const seo = getSeoForPage(pageId);
@@ -44,6 +53,7 @@ const seoBlock = (route) => {
       content="${escapeAttribute(seo.description)}"
     />
     <meta name="twitter:image" content="${escapeAttribute(seo.image)}" />
+    ${analyticsBlock}
     <script type="application/ld+json">${schema}</script>
     <title>${escapeAttribute(seo.title)}</title>`;
 };
