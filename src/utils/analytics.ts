@@ -62,6 +62,9 @@ export const initAnalytics = () => {
   const gtmId = import.meta.env.VITE_GTM_ID as string | undefined;
 
   window.dataLayer = window.dataLayer || [];
+  window.gtag = window.gtag || ((...args: unknown[]) => {
+    window.dataLayer?.push(args);
+  });
 
   if (gtmId && !document.querySelector(`script[data-gtm-id="${gtmId}"]`)) {
     window.dataLayer.push({ 'gtm.start': Date.now(), event: 'gtm.js' });
@@ -70,20 +73,6 @@ export const initAnalytics = () => {
     script.dataset.gtmId = gtmId;
     script.src = `https://www.googletagmanager.com/gtm.js?id=${encodeURIComponent(gtmId)}`;
     document.head.appendChild(script);
-  }
-
-  if (gaMeasurementId && !document.querySelector(`script[data-ga-id="${gaMeasurementId}"]`)) {
-    const script = document.createElement('script');
-    script.async = true;
-    script.dataset.gaId = gaMeasurementId;
-    script.src = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(gaMeasurementId)}`;
-    document.head.appendChild(script);
-
-    window.gtag = (...args: unknown[]) => {
-      window.dataLayer?.push(args);
-    };
-    window.gtag('js', new Date());
-    window.gtag('config', gaMeasurementId, { send_page_view: false });
   }
 };
 
