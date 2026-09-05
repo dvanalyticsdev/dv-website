@@ -3,6 +3,7 @@ export interface AdminGlobalState {
   scheduledTime: string;
   discardedDraftIds: string[];
   publishedDrafts: any[];
+  customDrafts?: any[];
 }
 
 const CF_WORKER_URL = 'https://dvsynckv.dvanalytics-dev.workers.dev/';
@@ -13,6 +14,7 @@ const defaultState: AdminGlobalState = {
   scheduledTime: '13:00',
   discardedDraftIds: [],
   publishedDrafts: [],
+  customDrafts: [],
 };
 
 const syncChannel = typeof window !== 'undefined' && 'BroadcastChannel' in window ? new BroadcastChannel('dv_admin_sync_channel') : null;
@@ -43,6 +45,7 @@ export async function fetchGlobalAdminState(): Promise<AdminGlobalState> {
           scheduledTime: remoteState.scheduledTime || '13:00',
           discardedDraftIds: Array.isArray(remoteState.discardedDraftIds) ? remoteState.discardedDraftIds : [],
           publishedDrafts: Array.isArray(remoteState.publishedDrafts) ? remoteState.publishedDrafts : [],
+          customDrafts: Array.isArray(remoteState.customDrafts) ? remoteState.customDrafts : [],
         };
         localStorage.setItem(STORAGE_KEY, JSON.stringify(mergedState));
         return mergedState;

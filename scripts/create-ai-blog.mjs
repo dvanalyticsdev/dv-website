@@ -34,7 +34,42 @@ const getArg = (flag) => {
 };
 
 const isDirectPublish = process.argv.includes('--publish-direct');
+const isForceRun = process.argv.includes('--force');
 const topicInput = getArg('--topic');
+
+async function checkGlobalAdminState() {
+  if (isForceRun) return true;
+
+  try {
+    const res = await fetch('https://dvsynckv.dvanalytics-dev.workers.dev/');
+    if (res.ok) {
+      const state = await res.json();
+      if (state && typeof state === 'object') {
+        if (state.isAutoWriterActive === false) {
+          console.log('⚪ Auto Generator is DISABLED in admin panel. Skipping creation.');
+          process.exit(0);
+        }
+
+        const scheduledTime = state.scheduledTime || '14:00';
+        const targetHour = parseInt(scheduledTime.split(':')[0], 10);
+
+        const nowIST = new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }));
+        const currentHourIST = nowIST.getHours();
+
+        console.log(`🟢 Auto Generator ENABLED. Scheduled for ${scheduledTime} IST (Current IST hour: ${currentHourIST}:00).`);
+
+        if (currentHourIST !== targetHour) {
+          console.log(`⏰ Current IST hour (${currentHourIST}:00) does not match scheduled hour (${targetHour}:00). Skipping.`);
+          process.exit(0);
+        }
+      }
+    }
+  } catch (err) {
+    console.warn('⚠️ Could not fetch Cloudflare KV state, proceeding with default run.');
+  }
+}
+
+await checkGlobalAdminState();
 
 async function callGeminiApi() {
   const existingTitles = await getExistingBlogTitles();

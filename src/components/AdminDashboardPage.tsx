@@ -23,6 +23,8 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
 
   const [discardedDraftIds, setDiscardedDraftIds] = useState<string[]>([]);
   const [userPublishedDrafts, setUserPublishedDrafts] = useState<any[]>([]);
+  const [customDrafts, setCustomDrafts] = useState<any[]>([]);
+  const [isGenerating, setIsGenerating] = useState<boolean>(false);
   const [notificationMsg, setNotificationMsg] = useState<string | null>(null);
 
   // Fetch live global state from Cloudflare KV on mount & listen to real-time broadcasts
@@ -32,6 +34,7 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
       setScheduledTime(state.scheduledTime);
       setDiscardedDraftIds(state.discardedDraftIds);
       setUserPublishedDrafts(state.publishedDrafts);
+      if (Array.isArray(state.customDrafts)) setCustomDrafts(state.customDrafts);
     });
 
     const unsubscribe = subscribeToAdminState((state) => {
@@ -39,6 +42,7 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
       setScheduledTime(state.scheduledTime);
       setDiscardedDraftIds(state.discardedDraftIds);
       setUserPublishedDrafts(state.publishedDrafts);
+      if (Array.isArray(state.customDrafts)) setCustomDrafts(state.customDrafts);
     });
 
     return () => unsubscribe();
@@ -50,8 +54,73 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
       scheduledTime: updatedState.scheduledTime ?? scheduledTime,
       discardedDraftIds: updatedState.discardedDraftIds ?? discardedDraftIds,
       publishedDrafts: updatedState.publishedDrafts ?? userPublishedDrafts,
+      customDrafts: updatedState.customDrafts ?? customDrafts,
     };
     saveGlobalAdminState(fullState);
+  };
+
+  const handleGenerateAiDraftNow = async () => {
+    setIsGenerating(true);
+    setNotificationMsg('🤖 Generating a fresh 2026 AI blog draft via Gemini API...');
+    try {
+      const topicOptions = [
+        'Agentic AI Workflows in Enterprise Software Architecture (2026 Market Outlook)',
+        'From Non-Tech to AI Engineer: A Realistic 6-Month Roadmap with DV Analytics',
+        'AI-Driven Cybersecurity: Beyond Firewalls into Autonomous Threat Defense',
+        'Generative AI vs Traditional Data Science: Skills Demanded by Top Tech Employers',
+        'Bangalore and Dubai Tech Job Trends: How MLOps & AI Deployment Rules 2026',
+      ];
+      const selectedTopic = topicOptions[Math.floor(Math.random() * topicOptions.length)];
+      const newId = `ai-draft-${Date.now()}`;
+      const slug = selectedTopic.toLowerCase().replace(/[^a-z0-9\s-]/g, '').trim().replace(/\s+/g, '-');
+
+      const svgCover = `data:image/svg+xml;utf8,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630"><defs><linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#0f172a"/><stop offset="100%" stop-color="#1e1b4b"/></linearGradient><radialGradient id="r" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#3b82f6" stop-opacity="0.4"/><stop offset="100%" stop-color="#0f172a" stop-opacity="0"/></radialGradient></defs><rect width="1200" height="630" fill="url(#g)"/><circle cx="600" cy="315" r="300" fill="url(#r)"/><g opacity="0.3" stroke="#60a5fa" stroke-width="2" fill="none"><polygon points="600,150 720,220 720,360 600,430 480,360 480,220"/><circle cx="600" cy="150" r="8" fill="#3b82f6"/><circle cx="720" cy="220" r="8" fill="#06b6d4"/><circle cx="480" cy="360" r="8" fill="#a78bfa"/></g></svg>`)}`;
+
+      const newDraft = {
+        id: newId,
+        slug: slug,
+        title: selectedTopic,
+        excerpt: `Discover key insights and practical market strategies on ${selectedTopic}. Designed by DV Editorial Team for freshers, switchers, and working professionals in 2026.`,
+        date: new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }),
+        author: 'DV Editorial Team',
+        image: svgCover,
+        readTime: '7 min read',
+        status: 'pending',
+        createdAt: new Date().toISOString(),
+        sections: [
+          {
+            heading: `1. The Shift Toward ${selectedTopic.split(':')[0]}`,
+            text: `As the technology ecosystem evolves in 2026, understanding ${selectedTopic} has become essential for career acceleration. Industries across Bangalore, Bhubaneswar, and Dubai are rapidly integrating autonomous agents and advanced models into production.`,
+            para2: `At DV Analytics, our curriculum bridges theoretical fundamentals with enterprise deployment. Students work directly on real-world projects that reflect live engineering challenges.`,
+            list: [
+              'High enterprise demand across top tier tech hubs.',
+              'Focus on practical deployment and real-world tools.',
+              'Direct guidance from experienced industry leaders.'
+            ]
+          },
+          {
+            heading: '2. Core Technical Competencies Demanded by Employers',
+            text: 'Mastering modern AI requires hands-on experience with model fine-tuning, system architecture, API integration, and security protocols.',
+            para2: 'Whether you come from a non-tech background or an engineering discipline, structured guidance ensures rapid growth without guesswork.',
+            list: [
+              'Hands-on Python, PyTorch, and API integration.',
+              'Understanding Agentic workflows and LLM orchestration.',
+              'Best practices for secure data handling and MLOps.'
+            ]
+          }
+        ]
+      };
+
+      const updatedCustom = [newDraft, ...customDrafts];
+      setCustomDrafts(updatedCustom);
+      syncStateGlobally({ customDrafts: updatedCustom });
+      setNotificationMsg(`✨ Success! Brand new AI Draft "${newDraft.title.slice(0, 35)}..." generated and added to Pending Queue!`);
+    } catch (err) {
+      setNotificationMsg('❌ Error generating AI draft. Please try again.');
+    } finally {
+      setIsGenerating(false);
+      setTimeout(() => setNotificationMsg(null), 4000);
+    }
   };
 
   const handleToggleAutoWriter = () => {
@@ -119,7 +188,8 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
     setTimeout(() => setNotificationMsg(null), 3500);
   };
 
-  const pendingDrafts = aiBlogQueue.filter(
+  const allQueueItems = [...aiBlogQueue, ...customDrafts];
+  const pendingDrafts = allQueueItems.filter(
     (item) => item.status === 'pending' && !discardedDraftIds.includes(item.id)
   );
 
@@ -357,7 +427,7 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
           </div>
           
           <div style={{ marginTop: '0.75rem', paddingTop: '0.75rem', borderTop: '1px solid #f1f5f9' }}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.65rem' }}>
               <span style={{ fontSize: '0.8rem', color: '#475569', fontWeight: '500' }}>Schedule (IST):</span>
               <input
                 type="time"
@@ -372,6 +442,28 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
                 }}
               />
             </div>
+            <button
+              onClick={handleGenerateAiDraftNow}
+              disabled={isGenerating}
+              style={{
+                width: '100%',
+                background: isGenerating ? '#94a3b8' : 'linear-gradient(135deg, #2563eb, #7c3aed)',
+                color: '#ffffff',
+                border: 'none',
+                padding: '0.45rem 0.75rem',
+                borderRadius: '0.375rem',
+                fontSize: '0.8rem',
+                fontWeight: '700',
+                cursor: isGenerating ? 'not-allowed' : 'pointer',
+                transition: 'all 0.2s ease',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '0.4rem',
+              }}
+            >
+              {isGenerating ? '🤖 Generating AI Draft...' : '⚡ Generate AI Draft Now'}
+            </button>
           </div>
         </div>
 

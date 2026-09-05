@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+    <defs>
+      <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#022c22"/>
+        <stop offset="100%" stop-color="#064e3b"/>
+      </linearGradient>
+      <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" stop-color="#10b981"/>
+        <stop offset="100%" stop-color="#06b6d4"/>
+      </linearGradient>
+      <radialGradient id="glow1" cx="80%" cy="20%" r="60%">
+        <stop offset="0%" stop-color="#10b981" stop-opacity="0.35"/>
+        <stop offset="100%" stop-color="#022c22" stop-opacity="0"/>
+      </radialGradient>
+      <radialGradient id="glow2" cx="20%" cy="80%" r="50%">
+        <stop offset="0%" stop-color="#06b6d4" stop-opacity="0.3"/>
+        <stop offset="100%" stop-color="#064e3b" stop-opacity="0"/>
+      </radialGradient>
+      <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+        <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#34d399" stroke-width="1" opacity="0.08"/>
+      </pattern>
+    </defs>
+
+    <!-- Background Base -->
+    <rect width="1200" height="630" fill="url(#bgGrad)"/>
+    <rect width="1200" height="630" fill="url(#grid)"/>
+
+    <!-- Glowing Orbs -->
+    <circle cx="950" cy="180" r="380" fill="url(#glow1)"/>
+    <circle cx="250" cy="480" r="320" fill="url(#glow2)"/>
+
+    <!-- Abstract Neural Connections -->
+    <g opacity="0.25">
+      <path d="M 100 500 Q 350 200 600 450 T 1100 150" fill="none" stroke="#10b981" stroke-width="4"/>
+      <path d="M 150 150 Q 500 400 850 100 T 1150 480" fill="none" stroke="#06b6d4" stroke-width="3" stroke-dasharray="10,15"/>
+    </g>
+
+    <!-- Futuristic Layered Polygons -->
+    <g stroke="url(#accentGrad)" stroke-width="2" fill="none" opacity="0.7">
+      <polygon points="600,120 720,190 720,330 600,400 480,330 480,190" opacity="0.3"/>
+      <polygon points="850,250 940,300 940,400 850,450 760,400 760,300" opacity="0.4"/>
+      <polygon points="350,220 420,260 420,340 350,380 280,340 280,260" opacity="0.5"/>
+    </g>
+
+    <!-- Glowing Network Nodes -->
+    <circle cx="600" cy="120" r="6" fill="#10b981"/>
+    <circle cx="720" cy="190" r="8" fill="#06b6d4"/>
+    <circle cx="480" cy="330" r="7" fill="#34d399"/>
+    <circle cx="850" cy="250" r="8" fill="#10b981"/>
+    <circle cx="350" cy="380" r="9" fill="#06b6d4"/>
+    <circle cx="940" cy="400" r="6" fill="#34d399"/>
+
+    <!-- Connecting Light Beams -->
+    <line x1="600" y1="120" x2="720" y2="190" stroke="#10b981" stroke-width="2" opacity="0.6"/>
+    <line x1="720" y1="190" x2="850" y2="250" stroke="#06b6d4" stroke-width="2" opacity="0.6"/>
+    <line x1="480" y1="330" x2="350" y2="380" stroke="#34d399" stroke-width="2" opacity="0.6"/>
+    <line x1="350" y1="220" x2="480" y2="190" stroke="#10b981" stroke-width="2" opacity="0.5"/>
+
+    <!-- Abstract Wave Graphic Bottom -->
+    <path d="M 0 520 C 300 460, 600 580, 900 500 C 1050 460, 1150 510, 1200 530 L 1200 630 L 0 630 Z" fill="url(#accentGrad)" opacity="0.15"/>
+  </svg>
