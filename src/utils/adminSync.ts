@@ -6,13 +6,7 @@ export interface AdminGlobalState {
 }
 
 const CF_WORKER_URL = 'https://dvsynckv.dvanalytics-dev.workers.dev/';
-const CF_ACCOUNT_ID = '6b38be060a58cecaf31c599db7515ebb';
-const CF_NAMESPACE_ID = '8ed142044c154a6b99cf11addb94b7ac';
-const CF_API_TOKEN = 'cfat_PuTv5vIghICQhhM7dwf8GzbTlEPlP0yIb646l52I86c440e9';
-const KEY_NAME = 'admin_global_state';
-
 const STORAGE_KEY = 'dv_admin_global_state_v1';
-const CF_DIRECT_KV_URL = `https://api.cloudflare.com/client/v4/accounts/${CF_ACCOUNT_ID}/storage/kv/namespaces/${CF_NAMESPACE_ID}/values/${KEY_NAME}`;
 
 const defaultState: AdminGlobalState = {
   isAutoWriterActive: false,
@@ -37,7 +31,7 @@ export function subscribeToAdminState(callback: (state: AdminGlobalState) => voi
 }
 
 export async function fetchGlobalAdminState(): Promise<AdminGlobalState> {
-  // 1. Try Cloudflare Worker Endpoint
+  // 1. Fetch from Cloudflare Worker KV Endpoint
   try {
     const response = await fetch(CF_WORKER_URL, { method: 'GET' });
     if (response.ok) {
@@ -55,37 +49,10 @@ export async function fetchGlobalAdminState(): Promise<AdminGlobalState> {
       }
     }
   } catch (err) {
-    // Ignore worker fetch errors
+    // Ignore worker network errors
   }
 
-  // 2. Try Direct Cloudflare API
-  try {
-    const response = await fetch(CF_DIRECT_KV_URL, {
-      method: 'GET',
-      headers: {
-        'Authorization': `Bearer ${CF_API_TOKEN}`,
-      },
-    });
-
-    if (response.ok) {
-      const rawText = await response.text();
-      const remoteState = JSON.parse(rawText);
-      if (remoteState && typeof remoteState === 'object') {
-        const mergedState: AdminGlobalState = {
-          isAutoWriterActive: Boolean(remoteState.isAutoWriterActive),
-          scheduledTime: remoteState.scheduledTime || '13:00',
-          discardedDraftIds: Array.isArray(remoteState.discardedDraftIds) ? remoteState.discardedDraftIds : [],
-          publishedDrafts: Array.isArray(remoteState.publishedDrafts) ? remoteState.publishedDrafts : [],
-        };
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(mergedState));
-        return mergedState;
-      }
-    }
-  } catch (err) {
-    // Ignore direct API errors
-  }
-
-  // 3. Fallback to LocalStorage
+  // 2. Fallback to LocalStorage
   try {
     const local = localStorage.getItem(STORAGE_KEY);
     if (local) return JSON.parse(local);
@@ -109,37 +76,15 @@ export async function saveGlobalAdminState(state: AdminGlobalState): Promise<boo
     }
   }
 
-  let success = false;
-
-  // Try Worker Endpoint
+  // Sync to Cloudflare Worker
   try {
     const response = await fetch(CF_WORKER_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(state),
     });
-    if (response.ok) success = true;
+    return response.ok;
   } catch (err) {
-    // Ignore worker error
+    return false;
   }
-
-  // Try Direct KV API if worker didn't succeed
-  if (!success) {
-    try {
-      const response = await fetch(CF_DIRECT_KV_URL, {
-        method: 'PUT',
-        headers: {
-          'Authorization': `Bearer ${CF_API_TOKEN}`,
-          'Content-Type': 'text/plain',
-        },
-        body: JSON.stringify(state),
-      });
-      const resJson = await response.json();
-      if (resJson && resJson.success) success = true;
-    } catch (err) {
-      // Ignore direct KV error
-    }
-  }
-
-  return success;
 }
