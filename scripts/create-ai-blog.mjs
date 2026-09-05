@@ -73,24 +73,38 @@ Requirements:
 }`;
 
   const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${API_KEY}`;
-  const response = await fetch(url, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      contents: [{ parts: [{ text: prompt }] }],
-      generationConfig: { responseMimeType: 'application/json' },
-    }),
-  });
+  
+  for (let attempt = 1; attempt <= 3; attempt++) {
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: prompt }] }],
+          generationConfig: { responseMimeType: 'application/json' },
+        }),
+      });
 
-  if (!response.ok) {
-    const errorText = await response.text();
-    throw new Error(`Gemini API Error (${response.status}): ${errorText}`);
+      if (!response.ok) {
+        const errorText = await response.text();
+        if (attempt < 3 && (response.status === 503 || response.status === 429)) {
+          console.warn(`⚠️ API response ${response.status}. Retrying attempt ${attempt + 1}/3 in 2s...`);
+          await new Promise((res) => setTimeout(res, 2000));
+          continue;
+        }
+        throw new Error(`Gemini API Error (${response.status}): ${errorText}`);
+      }
+
+      const data = await response.json();
+      const rawText = data.candidates?.[0]?.content?.parts?.[0]?.text;
+      if (!rawText) throw new Error('Empty response received from Gemini API');
+      return JSON.parse(rawText);
+    } catch (err) {
+      if (attempt === 3) throw err;
+      console.warn(`⚠️ Attempt ${attempt} failed: ${err.message}. Retrying in 2s...`);
+      await new Promise((res) => setTimeout(res, 2000));
+    }
   }
-
-  const data = await response.json();
-  const rawText = data.candidates?.[0]?.content?.parts?.[0]?.text;
-  if (!rawText) throw new Error('Empty response received from Gemini API');
-  return JSON.parse(rawText);
 }
 
 function slugify(text) {
@@ -109,21 +123,77 @@ function formatDate(date) {
   return `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
 }
 
-async function createCoverImage(slug, title) {
-  const bgColors = ['#1b2a60', '#0f172a', '#1e1b4b', '#030712'];
-  const chosenBg = bgColors[Math.floor(Math.random() * bgColors.length)];
+async function createCoverImage(slug) {
+  const themes = [
+    { bg: ['#0b0f19', '#111827'], accent1: '#3b82f6', accent2: '#06b6d4', mesh: '#60a5fa' },
+    { bg: ['#0f172a', '#1e1b4b'], accent1: '#8b5cf6', accent2: '#ec4899', mesh: '#a78bfa' },
+    { bg: ['#022c22', '#064e3b'], accent1: '#10b981', accent2: '#06b6d4', mesh: '#34d399' },
+    { bg: ['#1e1b4b', '#311042'], accent1: '#f43f5e', accent2: '#8b5cf6', mesh: '#fb7185' },
+    { bg: ['#030712', '#1e293b'], accent1: '#2563eb', accent2: '#38bdf8', mesh: '#818cf8' },
+  ];
+
+  const theme = themes[Math.floor(Math.random() * themes.length)];
+
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
-    <rect width="1200" height="630" fill="${chosenBg}"/>
-    <circle cx="1100" cy="100" r="300" fill="#3b82f6" opacity="0.15"/>
-    <circle cx="100" cy="550" r="250" fill="#8b5cf6" opacity="0.15"/>
-    <rect x="80" y="80" width="160" height="40" rx="8" fill="#2563eb"/>
-    <text x="160" y="106" font-family="sans-serif" font-size="18" font-weight="bold" fill="#ffffff" text-anchor="middle">DV EDITORIAL</text>
-    <text x="80" y="280" font-family="sans-serif" font-size="42" font-weight="bold" fill="#ffffff" width="1040">
-      ${title.length > 55 ? title.slice(0, 55) + '...' : title}
-    </text>
-    <text x="80" y="350" font-family="sans-serif" font-size="24" fill="#94a3b8">Data Science • AI • Generative AI • Cybersecurity</text>
-    <line x1="80" y1="450" x2="1120" y2="450" stroke="#334155" stroke-width="2"/>
-    <text x="80" y="510" font-family="sans-serif" font-size="20" fill="#cbd5e1">www.dvanalyticsmds.com</text>
+    <defs>
+      <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="${theme.bg[0]}"/>
+        <stop offset="100%" stop-color="${theme.bg[1]}"/>
+      </linearGradient>
+      <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" stop-color="${theme.accent1}"/>
+        <stop offset="100%" stop-color="${theme.accent2}"/>
+      </linearGradient>
+      <radialGradient id="glow1" cx="80%" cy="20%" r="60%">
+        <stop offset="0%" stop-color="${theme.accent1}" stop-opacity="0.35"/>
+        <stop offset="100%" stop-color="${theme.bg[0]}" stop-opacity="0"/>
+      </radialGradient>
+      <radialGradient id="glow2" cx="20%" cy="80%" r="50%">
+        <stop offset="0%" stop-color="${theme.accent2}" stop-opacity="0.3"/>
+        <stop offset="100%" stop-color="${theme.bg[1]}" stop-opacity="0"/>
+      </radialGradient>
+      <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+        <path d="M 40 0 L 0 0 0 40" fill="none" stroke="${theme.mesh}" stroke-width="1" opacity="0.08"/>
+      </pattern>
+    </defs>
+
+    <!-- Background Base -->
+    <rect width="1200" height="630" fill="url(#bgGrad)"/>
+    <rect width="1200" height="630" fill="url(#grid)"/>
+
+    <!-- Glowing Orbs -->
+    <circle cx="950" cy="180" r="380" fill="url(#glow1)"/>
+    <circle cx="250" cy="480" r="320" fill="url(#glow2)"/>
+
+    <!-- Abstract Neural Connections -->
+    <g opacity="0.25">
+      <path d="M 100 500 Q 350 200 600 450 T 1100 150" fill="none" stroke="${theme.accent1}" stroke-width="4"/>
+      <path d="M 150 150 Q 500 400 850 100 T 1150 480" fill="none" stroke="${theme.accent2}" stroke-width="3" stroke-dasharray="10,15"/>
+    </g>
+
+    <!-- Futuristic Layered Polygons -->
+    <g stroke="url(#accentGrad)" stroke-width="2" fill="none" opacity="0.7">
+      <polygon points="600,120 720,190 720,330 600,400 480,330 480,190" opacity="0.3"/>
+      <polygon points="850,250 940,300 940,400 850,450 760,400 760,300" opacity="0.4"/>
+      <polygon points="350,220 420,260 420,340 350,380 280,340 280,260" opacity="0.5"/>
+    </g>
+
+    <!-- Glowing Network Nodes -->
+    <circle cx="600" cy="120" r="6" fill="${theme.accent1}"/>
+    <circle cx="720" cy="190" r="8" fill="${theme.accent2}"/>
+    <circle cx="480" cy="330" r="7" fill="${theme.mesh}"/>
+    <circle cx="850" cy="250" r="8" fill="${theme.accent1}"/>
+    <circle cx="350" cy="380" r="9" fill="${theme.accent2}"/>
+    <circle cx="940" cy="400" r="6" fill="${theme.mesh}"/>
+
+    <!-- Connecting Light Beams -->
+    <line x1="600" y1="120" x2="720" y2="190" stroke="${theme.accent1}" stroke-width="2" opacity="0.6"/>
+    <line x1="720" y1="190" x2="850" y2="250" stroke="${theme.accent2}" stroke-width="2" opacity="0.6"/>
+    <line x1="480" y1="330" x2="350" y2="380" stroke="${theme.mesh}" stroke-width="2" opacity="0.6"/>
+    <line x1="350" y1="220" x2="480" y2="190" stroke="${theme.accent1}" stroke-width="2" opacity="0.5"/>
+
+    <!-- Abstract Wave Graphic Bottom -->
+    <path d="M 0 520 C 300 460, 600 580, 900 500 C 1050 460, 1150 510, 1200 530 L 1200 630 L 0 630 Z" fill="url(#accentGrad)" opacity="0.15"/>
   </svg>`;
 
   const imagePath = join(rootDir, 'public', 'blogs', `${slug}.svg`);

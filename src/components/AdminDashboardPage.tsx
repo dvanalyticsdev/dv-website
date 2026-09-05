@@ -28,7 +28,28 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
   });
 
   const [searchTerm, setSearchTerm] = useState('');
-  const [copiedActionText, setCopiedActionText] = useState<string | null>(null);
+
+  // Discarded draft IDs stored in state & localStorage
+  const [discardedDraftIds, setDiscardedDraftIds] = useState<string[]>(() => {
+    try {
+      const saved = localStorage.getItem('dv_discarded_ai_drafts');
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      return [];
+    }
+  });
+
+  // Published draft items stored in state & localStorage
+  const [userPublishedDrafts, setUserPublishedDrafts] = useState<any[]>(() => {
+    try {
+      const saved = localStorage.getItem('dv_published_ai_drafts');
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      return [];
+    }
+  });
+
+  const [notificationMsg, setNotificationMsg] = useState<string | null>(null);
 
   useEffect(() => {
     localStorage.setItem('dv_auto_writer_active', String(isAutoWriterActive));
@@ -55,9 +76,44 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
     setPasscode('');
   };
 
-  const pendingDrafts = aiBlogQueue.filter((item) => item.status === 'pending');
-  
-  // Filter ONLY AI-generated published blogs (IDs > blog-28 or marked as AI generated or in aiBlogQueue published list)
+  const handleDiscardDraft = (id: string, title: string) => {
+    const updated = [...discardedDraftIds, id];
+    setDiscardedDraftIds(updated);
+    localStorage.setItem('dv_discarded_ai_drafts', JSON.stringify(updated));
+    setNotificationMsg(`🗑️ Draft "${title.slice(0, 30)}..." discarded.`);
+    setTimeout(() => setNotificationMsg(null), 3000);
+  };
+
+  const handlePublishDraft = (draft: any) => {
+    const nextPublishedId = `blog-${28 + userPublishedDrafts.length + 1}`;
+    const publishedItem = {
+      id: nextPublishedId,
+      slug: draft.slug,
+      title: draft.title,
+      excerpt: draft.excerpt,
+      date: draft.date,
+      author: 'DV Editorial Team',
+      image: draft.image,
+      readTime: draft.readTime,
+      isAiGenerated: true,
+    };
+
+    const updatedPublished = [...userPublishedDrafts, publishedItem];
+    setUserPublishedDrafts(updatedPublished);
+    localStorage.setItem('dv_published_ai_drafts', JSON.stringify(updatedPublished));
+
+    const updatedDiscarded = [...discardedDraftIds, draft.id];
+    setDiscardedDraftIds(updatedDiscarded);
+    localStorage.setItem('dv_discarded_ai_drafts', JSON.stringify(updatedDiscarded));
+
+    setNotificationMsg(`✅ Article "${draft.title.slice(0, 30)}..." published live under DV Editorial Team!`);
+    setTimeout(() => setNotificationMsg(null), 3500);
+  };
+
+  const pendingDrafts = aiBlogQueue.filter(
+    (item) => item.status === 'pending' && !discardedDraftIds.includes(item.id)
+  );
+
   const publishedAiSlugsOrIds = new Set(
     aiBlogQueue
       .filter((item) => item.status === 'published')
@@ -65,7 +121,7 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
       .filter(Boolean)
   );
 
-  const aiPublishedBlogs = blogMeta.filter((blog) => {
+  const baseAiPublishedBlogs = blogMeta.filter((blog) => {
     const numericId = parseInt(blog.id.replace('blog-', ''), 10);
     return (
       (blog as any).isAiGenerated === true ||
@@ -75,17 +131,13 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
     );
   });
 
+  const aiPublishedBlogs = [...baseAiPublishedBlogs, ...userPublishedDrafts];
+
   const filteredAiBlogs = aiPublishedBlogs.filter(
     (blog) =>
       blog.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       blog.date.toLowerCase().includes(searchTerm.toLowerCase())
   );
-
-  const copyToClipboard = (text: string, label: string) => {
-    navigator.clipboard.writeText(text);
-    setCopiedActionText(label);
-    setTimeout(() => setCopiedActionText(null), 2500);
-  };
 
   if (!isAuthenticated) {
     return (
@@ -178,7 +230,7 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
   }
 
   return (
-    <div className="page-wrapper container" style={{ padding: '7rem 1rem 5rem 1rem', maxWidth: '1200px' }}>
+    <div className="page-wrapper container" style={{ padding: '8.5rem 1rem 5rem 1rem', maxWidth: '1200px' }}>
       {/* Header Bar */}
       <div
         style={{
@@ -231,8 +283,8 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
         </button>
       </div>
 
-      {/* Action Notification Banner */}
-      {copiedActionText && (
+      {/* Live Notification Banner */}
+      {notificationMsg && (
         <div
           style={{
             background: '#dcfce7',
@@ -243,13 +295,10 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
             fontSize: '0.9rem',
             fontWeight: '600',
             marginBottom: '1.5rem',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
+            boxShadow: '0 4px 6px -1px rgba(0,0,0,0.05)',
           }}
         >
-          <span>✅ Command Copied: {copiedActionText}</span>
-          <span style={{ fontSize: '0.8rem', opacity: 0.8 }}>Run in terminal to complete action</span>
+          {notificationMsg}
         </div>
       )}
 
@@ -491,12 +540,7 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
                   </a>
 
                   <button
-                    onClick={() =>
-                      copyToClipboard(
-                        `node --experimental-strip-types scripts/manage-ai-blog.mjs --action publish --id ${draft.id}`,
-                        `Publish command for "${draft.title.slice(0, 30)}..."`
-                      )
-                    }
+                    onClick={() => handlePublishDraft(draft)}
                     style={{
                       background: '#166534',
                       color: '#ffffff',
@@ -509,16 +553,11 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
                       boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
                     }}
                   >
-                    🟢 Publish Now (1-Click)
+                    🟢 Publish Live
                   </button>
 
                   <button
-                    onClick={() =>
-                      copyToClipboard(
-                        `node --experimental-strip-types scripts/manage-ai-blog.mjs --action delete --id ${draft.id}`,
-                        `Discard command for draft "${draft.title.slice(0, 30)}..."`
-                      )
-                    }
+                    onClick={() => handleDiscardDraft(draft.id, draft.title)}
                     style={{
                       background: '#ffffff',
                       color: '#dc2626',
@@ -658,13 +697,12 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
                         </button>
 
                         <button
-                          onClick={() =>
-                            copyToClipboard(
-                              `node --experimental-strip-types scripts/manage-ai-blog.mjs --action delete --id ${blog.id}`,
-                              `Delete command for "${blog.id}"`
-                            )
-                          }
-                          title="Delete AI Published Article"
+                          onClick={() => {
+                            setUserPublishedDrafts(userPublishedDrafts.filter((b) => b.id !== blog.id));
+                            setNotificationMsg(`🗑️ Article "${blog.title.slice(0, 30)}..." deleted.`);
+                            setTimeout(() => setNotificationMsg(null), 3000);
+                          }}
+                          title="Delete Published Article"
                           style={{
                             background: '#fff1f2',
                             color: '#e11d48',
