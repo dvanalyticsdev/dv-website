@@ -130,7 +130,7 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
             <div style={{ marginBottom: '1.25rem' }}>
               <input
                 type="password"
-                placeholder="Passcode (2817)"
+                placeholder="Enter Passcode"
                 value={passcode}
                 onChange={(e) => setPasscode(e.target.value)}
                 maxLength={10}
