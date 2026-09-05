@@ -63,18 +63,74 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
     setIsGenerating(true);
     setNotificationMsg('🤖 Generating a fresh 2026 AI blog draft via Gemini API...');
     try {
-      const topicOptions = [
-        'Agentic AI Workflows in Enterprise Software Architecture (2026 Market Outlook)',
-        'From Non-Tech to AI Engineer: A Realistic 6-Month Roadmap with DV Analytics',
+      const existingTitles = new Set([
+        ...blogMeta.map((b) => b.title.toLowerCase()),
+        ...aiBlogQueue.map((q) => q.title.toLowerCase()),
+        ...customDrafts.map((c) => c.title.toLowerCase()),
+      ]);
+
+      const pool = [
+        'Agentic AI Workflows in Enterprise Architecture (2026 Executive Guide)',
+        'From Non-Tech to AI Engineer: The 6-Month Fast-Track Program',
         'AI-Driven Cybersecurity: Beyond Firewalls into Autonomous Threat Defense',
-        'Generative AI vs Traditional Data Science: Skills Demanded by Top Tech Employers',
-        'Bangalore and Dubai Tech Job Trends: How MLOps & AI Deployment Rules 2026',
+        'Generative AI vs Traditional Data Science: Skills Demanded by Tech Leaders',
+        'Bangalore and Dubai Tech Job Trends: How MLOps Rules 2026',
+        'Building Multi-Agent Systems: Practical Blueprints for Enterprise Developers',
+        'Responsible AI Governance & Compliance: High-Paying Career Path in 2026',
+        'RAG Architectures & Vector Databases: Essential Stack for Modern Data Engineers',
+        'Fine-Tuning Open Source LLMs: Cost-Effective AI Strategies for Enterprises',
+        'Autonomous AI Agents in Healthcare & Fintech: Real-World Case Studies',
       ];
-      const selectedTopic = topicOptions[Math.floor(Math.random() * topicOptions.length)];
+
+      let selectedTopic = pool.find((t) => !existingTitles.has(t.toLowerCase()));
+
+      if (!selectedTopic) {
+        const timeTag = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+        selectedTopic = `Cutting-Edge AI Engineering Trends in 2026 (${timeTag} Edition)`;
+      }
+
       const newId = `ai-draft-${Date.now()}`;
       const slug = selectedTopic.toLowerCase().replace(/[^a-z0-9\s-]/g, '').trim().replace(/\s+/g, '-');
+      const topicLower = selectedTopic.toLowerCase();
 
-      const svgCover = `data:image/svg+xml;utf8,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630"><defs><linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#0f172a"/><stop offset="100%" stop-color="#1e1b4b"/></linearGradient><radialGradient id="r" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#3b82f6" stop-opacity="0.4"/><stop offset="100%" stop-color="#0f172a" stop-opacity="0"/></radialGradient></defs><rect width="1200" height="630" fill="url(#g)"/><circle cx="600" cy="315" r="300" fill="url(#r)"/><g opacity="0.3" stroke="#60a5fa" stroke-width="2" fill="none"><polygon points="600,150 720,220 720,360 600,430 480,360 480,220"/><circle cx="600" cy="150" r="8" fill="#3b82f6"/><circle cx="720" cy="220" r="8" fill="#06b6d4"/><circle cx="480" cy="360" r="8" fill="#a78bfa"/></g></svg>`)}`;
+      let selectedImage = 'https://images.unsplash.com/photo-1677442136019-21780efad99a?auto=format&fit=crop&w=1200&h=630&q=80';
+
+      if (topicLower.includes('cyber') || topicLower.includes('security') || topicLower.includes('firewall') || topicLower.includes('threat')) {
+        const cyberPhotos = [
+          'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1200&h=630&q=80',
+          'https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=1200&h=630&q=80',
+          'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=1200&h=630&q=80',
+        ];
+        selectedImage = cyberPhotos[Math.floor(Math.random() * cyberPhotos.length)];
+      } else if (topicLower.includes('agentic') || topicLower.includes('agent') || topicLower.includes('genai') || topicLower.includes('generative') || topicLower.includes('llm') || topicLower.includes('ai engineer')) {
+        const aiPhotos = [
+          'https://images.unsplash.com/photo-1677442136019-21780efad99a?auto=format&fit=crop&w=1200&h=630&q=80',
+          'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&h=630&q=80',
+          'https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&w=1200&h=630&q=80',
+          'https://images.unsplash.com/photo-1675557009875-436f61181844?auto=format&fit=crop&w=1200&h=630&q=80',
+        ];
+        selectedImage = aiPhotos[Math.floor(Math.random() * aiPhotos.length)];
+      } else if (topicLower.includes('data') || topicLower.includes('mlops') || topicLower.includes('analytics') || topicLower.includes('vector') || topicLower.includes('rag')) {
+        const dsPhotos = [
+          'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&h=630&q=80',
+          'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1200&h=630&q=80',
+          'https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?auto=format&fit=crop&w=1200&h=630&q=80',
+        ];
+        selectedImage = dsPhotos[Math.floor(Math.random() * dsPhotos.length)];
+      } else if (topicLower.includes('bangalore') || topicLower.includes('dubai') || topicLower.includes('city') || topicLower.includes('hyderabad') || topicLower.includes('pune')) {
+        const cityPhotos = [
+          'https://images.unsplash.com/photo-1477959858617-67f30ac72604?auto=format&fit=crop&w=1200&h=630&q=80',
+          'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1200&h=630&q=80',
+          'https://images.unsplash.com/photo-1596176530529-78163a4f7af2?auto=format&fit=crop&w=1200&h=630&q=80',
+        ];
+        selectedImage = cityPhotos[Math.floor(Math.random() * cityPhotos.length)];
+      } else {
+        const careerPhotos = [
+          'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&h=630&q=80',
+          'https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=1200&h=630&q=80',
+        ];
+        selectedImage = careerPhotos[Math.floor(Math.random() * careerPhotos.length)];
+      }
 
       const newDraft = {
         id: newId,
@@ -83,7 +139,7 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
         excerpt: `Discover key insights and practical market strategies on ${selectedTopic}. Designed by DV Editorial Team for freshers, switchers, and working professionals in 2026.`,
         date: new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }),
         author: 'DV Editorial Team',
-        image: svgCover,
+        image: selectedImage,
         readTime: '7 min read',
         status: 'pending',
         createdAt: new Date().toISOString(),
@@ -114,7 +170,7 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
       const updatedCustom = [newDraft, ...customDrafts];
       setCustomDrafts(updatedCustom);
       syncStateGlobally({ customDrafts: updatedCustom });
-      setNotificationMsg(`✨ Success! Brand new AI Draft "${newDraft.title.slice(0, 35)}..." generated and added to Pending Queue!`);
+      setNotificationMsg(`✨ Success! Unique AI Draft "${newDraft.title.slice(0, 35)}..." generated and added to Pending Queue!`);
     } catch (err) {
       setNotificationMsg('❌ Error generating AI draft. Please try again.');
     } finally {
@@ -189,7 +245,14 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
   };
 
   const allQueueItems = [...aiBlogQueue, ...customDrafts];
-  const pendingDrafts = allQueueItems.filter(
+  const uniqueQueueMap = new Map();
+  for (const item of allQueueItems) {
+    const key = item.title ? item.title.toLowerCase().trim() : item.id;
+    if (!uniqueQueueMap.has(key)) {
+      uniqueQueueMap.set(key, item);
+    }
+  }
+  const pendingDrafts = Array.from(uniqueQueueMap.values()).filter(
     (item) => item.status === 'pending' && !discardedDraftIds.includes(item.id)
   );
 

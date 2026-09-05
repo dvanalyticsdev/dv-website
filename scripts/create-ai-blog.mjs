@@ -25,6 +25,18 @@ async function getExistingBlogTitles() {
     matches.forEach((m) => titles.push(m[1]));
   } catch (err) {}
 
+  try {
+    const res = await fetch('https://dvsynckv.dvanalytics-dev.workers.dev/');
+    if (res.ok) {
+      const state = await res.json();
+      if (state && Array.isArray(state.customDrafts)) {
+        state.customDrafts.forEach((c) => {
+          if (c && c.title) titles.push(c.title);
+        });
+      }
+    }
+  } catch (err) {}
+
   return titles;
 }
 
@@ -158,82 +170,51 @@ function formatDate(date) {
   return `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
 }
 
-async function createCoverImage(slug) {
-  const themes = [
-    { bg: ['#0b0f19', '#111827'], accent1: '#3b82f6', accent2: '#06b6d4', mesh: '#60a5fa' },
-    { bg: ['#0f172a', '#1e1b4b'], accent1: '#8b5cf6', accent2: '#ec4899', mesh: '#a78bfa' },
-    { bg: ['#022c22', '#064e3b'], accent1: '#10b981', accent2: '#06b6d4', mesh: '#34d399' },
-    { bg: ['#1e1b4b', '#311042'], accent1: '#f43f5e', accent2: '#8b5cf6', mesh: '#fb7185' },
-    { bg: ['#030712', '#1e293b'], accent1: '#2563eb', accent2: '#38bdf8', mesh: '#818cf8' },
+async function createCoverImage(slug, title = '') {
+  const text = (slug + ' ' + title).toLowerCase();
+
+  if (text.includes('cyber') || text.includes('security') || text.includes('firewall') || text.includes('defense') || text.includes('threat')) {
+    const cyberPhotos = [
+      'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1200&h=630&q=80',
+      'https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=1200&h=630&q=80',
+      'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=1200&h=630&q=80',
+    ];
+    return cyberPhotos[Math.floor(Math.random() * cyberPhotos.length)];
+  }
+
+  if (text.includes('agentic') || text.includes('agent') || text.includes('genai') || text.includes('generative') || text.includes('llm') || text.includes('ai engineer')) {
+    const aiPhotos = [
+      'https://images.unsplash.com/photo-1677442136019-21780efad99a?auto=format&fit=crop&w=1200&h=630&q=80',
+      'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&h=630&q=80',
+      'https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&w=1200&h=630&q=80',
+      'https://images.unsplash.com/photo-1675557009875-436f61181844?auto=format&fit=crop&w=1200&h=630&q=80',
+    ];
+    return aiPhotos[Math.floor(Math.random() * aiPhotos.length)];
+  }
+
+  if (text.includes('data') || text.includes('mlops') || text.includes('analytics') || text.includes('vector') || text.includes('rag')) {
+    const dsPhotos = [
+      'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&h=630&q=80',
+      'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1200&h=630&q=80',
+      'https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?auto=format&fit=crop&w=1200&h=630&q=80',
+    ];
+    return dsPhotos[Math.floor(Math.random() * dsPhotos.length)];
+  }
+
+  if (text.includes('bangalore') || text.includes('dubai') || text.includes('city') || text.includes('hyderabad') || text.includes('pune')) {
+    const cityPhotos = [
+      'https://images.unsplash.com/photo-1477959858617-67f30ac72604?auto=format&fit=crop&w=1200&h=630&q=80',
+      'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1200&h=630&q=80',
+      'https://images.unsplash.com/photo-1596176530529-78163a4f7af2?auto=format&fit=crop&w=1200&h=630&q=80',
+    ];
+    return cityPhotos[Math.floor(Math.random() * cityPhotos.length)];
+  }
+
+  const careerPhotos = [
+    'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&h=630&q=80',
+    'https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=1200&h=630&q=80',
   ];
-
-  const theme = themes[Math.floor(Math.random() * themes.length)];
-
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
-    <defs>
-      <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" stop-color="${theme.bg[0]}"/>
-        <stop offset="100%" stop-color="${theme.bg[1]}"/>
-      </linearGradient>
-      <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-        <stop offset="0%" stop-color="${theme.accent1}"/>
-        <stop offset="100%" stop-color="${theme.accent2}"/>
-      </linearGradient>
-      <radialGradient id="glow1" cx="80%" cy="20%" r="60%">
-        <stop offset="0%" stop-color="${theme.accent1}" stop-opacity="0.35"/>
-        <stop offset="100%" stop-color="${theme.bg[0]}" stop-opacity="0"/>
-      </radialGradient>
-      <radialGradient id="glow2" cx="20%" cy="80%" r="50%">
-        <stop offset="0%" stop-color="${theme.accent2}" stop-opacity="0.3"/>
-        <stop offset="100%" stop-color="${theme.bg[1]}" stop-opacity="0"/>
-      </radialGradient>
-      <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-        <path d="M 40 0 L 0 0 0 40" fill="none" stroke="${theme.mesh}" stroke-width="1" opacity="0.08"/>
-      </pattern>
-    </defs>
-
-    <!-- Background Base -->
-    <rect width="1200" height="630" fill="url(#bgGrad)"/>
-    <rect width="1200" height="630" fill="url(#grid)"/>
-
-    <!-- Glowing Orbs -->
-    <circle cx="950" cy="180" r="380" fill="url(#glow1)"/>
-    <circle cx="250" cy="480" r="320" fill="url(#glow2)"/>
-
-    <!-- Abstract Neural Connections -->
-    <g opacity="0.25">
-      <path d="M 100 500 Q 350 200 600 450 T 1100 150" fill="none" stroke="${theme.accent1}" stroke-width="4"/>
-      <path d="M 150 150 Q 500 400 850 100 T 1150 480" fill="none" stroke="${theme.accent2}" stroke-width="3" stroke-dasharray="10,15"/>
-    </g>
-
-    <!-- Futuristic Layered Polygons -->
-    <g stroke="url(#accentGrad)" stroke-width="2" fill="none" opacity="0.7">
-      <polygon points="600,120 720,190 720,330 600,400 480,330 480,190" opacity="0.3"/>
-      <polygon points="850,250 940,300 940,400 850,450 760,400 760,300" opacity="0.4"/>
-      <polygon points="350,220 420,260 420,340 350,380 280,340 280,260" opacity="0.5"/>
-    </g>
-
-    <!-- Glowing Network Nodes -->
-    <circle cx="600" cy="120" r="6" fill="${theme.accent1}"/>
-    <circle cx="720" cy="190" r="8" fill="${theme.accent2}"/>
-    <circle cx="480" cy="330" r="7" fill="${theme.mesh}"/>
-    <circle cx="850" cy="250" r="8" fill="${theme.accent1}"/>
-    <circle cx="350" cy="380" r="9" fill="${theme.accent2}"/>
-    <circle cx="940" cy="400" r="6" fill="${theme.mesh}"/>
-
-    <!-- Connecting Light Beams -->
-    <line x1="600" y1="120" x2="720" y2="190" stroke="${theme.accent1}" stroke-width="2" opacity="0.6"/>
-    <line x1="720" y1="190" x2="850" y2="250" stroke="${theme.accent2}" stroke-width="2" opacity="0.6"/>
-    <line x1="480" y1="330" x2="350" y2="380" stroke="${theme.mesh}" stroke-width="2" opacity="0.6"/>
-    <line x1="350" y1="220" x2="480" y2="190" stroke="${theme.accent1}" stroke-width="2" opacity="0.5"/>
-
-    <!-- Abstract Wave Graphic Bottom -->
-    <path d="M 0 520 C 300 460, 600 580, 900 500 C 1050 460, 1150 510, 1200 530 L 1200 630 L 0 630 Z" fill="url(#accentGrad)" opacity="0.15"/>
-  </svg>`;
-
-  const imagePath = join(rootDir, 'public', 'blogs', `${slug}.svg`);
-  await writeFile(imagePath, svg, 'utf8');
-  return `/blogs/${slug}.svg`;
+  return careerPhotos[Math.floor(Math.random() * careerPhotos.length)];
 }
 
 try {

@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { blogsData } from '../data/blogsData';
 import { blogIdBySlug, blogSlugById } from '../data/blogMeta';
 import { aiBlogQueue } from '../data/aiBlogQueue';
+import { fetchGlobalAdminState, subscribeToAdminState } from '../utils/adminSync';
 
 interface BlogsPageProps {
   activePage?: string;
@@ -14,11 +15,33 @@ export const BlogsPage: React.FC<BlogsPageProps> = ({
   onOpenBlog,
   onBackToBlogs,
 }) => {
+  const [customDrafts, setCustomDrafts] = useState<any[]>([]);
+
+  useEffect(() => {
+    fetchGlobalAdminState().then((state) => {
+      if (Array.isArray(state.customDrafts)) setCustomDrafts(state.customDrafts);
+    });
+
+    const unsubscribe = subscribeToAdminState((state) => {
+      if (Array.isArray(state.customDrafts)) setCustomDrafts(state.customDrafts);
+    });
+
+    return () => unsubscribe();
+  }, []);
+
   const activeBlogValue = activePage.startsWith('blog-') ? activePage.replace('blog-', '') : null;
   const activeBlogId = activeBlogValue ? blogIdBySlug[activeBlogValue] ?? activeBlogValue : null;
 
-  const draftMatch = aiBlogQueue.find(
-    (d) => d.slug === activeBlogValue || d.id === activeBlogId || d.slug === activeBlogId
+  const normalizedActiveVal = activeBlogValue ? activeBlogValue.toLowerCase() : '';
+  const normalizedActiveId = activeBlogId ? activeBlogId.toLowerCase() : '';
+
+  const allDrafts = [...aiBlogQueue, ...customDrafts];
+  const draftMatch = allDrafts.find(
+    (d) =>
+      (d.slug && d.slug.toLowerCase() === normalizedActiveVal) ||
+      (d.id && d.id.toLowerCase() === normalizedActiveId) ||
+      (d.slug && d.slug.toLowerCase() === normalizedActiveId) ||
+      (d.id && d.id.toLowerCase() === normalizedActiveVal)
   );
 
   const activeBlog =
@@ -105,7 +128,7 @@ export const BlogsPage: React.FC<BlogsPageProps> = ({
         <section className="blog-reader-body container">
           <div className="blog-body-card">
             <div className="blog-body-content">
-              {activeBlog.sections.map((section, idx) => (
+              {activeBlog.sections.map((section: any, idx: number) => (
                 <div key={idx} className="blog-body-section">
                   <h2 className="blog-section-title">{section.heading}</h2>
                   <div className="blog-section-divider"></div>
@@ -116,7 +139,7 @@ export const BlogsPage: React.FC<BlogsPageProps> = ({
                   
                   {section.list && (
                     <ul className="blog-body-list">
-                      {section.list.map((item, listIdx) => (
+                      {section.list.map((item: string, listIdx: number) => (
                         <li key={listIdx} className="blog-list-item">
                           <span className="blog-list-bullet">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
