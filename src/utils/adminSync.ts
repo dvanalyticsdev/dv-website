@@ -8,7 +8,7 @@ export interface AdminGlobalState {
 const CF_WORKER_URL = 'https://dvsynckv.dvanalytics-dev.workers.dev/';
 const CF_ACCOUNT_ID = '6b38be060a58cecaf31c599db7515ebb';
 const CF_NAMESPACE_ID = '8ed142044c154a6b99cf11addb94b7ac';
-const CF_API_TOKEN = 'cfat_ujv7WOTGLBX0htvfRCZ6BWDKBTfGanUntO6Y4RMdde6bfb48';
+const CF_API_TOKEN = 'cfat_PuTv5vIghICQhhM7dwf8GzbTlEPlP0yIb646l52I86c440e9';
 const KEY_NAME = 'admin_global_state';
 
 const STORAGE_KEY = 'dv_admin_global_state_v1';
