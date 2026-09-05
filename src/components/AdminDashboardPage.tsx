@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { blogMeta } from '../data/blogMeta';
 import { aiBlogQueue } from '../data/aiBlogQueue';
-import { fetchGlobalAdminState, saveGlobalAdminState, type AdminGlobalState } from '../utils/adminSync';
+import { fetchGlobalAdminState, saveGlobalAdminState, subscribeToAdminState, type AdminGlobalState } from '../utils/adminSync';
 
 interface AdminDashboardPageProps {
   onNavigate: (pageId: string) => void;
@@ -25,7 +25,7 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
   const [userPublishedDrafts, setUserPublishedDrafts] = useState<any[]>([]);
   const [notificationMsg, setNotificationMsg] = useState<string | null>(null);
 
-  // Fetch live global state from Cloudflare KV on mount & periodically
+  // Fetch live global state from Cloudflare KV on mount & listen to real-time broadcasts
   useEffect(() => {
     fetchGlobalAdminState().then((state) => {
       setIsAutoWriterActive(state.isAutoWriterActive);
@@ -33,6 +33,15 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
       setDiscardedDraftIds(state.discardedDraftIds);
       setUserPublishedDrafts(state.publishedDrafts);
     });
+
+    const unsubscribe = subscribeToAdminState((state) => {
+      setIsAutoWriterActive(state.isAutoWriterActive);
+      setScheduledTime(state.scheduledTime);
+      setDiscardedDraftIds(state.discardedDraftIds);
+      setUserPublishedDrafts(state.publishedDrafts);
+    });
+
+    return () => unsubscribe();
   }, []);
 
   const syncStateGlobally = (updatedState: Partial<AdminGlobalState>) => {
