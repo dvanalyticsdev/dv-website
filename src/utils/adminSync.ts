@@ -4,6 +4,8 @@ export interface AdminGlobalState {
   discardedDraftIds: string[];
   publishedDrafts: any[];
   customDrafts?: any[];
+  lastAutoRunDate?: string | null;
+  lastAutoRunAt?: string | null;
 }
 
 const CF_WORKER_URL = 'https://dvsynckv.dvanalytics-dev.workers.dev/';
@@ -15,6 +17,8 @@ const defaultState: AdminGlobalState = {
   discardedDraftIds: [],
   publishedDrafts: [],
   customDrafts: [],
+  lastAutoRunDate: null,
+  lastAutoRunAt: null,
 };
 
 const syncChannel = typeof window !== 'undefined' && 'BroadcastChannel' in window ? new BroadcastChannel('dv_admin_sync_channel') : null;
@@ -46,6 +50,8 @@ export async function fetchGlobalAdminState(): Promise<AdminGlobalState> {
           discardedDraftIds: Array.isArray(remoteState.discardedDraftIds) ? remoteState.discardedDraftIds : [],
           publishedDrafts: Array.isArray(remoteState.publishedDrafts) ? remoteState.publishedDrafts : [],
           customDrafts: Array.isArray(remoteState.customDrafts) ? remoteState.customDrafts : [],
+          lastAutoRunDate: typeof remoteState.lastAutoRunDate === 'string' ? remoteState.lastAutoRunDate : null,
+          lastAutoRunAt: typeof remoteState.lastAutoRunAt === 'string' ? remoteState.lastAutoRunAt : null,
         };
         localStorage.setItem(STORAGE_KEY, JSON.stringify(mergedState));
         return mergedState;

@@ -24,6 +24,8 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
   const [discardedDraftIds, setDiscardedDraftIds] = useState<string[]>([]);
   const [userPublishedDrafts, setUserPublishedDrafts] = useState<any[]>([]);
   const [customDrafts, setCustomDrafts] = useState<any[]>([]);
+  const [lastAutoRunDate, setLastAutoRunDate] = useState<string | null>(null);
+  const [lastAutoRunAt, setLastAutoRunAt] = useState<string | null>(null);
   const [isGenerating, setIsGenerating] = useState<boolean>(false);
   const [notificationMsg, setNotificationMsg] = useState<string | null>(null);
 
@@ -35,6 +37,8 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
       setDiscardedDraftIds(state.discardedDraftIds);
       setUserPublishedDrafts(state.publishedDrafts);
       if (Array.isArray(state.customDrafts)) setCustomDrafts(state.customDrafts);
+      setLastAutoRunDate(state.lastAutoRunDate ?? null);
+      setLastAutoRunAt(state.lastAutoRunAt ?? null);
     });
 
     const unsubscribe = subscribeToAdminState((state) => {
@@ -43,6 +47,8 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
       setDiscardedDraftIds(state.discardedDraftIds);
       setUserPublishedDrafts(state.publishedDrafts);
       if (Array.isArray(state.customDrafts)) setCustomDrafts(state.customDrafts);
+      setLastAutoRunDate(state.lastAutoRunDate ?? null);
+      setLastAutoRunAt(state.lastAutoRunAt ?? null);
     });
 
     return () => unsubscribe();
@@ -55,6 +61,8 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
       discardedDraftIds: updatedState.discardedDraftIds ?? discardedDraftIds,
       publishedDrafts: updatedState.publishedDrafts ?? userPublishedDrafts,
       customDrafts: updatedState.customDrafts ?? customDrafts,
+      lastAutoRunDate: updatedState.lastAutoRunDate ?? lastAutoRunDate,
+      lastAutoRunAt: updatedState.lastAutoRunAt ?? lastAutoRunAt,
     };
     saveGlobalAdminState(fullState);
   };

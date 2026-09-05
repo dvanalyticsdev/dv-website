@@ -120,4 +120,5 @@ try {
   }
 } catch (err) {
   console.error('❌ Error executing manage-ai-blog script:', err);
+  process.exit(1);
 }

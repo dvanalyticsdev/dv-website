@@ -2,8 +2,8 @@ name: Automated AI Blog Generator (Controlled by Admin Panel)
 
 on:
   schedule:
-    # Check hourly; script checks if Auto Generator is ENABLED and matches scheduled IST hour
-    - cron: '0 * * * *'
+    # Check every 5 minutes; the script honors the Admin Panel IST time and prevents duplicate daily runs.
+    - cron: '*/5 * * * *'
   workflow_dispatch:
 
 permissions:
@@ -25,7 +25,11 @@ jobs:
         run: npm ci || npm install
 
       - name: Check Admin State & Generate AI Blog
-        run: node scripts/create-ai-blog.mjs
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GEMINI_MODEL: ${{ vars.GEMINI_MODEL || 'gemini-2.5-flash' }}
+          GEMINI_IMAGE_MODEL: ${{ vars.GEMINI_IMAGE_MODEL || 'gemini-3.1-flash-image' }}
+        run: npm run generate:blog
 
       - name: Commit and Push Generated Blog Draft
         run: |
@@ -33,3 +37,8 @@ jobs:
           git config --local user.email "ai-writer@dvanalyticsmds.com"
           git add src/data/aiBlogQueue.ts public/blogs/
           git diff --staged --quiet || (git commit -m "feat(ai): Auto-generate scheduled AI blog draft" && git push)
+
+      - name: Mark Scheduled Run Complete
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: node scripts/create-ai-blog.mjs --mark-run-complete
