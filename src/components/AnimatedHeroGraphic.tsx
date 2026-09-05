@@ -83,6 +83,8 @@ export const AnimatedHeroGraphic: React.FC<AnimatedHeroGraphicProps> = ({ images
                 alt={`Hero Story ${index + 1}`}
                 className="slide-image-foreground"
                 loading={index === 0 ? 'eager' : 'lazy'}
+                decoding="async"
+                fetchPriority={index === 0 ? 'high' : 'low'}
               />
             </div>
           );

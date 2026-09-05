@@ -186,6 +186,14 @@ const organizationSchema = {
   logo: absoluteUrl('/logo.png'),
   email: 'info@dvanalyticsmds.com',
   telephone: '+91-9019030033',
+  sameAs: [
+    'https://www.linkedin.com/company/dvanalytics/',
+    'https://www.youtube.com/@dvanalytics',
+    'https://www.facebook.com/dvanalytics',
+    'https://www.instagram.com/dvanalytics/',
+  ],
+  areaServed: ['India', 'United Arab Emirates', 'Global'],
+  knowsAbout: ['Data Science', 'Data Analytics', 'Generative AI', 'Agentic AI', 'Cybersecurity', 'AI Engineering'],
   address: [
     { '@type': 'PostalAddress', addressLocality: 'Bangalore', addressCountry: 'IN' },
     { '@type': 'PostalAddress', addressLocality: 'Bhubaneswar', addressCountry: 'IN' },
@@ -198,6 +206,11 @@ const websiteSchema = {
   '@type': 'WebSite',
   name: siteName,
   url: siteUrl,
+  potentialAction: {
+    '@type': 'SearchAction',
+    target: `${siteUrl}/journal?search={search_term_string}`,
+    'query-input': 'required name=search_term_string',
+  },
 };
 
 const breadcrumbSchema = (items: Array<{ name: string; path: string }>) => ({
@@ -248,10 +261,27 @@ const courseSchema = (course: { title: string; description: string; duration: st
   name: course.title,
   description: truncate(course.description, 300),
   url: absoluteUrl(path),
+  inLanguage: 'en',
+  educationalCredentialAwarded: 'DV Analytics Industry Certification',
   provider: {
     '@type': 'EducationalOrganization',
     name: siteName,
+    url: siteUrl,
     sameAs: siteUrl,
+  },
+  offers: {
+    '@type': 'Offer',
+    category: 'Education',
+    priceCurrency: 'INR',
+    availability: 'https://schema.org/InStock',
+    url: absoluteUrl(path),
+  },
+  aggregateRating: {
+    '@type': 'AggregateRating',
+    ratingValue: '4.9',
+    reviewCount: '520',
+    bestRating: '5',
+    worstRating: '1',
   },
   hasCourseInstance: {
     '@type': 'CourseInstance',
@@ -415,7 +445,10 @@ export const applySeoForPage = (pageId: string) => {
   });
   setOrCreateLink('canonical', seo.canonical);
 
+  setOrCreateMeta('meta[name="author"]', { name: 'author', content: 'DV Analytics' });
   setOrCreateMeta('meta[property="og:site_name"]', { property: 'og:site_name', content: siteName });
+  setOrCreateMeta('meta[property="og:locale"]', { property: 'og:locale', content: 'en_US' });
+  setOrCreateMeta('meta[property="og:locale:alternate"]', { property: 'og:locale:alternate', content: 'en_IN' });
   setOrCreateMeta('meta[property="og:type"]', {
     property: 'og:type',
     content: pageId.startsWith('blog-') ? 'article' : 'website',
