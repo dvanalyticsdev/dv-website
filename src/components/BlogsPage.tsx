@@ -16,14 +16,20 @@ export const BlogsPage: React.FC<BlogsPageProps> = ({
   onBackToBlogs,
 }) => {
   const [customDrafts, setCustomDrafts] = useState<any[]>([]);
+  const [publishedDrafts, setPublishedDrafts] = useState<any[]>([]);
+
+  const defaultFallbackImage =
+    'https://images.unsplash.com/photo-1677442136019-21780efad99a?auto=format&fit=crop&w=1200&h=630&q=80';
 
   useEffect(() => {
     fetchGlobalAdminState().then((state) => {
       if (Array.isArray(state.customDrafts)) setCustomDrafts(state.customDrafts);
+      if (Array.isArray(state.publishedDrafts)) setPublishedDrafts(state.publishedDrafts);
     });
 
     const unsubscribe = subscribeToAdminState((state) => {
       if (Array.isArray(state.customDrafts)) setCustomDrafts(state.customDrafts);
+      if (Array.isArray(state.publishedDrafts)) setPublishedDrafts(state.publishedDrafts);
     });
 
     return () => unsubscribe();
@@ -35,6 +41,14 @@ export const BlogsPage: React.FC<BlogsPageProps> = ({
   const normalizedActiveVal = activeBlogValue ? activeBlogValue.toLowerCase() : '';
   const normalizedActiveId = activeBlogId ? activeBlogId.toLowerCase() : '';
 
+  // Merge static blogsData with user published drafts from Cloudflare KV
+  const allPublishedBlogs = [...blogsData];
+  for (const pub of publishedDrafts) {
+    if (pub && pub.id && !allPublishedBlogs.some((b) => b.id === pub.id || (b as any).slug === pub.slug)) {
+      allPublishedBlogs.push(pub);
+    }
+  }
+
   const allDrafts = [...aiBlogQueue, ...customDrafts];
   const draftMatch = allDrafts.find(
     (d) =>
@@ -45,7 +59,13 @@ export const BlogsPage: React.FC<BlogsPageProps> = ({
   );
 
   const activeBlog =
-    blogsData.find((b) => b.id === activeBlogId || (b as any).slug === activeBlogValue) ||
+    allPublishedBlogs.find(
+      (b) =>
+        b.id === activeBlogId ||
+        (b as any).slug === activeBlogValue ||
+        ((b as any).slug && (b as any).slug.toLowerCase() === normalizedActiveVal) ||
+        (b.id && b.id.toLowerCase() === normalizedActiveVal)
+    ) ||
     (draftMatch
       ? {
           id: draftMatch.id,
@@ -54,14 +74,17 @@ export const BlogsPage: React.FC<BlogsPageProps> = ({
           excerpt: draftMatch.excerpt,
           date: draftMatch.date,
           author: draftMatch.author,
-          image: draftMatch.image,
+          image:
+            draftMatch.image && !draftMatch.image.startsWith('data:')
+              ? draftMatch.image
+              : defaultFallbackImage,
           readTime: draftMatch.readTime,
           sections: draftMatch.sections,
           isDraftPreview: true,
         }
       : undefined);
 
-  const getBlogPath = (blogId: string) => `/journal/${blogSlugById[blogId] ?? blogId}`;
+  const getBlogPath = (blog: any) => `/journal/${blog.slug || blogSlugById[blog.id] || blog.id}`;
 
   if (activeBlog) {
     return (
@@ -181,10 +204,17 @@ export const BlogsPage: React.FC<BlogsPageProps> = ({
       {/* Listing Grid */}
       <section className="blogs-list-section container">
         <div className="blogs-grid">
-          {blogsData.map((blog) => (
+          {allPublishedBlogs.map((blog) => (
             <article key={blog.id} className="blog-card glow-card">
               <div className="blog-card-img-wrapper">
-                <img src={blog.image} alt={blog.title} className="blog-card-img" />
+                <img
+                  src={blog.image && !blog.image.startsWith('data:') ? blog.image : defaultFallbackImage}
+                  alt={blog.title}
+                  className="blog-card-img"
+                  onError={(e) => {
+                    e.currentTarget.src = defaultFallbackImage;
+                  }}
+                />
                 <div className="blog-card-meta">
                   <span>{blog.date}</span>
                   <span>•</span>
@@ -197,10 +227,11 @@ export const BlogsPage: React.FC<BlogsPageProps> = ({
                 <p className="blog-card-excerpt">{blog.excerpt}</p>
                 <a
                   className="btn btn-outline read-more-blog-btn"
-                  href={getBlogPath(blog.id)}
+                  href={getBlogPath(blog)}
                   onClick={(event) => {
                     event.preventDefault();
-                    onOpenBlog?.(`blog-${blogSlugById[blog.id]}`);
+                    const targetVal = (blog as any).slug || blogSlugById[blog.id] || blog.id;
+                    onOpenBlog?.(`blog-${targetVal}`);
                   }}
                 >
                   Read Full Article

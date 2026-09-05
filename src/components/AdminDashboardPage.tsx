@@ -136,32 +136,63 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
         id: newId,
         slug: slug,
         title: selectedTopic,
-        excerpt: `Discover key insights and practical market strategies on ${selectedTopic}. Designed by DV Editorial Team for freshers, switchers, and working professionals in 2026.`,
+        excerpt: `In-depth 2026 market analysis and strategic career guide on ${selectedTopic}. Authored by DV Editorial Team for developers, tech switchers, and industry leaders in Bangalore, Bhubaneswar, and Dubai.`,
         date: new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }),
         author: 'DV Editorial Team',
         image: selectedImage,
-        readTime: '7 min read',
+        readTime: '8 min read',
         status: 'pending',
         createdAt: new Date().toISOString(),
         sections: [
           {
-            heading: `1. The Shift Toward ${selectedTopic.split(':')[0]}`,
-            text: `As the technology ecosystem evolves in 2026, understanding ${selectedTopic} has become essential for career acceleration. Industries across Bangalore, Bhubaneswar, and Dubai are rapidly integrating autonomous agents and advanced models into production.`,
-            para2: `At DV Analytics, our curriculum bridges theoretical fundamentals with enterprise deployment. Students work directly on real-world projects that reflect live engineering challenges.`,
+            heading: `1. Executive Overview: The 2026 Tech Paradigm Shift in ${selectedTopic.split(':')[0]}`,
+            text: `As enterprise technology rapidly advances in 2026, ${selectedTopic} has emerged as a cornerstone requirement for modern software engineering and analytics teams. Top technology hubs across Bangalore, Bhubaneswar, and Dubai are aggressively restructuring infrastructure to support real-time autonomous systems, scalable MLOps pipelines, and secure cloud environments.`,
+            para2: `Traditional monolithic workflows are no longer sufficient to meet modern performance standards. Organizations require specialized talent capable of designing resilient architectures, orchestrating LLM agent workflows, and maintaining strict regulatory compliance across global data environments.`,
             list: [
-              'High enterprise demand across top tier tech hubs.',
-              'Focus on practical deployment and real-world tools.',
-              'Direct guidance from experienced industry leaders.'
+              'High enterprise adoption across Fortune 500 tech companies and high-growth AI startups.',
+              'Shift toward automated model evaluation, autonomous agent routing, and vector retrieval.',
+              'Surging demand for cross-functional engineers equipped with both domain context and technical agility.'
             ]
           },
           {
-            heading: '2. Core Technical Competencies Demanded by Employers',
-            text: 'Mastering modern AI requires hands-on experience with model fine-tuning, system architecture, API integration, and security protocols.',
-            para2: 'Whether you come from a non-tech background or an engineering discipline, structured guidance ensures rapid growth without guesswork.',
+            heading: '2. Core Architecture & Enterprise Implementation Framework',
+            text: 'Building robust systems in 2026 requires mastering modular system design, efficient data pipelines, and low-latency API integration. Engineers must balance system performance with operational security, ensuring data integrity across edge devices and multi-cloud infrastructure.',
+            para2: 'At DV Analytics, our industry-aligned curriculum equips learners with hands-on exposure to production-grade tooling, including PyTorch, LangChain, LlamaIndex, Docker, Kubernetes, and enterprise vector databases.',
             list: [
-              'Hands-on Python, PyTorch, and API integration.',
-              'Understanding Agentic workflows and LLM orchestration.',
-              'Best practices for secure data handling and MLOps.'
+              'Production LLM Orchestration: Managing multi-agent task execution and prompt pipelines.',
+              'Data Engineering & MLOps: Automated pipeline monitoring, model registry, and feature store integration.',
+              'Cybersecurity & Threat Defense: Real-time telemetry monitoring, zero-trust network policies, and defensive AI posture.'
+            ]
+          },
+          {
+            heading: '3. 2026 Market Hiring Insights & Regional Demand (Bangalore, Dubai & Global)',
+            text: 'Hiring metrics for 2026 demonstrate unprecedented growth for specialized technology roles. Salary benchmarks in Bangalore and Dubai indicate a 35% to 50% premium for professionals certified in advanced AI engineering, full-stack data analytics, and cybersecurity operations.',
+            para2: 'Employers prioritize candidates who demonstrate portfolio-ready enterprise projects over purely academic background, making practical project execution the decisive factor in securing top tier career placements.',
+            list: [
+              'Bangalore Tech Corridor: 40,000+ open positions across AI engineering, MLOps, and Data Analytics.',
+              'Dubai AI Economy Initiative: Massive government & enterprise investment driving regional talent recruitment.',
+              'Compensation Ranges: Entry to mid-level roles command competitive packages with rapid upward mobility.'
+            ]
+          },
+          {
+            heading: '4. Step-by-Step Transition Roadmap for Non-Tech & Tech Professionals',
+            text: 'Transitioning into high-paying AI and analytics roles does not require years of prior coding experience when structured around guided mentorship and practical builds. DV Analytics provides structured, hands-on learning paths tailored for fresh graduates, working professionals, and non-tech career switchers.',
+            para2: 'By progressing systematically from foundational programming and statistics to live capstone projects, learners build confidence and construct a high-impact portfolio validated by industry hiring managers.',
+            list: [
+              'Phase 1: Foundational Python, SQL, Data Wrangling & Analytical Thinking.',
+              'Phase 2: Machine Learning Algorithms, Model Deployment & API Construction.',
+              'Phase 3: Deep Learning, Generative AI & Autonomous Agent Orchestration.',
+              'Phase 4: Capstone Engineering Build & Guaranteed Placement Assistance.'
+            ]
+          },
+          {
+            heading: '5. Key Strategic Takeaways & Next Steps for Learners',
+            text: `Mastering ${selectedTopic} represents one of the most lucrative career investments in today's digital economy. As enterprise demand continues to climb, early movers who acquire certified, production-ready skills will secure prime positions as technical leaders.`,
+            para2: 'Explore DV Analytics flexible learning programs, industry masterclasses, and hands-on bootcamps designed to fast-track your career in Data Science, AI, and Cybersecurity.',
+            list: [
+              'Work on real-world industry datasets mentored by enterprise tech architects.',
+              'Gain lifetime access to career mentorship, resume building, and interview preparation.',
+              'Join a thriving alumni network working across top global technology organizations.'
             ]
           }
         ]
@@ -170,7 +201,7 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
       const updatedCustom = [newDraft, ...customDrafts];
       setCustomDrafts(updatedCustom);
       syncStateGlobally({ customDrafts: updatedCustom });
-      setNotificationMsg(`✨ Success! Unique AI Draft "${newDraft.title.slice(0, 35)}..." generated and added to Pending Queue!`);
+      setNotificationMsg(`✨ Success! Rich 5-Section AI Draft "${newDraft.title.slice(0, 35)}..." generated & added to Queue!`);
     } catch (err) {
       setNotificationMsg('❌ Error generating AI draft. Please try again.');
     } finally {
@@ -215,6 +246,9 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
     setTimeout(() => setNotificationMsg(null), 3000);
   };
 
+  const defaultFallbackImage =
+    'https://images.unsplash.com/photo-1677442136019-21780efad99a?auto=format&fit=crop&w=1200&h=630&q=80';
+
   const handlePublishDraft = (draft: any) => {
     const nextPublishedId = `blog-${28 + userPublishedDrafts.length + 1}`;
     const publishedItem = {
@@ -224,8 +258,9 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
       excerpt: draft.excerpt,
       date: draft.date,
       author: 'DV Editorial Team',
-      image: draft.image,
+      image: draft.image && !draft.image.startsWith('data:') ? draft.image : defaultFallbackImage,
       readTime: draft.readTime,
+      sections: draft.sections,
       isAiGenerated: true,
     };
 
@@ -652,8 +687,11 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
                 }}
               >
                 <img
-                  src={draft.image}
+                  src={draft.image && !draft.image.startsWith('data:') ? draft.image : defaultFallbackImage}
                   alt={draft.title}
+                  onError={(e) => {
+                    e.currentTarget.src = defaultFallbackImage;
+                  }}
                   style={{ width: '120px', height: '64px', objectFit: 'cover', borderRadius: '0.5rem' }}
                 />
 
