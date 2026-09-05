@@ -61,6 +61,7 @@ export const getPageFromPath = (pathname: string) => {
   if (normalizedPath === '/enroll') return 'enroll';
   if (parts[0] === 'enroll' && parts[1]) return `enroll-${courseIdBySlug[parts[1]] ?? parts[1]}`;
   if (normalizedPath === '/payment' || normalizedPath === '/payment/index.php') return 'payment';
+  if (normalizedPath === '/admin') return 'admin';
   if (parts[0] && seoLandingPageIdBySlug[parts[0]]) return seoLandingPageIdBySlug[parts[0]];
 
   return 'not-found';
@@ -76,6 +77,7 @@ export const getPathFromPage = (pageId: string) => {
   if (pageId === 'faqs') return '/faqs';
   if (pageId === 'enroll') return '/enroll';
   if (pageId === 'payment') return '/payment';
+  if (pageId === 'admin') return '/admin';
   if (pageId === 'not-found') return '/404';
 
   if (pageId.startsWith('course-')) {

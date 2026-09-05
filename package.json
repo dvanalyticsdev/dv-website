@@ -7,6 +7,7 @@
     "start": "vite",
     "dev": "vite",
     "build": "tsc -b && vite build && node --experimental-strip-types scripts/generate-static-seo.mjs",
+    "generate:blog": "node --experimental-strip-types scripts/create-ai-blog.mjs",
     "lint": "oxlint",
     "preview": "vite preview"
   },

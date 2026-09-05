@@ -1,6 +1,7 @@
 import React from 'react';
 import { blogsData } from '../data/blogsData';
 import { blogIdBySlug, blogSlugById } from '../data/blogMeta';
+import { aiBlogQueue } from '../data/aiBlogQueue';
 
 interface BlogsPageProps {
   activePage?: string;
@@ -16,12 +17,55 @@ export const BlogsPage: React.FC<BlogsPageProps> = ({
   const activeBlogValue = activePage.startsWith('blog-') ? activePage.replace('blog-', '') : null;
   const activeBlogId = activeBlogValue ? blogIdBySlug[activeBlogValue] ?? activeBlogValue : null;
 
-  const activeBlog = blogsData.find((b) => b.id === activeBlogId);
+  const draftMatch = aiBlogQueue.find(
+    (d) => d.slug === activeBlogValue || d.id === activeBlogId || d.slug === activeBlogId
+  );
+
+  const activeBlog =
+    blogsData.find((b) => b.id === activeBlogId || (b as any).slug === activeBlogValue) ||
+    (draftMatch
+      ? {
+          id: draftMatch.id,
+          slug: draftMatch.slug,
+          title: draftMatch.title,
+          excerpt: draftMatch.excerpt,
+          date: draftMatch.date,
+          author: draftMatch.author,
+          image: draftMatch.image,
+          readTime: draftMatch.readTime,
+          sections: draftMatch.sections,
+          isDraftPreview: true,
+        }
+      : undefined);
+
   const getBlogPath = (blogId: string) => `/journal/${blogSlugById[blogId] ?? blogId}`;
 
   if (activeBlog) {
     return (
       <div className="blog-reader-wrapper">
+        {(activeBlog as any).isDraftPreview && (
+          <div
+            style={{
+              background: '#fef3c7',
+              color: '#92400e',
+              borderBottom: '1px solid #fde68a',
+              padding: '0.85rem 1rem',
+              textAlign: 'center',
+              fontWeight: '700',
+              fontSize: '0.925rem',
+              position: 'sticky',
+              top: '80px',
+              zIndex: 999,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '0.5rem',
+            }}
+          >
+            <span>⚠️ AI DRAFT PREVIEW MODE</span>
+            <span style={{ fontWeight: '400', opacity: 0.9 }}>(Awaiting 1-Click Admin Approval)</span>
+          </div>
+        )}
         {/* Hero Section */}
         <section 
           className="blog-reader-hero"

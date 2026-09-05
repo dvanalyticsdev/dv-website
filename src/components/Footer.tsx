@@ -209,7 +209,7 @@ export const Footer: React.FC = () => {
         {/* Footer Bottom copyright matching site layout */}
         <div className="footer-bottom-bar">
           <p className="footer-copyright-text">
-            Copyright © 2026 DV Analytics
+            Copyright © 2026 DV Analytics • <a href="/admin" style={{ color: 'inherit', opacity: 0.6, textDecoration: 'none' }}>Admin Portal</a>
           </p>
         </div>
 
