@@ -19,7 +19,7 @@ const trackingParamNames = [
 ];
 
 const attributionStorageKey = 'dv_attribution';
-const gaMeasurementId = 'G-827GCWFLV6';
+const gaMeasurementId = (import.meta.env.VITE_GA_MEASUREMENT_ID as string | undefined) || 'G-827GCWFLV6';
 let lastTrackedPageLocation = '';
 
 export const getAttribution = () => {
@@ -62,9 +62,12 @@ export const initAnalytics = () => {
   const gtmId = import.meta.env.VITE_GTM_ID as string | undefined;
 
   window.dataLayer = window.dataLayer || [];
-  window.gtag = window.gtag || ((...args: unknown[]) => {
-    window.dataLayer?.push(args);
-  });
+  if (!window.gtag) {
+    window.gtag = function () {
+      // eslint-disable-next-line prefer-rest-params
+      window.dataLayer?.push(arguments);
+    };
+  }
 
   if (gtmId && !document.querySelector(`script[data-gtm-id="${gtmId}"]`)) {
     window.dataLayer.push({ 'gtm.start': Date.now(), event: 'gtm.js' });
@@ -78,13 +81,11 @@ export const initAnalytics = () => {
 
 export const trackEvent = (eventName: string, params: AnalyticsParams = {}) => {
   const eventPayload = {
-    event: eventName,
     page_path: window.location.pathname,
     page_location: window.location.href,
     ...params,
   };
 
-  window.dataLayer?.push(eventPayload);
   window.gtag?.('event', eventName, eventPayload);
 };
 
@@ -102,6 +103,10 @@ export const trackPageView = (pageId: string) => {
     page_title: document.title,
   };
 
-  window.dataLayer?.push({ event: 'page_view', ...payload });
-  window.gtag?.('config', gaMeasurementId, payload);
+  window.gtag?.('event', 'page_view', payload);
+  window.gtag?.('config', gaMeasurementId, {
+    page_path: window.location.pathname,
+    page_location: window.location.href,
+    page_title: document.title,
+  });
 };
