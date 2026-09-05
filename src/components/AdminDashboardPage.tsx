@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { blogMeta } from '../data/blogMeta';
 import { aiBlogQueue } from '../data/aiBlogQueue';
+import { fetchGlobalAdminState, saveGlobalAdminState, type AdminGlobalState } from '../utils/adminSync';
 
 interface AdminDashboardPageProps {
   onNavigate: (pageId: string) => void;
@@ -16,48 +17,44 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
   const [passcode, setPasscode] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
 
-  // OFF by default until explicitly enabled by Admin
-  const [isAutoWriterActive, setIsAutoWriterActive] = useState<boolean>(() => {
-    const saved = localStorage.getItem('dv_auto_writer_active');
-    return saved !== null ? saved === 'true' : false;
-  });
-
-  // Scheduled daily time (Default: 13:00 IST / 1:00 PM IST)
-  const [scheduledTime, setScheduledTime] = useState<string>(() => {
-    return localStorage.getItem('dv_auto_writer_time') || '13:00';
-  });
-
+  const [isAutoWriterActive, setIsAutoWriterActive] = useState<boolean>(false);
+  const [scheduledTime, setScheduledTime] = useState<string>('13:00');
   const [searchTerm, setSearchTerm] = useState('');
 
-  // Discarded draft IDs stored in state & localStorage
-  const [discardedDraftIds, setDiscardedDraftIds] = useState<string[]>(() => {
-    try {
-      const saved = localStorage.getItem('dv_discarded_ai_drafts');
-      return saved ? JSON.parse(saved) : [];
-    } catch {
-      return [];
-    }
-  });
-
-  // Published draft items stored in state & localStorage
-  const [userPublishedDrafts, setUserPublishedDrafts] = useState<any[]>(() => {
-    try {
-      const saved = localStorage.getItem('dv_published_ai_drafts');
-      return saved ? JSON.parse(saved) : [];
-    } catch {
-      return [];
-    }
-  });
-
+  const [discardedDraftIds, setDiscardedDraftIds] = useState<string[]>([]);
+  const [userPublishedDrafts, setUserPublishedDrafts] = useState<any[]>([]);
   const [notificationMsg, setNotificationMsg] = useState<string | null>(null);
 
+  // Fetch live global state from Cloudflare KV on mount & periodically
   useEffect(() => {
-    localStorage.setItem('dv_auto_writer_active', String(isAutoWriterActive));
-  }, [isAutoWriterActive]);
+    fetchGlobalAdminState().then((state) => {
+      setIsAutoWriterActive(state.isAutoWriterActive);
+      setScheduledTime(state.scheduledTime);
+      setDiscardedDraftIds(state.discardedDraftIds);
+      setUserPublishedDrafts(state.publishedDrafts);
+    });
+  }, []);
 
-  useEffect(() => {
-    localStorage.setItem('dv_auto_writer_time', scheduledTime);
-  }, [scheduledTime]);
+  const syncStateGlobally = (updatedState: Partial<AdminGlobalState>) => {
+    const fullState: AdminGlobalState = {
+      isAutoWriterActive: updatedState.isAutoWriterActive ?? isAutoWriterActive,
+      scheduledTime: updatedState.scheduledTime ?? scheduledTime,
+      discardedDraftIds: updatedState.discardedDraftIds ?? discardedDraftIds,
+      publishedDrafts: updatedState.publishedDrafts ?? userPublishedDrafts,
+    };
+    saveGlobalAdminState(fullState);
+  };
+
+  const handleToggleAutoWriter = () => {
+    const nextState = !isAutoWriterActive;
+    setIsAutoWriterActive(nextState);
+    syncStateGlobally({ isAutoWriterActive: nextState });
+  };
+
+  const handleScheduledTimeChange = (time: string) => {
+    setScheduledTime(time);
+    syncStateGlobally({ scheduledTime: time });
+  };
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
@@ -79,7 +76,7 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
   const handleDiscardDraft = (id: string, title: string) => {
     const updated = [...discardedDraftIds, id];
     setDiscardedDraftIds(updated);
-    localStorage.setItem('dv_discarded_ai_drafts', JSON.stringify(updated));
+    syncStateGlobally({ discardedDraftIds: updated });
     setNotificationMsg(`🗑️ Draft "${title.slice(0, 30)}..." discarded.`);
     setTimeout(() => setNotificationMsg(null), 3000);
   };
@@ -100,11 +97,14 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
 
     const updatedPublished = [...userPublishedDrafts, publishedItem];
     setUserPublishedDrafts(updatedPublished);
-    localStorage.setItem('dv_published_ai_drafts', JSON.stringify(updatedPublished));
 
     const updatedDiscarded = [...discardedDraftIds, draft.id];
     setDiscardedDraftIds(updatedDiscarded);
-    localStorage.setItem('dv_discarded_ai_drafts', JSON.stringify(updatedDiscarded));
+
+    syncStateGlobally({
+      publishedDrafts: updatedPublished,
+      discardedDraftIds: updatedDiscarded,
+    });
 
     setNotificationMsg(`✅ Article "${draft.title.slice(0, 30)}..." published live under DV Editorial Team!`);
     setTimeout(() => setNotificationMsg(null), 3500);
@@ -328,7 +328,7 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
               Auto Generator
             </p>
             <button
-              onClick={() => setIsAutoWriterActive(!isAutoWriterActive)}
+              onClick={handleToggleAutoWriter}
               style={{
                 background: isAutoWriterActive ? '#22c55e' : '#94a3b8',
                 color: '#ffffff',
@@ -353,7 +353,7 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
               <input
                 type="time"
                 value={scheduledTime}
-                onChange={(e) => setScheduledTime(e.target.value)}
+                onChange={(e) => handleScheduledTimeChange(e.target.value)}
                 style={{
                   padding: '0.2rem 0.4rem',
                   fontSize: '0.85rem',
