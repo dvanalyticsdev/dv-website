@@ -27,7 +27,6 @@ const AlumniPage = lazy(() => import('./components/AlumniPage').then((module) =>
 const CompaniesSection = lazy(() => import('./components/CompaniesSection').then((module) => ({ default: module.CompaniesSection })));
 const SampleVideoSection = lazy(() => import('./components/SampleVideoSection').then((module) => ({ default: module.SampleVideoSection })));
 const SeoLandingPage = lazy(() => import('./components/SeoLandingPage').then((module) => ({ default: module.SeoLandingPage })));
-const AdminDashboardPage = lazy(() => import('./components/AdminDashboardPage').then((module) => ({ default: module.AdminDashboardPage })));
 
 const heroPosterImages = [
   '/hero-stories/fde-student.jpg',
@@ -235,13 +234,6 @@ function App() {
       );
     }
 
-    if (activePage === 'admin') {
-      return (
-        <div data-section="admin">
-          <AdminDashboardPage onNavigate={navigateToPage} />
-        </div>
-      );
-    }
 
     if (activePage === 'not-found') {
       return (

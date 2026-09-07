@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import './GetACallButton.css';
-import { appendAttributionToPayload, getAttribution, trackEvent } from '../utils/analytics';
+import { getAttribution, trackEvent } from '../utils/analytics';
 
 const COURSE_OPTIONS = [
   'Advanced Program in Industrial Data Science & AI (APIDS)',
@@ -17,7 +17,6 @@ const COURSE_OPTIONS = [
 
 const DEFAULT_GOOGLE_SHEET_WEBHOOK =
   'https://script.google.com/macros/s/AKfycbwXqmtKC4zYtmWUJT71D0Z7ZzBKp7qPLLDeOTGkbH5P1FVLN6f_VZ4Y7y6lhBuqvBc/exec';
-const CRM_WEBHOOK_URL = 'https://crm.dvanalyticsmds.in/api/webhook/elementor-lead';
 
 interface FormState {
   name: string;
@@ -124,28 +123,6 @@ export const GetACallButton: React.FC = () => {
       } catch (err) {
         console.warn('Google Sheet submission failed:', err);
       }
-    }
-
-    // Always send to CRM webhook as well
-    try {
-      const crmParams = new URLSearchParams();
-      crmParams.set('form_id', 'dv_website_get_a_call_now');
-      crmParams.set('form_name', 'DV Website Get a Call Now Button');
-      crmParams.set('lead_type', 'call_request');
-      crmParams.set('name', formData.name.trim());
-      crmParams.set('phone', formData.phone.trim());
-      crmParams.set('course', formData.course);
-      crmParams.set('course_interested', formData.course);
-      crmParams.set('page_url', window.location.href);
-      appendAttributionToPayload(crmParams);
-
-      await fetch(CRM_WEBHOOK_URL, {
-        method: 'POST',
-        body: crmParams,
-      });
-      postSuccess = true;
-    } catch (err) {
-      console.warn('CRM webhook submission warning:', err);
     }
 
     setIsSubmitting(false);

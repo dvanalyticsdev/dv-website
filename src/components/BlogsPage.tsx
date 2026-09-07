@@ -1,8 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { blogsData } from '../data/blogsData';
 import { blogIdBySlug, blogSlugById } from '../data/blogMeta';
-import { aiBlogQueue } from '../data/aiBlogQueue';
-import { fetchGlobalAdminState, subscribeToAdminState } from '../utils/adminSync';
 
 interface BlogsPageProps {
   activePage?: string;
@@ -15,103 +13,27 @@ export const BlogsPage: React.FC<BlogsPageProps> = ({
   onOpenBlog,
   onBackToBlogs,
 }) => {
-  const [customDrafts, setCustomDrafts] = useState<any[]>([]);
-  const [publishedDrafts, setPublishedDrafts] = useState<any[]>([]);
-
   const defaultFallbackImage =
     'https://images.unsplash.com/photo-1677442136019-21780efad99a?auto=format&fit=crop&w=1200&h=630&q=80';
-
-  useEffect(() => {
-    fetchGlobalAdminState().then((state) => {
-      if (Array.isArray(state.customDrafts)) setCustomDrafts(state.customDrafts);
-      if (Array.isArray(state.publishedDrafts)) setPublishedDrafts(state.publishedDrafts);
-    });
-
-    const unsubscribe = subscribeToAdminState((state) => {
-      if (Array.isArray(state.customDrafts)) setCustomDrafts(state.customDrafts);
-      if (Array.isArray(state.publishedDrafts)) setPublishedDrafts(state.publishedDrafts);
-    });
-
-    return () => unsubscribe();
-  }, []);
 
   const activeBlogValue = activePage.startsWith('blog-') ? activePage.replace('blog-', '') : null;
   const activeBlogId = activeBlogValue ? blogIdBySlug[activeBlogValue] ?? activeBlogValue : null;
 
   const normalizedActiveVal = activeBlogValue ? activeBlogValue.toLowerCase() : '';
-  const normalizedActiveId = activeBlogId ? activeBlogId.toLowerCase() : '';
 
-  // Merge static blogsData with user published drafts from Cloudflare KV
-  const allPublishedBlogs = [...blogsData];
-  for (const pub of publishedDrafts) {
-    if (pub && pub.id && !allPublishedBlogs.some((b) => b.id === pub.id || (b as any).slug === pub.slug)) {
-      allPublishedBlogs.push(pub);
-    }
-  }
-
-  const allDrafts = [...aiBlogQueue, ...customDrafts];
-  const draftMatch = allDrafts.find(
-    (d) =>
-      (d.slug && d.slug.toLowerCase() === normalizedActiveVal) ||
-      (d.id && d.id.toLowerCase() === normalizedActiveId) ||
-      (d.slug && d.slug.toLowerCase() === normalizedActiveId) ||
-      (d.id && d.id.toLowerCase() === normalizedActiveVal)
+  const activeBlog = blogsData.find(
+    (b) =>
+      b.id === activeBlogId ||
+      (b as any).slug === activeBlogValue ||
+      ((b as any).slug && (b as any).slug.toLowerCase() === normalizedActiveVal) ||
+      (b.id && b.id.toLowerCase() === normalizedActiveVal)
   );
-
-  const activeBlog =
-    allPublishedBlogs.find(
-      (b) =>
-        b.id === activeBlogId ||
-        (b as any).slug === activeBlogValue ||
-        ((b as any).slug && (b as any).slug.toLowerCase() === normalizedActiveVal) ||
-        (b.id && b.id.toLowerCase() === normalizedActiveVal)
-    ) ||
-    (draftMatch
-      ? {
-          id: draftMatch.id,
-          slug: draftMatch.slug,
-          title: draftMatch.title,
-          excerpt: draftMatch.excerpt,
-          date: draftMatch.date,
-          author: draftMatch.author,
-          image:
-            draftMatch.image && !draftMatch.image.startsWith('data:')
-              ? draftMatch.image
-              : defaultFallbackImage,
-          readTime: draftMatch.readTime,
-          sections: draftMatch.sections,
-          isDraftPreview: true,
-        }
-      : undefined);
 
   const getBlogPath = (blog: any) => `/journal/${blog.slug || blogSlugById[blog.id] || blog.id}`;
 
   if (activeBlog) {
     return (
       <div className="blog-reader-wrapper">
-        {(activeBlog as any).isDraftPreview && (
-          <div
-            style={{
-              background: '#fef3c7',
-              color: '#92400e',
-              borderBottom: '1px solid #fde68a',
-              padding: '0.85rem 1rem',
-              textAlign: 'center',
-              fontWeight: '700',
-              fontSize: '0.925rem',
-              position: 'sticky',
-              top: '80px',
-              zIndex: 999,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '0.5rem',
-            }}
-          >
-            <span>⚠️ AI DRAFT PREVIEW MODE</span>
-            <span style={{ fontWeight: '400', opacity: 0.9 }}>(Awaiting 1-Click Admin Approval)</span>
-          </div>
-        )}
         {/* Hero Section */}
         <section 
           className="blog-reader-hero"
@@ -204,7 +126,7 @@ export const BlogsPage: React.FC<BlogsPageProps> = ({
       {/* Listing Grid */}
       <section className="blogs-list-section container">
         <div className="blogs-grid">
-          {allPublishedBlogs.map((blog) => (
+          {blogsData.map((blog) => (
             <article key={blog.id} className="blog-card glow-card">
               <div className="blog-card-img-wrapper">
                 <img

@@ -135,11 +135,6 @@ const basePages: Record<string, { title: string; description: string; image?: st
     description: 'Secure payment page for DV Analytics learners.',
     noindex: true,
   },
-  admin: {
-    title: 'Admin Control Portal | DV Analytics',
-    description: 'Internal administration portal for DV Analytics.',
-    noindex: true,
-  },
   'not-found': {
     title: 'Page Not Found | DV Analytics',
     description: 'The DV Analytics page you requested could not be found.',
