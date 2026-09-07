@@ -94,6 +94,7 @@ for (const route of generatedRoutes) {
 
 const getRoutePriorityAndFreq = (route) => {
   if (route === '/') return { priority: '1.0', changefreq: 'daily' };
+  if (route === '/upcoming-batches') return { priority: '0.9', changefreq: 'daily' };
   if (route.startsWith('/courses')) return { priority: '0.9', changefreq: 'weekly' };
   if (route.startsWith('/journal')) return { priority: '0.8', changefreq: 'weekly' };
   if (route.startsWith('/services')) return { priority: '0.8', changefreq: 'monthly' };

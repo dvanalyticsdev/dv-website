@@ -87,6 +87,23 @@ export const trackEvent = (eventName: string, params: AnalyticsParams = {}) => {
   };
 
   window.gtag?.('event', eventName, eventPayload);
+
+  // Automatically dispatch standard GA4 Key Events (conversions) for lead forms
+  if (['submit_get_a_call_form', 'submit_enroll_form', 'submit_brochure_form'].includes(eventName)) {
+    const leadType = eventName.replace('submit_', '').replace('_form', '');
+    window.gtag?.('event', 'generate_lead', {
+      ...eventPayload,
+      lead_type: leadType,
+      value: 1,
+      currency: 'INR',
+    });
+  } else if (['click_phone', 'click_whatsapp', 'click_email'].includes(eventName)) {
+    const contactMethod = eventName.replace('click_', '');
+    window.gtag?.('event', 'contact', {
+      ...eventPayload,
+      contact_method: contactMethod,
+    });
+  }
 };
 
 export const trackPageView = (pageId: string) => {

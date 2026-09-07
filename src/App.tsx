@@ -27,6 +27,7 @@ const AlumniPage = lazy(() => import('./components/AlumniPage').then((module) =>
 const CompaniesSection = lazy(() => import('./components/CompaniesSection').then((module) => ({ default: module.CompaniesSection })));
 const SampleVideoSection = lazy(() => import('./components/SampleVideoSection').then((module) => ({ default: module.SampleVideoSection })));
 const SeoLandingPage = lazy(() => import('./components/SeoLandingPage').then((module) => ({ default: module.SeoLandingPage })));
+const UpcomingBatchesPage = lazy(() => import('./components/UpcomingBatchesPage').then((module) => ({ default: module.UpcomingBatchesPage })));
 
 const heroPosterImages = [
   '/hero-stories/fde-student.jpg',
@@ -230,6 +231,20 @@ function App() {
               Open Payment Page
             </a>
           </section>
+        </div>
+      );
+    }
+
+    if (activePage === 'upcoming-batches') {
+      return (
+        <div data-section="upcoming-batches">
+          <UpcomingBatchesPage
+            onNavigate={navigateToPage}
+            onOpenGetACallModal={() => {
+              const btn = document.querySelector('.get-call-btn-trigger') as HTMLButtonElement | null;
+              if (btn) btn.click();
+            }}
+          />
         </div>
       );
     }

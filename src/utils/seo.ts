@@ -135,6 +135,10 @@ const basePages: Record<string, { title: string; description: string; image?: st
     description: 'Secure payment page for DV Analytics learners.',
     noindex: true,
   },
+  'upcoming-batches': {
+    title: 'Upcoming Batches (Sep 12) | APIDS, APIDA & FDE | DV Analytics',
+    description: 'Explore upcoming industrial batches for Data Science (APIDS), Data Analytics (APIDA), and AI Forward Deployment Engineering (FDE). Reserve your seat for September 12th.',
+  },
   'not-found': {
     title: 'Page Not Found | DV Analytics',
     description: 'The DV Analytics page you requested could not be found.',
@@ -418,7 +422,7 @@ export const getSeoForPage = (pageId: string) => {
   }
 
   const base = basePages[pageId] ?? basePages['not-found'];
-  if (['courses', 'services', 'about', 'alumni', 'blogs', 'faqs'].includes(pageId)) {
+  if (['courses', 'services', 'about', 'alumni', 'blogs', 'faqs', 'upcoming-batches'].includes(pageId)) {
     schema.push(breadcrumbSchema([
       { name: 'Home', path: '/' },
       { name: base.title.replace(` | ${siteName}`, '').replace(' | DV Analytics', ''), path },
@@ -478,5 +482,6 @@ export const sitemapRoutes = [
   '/meet-our-alumni',
   '/journal',
   ...blogMeta.map(getBlogPath),
+  '/upcoming-batches',
   '/faqs',
 ];

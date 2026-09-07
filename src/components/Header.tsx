@@ -41,6 +41,7 @@ export const Header: React.FC<HeaderProps> = ({
       })),
     },
   ].filter((group) => group.courses.length > 0);
+
   const activeCourseId = activePage.startsWith('course-') ? activePage.replace('course-', '') : null;
   const activeCourse = getCourseMeta(activeCourseId ?? undefined);
 
@@ -333,6 +334,20 @@ export const Header: React.FC<HeaderProps> = ({
 
       <li className="nav-item">
         <a
+          href={getPathFromPage('upcoming-batches')}
+          className={activePage === 'upcoming-batches' ? 'active' : ''}
+          onClick={(e) => {
+            e.preventDefault();
+            setMobileMenuOpen(false);
+            if (onNavClick) onNavClick('upcoming-batches');
+          }}
+        >
+          Upcoming Batches
+        </a>
+      </li>
+
+      <li className="nav-item">
+        <a
           href={getPathFromPage('blogs')}
           className={activePage === 'blogs' ? 'active' : ''}
           onClick={(e) => {
@@ -365,232 +380,239 @@ export const Header: React.FC<HeaderProps> = ({
     <>
       <header className="site-header" data-section="header">
         <div className="header-container">
-        <div className="desktop-header-row">
-          <a href={getPathFromPage('home')} className="logo-link" onClick={(e) => {
-            e.preventDefault();
-            setMobileMenuOpen(false);
-            if (onNavClick) onNavClick('home');
-          }}>
-            <img src="/logo.png" alt="DV Analytics Logo" className="logo-image" />
-          </a>
-
-          <nav className="nav-panel desktop-nav-panel">
-            {renderNavList()}
-          </nav>
-
-          <div className="header-course-actions">
-            {activeCourse ? (
-              <>
-                <button
-                  className="btn-enroll-header"
-                  onClick={() => onCourseEnrollClick?.(activeCourse.id)}
-                >
-                  Enroll Now
-                </button>
-                {renderContactActions('desktop')}
-                <button
-                  className="btn-header-brochure"
-                  onClick={() => onCourseBrochureClick?.(activeCourse.id)}
-                  disabled={!activeCourse.brochurePath}
-                >
-                  {activeCourse.brochurePath ? 'Download Brochure' : 'Brochure Coming Soon'}
-                </button>
-              </>
-            ) : (
-              <>
-                <button
-                  className="btn-enroll-header"
-                  onClick={() => {
-                    if (onNavClick) onNavClick('enroll');
-                  }}
-                >
-                  Enroll Now
-                </button>
-                {renderContactActions('desktop')}
-              </>
-            )}
-          </div>
-        </div>
-
-        <div className="mobile-header-stack">
-          <div className="mobile-header-row">
-            {/* 1. Left: Hamburger menu */}
-            <button
-              type="button"
-              className="nav-toggle-btn"
-              aria-label={mobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
-              aria-expanded={mobileMenuOpen}
-              onClick={() => {
-                setMobileMenuOpen((prev) => !prev);
-                setMobileServicesOpen(false); // Close services when opening menu
-              }}
-            >
-              <span></span>
-              <span></span>
-              <span></span>
-            </button>
-
-            {/* 2. Center: Logo */}
-            <a href={getPathFromPage('home')} className="logo-link mobile-logo-link" onClick={(e) => {
+          <div className="desktop-header-row">
+            <a href={getPathFromPage('home')} className="logo-link" onClick={(e) => {
               e.preventDefault();
               setMobileMenuOpen(false);
-              setMobileServicesOpen(false);
               if (onNavClick) onNavClick('home');
             }}>
-              <img src="/logo.png" alt="DV Analytics Logo" className="logo-image mobile-logo-image" />
+              <img src="/logo.png" alt="DV Analytics Logo" className="logo-image" />
             </a>
 
-            {/* 3. Right: Enroll Now Button */}
-            <button
-              type="button"
-              className="btn-enroll-header mobile-top-enroll-btn"
-              onClick={() => {
-                setMobileMenuOpen(false);
-                if (activeCourse) {
-                  onCourseEnrollClick?.(activeCourse.id);
-                } else if (onNavClick) {
-                  onNavClick('enroll');
-                }
-              }}
-            >
-              Enroll Now
-            </button>
+            <nav className="nav-panel desktop-nav-panel">
+              {renderNavList()}
+            </nav>
+
+            <div className="header-course-actions">
+              {activeCourse ? (
+                <>
+                  <button
+                    className="btn-enroll-header"
+                    onClick={() => onCourseEnrollClick?.(activeCourse.id)}
+                  >
+                    Enroll Now
+                  </button>
+                  {renderContactActions('desktop')}
+                  <button
+                    className="btn-header-brochure"
+                    onClick={() => onCourseBrochureClick?.(activeCourse.id)}
+                    disabled={!activeCourse.brochurePath}
+                  >
+                    {activeCourse.brochurePath ? 'Download Brochure' : 'Brochure Coming Soon'}
+                  </button>
+                </>
+              ) : (
+                <>
+                  <button
+                    className="btn-enroll-header"
+                    onClick={() => {
+                      if (onNavClick) onNavClick('enroll');
+                    }}
+                  >
+                    Enroll Now
+                  </button>
+                  {renderContactActions('desktop')}
+                </>
+              )}
+            </div>
           </div>
 
-          {/* Drawer Menu Panel */}
-          <nav className={`nav-panel mobile-nav-panel ${mobileMenuOpen ? 'mobile-open' : ''}`}>
-            <ul className="nav-list">
-              <li 
-                className="nav-item dropdown-container courses-dropdown-container"
+          <div className="mobile-header-stack">
+            <div className="mobile-header-row">
+              {/* 1. Left: Hamburger menu */}
+              <button
+                type="button"
+                className="nav-toggle-btn"
+                aria-label={mobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
+                aria-expanded={mobileMenuOpen}
                 onClick={() => {
-                  const nextOpen = !mobileCoursesOpen;
-                  setMobileCoursesOpen(nextOpen);
-                  if (nextOpen) {
-                    setActiveCourseGroupId(courseGroups[0]?.id ?? null);
-                  } else {
-                    setActiveCourseGroupId(null);
+                  setMobileMenuOpen((prev) => !prev);
+                  setMobileServicesOpen(false);
+                }}
+              >
+                <span></span>
+                <span></span>
+                <span></span>
+              </button>
+
+              {/* 2. Center: Logo */}
+              <a href={getPathFromPage('home')} className="logo-link mobile-logo-link" onClick={(e) => {
+                e.preventDefault();
+                setMobileMenuOpen(false);
+                setMobileServicesOpen(false);
+                if (onNavClick) onNavClick('home');
+              }}>
+                <img src="/logo.png" alt="DV Analytics Logo" className="logo-image mobile-logo-image" />
+              </a>
+
+              {/* 3. Right: Enroll Now Button */}
+              <button
+                type="button"
+                className="btn-enroll-header mobile-top-enroll-btn"
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  if (activeCourse) {
+                    onCourseEnrollClick?.(activeCourse.id);
+                  } else if (onNavClick) {
+                    onNavClick('enroll');
                   }
                 }}
               >
-                <a
-                  href={getPathFromPage('courses')}
-                  className={`dropdown-trigger ${mobileCoursesOpen ? 'open' : ''}`}
-                  aria-haspopup="true"
-                  aria-expanded={mobileCoursesOpen}
-                  aria-controls="mobile-courses-menu"
-                  onClick={(e) => {
-                    e.preventDefault();
+                Enroll Now
+              </button>
+            </div>
+
+            {/* Drawer Menu Panel */}
+            <nav className={`nav-panel mobile-nav-panel ${mobileMenuOpen ? 'mobile-open' : ''}`}>
+              <ul className="nav-list">
+                <li 
+                  className="nav-item dropdown-container courses-dropdown-container"
+                  onClick={() => {
+                    const nextOpen = !mobileCoursesOpen;
+                    setMobileCoursesOpen(nextOpen);
+                    if (nextOpen) {
+                      setActiveCourseGroupId(courseGroups[0]?.id ?? null);
+                    } else {
+                      setActiveCourseGroupId(null);
+                    }
                   }}
                 >
-                  All Courses
-                  <svg className={`chevron-icon ${mobileCoursesOpen ? 'rotated' : ''}`} viewBox="0 0 24 24">
-                    <path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="2.5" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                </a>
+                  <a
+                    href={getPathFromPage('courses')}
+                    className={`dropdown-trigger ${mobileCoursesOpen ? 'open' : ''}`}
+                    aria-haspopup="true"
+                    aria-expanded={mobileCoursesOpen}
+                    aria-controls="mobile-courses-menu"
+                  >
+                    All Courses
+                    <svg className={`chevron-icon ${mobileCoursesOpen ? 'rotated' : ''}`} viewBox="0 0 24 24">
+                      <path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="2.5" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                  </a>
 
-                <div id="mobile-courses-menu" className={`courses-dropdown-menu mobile-courses-dropdown ${mobileCoursesOpen ? 'show' : ''}`}>
-                  {renderCourseGroups('mobile')}
-                </div>
-              </li>
+                  <div id="mobile-courses-menu" className={`courses-dropdown-menu mobile-courses-dropdown ${mobileCoursesOpen ? 'show' : ''}`}>
+                    {renderCourseGroups('mobile')}
+                  </div>
+                </li>
 
-              <li 
-                className="nav-item dropdown-container services-dropdown-container"
-                onClick={() => {
-                  setMobileServicesOpen(!mobileServicesOpen);
-                }}
-              >
-                <a
-                  href={getPathFromPage('services')}
-                  className={`dropdown-trigger ${mobileServicesOpen ? 'open' : ''} ${activePage.startsWith('service-') || activePage === 'services' ? 'active' : ''}`}
-                  aria-haspopup="true"
-                  aria-expanded={mobileServicesOpen}
-                  aria-controls="mobile-services-menu"
-                  onClick={(e) => {
-                    e.preventDefault();
+                <li 
+                  className="nav-item dropdown-container services-dropdown-container"
+                  onClick={() => {
+                    setMobileServicesOpen(!mobileServicesOpen);
                   }}
                 >
-                  Services
-                  <svg className={`chevron-icon ${mobileServicesOpen ? 'rotated' : ''}`} viewBox="0 0 24 24">
-                    <path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="2.5" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                </a>
+                  <a
+                    href={getPathFromPage('services')}
+                    className={`dropdown-trigger ${mobileServicesOpen ? 'open' : ''} ${activePage.startsWith('service-') || activePage === 'services' ? 'active' : ''}`}
+                    aria-haspopup="true"
+                    aria-expanded={mobileServicesOpen}
+                    aria-controls="mobile-services-menu"
+                  >
+                    Services
+                    <svg className={`chevron-icon ${mobileServicesOpen ? 'rotated' : ''}`} viewBox="0 0 24 24">
+                      <path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="2.5" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                  </a>
 
-                <div id="mobile-services-menu" className={`services-dropdown-menu ${mobileServicesOpen ? 'show' : ''}`}>
-                  {servicesList.map((service) => (
-                    <a
-                      key={service.id}
-                      href={getPathFromPage(service.id)}
-                      className="dropdown-item-link"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        handleServiceClick(service.id);
-                      }}
-                    >
-                      {service.label}
-                    </a>
-                  ))}
-                </div>
-              </li>
+                  <div id="mobile-services-menu" className={`services-dropdown-menu ${mobileServicesOpen ? 'show' : ''}`}>
+                    {servicesList.map((service) => (
+                      <a
+                        key={service.id}
+                        href={getPathFromPage(service.id)}
+                        className="dropdown-item-link"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handleServiceClick(service.id);
+                        }}
+                      >
+                        {service.label}
+                      </a>
+                    ))}
+                  </div>
+                </li>
 
-              <li className="nav-item">
-                <a
-                  href={getPathFromPage('about')}
-                  className={activePage === 'about' ? 'active' : ''}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setMobileMenuOpen(false);
-                    if (onNavClick) onNavClick('about');
-                  }}
-                >
-                  Who We Are
-                </a>
-              </li>
+                <li className="nav-item">
+                  <a
+                    href={getPathFromPage('about')}
+                    className={activePage === 'about' ? 'active' : ''}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setMobileMenuOpen(false);
+                      if (onNavClick) onNavClick('about');
+                    }}
+                  >
+                    Who We Are
+                  </a>
+                </li>
 
-              <li className="nav-item">
-                <a
-                  href={getPathFromPage('alumni')}
-                  className={activePage === 'alumni' ? 'active' : ''}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setMobileMenuOpen(false);
-                    if (onNavClick) onNavClick('alumni');
-                  }}
-                >
-                  Meet Our Alumni
-                </a>
-              </li>
+                <li className="nav-item">
+                  <a
+                    href={getPathFromPage('alumni')}
+                    className={activePage === 'alumni' ? 'active' : ''}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setMobileMenuOpen(false);
+                      if (onNavClick) onNavClick('alumni');
+                    }}
+                  >
+                    Meet Our Alumni
+                  </a>
+                </li>
 
-              <li className="nav-item">
-                <a
-                  href={getPathFromPage('blogs')}
-                  className={activePage === 'blogs' ? 'active' : ''}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setMobileMenuOpen(false);
-                    if (onNavClick) onNavClick('blogs');
-                  }}
-                >
-                  Journal
-                </a>
-              </li>
+                <li className="nav-item">
+                  <a
+                    href={getPathFromPage('upcoming-batches')}
+                    className={activePage === 'upcoming-batches' ? 'active' : ''}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setMobileMenuOpen(false);
+                      if (onNavClick) onNavClick('upcoming-batches');
+                    }}
+                  >
+                    Upcoming Batches
+                  </a>
+                </li>
 
-              <li className="nav-item">
-                <a
-                  href={getPathFromPage('faqs')}
-                  className={activePage === 'faqs' ? 'active' : ''}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setMobileMenuOpen(false);
-                    if (onNavClick) onNavClick('faqs');
-                  }}
-                >
-                  FAQs
-                </a>
-              </li>
-            </ul>
-          </nav>
-        </div>
+                <li className="nav-item">
+                  <a
+                    href={getPathFromPage('blogs')}
+                    className={activePage === 'blogs' ? 'active' : ''}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setMobileMenuOpen(false);
+                      if (onNavClick) onNavClick('blogs');
+                    }}
+                  >
+                    Journal
+                  </a>
+                </li>
 
+                <li className="nav-item">
+                  <a
+                    href={getPathFromPage('faqs')}
+                    className={activePage === 'faqs' ? 'active' : ''}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setMobileMenuOpen(false);
+                      if (onNavClick) onNavClick('faqs');
+                    }}
+                  >
+                    FAQs
+                  </a>
+                </li>
+              </ul>
+            </nav>
+          </div>
         </div>
       </header>
 

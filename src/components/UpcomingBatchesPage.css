@@ -1,0 +1,416 @@
+/* Upcoming Batches Page Styles */
+
+.upcoming-batches-wrapper {
+  min-height: 100vh;
+  background-color: var(--bg-primary, #f8fafc);
+  color: var(--text-primary, #0f172a);
+  font-family: inherit;
+  padding-bottom: 5rem;
+}
+
+/* Hero Section */
+.ub-hero-section {
+  position: relative;
+  padding: 8rem 1rem 5rem 1rem;
+  background: linear-gradient(135deg, #0b1329 0%, #1e1b4b 50%, #0f172a 100%);
+  color: #ffffff;
+  overflow: hidden;
+  text-align: center;
+}
+
+.ub-hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 30%, rgba(99, 102, 241, 0.15), transparent 70%);
+  pointer-events: none;
+}
+
+.ub-hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.ub-urgency-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  color: #fca5a5;
+  padding: 0.4rem 1rem;
+  border-radius: 2rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+}
+
+.ub-pulse-dot {
+  width: 8px;
+  height: 8px;
+  background-color: #ef4444;
+  border-radius: 50%;
+  box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+  animation: ub-pulse 1.8s infinite;
+}
+
+@keyframes ub-pulse {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+  }
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 8px rgba(239, 68, 68, 0);
+  }
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+  }
+}
+
+.ub-hero-title {
+  font-size: clamp(2rem, 5vw, 3.25rem);
+  font-weight: 800;
+  line-height: 1.2;
+  margin-bottom: 1.25rem;
+  color: #ffffff;
+}
+
+.ub-hero-title span {
+  background: linear-gradient(135deg, #f97316 0%, #fb923c 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.ub-hero-lead {
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  color: #cbd5e1;
+  max-width: 780px;
+  margin: 0 auto 2.5rem auto;
+  line-height: 1.6;
+}
+
+/* Countdown Timer */
+.ub-timer-wrapper {
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 1.25rem;
+  padding: 1.75rem 2rem;
+  max-width: 650px;
+  margin: 0 auto 2.5rem auto;
+}
+
+.ub-timer-label {
+  font-size: 0.875rem;
+  color: #94a3b8;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 1rem;
+}
+
+.ub-timer-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+}
+
+.ub-timer-box {
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.75rem;
+  padding: 0.75rem 0.5rem;
+}
+
+.ub-timer-number {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: #f97316;
+  font-variant-numeric: tabular-nums;
+}
+
+.ub-timer-unit {
+  font-size: 0.75rem;
+  color: #94a3b8;
+  text-transform: uppercase;
+  margin-top: 0.2rem;
+}
+
+.ub-hero-actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.ub-scroll-btn {
+  background: transparent;
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 0.9rem 1.8rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.ub-scroll-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: #ffffff;
+}
+
+/* Section Header */
+.ub-section-title-area {
+  text-align: center;
+  margin-bottom: 3.5rem;
+}
+
+.ub-section-tag {
+  color: #ea580c;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.ub-section-heading {
+  font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+  font-weight: 800;
+  color: #0f172a;
+  margin-bottom: 0.75rem;
+}
+
+.ub-section-sub {
+  color: #64748b;
+  font-size: 1.05rem;
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+/* Market Trends Section */
+.ub-trends-section {
+  padding: 5rem 1rem 3rem 1rem;
+}
+
+.ub-trends-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.75rem;
+}
+
+.ub-trend-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 1rem;
+  padding: 2rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.03);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.ub-trend-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 20px -3px rgba(0, 0, 0, 0.08);
+}
+
+.ub-trend-icon-badge {
+  width: 52px;
+  height: 52px;
+  border-radius: 0.75rem;
+  background: #fff7ed;
+  color: #ea580c;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.25rem;
+}
+
+.ub-trend-card h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 0.75rem;
+}
+
+.ub-trend-card p {
+  color: #475569;
+  font-size: 0.925rem;
+  line-height: 1.6;
+  margin-bottom: 1.25rem;
+}
+
+.ub-trend-stat {
+  display: inline-block;
+  background: #f8fafc;
+  border-left: 3px solid #ea580c;
+  padding: 0.6rem 0.85rem;
+  border-radius: 0 0.5rem 0.5rem 0;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+/* Batches Section - Clean Compact Cards */
+.ub-batches-section {
+  padding: 3rem 1rem 5rem 1rem;
+}
+
+.ub-batches-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 2rem;
+}
+
+.ub-batch-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 1.25rem;
+  overflow: hidden;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.04);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 2rem;
+  transition: all 0.25s ease;
+}
+
+.ub-batch-card:hover {
+  border-color: #ea580c;
+  box-shadow: 0 12px 24px -4px rgba(234, 88, 12, 0.12);
+  transform: translateY(-3px);
+}
+
+.ub-batch-card.featured-batch {
+  border: 2px solid #ea580c;
+  background: linear-gradient(180deg, #fffcfb 0%, #ffffff 100%);
+}
+
+.ub-batch-top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.25rem;
+}
+
+.ub-program-code {
+  background: #eff6ff;
+  color: #1d4ed8;
+  font-size: 0.75rem;
+  font-weight: 800;
+  padding: 0.25rem 0.65rem;
+  border-radius: 0.375rem;
+  letter-spacing: 0.05em;
+}
+
+.ub-seat-badge {
+  background: #fef2f2;
+  color: #dc2626;
+  border: 1px solid #fca5a5;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.25rem 0.65rem;
+  border-radius: 1rem;
+}
+
+.ub-batch-title {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #0f172a;
+  line-height: 1.35;
+  margin-bottom: 0.75rem;
+}
+
+.ub-batch-summary {
+  color: #475569;
+  font-size: 0.925rem;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+}
+
+.ub-card-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: auto;
+}
+
+.ub-btn-view-course {
+  width: 100%;
+  background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%);
+  color: #ffffff;
+  border: none;
+  padding: 0.85rem 1.25rem;
+  border-radius: 0.5rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(234, 88, 12, 0.2);
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+.ub-btn-view-course:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 15px rgba(234, 88, 12, 0.3);
+}
+
+.ub-btn-callback {
+  width: 100%;
+  background: #ffffff;
+  color: #334155;
+  border: 1px solid #cbd5e1;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease;
+  text-align: center;
+}
+
+.ub-btn-callback:hover {
+  background: #f8fafc;
+  border-color: #94a3b8;
+  color: #0f172a;
+}
+
+/* Bottom CTA Banner */
+.ub-cta-banner {
+  background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+  border-radius: 1.5rem;
+  padding: 3.5rem 2rem;
+  color: #ffffff;
+  text-align: center;
+  margin-top: 3rem;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+.ub-cta-banner h2 {
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+  font-weight: 800;
+  margin-bottom: 0.75rem;
+}
+
+.ub-cta-banner p {
+  color: #cbd5e1;
+  font-size: 1.05rem;
+  max-width: 650px;
+  margin: 0 auto 2rem auto;
+}
+
+@media (max-width: 640px) {
+  .ub-timer-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
