@@ -295,6 +295,58 @@ export const seoLandingPages: SeoLandingPage[] = [
       },
     ],
   },
+  {
+    id: 'lp-generative-ai-data-analytics-course-bhubaneswar',
+    slug: 'generative-ai-data-analytics-course-bhubaneswar',
+    title: 'Generative AI & Data Analytics Course in Bhubaneswar | DV Analytics',
+    eyebrow: 'Bhubaneswar & Odisha Training',
+    heading: 'Generative AI & Data Analytics Course in Bhubaneswar',
+    description:
+      'Master Generative AI, Python, SQL, Power BI, LLMs & Agentic AI in Bhubaneswar. Get hands-on training, industry projects, transparent course fees, and 100% placement assistance.',
+    image: '/office-bg/bhubneshwar.png',
+    primaryCourseId: 'genai',
+    bullets: [
+      'Top-ranked Generative AI & Data Analytics institute in Bhubaneswar & Odisha',
+      'Hands-on training in SQL, Python, Power BI, LLMs, RAG & Agentic AI',
+      'Real-world industry projects across finance, healthcare, and retail',
+      '100% placement assistance, resume building, and mock interviews',
+      'Transparent course fees with flexible installment/EMI plans',
+    ],
+    sections: [
+      {
+        title: 'Why Study Generative AI & Data Analytics in Bhubaneswar',
+        body:
+          'Bhubaneswar is rapidly emerging as a major technology hub in Eastern India. Combining traditional Data Analytics (SQL, Python, Power BI) with modern Generative AI and Agentic AI empowers learners to secure high-paying analytics and AI engineering roles.',
+      },
+      {
+        title: 'Industry-Oriented Curriculum',
+        body:
+          'Our comprehensive curriculum starts from data analytics fundamentals and progresses to advanced LLMs, prompt engineering, Retrieval-Augmented Generation (RAG), vector databases, and multi-agent workflow deployment.',
+      },
+      {
+        title: 'Career & Placement Support',
+        body:
+          'DV Analytics provides 100% dedicated placement support, including 1-on-1 resume reviews, GitHub portfolio preparation, interview coaching, and referrals across 100+ hiring partners in Bhubaneswar, Bangalore, and nationwide.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Who is eligible for the Generative AI & Data Analytics course in Bhubaneswar?',
+        answer:
+          'Graduates, freshers, IT professionals, non-tech career switchers, and students in Bhubaneswar and Odisha can enroll. No prior programming background is required as training starts from scratch.',
+      },
+      {
+        question: 'What are the course fees and payment options?',
+        answer:
+          'DV Analytics offers competitive and transparent course fee structures with zero-cost EMI installment options to support all learners.',
+      },
+      {
+        question: 'Does DV Analytics provide placement assistance in Odisha and Bangalore?',
+        answer:
+          'Yes. We offer 100% placement support, mock interviews, resume optimization, and direct hiring partner connections across Bhubaneswar, Bangalore, and major tech hubs.',
+      },
+    ],
+  },
 ];
 
 export const seoLandingPageById = Object.fromEntries(

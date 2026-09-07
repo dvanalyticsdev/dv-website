@@ -35,6 +35,7 @@ export const seoLandingPageSlugById: Record<string, string> = {
   'lp-data-science-course-bangalore': 'data-science-course-bangalore',
   'lp-data-analytics-course-bangalore': 'data-analytics-course-bangalore',
   'lp-data-analytics-course-bhubaneswar': 'data-analytics-course-bhubaneswar',
+  'lp-generative-ai-data-analytics-course-bhubaneswar': 'generative-ai-data-analytics-course-bhubaneswar',
   'lp-generative-ai-course': 'generative-ai-course',
   'lp-agentic-ai-course': 'agentic-ai-course',
   'lp-cybersecurity-course': 'cybersecurity-course',

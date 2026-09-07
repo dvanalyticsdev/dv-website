@@ -74,8 +74,8 @@ const courseSeoById: Record<string, { title: string; description: string; durati
   courseCatalog.map((course) => [
     course.id,
     {
-      title: course.label,
-      description: `${course.label} from DV Analytics helps learners build practical, industry-ready skills through structured training, hands-on projects, mentorship, and career support.`,
+      title: `${course.label} | Course Fees, Syllabus & Placements | DV Analytics`,
+      description: `${course.label} at DV Analytics: Master real-world projects with 100% placement support, transparent course fees, zero-cost EMI options, expert mentorship, and industry certification.`,
       duration: course.id === 'days7_genai' ? '7 Days' : course.category === 'self-paced' ? 'Self-paced' : 'Live training program',
     },
   ])
@@ -83,15 +83,15 @@ const courseSeoById: Record<string, { title: string; description: string; durati
 
 const basePages: Record<string, { title: string; description: string; image?: string; noindex?: boolean }> = {
   home: {
-    title: 'DV Analytics | Data Science, AI, GenAI & Cybersecurity Training',
+    title: 'DV Analytics | Best Data Science & AI Course in Bangalore | Placements & Fees',
     description:
-      'DV Analytics offers industry-ready Data Science, Data Analytics, Generative AI, Agentic AI, Cybersecurity, and placement-focused career programs.',
+      'DV Analytics offers industry-ready Data Science, Data Analytics, Generative AI & Cybersecurity courses in Bangalore & Bhubaneswar with 100% placement support, transparent fees & student reviews.',
     image: '/hero-mobile-bg.png',
   },
   courses: {
-    title: 'Data Science, AI & Cybersecurity Courses | DV Analytics',
+    title: 'Data Science, AI & Cybersecurity Courses | Fees & Syllabus | DV Analytics',
     description:
-      'Explore live and self-paced programs in Data Science, Data Analytics, Generative AI, Agentic AI, Cybersecurity, and AI Forward Deployment Engineering.',
+      'Explore placement-focused live programs in Data Science, Data Analytics, Generative AI, Agentic AI & Cybersecurity. Compare course fees, syllabus, and upcoming batch dates.',
     image: '/courses-poster/APIDS.png',
   },
   services: {
@@ -101,15 +101,15 @@ const basePages: Record<string, { title: string; description: string; image?: st
     image: '/services-hero-bg.jpg',
   },
   about: {
-    title: 'Who We Are | DV Analytics',
+    title: 'Who We Are | DV Analytics - Reviews & Leadership',
     description:
-      'Learn about DV Analytics, its leadership, training mission, analytics expertise, and commitment to practical AI and technology education.',
+      'Learn about DV Analytics, leadership team, student reviews, analytics expertise, and commitment to practical AI and technology education in Bangalore & Bhubaneswar.',
     image: '/about-hero-bg.jpg',
   },
   alumni: {
-    title: 'DV Analytics Alumni Success Stories',
+    title: 'Alumni Placement Success Stories & Reviews | DV Analytics',
     description:
-      'Meet DV Analytics alumni who built careers across data analytics, data science, AI, cybersecurity, and technology roles.',
+      'Meet DV Analytics alumni who got placed across top tech companies in data analytics, data science, AI, cybersecurity, and technology roles.',
     image: '/companies-banner.jpg',
   },
   blogs: {
@@ -119,13 +119,13 @@ const basePages: Record<string, { title: string; description: string; image?: st
     image: '/journal-main-bg.png',
   },
   faqs: {
-    title: 'Data Science, AI & Cybersecurity Course FAQs | DV Analytics',
+    title: 'Data Science & AI Course FAQs | Course Fees, Placements & Reviews',
     description:
-      'Answers to common questions about DV Analytics courses, eligibility, projects, certifications, LMS access, fees, mentorship, and placement support.',
+      'Answers to common questions about DV Analytics course fees, 100% placement assistance, eligibility, projects, LMS access, certifications & reviews.',
     image: '/logo.png',
   },
   enroll: {
-    title: 'Enroll in DV Analytics Programs',
+    title: 'Enroll in DV Analytics Programs | Reserve Your Seat',
     description:
       'Start your admission inquiry for DV Analytics Data Science, AI, GenAI, Cybersecurity, and analytics career programs.',
     noindex: true,
@@ -181,6 +181,69 @@ const replaceJsonLd = (schema: unknown[]) => {
     document.head.appendChild(script);
   });
 };
+
+const localBusinessSchemas = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'EducationalOrganization',
+    '@id': `${siteUrl}/#organization`,
+    name: 'DV Analytics - Data Science, Data Analyst & AI Training Institute',
+    url: siteUrl,
+    logo: absoluteUrl('/logo.png'),
+    image: absoluteUrl('/hero-mobile-bg.png'),
+    telephone: '+91-9019030033',
+    email: 'info@dvanalyticsmds.com',
+    priceRange: '₹₹',
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: 'Bangalore',
+      addressRegion: 'Karnataka',
+      addressCountry: 'IN',
+    },
+    geo: {
+      '@type': 'GeoCoordinates',
+      latitude: '12.9716',
+      longitude: '77.5946',
+    },
+    aggregateRating: {
+      '@type': 'AggregateRating',
+      ratingValue: '4.9',
+      reviewCount: '520',
+      bestRating: '5',
+      worstRating: '1',
+    },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'EducationalOrganization',
+    '@id': `${siteUrl}/#bhubaneswar`,
+    name: 'DV Analytics - Data Science & AI Training Institute Bhubaneswar',
+    url: `${siteUrl}/data-analytics-course-bhubaneswar`,
+    logo: absoluteUrl('/logo.png'),
+    image: absoluteUrl('/office-bg/bhubneshwar.png'),
+    telephone: '+91-9019030033',
+    email: 'info@dvanalyticsmds.com',
+    priceRange: '₹₹',
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: 'Bhubaneswar',
+      addressRegion: 'Odisha',
+      addressCountry: 'IN',
+    },
+    geo: {
+      '@type': 'GeoCoordinates',
+      latitude: '20.2961',
+      longitude: '85.8245',
+    },
+    aggregateRating: {
+      '@type': 'AggregateRating',
+      ratingValue: '4.9',
+      reviewCount: '210',
+      bestRating: '5',
+      worstRating: '1',
+    },
+  },
+];
 
 const organizationSchema = {
   '@context': 'https://schema.org',
@@ -335,7 +398,7 @@ const landingPageSchema = (page: (typeof seoLandingPages)[number], path: string)
 
 export const getSeoForPage = (pageId: string) => {
   const path = routePathByPageId(pageId);
-  const schema: unknown[] = [organizationSchema, websiteSchema];
+  const schema: unknown[] = [organizationSchema, websiteSchema, ...localBusinessSchemas];
 
   if (pageId.startsWith('course-')) {
     const courseId = pageId.replace('course-', '');
@@ -348,7 +411,7 @@ export const getSeoForPage = (pageId: string) => {
         { name: course.title, path },
       ]));
       return {
-        title: `${course.title} | DV Analytics`,
+        title: course.title,
         description: truncate(course.description),
         canonical: absoluteUrl(path),
         image: absoluteUrl(coursePosterById[courseId] ?? defaultSocialImage),
