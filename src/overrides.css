@@ -4437,3 +4437,42 @@ button {
 .route-loading {
   min-height: 45vh;
 }
+
+/* Highlighted Nav Item: Upcoming Batches styled like Enroll Now button */
+.site-header .nav-item > a.nav-upcoming-btn,
+.mobile-nav-panel .nav-item > a.nav-upcoming-btn {
+  background: var(--brand-orange-button) !important;
+  background-color: var(--brand-orange-button) !important;
+  border-color: var(--brand-orange-button) !important;
+  color: #ffffff !important;
+  border-radius: 100px !important;
+  padding: 0.5rem 1.2rem !important;
+  font-size: var(--font-size-small, 0.88rem) !important;
+  font-weight: 600 !important;
+  box-shadow: 0 4px 12px rgba(239, 83, 35, 0.25) !important;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  white-space: nowrap !important;
+  text-decoration: none !important;
+}
+
+.site-header .nav-item > a.nav-upcoming-btn::after,
+.mobile-nav-panel .nav-item > a.nav-upcoming-btn::after {
+  display: none !important;
+  content: none !important;
+}
+
+.site-header .nav-item > a.nav-upcoming-btn:hover,
+.site-header .nav-item > a.nav-upcoming-btn.active,
+.mobile-nav-panel .nav-item > a.nav-upcoming-btn:hover,
+.mobile-nav-panel .nav-item > a.nav-upcoming-btn.active {
+  background: var(--brand-orange-button-hover) !important;
+  background-color: var(--brand-orange-button-hover) !important;
+  border-color: var(--brand-orange-button-hover) !important;
+  color: #ffffff !important;
+  transform: translateY(-1.5px) !important;
+  box-shadow: 0 6px 16px rgba(239, 83, 35, 0.35) !important;
+}
+
