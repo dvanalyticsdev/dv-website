@@ -1,5 +1,10 @@
 User-agent: *
 Allow: /
 Disallow: /payment
+Disallow: /payment/
+Disallow: /payment/index.php
+Disallow: /admin
+Disallow: /admin/
+Disallow: /wp-admin/
 
 Sitemap: https://www.dvanalyticsmds.com/sitemap.xml

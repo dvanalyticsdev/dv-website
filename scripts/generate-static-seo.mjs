@@ -50,6 +50,8 @@ const seoBlock = (route) => {
     <meta property="og:url" content="${escapeAttribute(seo.canonical)}" />
     <meta property="og:image" content="${escapeAttribute(seo.image)}" />
     <meta property="og:image:alt" content="${escapeAttribute(seo.title)}" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="${escapeAttribute(seo.title)}" />
     <meta
@@ -57,6 +59,7 @@ const seoBlock = (route) => {
       content="${escapeAttribute(seo.description)}"
     />
     <meta name="twitter:image" content="${escapeAttribute(seo.image)}" />
+    <meta name="twitter:image:alt" content="${escapeAttribute(seo.title)}" />
     ${analyticsBlock}
     <script type="application/ld+json">${schema}</script>
     <title>${escapeAttribute(seo.title)}</title>`;
@@ -94,7 +97,7 @@ for (const route of generatedRoutes) {
 
 const getRoutePriorityAndFreq = (route) => {
   if (route === '/') return { priority: '1.0', changefreq: 'daily' };
-  if (route === '/upcoming-batches') return { priority: '0.9', changefreq: 'daily' };
+  if (route.startsWith('/upcoming-batches')) return { priority: '0.9', changefreq: 'daily' };
   if (route.startsWith('/courses')) return { priority: '0.9', changefreq: 'weekly' };
   if (route.startsWith('/journal')) return { priority: '0.8', changefreq: 'weekly' };
   if (route.startsWith('/services')) return { priority: '0.8', changefreq: 'monthly' };

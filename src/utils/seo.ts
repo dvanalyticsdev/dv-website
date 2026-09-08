@@ -1,7 +1,7 @@
 import { blogIdBySlug, blogMeta, blogSlugById, type BlogMeta } from '../data/blogMeta.ts';
 import { courseCatalog } from '../data/courseMeta.ts';
 import { seoLandingPages } from '../data/seoLandingPages.ts';
-import { courseSlugById, getPathFromPage, seoLandingPageSlugById, serviceSlugById } from './routes.ts';
+import { getPathFromPage, seoLandingPageSlugById, serviceSlugById } from './routes.ts';
 
 export const siteUrl = 'https://www.dvanalyticsmds.com';
 export const siteName = 'DV Analytics';
@@ -9,7 +9,7 @@ export const defaultSocialImage = '/logo.png';
 
 export { blogIdBySlug, blogSlugById };
 
-export const getBlogPath = (blog: BlogMeta) => `/journal/${blog.slug}`;
+export const getBlogPath = (blog: BlogMeta) => `/journal/${blog.slug}/`;
 
 export const routePathByPageId = (pageId: string) => {
   if (pageId.startsWith('blog-')) {
@@ -25,7 +25,15 @@ export const routePathByPageId = (pageId: string) => {
 const truncate = (value: string, maxLength = 158) => {
   const normalized = value.replace(/\s+/g, ' ').trim();
   if (normalized.length <= maxLength) return normalized;
-  return `${normalized.slice(0, maxLength - 1).replace(/\s+\S*$/, '')}...`;
+  return `${normalized.slice(0, maxLength - 3).replace(/\s+\S*$/, '')}...`;
+};
+
+const formatSeoTitle = (title: string, suffix = siteName, maxLength = 70) => {
+  const normalized = title.replace(/\s+/g, ' ').trim();
+  const withSuffix = `${normalized} | ${suffix}`;
+  if (withSuffix.length <= maxLength) return withSuffix;
+  if (normalized.length <= maxLength) return normalized;
+  return truncate(normalized, maxLength);
 };
 
 const absoluteUrl = (path = '/') => {
@@ -70,28 +78,54 @@ const coursePosterById: Record<string, string> = {
   flp: '/courses-poster/FLP.png',
 };
 
-const courseSeoById: Record<string, { title: string; description: string; duration: string }> = Object.fromEntries(
+const courseSearchFocusById: Record<string, string[]> = {
+  apids: ['Data Science', 'Artificial Intelligence', 'Machine Learning', 'Generative AI', 'MLOps'],
+  apida: ['Data Analytics', 'Business Intelligence', 'SQL', 'Python', 'Power BI', 'AI Analytics'],
+  specialist: ['Data Analytics', 'Excel AI', 'SQL', 'Python', 'Power BI', 'Tableau'],
+  aiml: ['Artificial Intelligence', 'Machine Learning', 'Generative AI', 'Agentic AI', 'Deep Learning'],
+  genai: ['Generative AI', 'Agentic AI', 'LLMs', 'RAG', 'AI Agents', 'LLMOps'],
+  apcs: ['Cybersecurity', 'Ethical Hacking', 'SOC', 'SIEM', 'Digital Forensics', 'Cloud Security'],
+  days7_genai: ['Generative AI', 'Agentic AI', 'Prompt Engineering', 'LLMs', 'AI Productivity'],
+  fde: ['Forward Deployment Engineering', 'AI Solutions', 'GenAI Applications', 'RAG', 'APIs', 'Cloud Deployment'],
+  flp: ['Data Science', 'Artificial Intelligence', 'Self-Paced Learning', 'Python', 'Machine Learning'],
+};
+
+const courseTitleById: Record<string, string> = {
+  apids: 'Data Science & AI Course (APIDS)',
+  apida: 'Data Analytics & AI Course (APIDA)',
+  specialist: 'Data Analytics Specialist Course',
+  aiml: 'AI/ML, GenAI & Agentic AI Course',
+  genai: 'Generative & Agentic AI Course',
+  apcs: 'Cybersecurity & Forensics Course',
+  days7_genai: '7-Day GenAI & Agentic AI Program',
+  fde: 'AI Forward Deployment Engineer Course',
+  flp: 'Flexi Data Science & AI Program',
+};
+
+const courseSeoById: Record<string, { name: string; title: string; description: string; duration: string; topics: string[] }> = Object.fromEntries(
   courseCatalog.map((course) => [
     course.id,
     {
-      title: `${course.label} | Course Fees, Syllabus & Placements | DV Analytics`,
-      description: `${course.label} at DV Analytics: Master real-world projects with 100% placement support, transparent course fees, zero-cost EMI options, expert mentorship, and industry certification.`,
+      name: course.label,
+      title: formatSeoTitle(courseTitleById[course.id] ?? course.label),
+      description: `${course.label} at DV Analytics covers real projects, mentor support, placement preparation, transparent fees, EMI options, and certification.`,
       duration: course.id === 'days7_genai' ? '7 Days' : course.category === 'self-paced' ? 'Self-paced' : 'Live training program',
+      topics: courseSearchFocusById[course.id] ?? ['Data Science', 'AI', 'Analytics'],
     },
   ])
 );
 
 const basePages: Record<string, { title: string; description: string; image?: string; noindex?: boolean }> = {
   home: {
-    title: 'DV Analytics | Best Data Science & AI Course in Bangalore | Placements & Fees',
+    title: 'DV Analytics | Data Science, AI, FDE & Analytics Courses',
     description:
-      'DV Analytics offers industry-ready Data Science, Data Analytics, Generative AI & Cybersecurity courses in Bangalore & Bhubaneswar with 100% placement support, transparent fees & student reviews.',
+      'DV Analytics offers Data Science, Data Analytics, AI, GenAI, FDE and Cybersecurity courses in Bangalore, Bhubaneswar and online.',
     image: '/hero-mobile-bg.png',
   },
   courses: {
-    title: 'Data Science, AI & Cybersecurity Courses | Fees & Syllabus | DV Analytics',
+    title: 'Data Science, AI, FDE & Cybersecurity Courses | DV Analytics',
     description:
-      'Explore placement-focused live programs in Data Science, Data Analytics, Generative AI, Agentic AI & Cybersecurity. Compare course fees, syllabus, and upcoming batch dates.',
+      'Compare live programs in Data Science, Data Analytics, AI, GenAI, Agentic AI, FDE and Cybersecurity with fees, syllabus and batches.',
     image: '/courses-poster/APIDS.png',
   },
   services: {
@@ -101,9 +135,9 @@ const basePages: Record<string, { title: string; description: string; image?: st
     image: '/services-hero-bg.jpg',
   },
   about: {
-    title: 'Who We Are | DV Analytics - Reviews & Leadership',
+    title: 'Who We Are | DV Analytics Reviews & Leadership',
     description:
-      'Learn about DV Analytics, leadership team, student reviews, analytics expertise, and commitment to practical AI and technology education in Bangalore & Bhubaneswar.',
+      'Learn about DV Analytics, its leadership, student reviews, analytics expertise, and practical AI education in Bangalore and Bhubaneswar.',
     image: '/about-hero-bg.jpg',
   },
   alumni: {
@@ -136,8 +170,8 @@ const basePages: Record<string, { title: string; description: string; image?: st
     noindex: true,
   },
   'upcoming-batches': {
-    title: 'Upcoming Batches (Sep 12) | APIDS, APIDA & FDE | DV Analytics',
-    description: 'Explore upcoming industrial batches for Data Science (APIDS), Data Analytics (APIDA), and AI Forward Deployment Engineering (FDE). Reserve your seat for September 12th.',
+    title: 'Upcoming Batches | Data Science, Analytics, AI & FDE',
+    description: 'Explore upcoming Data Science, Data Analytics, AI, GenAI and Forward Deployment Engineering batches at DV Analytics.',
   },
   'not-found': {
     title: 'Page Not Found | DV Analytics',
@@ -205,20 +239,15 @@ const localBusinessSchemas = [
       latitude: '12.9716',
       longitude: '77.5946',
     },
-    aggregateRating: {
-      '@type': 'AggregateRating',
-      ratingValue: '4.9',
-      reviewCount: '520',
-      bestRating: '5',
-      worstRating: '1',
-    },
+    areaServed: ['Bangalore', 'Karnataka', 'India'],
+    knowsAbout: ['Data Science', 'Data Analytics', 'AI', 'Generative AI', 'Agentic AI', 'Forward Deployment Engineering'],
   },
   {
     '@context': 'https://schema.org',
     '@type': 'EducationalOrganization',
     '@id': `${siteUrl}/#bhubaneswar`,
     name: 'DV Analytics - Data Science & AI Training Institute Bhubaneswar',
-    url: `${siteUrl}/data-analytics-course-bhubaneswar`,
+    url: `${siteUrl}/data-analytics-course-bhubaneswar/`,
     logo: absoluteUrl('/logo.png'),
     image: absoluteUrl('/office-bg/bhubneshwar.png'),
     telephone: '+91-9019030033',
@@ -235,13 +264,8 @@ const localBusinessSchemas = [
       latitude: '20.2961',
       longitude: '85.8245',
     },
-    aggregateRating: {
-      '@type': 'AggregateRating',
-      ratingValue: '4.9',
-      reviewCount: '210',
-      bestRating: '5',
-      worstRating: '1',
-    },
+    areaServed: ['Bhubaneswar', 'Odisha', 'India'],
+    knowsAbout: ['Data Science', 'Data Analytics', 'AI', 'Generative AI', 'Cybersecurity'],
   },
 ];
 
@@ -273,11 +297,6 @@ const websiteSchema = {
   '@type': 'WebSite',
   name: siteName,
   url: siteUrl,
-  potentialAction: {
-    '@type': 'SearchAction',
-    target: `${siteUrl}/journal?search={search_term_string}`,
-    'query-input': 'required name=search_term_string',
-  },
 };
 
 const breadcrumbSchema = (items: Array<{ name: string; path: string }>) => ({
@@ -322,19 +341,21 @@ const faqSchema = {
   ],
 };
 
-const courseSchema = (course: { title: string; description: string; duration: string }, path: string) => ({
+const courseSchema = (course: { name: string; title: string; description: string; duration: string; topics: string[] }, path: string) => ({
   '@context': 'https://schema.org',
   '@type': 'Course',
-  name: course.title,
+  name: course.name,
   description: truncate(course.description, 300),
   url: absoluteUrl(path),
   inLanguage: 'en',
+  about: course.topics,
+  teaches: course.topics,
   educationalCredentialAwarded: 'DV Analytics Industry Certification',
   provider: {
     '@type': 'EducationalOrganization',
+    '@id': `${siteUrl}/#organization`,
     name: siteName,
     url: siteUrl,
-    sameAs: siteUrl,
   },
   offers: {
     '@type': 'Offer',
@@ -342,13 +363,6 @@ const courseSchema = (course: { title: string; description: string; duration: st
     priceCurrency: 'INR',
     availability: 'https://schema.org/InStock',
     url: absoluteUrl(path),
-  },
-  aggregateRating: {
-    '@type': 'AggregateRating',
-    ratingValue: '4.9',
-    reviewCount: '520',
-    bestRating: '5',
-    worstRating: '1',
   },
   hasCourseInstance: {
     '@type': 'CourseInstance',
@@ -386,6 +400,16 @@ const landingPageSchema = (page: (typeof seoLandingPages)[number], path: string)
   name: page.heading,
   description: page.description,
   url: absoluteUrl(path),
+  primaryImageOfPage: {
+    '@type': 'ImageObject',
+    url: absoluteUrl(page.image),
+  },
+  about: page.bullets,
+});
+
+const landingFaqSchema = (page: (typeof seoLandingPages)[number]) => ({
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
   mainEntity: page.faqs.map((faq) => ({
     '@type': 'Question',
     name: faq.question,
@@ -393,6 +417,18 @@ const landingPageSchema = (page: (typeof seoLandingPages)[number], path: string)
       '@type': 'Answer',
       text: faq.answer,
     },
+  })),
+});
+
+const itemListSchema = (name: string, items: Array<{ name: string; path: string }>) => ({
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name,
+  itemListElement: items.map((item, index) => ({
+    '@type': 'ListItem',
+    position: index + 1,
+    name: item.name,
+    url: absoluteUrl(item.path),
   })),
 });
 
@@ -407,8 +443,8 @@ export const getSeoForPage = (pageId: string) => {
       schema.push(courseSchema(course, path));
       schema.push(breadcrumbSchema([
         { name: 'Home', path: '/' },
-        { name: 'Courses', path: '/courses' },
-        { name: course.title, path },
+        { name: 'Courses', path: '/courses/' },
+        { name: course.name, path },
       ]));
       return {
         title: course.title,
@@ -451,7 +487,7 @@ export const getSeoForPage = (pageId: string) => {
         { name: blog.title, path: blogPath },
       ]));
       return {
-        title: `${blog.title} | DV Analytics Journal`,
+        title: formatSeoTitle(blog.title, 'DV Analytics Journal'),
         description: truncate(blog.excerpt),
         canonical: absoluteUrl(blogPath),
         image: absoluteUrl(blog.image),
@@ -459,6 +495,20 @@ export const getSeoForPage = (pageId: string) => {
         schema,
       };
     }
+  }
+
+  if (pageId === 'courses') {
+    schema.push(itemListSchema('DV Analytics Courses', courseCatalog.map((course) => ({
+      name: course.label,
+      path: getPathFromPage(`course-${course.id}`),
+    }))));
+  }
+
+  if (pageId === 'blogs') {
+    schema.push(itemListSchema('DV Analytics Journal Articles', blogMeta.map((blog) => ({
+      name: blog.title,
+      path: getBlogPath(blog),
+    }))));
   }
 
   if (pageId === 'faqs') {
@@ -469,6 +519,7 @@ export const getSeoForPage = (pageId: string) => {
     const landingPage = seoLandingPages.find((page) => page.id === pageId);
     if (landingPage) {
       schema.push(landingPageSchema(landingPage, path));
+      schema.push(landingFaqSchema(landingPage));
       schema.push(breadcrumbSchema([
         { name: 'Home', path: '/' },
         { name: landingPage.heading, path },
@@ -525,26 +576,29 @@ export const applySeoForPage = (pageId: string) => {
   setOrCreateMeta('meta[property="og:url"]', { property: 'og:url', content: seo.canonical });
   setOrCreateMeta('meta[property="og:image"]', { property: 'og:image', content: seo.image });
   setOrCreateMeta('meta[property="og:image:alt"]', { property: 'og:image:alt', content: seo.title });
+  setOrCreateMeta('meta[property="og:image:width"]', { property: 'og:image:width', content: '1200' });
+  setOrCreateMeta('meta[property="og:image:height"]', { property: 'og:image:height', content: '630' });
 
   setOrCreateMeta('meta[name="twitter:card"]', { name: 'twitter:card', content: 'summary_large_image' });
   setOrCreateMeta('meta[name="twitter:title"]', { name: 'twitter:title', content: seo.title });
   setOrCreateMeta('meta[name="twitter:description"]', { name: 'twitter:description', content: seo.description });
   setOrCreateMeta('meta[name="twitter:image"]', { name: 'twitter:image', content: seo.image });
+  setOrCreateMeta('meta[name="twitter:image:alt"]', { name: 'twitter:image:alt', content: seo.title });
 
   replaceJsonLd(seo.schema);
 };
 
 export const sitemapRoutes = [
-  '/',
-  '/courses',
-  ...courseCatalog.map((course) => `/courses/${courseSlugById[course.id] ?? course.id}`),
-  '/services',
-  ...Object.values(serviceSlugById).map((slug) => `/services/${slug}`),
-  ...Object.values(seoLandingPageSlugById).map((slug) => `/${slug}`),
-  '/who-we-are',
-  '/meet-our-alumni',
-  '/journal',
+  getPathFromPage('home'),
+  getPathFromPage('courses'),
+  ...courseCatalog.map((course) => getPathFromPage(`course-${course.id}`)),
+  getPathFromPage('services'),
+  ...Object.keys(serviceSlugById).map(getPathFromPage),
+  ...Object.keys(seoLandingPageSlugById).map(getPathFromPage),
+  getPathFromPage('about'),
+  getPathFromPage('alumni'),
+  getPathFromPage('blogs'),
   ...blogMeta.map(getBlogPath),
-  '/upcoming-batches',
-  '/faqs',
+  getPathFromPage('upcoming-batches'),
+  getPathFromPage('faqs'),
 ];

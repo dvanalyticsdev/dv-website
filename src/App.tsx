@@ -41,15 +41,49 @@ const heroPosterImages = [
 ];
 
 const paymentPageUrl = 'https://dvpayment.page.gd/';
+const unknownRouteStorageKey = 'dv_unknown_route_redirect';
+
+const normalizedBrowserPath = () => window.location.pathname.replace(/\/+$/, '') || '/';
+
+const shouldRedirectUnknownRoute = (pageId: string) =>
+  pageId === 'not-found' && normalizedBrowserPath() !== '/404';
+
+const redirectUnknownRouteToHome = () => {
+  const originalUrl = `${window.location.pathname}${window.location.search}${window.location.hash}`;
+  const nextUrl = `/${window.location.search}${window.location.hash}`;
+
+  window.sessionStorage.setItem(unknownRouteStorageKey, originalUrl);
+  window.history.replaceState({}, '', nextUrl);
+};
+
+const getInitialPage = () => {
+  const pageId = getPageFromPath(window.location.pathname);
+
+  if (shouldRedirectUnknownRoute(pageId)) {
+    redirectUnknownRouteToHome();
+    return 'home';
+  }
+
+  return pageId;
+};
 
 function App() {
-  const [activePage, setActivePage] = useState(() => getPageFromPath(window.location.pathname));
+  const [activePage, setActivePage] = useState(getInitialPage);
   const scrollRevealRef = useScrollReveal(activePage);
   const [isAauModalOpen, setIsAauModalOpen] = useState(false);
   const [brochureCourseId, setBrochureCourseId] = useState<string | null>(null);
 
   useEffect(() => {
     initAnalytics();
+
+    const redirectedRoute = window.sessionStorage.getItem(unknownRouteStorageKey);
+    if (redirectedRoute) {
+      trackEvent('redirect_unknown_route', {
+        original_path: redirectedRoute,
+        redirect_target: '/',
+      });
+      window.sessionStorage.removeItem(unknownRouteStorageKey);
+    }
 
     const handleContactClick = (event: MouseEvent) => {
       const link = (event.target as HTMLElement).closest('a');
@@ -96,7 +130,20 @@ function App() {
 
   useEffect(() => {
     const handlePopState = () => {
-      setActivePage(getPageFromPath(window.location.pathname));
+      const pageId = getPageFromPath(window.location.pathname);
+
+      if (shouldRedirectUnknownRoute(pageId)) {
+        const originalUrl = `${window.location.pathname}${window.location.search}${window.location.hash}`;
+        window.history.replaceState({}, '', `/${window.location.search}${window.location.hash}`);
+        trackEvent('redirect_unknown_route', {
+          original_path: originalUrl,
+          redirect_target: '/',
+        });
+        setActivePage('home');
+        return;
+      }
+
+      setActivePage(pageId);
     };
 
     window.addEventListener('popstate', handlePopState);

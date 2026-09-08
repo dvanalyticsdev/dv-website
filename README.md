@@ -1,14 +1,15 @@
-# Agentify AI Website
+# DV Analytics Website
 
-Last updated: 2026-07-30
+Last updated: 2026-09-08
 
-This project is the current Agentify AI marketing website built with React, TypeScript, and Vite.
+This project is the current DV Analytics marketing website built with React, TypeScript, and Vite.
 
 ## Current functionality
-- Multi-section marketing site for Agentify AI
-- Dedicated content views for About, Services, FAQs, Enrollment, program details, and success-story sections
+- Multi-section marketing site for DV Analytics
+- Dedicated content views for About, Services, FAQs, Enrollment, program details, SEO landing pages, and success-story sections
 - Animated hero and interaction effects
 - Course/program data-driven pages from `src/data/coursesData.*`
+- Route-specific SEO metadata, schema, static HTML generation, and sitemap output
 
 ## Main frontend areas
 Key files in `src/components/`:
@@ -45,5 +46,6 @@ npm run build
 Other useful commands:
 ```bash
 npm run lint
+npm run seo:audit
 npm run preview
 ```

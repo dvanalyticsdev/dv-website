@@ -1,3 +1,5 @@
+import { seoLandingPages } from '../data/seoLandingPages.ts';
+
 export const courseSlugById: Record<string, string> = {
   apids: 'apids',
   apida: 'apida',
@@ -31,25 +33,30 @@ const serviceIdBySlug = Object.fromEntries(
   Object.entries(serviceSlugById).map(([serviceId, slug]) => [slug, serviceId])
 );
 
-export const seoLandingPageSlugById: Record<string, string> = {
-  'lp-data-science-course-bangalore': 'data-science-course-bangalore',
-  'lp-data-analytics-course-bangalore': 'data-analytics-course-bangalore',
-  'lp-data-analytics-course-bhubaneswar': 'data-analytics-course-bhubaneswar',
-  'lp-generative-ai-data-analytics-course-bhubaneswar': 'generative-ai-data-analytics-course-bhubaneswar',
-  'lp-generative-ai-course': 'generative-ai-course',
-  'lp-agentic-ai-course': 'agentic-ai-course',
-  'lp-cybersecurity-course': 'cybersecurity-course',
-};
+export const seoLandingPageSlugById: Record<string, string> = Object.fromEntries(
+  seoLandingPages.map((page) => [page.id, page.slug])
+);
 
 const seoLandingPageIdBySlug = Object.fromEntries(
   Object.entries(seoLandingPageSlugById).map(([pageId, slug]) => [slug, pageId])
 );
+
+const legacyPageAliases: Record<string, string> = {
+  '/home': 'home',
+  '/about': 'about',
+  '/about-us': 'about',
+  '/alumni': 'alumni',
+  '/blogs': 'blogs',
+  '/blog': 'blogs',
+  '/faq': 'faqs',
+};
 
 export const getPageFromPath = (pathname: string) => {
   const normalizedPath = pathname.replace(/\/+$/, '') || '/';
   const parts = normalizedPath.split('/').filter(Boolean);
 
   if (normalizedPath === '/') return 'home';
+  if (legacyPageAliases[normalizedPath]) return legacyPageAliases[normalizedPath];
   if (normalizedPath === '/courses') return 'courses';
   if (parts[0] === 'courses' && parts[1]) return `course-${courseIdBySlug[parts[1]] ?? parts[1]}`;
   if (normalizedPath === '/services') return 'services';
@@ -70,20 +77,20 @@ export const getPageFromPath = (pathname: string) => {
 
 export const getPathFromPage = (pageId: string) => {
   if (pageId === 'home') return '/';
-  if (pageId === 'courses') return '/courses';
-  if (pageId === 'services') return '/services';
-  if (pageId === 'about') return '/who-we-are';
-  if (pageId === 'alumni') return '/meet-our-alumni';
-  if (pageId === 'blogs') return '/journal';
-  if (pageId === 'faqs') return '/faqs';
+  if (pageId === 'courses') return '/courses/';
+  if (pageId === 'services') return '/services/';
+  if (pageId === 'about') return '/who-we-are/';
+  if (pageId === 'alumni') return '/meet-our-alumni/';
+  if (pageId === 'blogs') return '/journal/';
+  if (pageId === 'faqs') return '/faqs/';
   if (pageId === 'enroll') return '/enroll';
   if (pageId === 'payment') return '/payment';
-  if (pageId === 'upcoming-batches') return '/upcoming-batches';
+  if (pageId === 'upcoming-batches') return '/upcoming-batches/';
   if (pageId === 'not-found') return '/404';
 
   if (pageId.startsWith('course-')) {
     const courseId = pageId.replace('course-', '');
-    return `/courses/${courseSlugById[courseId] ?? courseId}`;
+    return `/courses/${courseSlugById[courseId] ?? courseId}/`;
   }
 
   if (pageId.startsWith('enroll-')) {
@@ -92,15 +99,15 @@ export const getPathFromPage = (pageId: string) => {
   }
 
   if (pageId.startsWith('service-')) {
-    return `/services/${serviceSlugById[pageId] ?? pageId.replace('service-', '')}`;
+    return `/services/${serviceSlugById[pageId] ?? pageId.replace('service-', '')}/`;
   }
 
   if (pageId.startsWith('blog-')) {
-    return `/journal/${pageId.replace('blog-', '')}`;
+    return `/journal/${pageId.replace('blog-', '')}/`;
   }
 
   if (pageId.startsWith('lp-')) {
-    return `/${seoLandingPageSlugById[pageId] ?? pageId.replace('lp-', '')}`;
+    return `/${seoLandingPageSlugById[pageId] ?? pageId.replace('lp-', '')}/`;
   }
 
   return '/';
