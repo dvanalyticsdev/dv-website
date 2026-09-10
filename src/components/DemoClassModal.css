@@ -1,0 +1,384 @@
+/* Persistent Floating 'Book Free Demo Class' Button on Right Edge */
+.demo-btn-trigger {
+  position: fixed;
+  right: 0;
+  top: calc(50% - 135px);
+  transform: translateY(-50%);
+  z-index: 2400;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: 12px 0 0 12px;
+  padding: 14px 10px;
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: 0.3px;
+  cursor: pointer;
+  box-shadow: -4px 2px 18px rgba(16, 185, 129, 0.45), -2px 0 8px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+}
+
+.demo-btn-trigger:hover {
+  background: linear-gradient(135deg, #059669 0%, #047857 100%);
+  box-shadow: -6px 4px 24px rgba(16, 185, 129, 0.6), -3px 0 12px rgba(0, 0, 0, 0.3);
+  padding-left: 14px;
+}
+
+.demo-btn-trigger:active {
+  transform: translateY(-50%) scale(0.97);
+}
+
+.demo-btn-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+}
+
+.demo-btn-text {
+  white-space: nowrap;
+}
+
+.demo-modal-overlay {
+  z-index: 2700 !important;
+}
+
+.demo-modal-box {
+  max-width: 520px !important;
+  border-radius: 20px !important;
+  background: #ffffff;
+  box-shadow: 0 25px 50px -12px rgba(5, 31, 64, 0.38);
+  position: relative;
+  overflow: hidden;
+  animation: demoModalPopIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes demoModalPopIn {
+  from {
+    opacity: 0;
+    transform: scale(0.92) translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.demo-modal-content {
+  padding: 2.25rem 2rem 2rem 2rem;
+}
+
+.demo-modal-header {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.demo-topic-badge {
+  display: inline-block;
+  background: #eff6ff;
+  color: #1d4ed8;
+  font-weight: 800;
+  font-size: 0.75rem;
+  letter-spacing: 1px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  border: 1px solid #bfdbfe;
+}
+
+.demo-modal-header h2 {
+  font-size: 1.7rem;
+  font-weight: 800;
+  color: #051f40;
+  margin: 0 0 0.35rem 0;
+}
+
+.demo-modal-header p {
+  font-size: 0.95rem;
+  color: #4b5563;
+  margin: 0;
+}
+
+/* Form Styles */
+.demo-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+}
+
+.demo-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  text-align: left;
+}
+
+.demo-form-group label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #051f40;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.demo-form-group input,
+.demo-form-group select {
+  width: 100%;
+  padding: 0.78rem 1rem;
+  font-size: 0.95rem;
+  border: 1.5px solid #d1d5db;
+  border-radius: 10px;
+  background-color: #f9fafb;
+  color: #1f2937;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  box-sizing: border-box;
+}
+
+.demo-form-group input:focus,
+.demo-form-group select:focus {
+  outline: none;
+  border-color: #ef5323;
+  background-color: #ffffff;
+  box-shadow: 0 0 0 3px rgba(239, 83, 35, 0.15);
+}
+
+.demo-form-group input.input-error,
+.demo-form-group select.input-error {
+  border-color: #ef4444;
+  background-color: #fef2f2;
+}
+
+.demo-global-error {
+  text-align: center;
+  padding: 0.5rem;
+  background: #fef2f2;
+  border-radius: 8px;
+  border: 1px solid #fca5a5;
+}
+
+.demo-submit-btn {
+  margin-top: 0.5rem;
+  width: 100%;
+  padding: 0.9rem;
+  font-size: 1.05rem;
+  font-weight: 700;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: #ffffff;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35);
+  transition: transform 0.15s ease, box-shadow 0.2s ease;
+}
+
+.demo-submit-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  background: linear-gradient(135deg, #059669 0%, #047857 100%);
+  box-shadow: 0 8px 22px rgba(16, 185, 129, 0.45);
+}
+
+.demo-submit-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.demo-footer-note {
+  font-size: 0.78rem;
+  color: #6b7280;
+  text-align: center;
+  margin: 0;
+}
+
+/* Success State */
+.demo-success-state {
+  text-align: center;
+  padding: 2.25rem 2rem 2rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.demo-modal-icon-badge {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: #f0fdf4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.75rem;
+  box-shadow: 0 4px 14px rgba(34, 197, 94, 0.25);
+}
+
+.demo-success-state h2 {
+  font-size: 1.55rem;
+  font-weight: 800;
+  color: #051f40;
+  margin-bottom: 0.5rem;
+}
+
+.demo-success-intro {
+  font-size: 0.95rem;
+  color: #374151;
+  margin-bottom: 1.25rem;
+  line-height: 1.5;
+}
+
+/* WhatsApp Group Card */
+.demo-whatsapp-card {
+  width: 100%;
+  background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+  border: 1.5px solid #86efac;
+  border-radius: 14px;
+  padding: 1.25rem;
+  margin-bottom: 1.25rem;
+  box-sizing: border-box;
+  text-align: left;
+}
+
+.demo-wa-header {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.demo-wa-icon {
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.demo-wa-header h3 {
+  font-size: 1rem;
+  font-weight: 800;
+  color: #14532d;
+  margin: 0 0 4px 0;
+}
+
+.demo-wa-header p {
+  font-size: 0.85rem;
+  color: #166534;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.demo-whatsapp-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  padding: 0.85rem 1rem;
+  background: #25d366;
+  color: #ffffff;
+  font-weight: 800;
+  font-size: 1rem;
+  border-radius: 10px;
+  text-decoration: none;
+  box-shadow: 0 4px 16px rgba(37, 211, 102, 0.4);
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+.demo-whatsapp-btn:hover {
+  background: #20ba5a;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(37, 211, 102, 0.5);
+
+}
+
+.demo-close-btn {
+  background: #f3f4f6;
+  color: #4b5563;
+  font-weight: 700;
+  border-radius: 8px;
+  padding: 0.6rem 1.5rem;
+  border: 1px solid #e5e7eb;
+  cursor: pointer;
+}
+
+.demo-close-btn:hover {
+  background: #e5e7eb;
+  color: #1f2937;
+}
+
+/* Single Slot Info Card */
+.demo-slot-card {
+  background: #f0fdf4;
+  border: 1.5px solid #a7f3d0;
+  border-radius: 12px;
+  padding: 1rem 1.15rem;
+  margin-bottom: 1.25rem;
+}
+
+.demo-slot-card-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: #047857;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+
+.demo-slot-card-body {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.demo-slot-date {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #064e3b;
+}
+
+.demo-slot-time {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #047857;
+  margin-top: 2px;
+}
+
+.demo-live-pill {
+  background: #10b981;
+  color: #ffffff;
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 4px 10px;
+  border-radius: 20px;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+  .demo-btn-trigger {
+    padding: 12px 8px;
+    font-size: 0.85rem;
+    border-radius: 10px 0 0 10px;
+  }
+
+  .demo-btn-icon {
+    width: 20px;
+    height: 20px;
+  }
+
+  .demo-modal-content {
+    padding: 1.75rem 1.25rem 1.5rem 1.25rem;
+  }
+
+  .demo-modal-header h2 {
+    font-size: 1.4rem;
+  }
+}

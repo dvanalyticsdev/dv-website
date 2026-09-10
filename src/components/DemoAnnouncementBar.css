@@ -1,0 +1,83 @@
+/* ==========================================================================
+   Top Announcement Bar for Free Demo Class
+   ========================================================================== */
+
+.demo-top-bar {
+  background: linear-gradient(90deg, #051f40 0%, #0f3566 50%, #1e40af 100%);
+  color: #ffffff;
+  padding: 8px 16px;
+  font-size: 0.88rem;
+  z-index: 1000;
+  position: relative;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.demo-top-bar-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  text-align: center;
+}
+
+.demo-top-bar-badge {
+  background: #ef5323;
+  color: #ffffff;
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 3px 8px;
+  border-radius: 4px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.demo-top-bar-text {
+  font-weight: 500;
+  color: #f3f4f6;
+}
+
+.demo-top-bar-text strong {
+  color: #fbbf24;
+}
+
+.demo-top-bar-btn {
+  background: #10b981;
+  color: #ffffff;
+  border: none;
+  font-weight: 700;
+  font-size: 0.82rem;
+  padding: 5px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.4);
+}
+
+.demo-top-bar-btn:hover {
+  background: #059669;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.5);
+}
+
+@media (max-width: 640px) {
+  .demo-top-bar {
+    padding: 6px 10px;
+    font-size: 0.78rem;
+  }
+
+  .demo-top-bar-badge {
+    display: none;
+  }
+
+  .demo-top-bar-container {
+    gap: 8px;
+  }
+
+  .demo-top-bar-btn {
+    padding: 4px 10px;
+    font-size: 0.75rem;
+  }
+}
