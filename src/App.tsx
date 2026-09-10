@@ -7,7 +7,6 @@ import { AauModal } from './components/AauModal';
 import { BrochureLeadModal } from './components/BrochureLeadModal';
 import { GetACallButton } from './components/GetACallButton';
 import { DemoClassModal } from './components/DemoClassModal';
-import { DemoAnnouncementBar } from './components/DemoAnnouncementBar';
 import { SkillPackageExplorer } from './components/SkillPackageExplorer';
 import { getPageFromPath } from './utils/routes';
 import { applySeoForPage, routePathByPageId } from './utils/seo';
@@ -482,7 +481,6 @@ function App() {
   return (
     <div ref={scrollRevealRef}>
       <div className="page-progress-bar" key={activePage}></div>
-      <DemoAnnouncementBar onOpenDemoModal={() => setIsDemoModalOpen(true)} />
       <Header
         onNavClick={handleNavClick}
         activePage={activePage}
