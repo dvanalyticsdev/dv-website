@@ -207,9 +207,9 @@ export const DemoClassModal: React.FC<DemoClassModalProps> = ({
                       <polyline points="22 4 12 14.01 9 11.01"></polyline>
                     </svg>
                   </div>
-                  <h2>Demo Class Seat Reserved! 🎉</h2>
+                  <h2>Demo Class Seat Reserved!</h2>
                   <p className="demo-success-intro">
-                    Thank you, <strong>{formData.name}</strong>! Your seat for <strong>Data Science with Gen AI &amp; Agentic AI</strong> on <strong>{LATEST_DEMO_SLOT.fullLabel}</strong> is confirmed.
+                    Thank you, <strong>{formData.name}</strong>! Your seat for <strong>{LATEST_DEMO_SLOT.fullLabel}</strong> is confirmed.
                   </p>
 
                   {/* Prominent WhatsApp Group CTA */}
