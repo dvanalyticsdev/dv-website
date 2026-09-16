@@ -173,6 +173,10 @@ const basePages: Record<string, { title: string; description: string; image?: st
     title: 'Upcoming Batches | Data Science, Analytics, AI & FDE',
     description: 'Explore upcoming Data Science, Data Analytics, AI, GenAI and Forward Deployment Engineering batches at DV Analytics.',
   },
+  'apply-job': {
+    title: 'Apply for Jobs | Careers & Placement Portal | DV Analytics',
+    description: 'Explore current career opportunities and apply for positions that match your skills. Verify your LMS ID to submit your job application.',
+  },
   'not-found': {
     title: 'Page Not Found | DV Analytics',
     description: 'The DV Analytics page you requested could not be found.',
@@ -600,5 +604,6 @@ export const sitemapRoutes = [
   getPathFromPage('blogs'),
   ...blogMeta.map(getBlogPath),
   getPathFromPage('upcoming-batches'),
+  getPathFromPage('apply-job'),
   getPathFromPage('faqs'),
 ];

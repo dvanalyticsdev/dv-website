@@ -29,6 +29,7 @@ const CompaniesSection = lazy(() => import('./components/CompaniesSection').then
 const SampleVideoSection = lazy(() => import('./components/SampleVideoSection').then((module) => ({ default: module.SampleVideoSection })));
 const SeoLandingPage = lazy(() => import('./components/SeoLandingPage').then((module) => ({ default: module.SeoLandingPage })));
 const UpcomingBatchesPage = lazy(() => import('./components/UpcomingBatchesPage').then((module) => ({ default: module.UpcomingBatchesPage })));
+const ApplyJobPage = lazy(() => import('./components/jobs/ApplyJobPage').then((module) => ({ default: module.ApplyJobPage })));
 
 const heroPosterImages = [
   '/hero-stories/fde-student.jpg',
@@ -294,6 +295,14 @@ function App() {
               if (btn) btn.click();
             }}
           />
+        </div>
+      );
+    }
+
+    if (activePage === 'apply-job') {
+      return (
+        <div data-section="apply-job">
+          <ApplyJobPage onBackHome={() => navigateToPage('home')} />
         </div>
       );
     }

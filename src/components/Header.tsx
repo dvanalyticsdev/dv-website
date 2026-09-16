@@ -334,6 +334,20 @@ export const Header: React.FC<HeaderProps> = ({
 
       <li className="nav-item">
         <a
+          href={getPathFromPage('apply-job')}
+          className={activePage === 'apply-job' ? 'active' : ''}
+          onClick={(e) => {
+            e.preventDefault();
+            setMobileMenuOpen(false);
+            if (onNavClick) onNavClick('apply-job');
+          }}
+        >
+          Apply Job
+        </a>
+      </li>
+
+      <li className="nav-item">
+        <a
           href={getPathFromPage('upcoming-batches')}
           className={`btn-enroll-header nav-upcoming-btn ${activePage === 'upcoming-batches' ? 'active' : ''}`}
           onClick={(e) => {
@@ -566,6 +580,20 @@ export const Header: React.FC<HeaderProps> = ({
                     }}
                   >
                     Meet Our Alumni
+                  </a>
+                </li>
+
+                <li className="nav-item">
+                  <a
+                    href={getPathFromPage('apply-job')}
+                    className={activePage === 'apply-job' ? 'active' : ''}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setMobileMenuOpen(false);
+                      if (onNavClick) onNavClick('apply-job');
+                    }}
+                  >
+                    Apply Job
                   </a>
                 </li>
 
