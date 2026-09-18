@@ -3,16 +3,20 @@ import type { JobListing } from '../../services/jobService';
 import { verifyLmsId, type VerifiedStudent } from '../../services/lmsService';
 import { setVerifiedSession } from '../../services/applicationService';
 
+export type LmsTargetAction = 'apply' | 'view_profile';
+
 interface LmsVerificationModalProps {
   isOpen: boolean;
   job: JobListing | null;
+  targetAction?: LmsTargetAction;
   onClose: () => void;
-  onVerificationSuccess: (student: VerifiedStudent) => void;
+  onVerificationSuccess: (student: VerifiedStudent, action: LmsTargetAction) => void;
 }
 
 export const LmsVerificationModal: React.FC<LmsVerificationModalProps> = ({
   isOpen,
   job,
+  targetAction = 'apply',
   onClose,
   onVerificationSuccess,
 }) => {
@@ -20,6 +24,14 @@ export const LmsVerificationModal: React.FC<LmsVerificationModalProps> = ({
   const [isVerifying, setIsVerifying] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
+
+  React.useEffect(() => {
+    if (isOpen) {
+      setErrorMessage('');
+      setSuccessMessage('');
+      setLmsIdInput('');
+    }
+  }, [isOpen]);
 
   if (!isOpen || !job) return null;
 
@@ -40,13 +52,18 @@ export const LmsVerificationModal: React.FC<LmsVerificationModalProps> = ({
       const result = await verifyLmsId(trimmed);
 
       if (result.success && result.student) {
-        setSuccessMessage('Your LMS ID has been verified. You can now continue with the application.');
         setVerifiedSession(result.student);
 
-        // Short timeout so the user sees the confirmation before opening the application form
+        if (targetAction === 'view_profile') {
+          setSuccessMessage('Your LMS ID has been verified. Opening job profile...');
+        } else {
+          setSuccessMessage('Your LMS ID has been verified. You can now continue with the application.');
+        }
+
+        // Short timeout so the user sees the confirmation before proceeding
         setTimeout(() => {
-          onVerificationSuccess(result.student!);
-        }, 800);
+          onVerificationSuccess(result.student!, targetAction);
+        }, 700);
       } else {
         setErrorMessage(result.errorMessage || 'Invalid LMS ID. Please check your LMS ID and try again.');
       }
@@ -65,7 +82,11 @@ export const LmsVerificationModal: React.FC<LmsVerificationModalProps> = ({
         <div className="job-modal-header">
           <div>
             <h2 className="job-modal-title">Student Verification</h2>
-            <p className="job-modal-subtitle">Submit your LMS ID to access the application form</p>
+            <p className="job-modal-subtitle">
+              {targetAction === 'view_profile'
+                ? 'Submit your LMS ID to view the complete job profile'
+                : 'Submit your LMS ID to access the application form'}
+            </p>
           </div>
           <button className="job-modal-close" onClick={onClose} aria-label="Close modal">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">

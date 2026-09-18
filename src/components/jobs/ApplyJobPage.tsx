@@ -12,7 +12,7 @@ import {
   hasAlreadyApplied,
 } from '../../services/applicationService';
 import { JobCard } from './JobCard';
-import { LmsVerificationModal } from './LmsVerificationModal';
+import { LmsVerificationModal, type LmsTargetAction } from './LmsVerificationModal';
 import { JobApplicationModal } from './JobApplicationModal';
 
 interface ApplyJobPageProps {
@@ -30,6 +30,7 @@ export const ApplyJobPage: React.FC<ApplyJobPageProps> = () => {
 
   // Modal states
   const [selectedJob, setSelectedJob] = useState<JobListing | null>(null);
+  const [lmsTargetAction, setLmsTargetAction] = useState<LmsTargetAction>('apply');
   const [isLmsModalOpen, setIsLmsModalOpen] = useState(false);
   const [isApplicationModalOpen, setIsApplicationModalOpen] = useState(false);
 
@@ -74,6 +75,7 @@ export const ApplyJobPage: React.FC<ApplyJobPageProps> = () => {
   // Handle Apply button click on a JobCard
   const handleApplyClick = (job: JobListing) => {
     setSelectedJob(job);
+    setLmsTargetAction('apply');
 
     // If student is already verified in this session, skip verification and open application directly
     if (verifiedStudent) {
@@ -83,11 +85,33 @@ export const ApplyJobPage: React.FC<ApplyJobPageProps> = () => {
     }
   };
 
+  // Handle View Job Profile click on a JobCard
+  const handleViewProfileClick = (job: JobListing) => {
+    if (!job.jobProfileUrl) return;
+
+    setSelectedJob(job);
+    setLmsTargetAction('view_profile');
+
+    // If student is already verified in this session, open job profile directly
+    if (verifiedStudent) {
+      window.open(job.jobProfileUrl, '_blank', 'noopener,noreferrer');
+    } else {
+      setIsLmsModalOpen(true);
+    }
+  };
+
   // When LMS verification succeeds
-  const handleLmsVerificationSuccess = (student: VerifiedStudent) => {
+  const handleLmsVerificationSuccess = (student: VerifiedStudent, action: LmsTargetAction) => {
     setVerifiedStudent(student);
     setIsLmsModalOpen(false);
-    setIsApplicationModalOpen(true);
+
+    if (action === 'view_profile') {
+      if (selectedJob?.jobProfileUrl) {
+        window.open(selectedJob.jobProfileUrl, '_blank', 'noopener,noreferrer');
+      }
+    } else {
+      setIsApplicationModalOpen(true);
+    }
   };
 
   // When application is successfully submitted
@@ -181,6 +205,7 @@ export const ApplyJobPage: React.FC<ApplyJobPageProps> = () => {
                     key={job.id}
                     job={job}
                     onApply={handleApplyClick}
+                    onViewProfile={handleViewProfileClick}
                     isApplied={appliedJobIds.has(job.id)}
                   />
                 ))}
@@ -211,6 +236,7 @@ export const ApplyJobPage: React.FC<ApplyJobPageProps> = () => {
                     key={job.id}
                     job={job}
                     onApply={() => {}}
+                    onViewProfile={handleViewProfileClick}
                     isApplied={appliedJobIds.has(job.id)}
                   />
                 ))}
@@ -228,6 +254,7 @@ export const ApplyJobPage: React.FC<ApplyJobPageProps> = () => {
       <LmsVerificationModal
         isOpen={isLmsModalOpen}
         job={selectedJob}
+        targetAction={lmsTargetAction}
         onClose={() => {
           setIsLmsModalOpen(false);
           setSelectedJob(null);

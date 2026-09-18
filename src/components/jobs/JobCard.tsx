@@ -4,13 +4,29 @@ import type { JobListing } from '../../services/jobService';
 interface JobCardProps {
   job: JobListing;
   onApply: (job: JobListing) => void;
+  onViewProfile?: (job: JobListing) => void;
   isApplied?: boolean;
 }
 
-export const JobCard: React.FC<JobCardProps> = ({ job, onApply, isApplied = false }) => {
+export const JobCard: React.FC<JobCardProps> = ({
+  job,
+  onApply,
+  onViewProfile,
+  isApplied = false,
+}) => {
   const handleApplyClick = () => {
     if (!job.isOpen || isApplied) return;
     onApply(job);
+  };
+
+  const handleViewProfileClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (!job.jobProfileUrl) return;
+    if (onViewProfile) {
+      onViewProfile(job);
+    } else {
+      window.open(job.jobProfileUrl, '_blank', 'noopener,noreferrer');
+    }
   };
 
   return (
@@ -93,12 +109,11 @@ export const JobCard: React.FC<JobCardProps> = ({ job, onApply, isApplied = fals
       {/* Action Buttons */}
       <div className="job-card-actions">
         {job.jobProfileUrl ? (
-          <a
-            href={job.jobProfileUrl}
-            target="_blank"
-            rel="noopener noreferrer"
+          <button
+            type="button"
+            onClick={handleViewProfileClick}
             className="btn-view-profile"
-            title="Open job description link"
+            title="View complete job profile"
           >
             <span>View Job Profile</span>
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
@@ -106,7 +121,7 @@ export const JobCard: React.FC<JobCardProps> = ({ job, onApply, isApplied = fals
               <polyline points="15 3 21 3 21 9" />
               <line x1="10" y1="14" x2="21" y2="3" />
             </svg>
-          </a>
+          </button>
         ) : (
           <span className="btn-view-profile" style={{ opacity: 0.6, cursor: 'default' }}>
             Profile Link N/A
