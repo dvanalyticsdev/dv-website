@@ -4,12 +4,11 @@ import { getCrmCourseMapping } from '../data/crmCourseMapping';
 import { appendAttributionToPayload, trackEvent } from '../utils/analytics';
 
 const courses = [
-  { id: 'apida', category: 'data-science', label: 'Data Analytics + AI' },
-  { id: 'apids', category: 'data-science', label: 'Data Science + Gen AI + Agentic AI' },
-  { id: 'aiml', category: 'data-science', label: 'AIML with Gen AI & Agentic AI' },
-  { id: 'days7_genai', category: 'data-science', label: '7 Days GEN AI + Agentic AI Master program' },
+  { id: 'apids', category: 'data-science', label: 'Advanced Program in Industrial Data Science with AI Deployment (APIDS)' },
+  { id: 'apida', category: 'data-science', label: 'Advanced Program in Industrial Data Science with Gen AI (APIDA)' },
+  { id: 'specialist', category: 'data-science', label: 'Data Analytics Specialist (DAS)' },
   { id: 'fde', category: 'data-science', label: 'AI Forward Deployment Engineer (FDE)' },
-  { id: 'apcs', category: 'cybersecurity', label: 'Cybersecurity+ Forensics' },
+  { id: 'apcs', category: 'cybersecurity', label: 'AI Integrated Advanced Program in Cybersecurity & Forensics (APCF)' },
 ];
 
 const locations = [
@@ -51,13 +50,11 @@ const locations = [
   'Puducherry',
   'Dubai',
 ];
+
 const courseIndustryLabels: Record<string, string> = {
   apids: 'Data Science and AI',
-  apida: 'Data Analytics and AI',
+  apida: 'Data Science with Gen AI',
   specialist: 'Data Analytics',
-  aiml: 'AI, Machine Learning, Generative AI, and Agentic AI',
-  genai: 'Generative AI and Agentic AI',
-  days7_genai: 'Generative AI and Agentic AI',
   fde: 'AI solution deployment',
   apcs: 'Cybersecurity and Forensics',
 };

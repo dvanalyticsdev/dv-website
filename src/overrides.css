@@ -4476,3 +4476,60 @@ button {
   box-shadow: 0 6px 16px rgba(239, 83, 35, 0.35) !important;
 }
 
+/* In-depth Skill Explorer Course Details */
+.course-card-depth-details {
+  margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
+  padding: 0.75rem;
+  background: rgba(15, 23, 42, 0.03);
+  border-radius: 8px;
+  border: 1px solid rgba(15, 23, 42, 0.06);
+}
+
+.course-depth-section {
+  margin-bottom: 0.5rem;
+}
+
+.course-depth-section:last-child {
+  margin-bottom: 0;
+}
+
+.course-depth-label {
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--brand-navy, #0f172a);
+  margin-bottom: 0.35rem;
+}
+
+.course-skill-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.course-skill-tag {
+  font-size: 0.75rem;
+  padding: 0.2rem 0.5rem;
+  background: #ffffff;
+  color: #2563eb;
+  border: 1px solid rgba(37, 99, 235, 0.25);
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+.course-module-bullets {
+  margin: 0;
+  padding-left: 1.1rem;
+  font-size: 0.78rem;
+  color: #475569;
+  line-height: 1.45;
+}
+
+.course-module-bullets li {
+  margin-bottom: 0.2rem;
+}
+
+

@@ -4,13 +4,10 @@ import './GetACallButton.css';
 import { getAttribution, trackEvent } from '../utils/analytics';
 
 const COURSE_OPTIONS = [
-  'Advanced Program in Industrial Data Science & AI (APIDS)',
-  'Advanced Program in Industrial Data Analytics & AI (APIDA)',
-  'Advanced AIML with Gen AI & Agentic AI',
-  'Master Program in Gen AI & Agentic AI',
+  'Advanced Program in Industrial Data Science with AI Deployment (APIDS)',
+  'Advanced Program in Industrial Data Science with Gen AI (APIDA)',
   'Data Analytics Specialist (DAS)',
-  'Advanced Program in Cybersecurity & Forensics (APCF)',
-  '7 Days Gen AI & Agentic AI Hands-on Master Program',
+  'AI Integrated Advanced Program in Cybersecurity & Forensics (APCF)',
   'AI Forward Deployment Engineer (FDE)',
   'Other / General Inquiry',
 ];

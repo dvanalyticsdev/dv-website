@@ -69,37 +69,28 @@ const toIsoDate = (value: string) => {
 const coursePosterById: Record<string, string> = {
   apids: '/courses-poster/APIDS.png',
   apida: '/courses-poster/APIDA.png',
-  aiml: '/courses-poster/Advance AIML.png',
-  genai: '/courses-poster/Gen AI.png',
   specialist: '/courses-poster/DAS.png',
   apcs: '/courses-poster/APCF.png',
-  days7_genai: '/courses-poster/7-days-genai.png',
   fde: '/courses-poster/ai-forward-deployment-engineer.png',
   flp: '/courses-poster/FLP.png',
 };
 
 const courseSearchFocusById: Record<string, string[]> = {
-  apids: ['Data Science', 'Artificial Intelligence', 'Machine Learning', 'Generative AI', 'MLOps'],
-  apida: ['Data Analytics', 'Business Intelligence', 'SQL', 'Python', 'Power BI', 'AI Analytics'],
+  apids: ['Industrial Data Science', 'AI Deployment', 'Machine Learning', 'Generative AI', 'MLOps'],
+  apida: ['Industrial Data Science', 'Generative AI', 'Data Analytics', 'Business Intelligence', 'SQL', 'Python'],
   specialist: ['Data Analytics', 'Excel AI', 'SQL', 'Python', 'Power BI', 'Tableau'],
-  aiml: ['Artificial Intelligence', 'Machine Learning', 'Generative AI', 'Agentic AI', 'Deep Learning'],
-  genai: ['Generative AI', 'Agentic AI', 'LLMs', 'RAG', 'AI Agents', 'LLMOps'],
-  apcs: ['Cybersecurity', 'Ethical Hacking', 'SOC', 'SIEM', 'Digital Forensics', 'Cloud Security'],
-  days7_genai: ['Generative AI', 'Agentic AI', 'Prompt Engineering', 'LLMs', 'AI Productivity'],
+  apcs: ['Cybersecurity', 'Ethical Hacking', 'SOC', 'SIEM', 'Digital Forensics', 'AI Integrated Security'],
   fde: ['Forward Deployment Engineering', 'AI Solutions', 'GenAI Applications', 'RAG', 'APIs', 'Cloud Deployment'],
   flp: ['Data Science', 'Artificial Intelligence', 'Self-Paced Learning', 'Python', 'Machine Learning'],
 };
 
 const courseTitleById: Record<string, string> = {
-  apids: 'Data Science & AI Course (APIDS)',
-  apida: 'Data Analytics & AI Course (APIDA)',
-  specialist: 'Data Analytics Specialist Course',
-  aiml: 'AI/ML, GenAI & Agentic AI Course',
-  genai: 'Generative & Agentic AI Course',
-  apcs: 'Cybersecurity & Forensics Course',
-  days7_genai: '7-Day GenAI & Agentic AI Program',
-  fde: 'AI Forward Deployment Engineer Course',
-  flp: 'Flexi Data Science & AI Program',
+  apids: 'Industrial Data Science with AI Deployment Course (APIDS)',
+  apida: 'Industrial Data Science with Gen AI Course (APIDA)',
+  specialist: 'Data Analytics Specialist Course (DAS)',
+  apcs: 'AI Integrated Cybersecurity & Forensics Course (APCF)',
+  fde: 'AI Forward Deployment Engineer Course (FDE)',
+  flp: 'Flexi Data Science & AI Program (FLP)',
 };
 
 const courseSeoById: Record<string, { name: string; title: string; description: string; duration: string; topics: string[] }> = Object.fromEntries(

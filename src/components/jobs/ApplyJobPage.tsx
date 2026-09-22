@@ -85,19 +85,10 @@ export const ApplyJobPage: React.FC<ApplyJobPageProps> = () => {
     }
   };
 
-  // Handle View Job Profile click on a JobCard
+  // Handle View Job Profile click on a JobCard (freely accessible without LMS verification)
   const handleViewProfileClick = (job: JobListing) => {
     if (!job.jobProfileUrl) return;
-
-    setSelectedJob(job);
-    setLmsTargetAction('view_profile');
-
-    // If student is already verified in this session, open job profile directly
-    if (verifiedStudent) {
-      window.open(job.jobProfileUrl, '_blank', 'noopener,noreferrer');
-    } else {
-      setIsLmsModalOpen(true);
-    }
+    window.open(job.jobProfileUrl, '_blank', 'noopener,noreferrer');
   };
 
   // When LMS verification succeeds

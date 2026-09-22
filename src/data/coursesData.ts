@@ -46,7 +46,7 @@ export interface DetailedCourse {
 export const coursesData: Record<string, DetailedCourse> = {
   APIDS: {
     id: 'apids',
-    title: 'Advanced Program in Industrial Data Science & AI (APIDS)',
+    title: 'Advanced Program in Industrial Data Science with AI Deployment (APIDS)',
     tagline: 'A comprehensive industry-oriented program covering the complete lifecycle of data-driven business solutions—from data collection to AI deployment in the cloud.',
     overview: 'The Advanced Program in Industrial Data Science & AI (APIDS) is a comprehensive industry-oriented training program designed to prepare students, graduates, working professionals, and career transition candidates for successful careers in Data Science, Artificial Intelligence, and Analytics.\n\nThe program follows a 360-degree learning approach, covering the complete lifecycle of data-driven business solutions—from data collection and management to advanced AI model development and deployment in cloud environments.',
     duration: '6-8 Months',
@@ -597,7 +597,7 @@ export const coursesData: Record<string, DetailedCourse> = {
 
   APIDA: {
     id: 'apida',
-    title: 'Advanced Program in Industrial Data Analytics & AI (APIDA)',
+    title: 'Advanced Program in Industrial Data Science with Gen AI (APIDA)',
     tagline: 'A comprehensive industry-focused program combining Data Management, Business Intelligence, Machine Learning, and MLOps for analytics professionals.',
     overview: 'The Advanced Program in Industrial Data Analytics & AI (APIDA) is a comprehensive industry-focused training program designed to equip students, graduates, and working professionals with the most in-demand skills in Data Analytics, Business Intelligence, Artificial Intelligence, and Predictive Analytics.\n\nThe program combines Data Management, Data Analysis, Data Visualization, Statistical Analytics, Machine Learning, and MLOps to help learners transform raw data into meaningful business insights and intelligent solutions.\n\nThe program emphasizes hands-on learning, enabling participants to become job-ready Data Analytics and AI professionals.',
     duration: '5 Months',
@@ -2076,7 +2076,7 @@ export const coursesData: Record<string, DetailedCourse> = {
 
   APCS: {
     id: 'apcs',
-    title: 'Advanced Program in Cybersecurity & Forensics (APCF)',
+    title: 'AI Integrated Advanced Program in Cybersecurity & Forensics (APCF)',
     tagline: 'Comprehensive training in Cybersecurity, Ethical Hacking, Digital Forensics, Threat Intelligence, and Security Operations.',
     overview: 'The Advanced Program in Cybersecurity & Forensics (APCF) is a comprehensive industry-oriented training program designed to prepare students, graduates, IT professionals, and cybersecurity enthusiasts for successful careers in Cybersecurity, Ethical Hacking, Digital Forensics, Threat Intelligence, and Security Operations.\n\nThe program provides hands-on exposure to real-world cyber threats, attack simulations, vulnerability assessments, incident response, and digital forensic investigations. Learners gain practical experience in securing enterprise systems, identifying cyber threats, investigating security incidents, and protecting digital assets.\n\nThe program combines theoretical concepts with practical labs, cyber range exercises, case studies, and industry projects to build job-ready cybersecurity professionals.',
     duration: '4 Months',

@@ -5,11 +5,8 @@ import { getPathFromPage } from '../utils/routes';
 const posterImages: Record<string, string> = {
   apids: '/courses-poster/APIDS.png',
   apida: '/courses-poster/APIDA.png',
-  aiml: '/courses-poster/Advance AIML.png',
-  genai: '/courses-poster/Gen AI.png',
   specialist: '/courses-poster/DAS.png',
   apcs: '/courses-poster/APCF.png',
-  days7_genai: '/courses-poster/7-days-genai.png',
   fde: '/courses-poster/ai-forward-deployment-engineer.png',
 };
 
@@ -47,7 +44,7 @@ export const ProgramsSection: React.FC<ProgramsSectionProps> = ({ onViewDetails 
   const programs: Program[] = [
     {
       id: 'apids',
-      title: 'Advanced Program in Industrial Data Science & AI (APIDS)',
+      title: 'Advanced Program in Industrial Data Science with AI Deployment (APIDS)',
       shortTitle: 'Industrial Data Science & AI',
       tagline: 'Complete learning journey from Data Management to Cloud Deployment of AI systems.',
       theme: 'blue',
@@ -60,46 +57,33 @@ export const ProgramsSection: React.FC<ProgramsSectionProps> = ({ onViewDetails 
       ],
       duration: '9 Months',
       delivery: 'Live Instructor-Led Online',
-
-      overview: 'The Advanced Program in Industrial Data Science & AI (APIDS) is a comprehensive industry-oriented training program designed to transform graduates and working professionals into highly skilled Data Science & AI practitioners. This program provides a complete learning journey from Data Management, Data Analytics, Machine Learning, Deep Learning, Generative AI, Agentic AI, and Cloud Deployment to prepare candidates for modern AI-driven careers across industries.',
+      overview: 'The Advanced Program in Industrial Data Science with AI Deployment (APIDS) is a comprehensive industry-oriented training program designed to transform graduates and working professionals into highly skilled Data Science & AI practitioners.',
       modules: [
         {
           title: 'Module 1: Data Management',
-          topics: ['SQL Server (DDL/DML, Joins, CTEs, Window Functions, Stored Procedures, Optimization)', 'Python Programming (Data Structures, Functions, OOP, APIs, Automation)', 'SAS Base & Advanced Programming (DATA Step, Macros, Regulatory Reporting)', 'PySpark / Scala Programming (Distributed Computing, Big Data processing)']
+          topics: ['SQL Server', 'Python Programming', 'SAS Base & Advanced', 'PySpark / Scala']
         },
         {
           title: 'Module 2: Data Analysis & Visualization',
-          topics: ['Excel + AI (Advanced Formulas, Pivot Tables, Power Query, Excel Copilot)', 'Power BI (Data Modeling, DAX, KPI Dashboards, AI Visuals, Security)', 'Tableau (Calculated Fields, Advanced Visualizations, Storytelling)']
+          topics: ['Excel + AI', 'Power BI', 'Tableau']
         },
         {
           title: 'Module 3: Data Mining & AI',
-          topics: ['Python Statistics (Hypothesis Testing, Regression Analysis, Risk Analytics)', 'Python Machine Learning (Supervised/Unsupervised Learning, Credit Risk, Churn)', 'Python Deep Learning (Neural Networks, CNN, LSTM, TensorFlow/Keras)', 'Generative AI (Large Language Models, Prompt Engineering, RAG, Fine Tuning Concepts)', 'Agentic AI (AI Agents, LangChain, LangGraph, CrewAI, AutoGen)']
+          topics: ['Python Statistics', 'Machine Learning', 'Deep Learning', 'Generative AI', 'Agentic AI']
         },
         {
           title: 'Module 4: Cloud Deployment',
-          topics: ['MLOps (Model Versioning, CI/CD, Docker, Production Deployment)', 'LLMOps (LLM Evaluation, Prompt Monitoring, Cost Optimization, Governance)', 'AIOps (Infrastructure Monitoring, Incident Detection, Cloud Operations)']
+          topics: ['MLOps', 'LLMOps', 'AIOps']
         }
       ],
-      projects: [
-        'Banking: Credit Risk Modeling & Loan Default Prediction',
-        'Telecom: Customer Churn Prediction & Lifetime Value (CLV)',
-        'Retail: Recommendation Engine & Demand Forecasting',
-        'Insurance: Claims Analytics & Fraud Detection'
-      ],
-      tools: [
-        'SQL Server', 'Python', 'SAS', 'PySpark', 'Power BI', 'Tableau',
-        'Excel AI', 'Scikit-Learn', 'TensorFlow', 'Keras', 'OpenAI APIs',
-        'LangChain', 'LangGraph', 'CrewAI', 'AWS', 'Docker', 'GitHub', 'MLOps'
-      ],
-      careers: [
-        'Data Scientist', 'Machine Learning Engineer', 'AI Engineer', 'Analytics Consultant',
-        'AI Solution Architect', 'Lead Data Scientist', 'Head of AI'
-      ]
+      projects: ['Banking Credit Risk', 'Telecom Churn', 'Retail Demand Forecasting', 'Insurance Fraud Detection'],
+      tools: ['SQL Server', 'Python', 'SAS', 'PySpark', 'Power BI', 'Tableau', 'Excel AI', 'Scikit-Learn', 'TensorFlow', 'OpenAI', 'LangChain', 'AWS', 'Docker'],
+      careers: ['Data Scientist', 'Machine Learning Engineer', 'AI Engineer', 'Analytics Consultant', 'AI Solution Architect']
     },
     {
       id: 'apida',
-      title: 'Advanced Program in Industrial Data Analytics & AI (APIDA)',
-      shortTitle: 'Industrial Data Analytics & AI',
+      title: 'Advanced Program in Industrial Data Science with Gen AI (APIDA)',
+      shortTitle: 'Industrial Data Science with Gen AI',
       tagline: 'Master Data Analytics, Business Intelligence, and Predictive Modeling without deep code complexity.',
       theme: 'purple',
       bulletPoints: [
@@ -111,132 +95,28 @@ export const ProgramsSection: React.FC<ProgramsSectionProps> = ({ onViewDetails 
       ],
       duration: '7 Months',
       delivery: 'Live Instructor-Led Online',
-      overview: 'The Advanced Program in Industrial Data Analytics & AI (APIDA) is a specialized industry-focused program designed for graduates and working professionals who want to build expertise in Data Analytics, Business Intelligence, Machine Learning, and AI-driven Decision Making. APIDA is ideal for professionals who want to build strong analytics capabilities without going into advanced Deep Learning, Generative AI, and Agentic AI development.',
+      overview: 'The Advanced Program in Industrial Data Science with Gen AI (APIDA) is a specialized industry-focused program designed for graduates and working professionals who want to build expertise in Data Analytics, Business Intelligence, Machine Learning, and AI-driven Decision Making.',
       modules: [
         {
           title: 'Module 1: Data Management',
-          topics: ['SQL Server (Database Concepts, Joins, CTEs, Window Functions, Stored Procedures)', 'Python Programming (Variables, Functions, File Processing, API Integration)', 'SAS Base & Advanced Programming (DATA Step, Macro Programming, Data Manipulation)', 'PySpark / Scala Programming (Big Data Concepts, Spark SQL, Distributed Processing)']
+          topics: ['SQL Server', 'Python Programming', 'SAS Base & Advanced', 'PySpark / Scala']
         },
         {
           title: 'Module 2: Data Analysis & Visualization',
-          topics: ['Excel + AI (Pivot Tables, Power Query, Power Pivot, Excel AI & Copilot)', 'Power BI (Data modeling, DAX, KPI Monitoring, Sales Dashboarding, Publishing)', 'Tableau (Calculated Fields, Storytelling with Data, Executive Dashboards)']
+          topics: ['Excel + AI', 'Power BI', 'Tableau']
         },
         {
           title: 'Module 3: Data Mining & AI',
-          topics: ['Python Statistics (Descriptive Stats, Probability, Hypothesis Testing, Correlation)', 'Python Machine Learning (Linear/Logistic Regression, Tree-Based Models, Clustering, Segmentation)', 'Model Evaluation (Accuracy, Precision, Recall, ROC-AUC, Cross Validation)']
+          topics: ['Python Statistics', 'Python Machine Learning', 'Model Evaluation']
         },
         {
           title: 'Module 4: Cloud Deployment',
-          topics: ['MLOps (Git & Version Control, CI/CD, Model Deployment, Monitoring, Performance Tracking)']
+          topics: ['MLOps Deployment']
         }
       ],
-      projects: [
-        'Banking: Credit Risk Prediction & Collection Analytics',
-        'Telecom: Customer Churn Prediction & Revenue Analytics',
-        'Retail: Sales Performance Dashboard & Product Recommendations',
-        'Healthcare: Hospital Performance Analytics'
-      ],
-      tools: [
-        'SQL Server', 'Python', 'SAS', 'PySpark', 'Excel AI', 'Power BI',
-        'Tableau', 'NumPy', 'Pandas', 'Scikit-Learn', 'GitHub', 'Docker', 'MLOps'
-      ],
-      careers: [
-        'Data Analyst', 'Business Analyst', 'Reporting Analyst', 'BI Analyst',
-        'Machine Learning Analyst', 'Associate Data Scientist', 'Analytics Consultant'
-      ]
-    },
-    {
-      id: 'aiml',
-      title: 'Advanced AI/ML with Generative AI & Agentic AI (AIML-GAA)',
-      shortTitle: 'Advanced AIML Complete',
-      tagline: 'Rigorous tiered program covering foundation math to advanced autonomous multi-agent networks.',
-      theme: 'indigo',
-      bulletPoints: [
-        'Tier 1 Foundation: Python, SQL & Statistics',
-        'Tier 2 Base: Machine Learning, CNNs & Transformers',
-        'Tier 3 MLOps: Automated AWS EKS Deployment',
-        'Advanced Generative AI & LLMOps Guardrails',
-        'Agentic AI: LangGraph, CrewAI & AutoGen Agents'
-      ],
-      duration: '10 Months',
-      delivery: 'Live Hybrid (Online + Projects)',
-      overview: 'The Advanced Program in AI & Machine Learning is a complete, career-focused curriculum divided into three tiers (Bridge, Base, Advanced) leading to MLOps, Generative AI, and Agentic AI deployment. Designed by AI product developers and technology mentors, it prepares candidates to build and run production-grade intelligent systems at scale on AWS cloud infrastructures.',
-      modules: [
-        {
-          title: 'Tier 1: Bridge / Foundation',
-          topics: ['Python for Data Science (NumPy, Pandas, Visualizations with Seaborn)', 'SQL for Data Science (Window Functions, CTEs, Query Optimization)', 'Basic Statistics & Probability (Descriptive stats, Probability distributions, Outlier detection)', 'Capstone: Retail Sales EDA Dashboard deployed on Streamlit']
-        },
-        {
-          title: 'Tier 2: Base / Core',
-          topics: ['Inferential Statistics for ML (Hypothesis Testing, ANOVA, Correlation, Regression LINE assumptions)', 'Machine Learning Complete (Ridge/Lasso, Tree Models, XGBoost, SHAP/LIME Explainers)', 'Deep Learning Foundations (Perceptrons, Backpropagation, TensorFlow/PyTorch)', 'Natural Language Processing (RNN, LSTM, Transformers, BERT, GPT, Hugging Face)', 'Computer Vision (CNNs, Transfer Learning ResNet, Object Detection YOLO, ViTs)', 'Capstones: Churn API with FastAPI, Sentiment Analysis BERT API, Image CV Defect Detection']
-        },
-        {
-          title: 'Tier 3: Advanced / Production',
-          topics: ['MLOps on AWS (Docker containers, Amazon ECR, Kubernetes/EKS cluster deployments, Terraform)', 'CI/CD Pipelines (GitHub Actions, Automated Training, Model Registry, Blue-Green deployments)', 'Model Monitoring (Evidently AI data drift, concept drift, CloudWatch alarms)', 'Generative AI & Agentic AI (RAG, Vector DBs, LangGraph, CrewAI, AutoGen, MCP)', 'LLMOps (FastAPI streaming, Bedrock, SageMaker, Cost Helicone, Guardrails)', 'MLOps Projects: Vehicle Mileage prediction with drift, Return Prediction pre-shipment, Auto re-clustering']
-        }
-      ],
-      projects: [
-        'Sentiment Classification API Fine-tuned on BERT',
-        'Image CV Defect Classifier for Manufacturing Quality Edge Deployments',
-        'Automated Vehicle Mileage Predictor with Evidently AI Drift-Retraining Pipeline',
-        'Proactive Order Return Predictor with LLM-generated CRM messaging'
-      ],
-      tools: [
-        'Python', 'SQL', 'Pandas', 'NumPy', 'Scikit-Learn', 'TensorFlow', 'PyTorch',
-        'Hugging Face', 'LangChain', 'LangGraph', 'CrewAI', 'AutoGen', 'Pinecone',
-        'Evidently AI', 'AWS EKS', 'SageMaker', 'Bedrock', 'Docker', 'FastAPI', 'Streamlit'
-      ],
-      careers: [
-        'Machine Learning Engineer', 'AI Engineer', 'NLP Developer', 'CV Specialist',
-        'MLOps Engineer', 'AI Solutions Architect', 'Senior Data Scientist'
-      ]
-    },
-    {
-      id: 'genai',
-      title: 'Master Program in Generative AI & Agentic AI (MPGAA)',
-      shortTitle: 'Master GenAI & Agentic AI',
-      tagline: 'Specialized Master\'s curriculum focused on Large Language Models, RAG, and Autonomous Agents.',
-      theme: 'magenta',
-      bulletPoints: [
-        'Deep Learning Foundations & NLP Focus',
-        'Prompt Engineering, RAG & Fine-Tuning',
-        'Agentic Architectures & Multi-Agent Swarms',
-        'Model Context Protocol (MCP) Server/Client',
-        'AWS LLMOps, Cost Optimization & Security'
-      ],
-      duration: '6 Months',
-      delivery: 'Live Instructor-Led Online',
-
-      overview: 'The Master Programme in Generative AI and Agentic AI is an advanced, highly specialized curriculum designed to build, deploy, and operate production-grade GenAI systems and autonomous LLM infrastructures. From prompt engineering, advanced RAG, and multimodal AI to instruction fine-tuning, Model Context Protocol (MCP) servers, and cost-optimized LLMOps on AWS Bedrock/EKS, this program targets high-end engineering roles in the GenAI landscape.',
-      modules: [
-        {
-          title: 'Tier 1: Bridge / Foundation',
-          topics: ['Python for AI Development (Fundamentals, OOP, JSON/CSV handling, Requests library, NumPy & Pandas)', 'Capstone: Data Pipeline and REST API integration tool']
-        },
-        {
-          title: 'Tier 2: Base / GenAI Core',
-          topics: ['Deep Learning NLP Focus (Attention Mechanism, Transformers, BERT, GPT, Hugging Face)', 'Generative AI Foundations (Context windows, Quantization, Mixture of Experts)', 'Prompt Engineering (Zero/Few-shot, Chain-of-Thought, JSON mode, LangSmith debugging)', 'Retrieval-Augmented Generation (Advanced RAG, Vector DB Pinecone/Chroma, Re-ranking, Graph RAG)', 'Multimodal AI (Vision-Language CLIP/LLaVA, Stable Diffusion, Whisper Speech)', 'Fine-Tuning (PEFT, LoRA/QLoRA, Supervised Fine Tuning, DPO, Model Merging)', 'Safety & Guardrails (Content moderation, prompt injection defense, OWASP LLM top 10)', 'Capstone: Document Intelligence System with RAGAS Evaluation']
-        },
-        {
-          title: 'Tier 3: Advanced / Agentic LLMOps',
-          topics: ['Agentic AI Foundations (Perception-Action Loop, ReAct agent loops, Short/Long-Term Memory)', 'Agentic Frameworks (LangChain, LangGraph stateful flows, AutoGen group chats, CrewAI delegation)', 'Model Context Protocol (MCP Server/Client development, tool registration, client connectors)', 'AWS LLMOps (Bedrock, SageMaker JumpStart, EKS containers, FastAPI SSE streaming, CI/CD, Helicone cost monitoring)', 'Master Projects: Multi-agent research generator, Customer support agent with database memory, SQL Agent']
-        }
-      ],
-      projects: [
-        'Multi-Agent Collaborative Research & Report Generator (CrewAI / LangGraph)',
-        'Intelligent Customer Support Agent with Persistent CRM Memory & WebSockets',
-        'Natural Language SQL analytics Agent with Guardrails & Plotly visualizations',
-        'Document Intelligence System utilizing advanced Hybrid Search & RAGAS'
-      ],
-      tools: [
-        'Python', 'PyTorch', 'Hugging Face', 'OpenAI', 'Claude', 'Gemini', 'LangChain',
-        'LangGraph', 'CrewAI', 'AutoGen', 'Pinecone', 'Chroma', 'AWS Bedrock',
-        'SageMaker', 'ECR', 'EKS', 'LangSmith', 'Helicone', 'MCP', 'FastAPI', 'Streamlit'
-      ],
-      careers: [
-        'Generative AI Engineer', 'Agentic Systems Developer', 'AI Prompt Architect',
-        'AI Product Developer', 'LLMOps Engineer', 'AI Research Scientist'
-      ]
+      projects: ['Banking Credit Risk', 'Telecom Churn', 'Retail Sales Dashboard', 'Healthcare Performance'],
+      tools: ['SQL Server', 'Python', 'SAS', 'PySpark', 'Excel AI', 'Power BI', 'Tableau', 'NumPy', 'Pandas', 'Scikit-Learn', 'Docker'],
+      careers: ['Data Analyst', 'Business Analyst', 'Reporting Analyst', 'BI Analyst', 'Associate Data Scientist']
     },
     {
       id: 'specialist',
@@ -253,43 +133,24 @@ export const ProgramsSection: React.FC<ProgramsSectionProps> = ({ onViewDetails 
       ],
       duration: '4 Months',
       delivery: 'Live Online + Self-Paced Projects',
-
-      overview: 'The Data Analytics Specialist Program is a practical, industry-oriented training program designed to equip graduates and working professionals with the most in-demand skills required for modern Data Analytics and Business Intelligence careers. It focuses on collecting, managing, analyzing, visualizing, and communicating business insights using SQL Server, Python, Excel AI, and Power BI.',
+      overview: 'The Data Analytics Specialist Program is a practical, industry-oriented training program designed to equip graduates and working professionals with the most in-demand skills required for modern Data Analytics and Business Intelligence careers.',
       modules: [
         {
           title: 'Module 1: Data Management',
-          topics: [
-            'SQL Server Database Fundamentals (Relational Modeling, Primary/Foreign keys, DDL/DML)',
-            'SQL Server Programming (Filters, Grouping, Joins, Subqueries, CTEs, Window Functions, Views, Stored Procedures)',
-            'Python Programming (Variables, Loops, Functions, OOP, File Handling, API calls, NumPy, Pandas)'
-          ]
+          topics: ['SQL Server Database Fundamentals', 'SQL Server Programming', 'Python Programming']
         },
         {
           title: 'Module 2: Data Analysis & Visualization',
-          topics: [
-            'Excel + AI (Formulas, Pivot Tables, Power Query, Dashboard Development, Excel Copilot AI analysis)',
-            'Power BI (Data Connection, Modeling star/snowflake schemas, DAX Measures, Interactive KPI Dashboards, Publishing & Sharing)'
-          ]
+          topics: ['Excel + AI & Copilot', 'Power BI Dashboards & DAX']
         }
       ],
-      projects: [
-        'Banking Analytics: Loan Portfolio & Credit Card usage dashboards',
-        'Retail Analytics: Sales Performance & Product Performance dashboards',
-        'E-Commerce Analytics: Product & Revenue Analysis dashboards',
-        'Telecom Analytics: Customer Retention & Revenue reporting dashboards'
-      ],
-      tools: [
-        'SQL Server', 'Python', 'Excel', 'Excel AI', 'Excel Copilot', 'Power BI',
-        'Power BI Service', 'NumPy', 'Pandas'
-      ],
-      careers: [
-        'Data Analyst', 'MIS Analyst', 'Reporting Analyst', 'Business Analyst',
-        'Operations Analyst', 'Senior Data Analyst', 'BI Analyst', 'Analytics Consultant'
-      ]
+      projects: ['Banking Analytics', 'Retail Analytics', 'E-Commerce Analytics', 'Telecom Retention'],
+      tools: ['SQL Server', 'Python', 'Excel AI', 'Power BI', 'NumPy', 'Pandas'],
+      careers: ['Data Analyst', 'MIS Analyst', 'Reporting Analyst', 'Business Analyst', 'BI Analyst']
     },
     {
       id: 'apcs',
-      title: 'Advanced Program in Cybersecurity & Forensics (APCF)',
+      title: 'AI Integrated Advanced Program in Cybersecurity & Forensics (APCF)',
       shortTitle: 'Cybersecurity & Forensics',
       tagline: 'Defend enterprise systems and cloud platforms with advanced threat detection, incident response, and auditing.',
       theme: 'teal',
@@ -302,208 +163,66 @@ export const ProgramsSection: React.FC<ProgramsSectionProps> = ({ onViewDetails 
       ],
       duration: '6 Months',
       delivery: 'Live Instructor-Led Online',
-
-      overview: 'The Advanced Program in Industrial Cybersecurity (APIC) is an industry-driven program designed to build hands-on expertise in offensive and defensive security. Participants will learn how to identify vulnerabilities, deploy security controls, monitor events in real-time, and govern cloud security infrastructures using standard corporate toolsets.',
+      overview: 'The AI Integrated Advanced Program in Cybersecurity & Forensics (APCF) is an industry-driven program designed to build hands-on expertise in offensive and defensive security, incident response, and forensic investigations.',
       modules: [
         {
           title: 'Module 1: Network Security & Cryptography',
-          topics: [
-            'Network Security Fundamentals (TCP/IP protocols, DNS security, firewalls, routers, switches)',
-            'Cryptography & Encryption (Symmetric/Asymmetric encryption, SSL/TLS handshakes, public key infrastructure)',
-            'Packet Analysis & Sniffing (Wireshark packet captures, network traffic troubleshooting, protocol analysis)'
-          ]
+          topics: ['Network Security Fundamentals', 'Cryptography & Encryption', 'Packet Analysis & Wireshark']
         },
         {
           title: 'Module 2: Ethical Hacking & Penetration Testing',
-          topics: [
-            'Information Gathering & Reconnaissance (Footprinting, active scanning using Nmap)',
-            'Vulnerability Assessment (Using Nessus scanners, identifying CVEs, risk scoring)',
-            'System Hacking & Exploit execution (Metasploit framework, password cracking, privilege escalation)',
-            'Web Application Security (OWASP Top 10 vulnerabilities, XSS, SQL injection, Burp Suite tools)'
-          ]
+          topics: ['Reconnaissance & Footprinting', 'Vulnerability Assessment (Nessus)', 'Metasploit Exploit Execution', 'Web Security OWASP Top 10']
         },
         {
-          title: 'Module 3: Security Operations Center (SOC) & SIEM',
-          topics: [
-            'Security Information & Event Management (Splunk SIEM installation, search processing language, dashboards)',
-            'Log Analysis & Event Correlation (Windows event logs, Syslog monitoring, detecting brute-force and anomalies)',
-            'Incident Response & Playbooks (Identifying security alerts, containment strategies, post-incident reviews)'
-          ]
+          title: 'Module 3: SOC & SIEM',
+          topics: ['Splunk SIEM', 'Log Analysis & Correlation', 'Incident Response Playbooks']
         },
         {
           title: 'Module 4: Cloud Security & Governance',
-          topics: [
-            'AWS Cloud Security (Identity & Access Management, Security Groups, VPC Network ACLs, KMS Encryption)',
-            'Governance, Risk & Compliance (Information security policies, GDPR, HIPAA, ISO 27001 auditing frameworks)',
-            'Incident Reporting & Vulnerability management workflows'
-          ]
+          topics: ['AWS Cloud Security', 'Governance, Risk & Compliance (ISO/GDPR)', 'Incident Reporting']
         }
       ],
-      projects: [
-        'Enterprise Network Security Audit & Wireshark Threat Identification',
-        'Vulnerability Assessment & Metasploit Penetration Audit on Staging Systems',
-        'SIEM Dashboard Deployment & Real-Time Incident Logging in Splunk',
-        'AWS Secure Multi-Tenant IAM Architecture Setup & ISO Compliance Auditing'
-      ],
-      tools: [
-        'Wireshark', 'Nmap', 'Metasploit', 'Splunk', 'Nessus', 'Burp Suite',
-        'Snort', 'AWS IAM', 'Linux Security Tools'
-      ],
-      careers: [
-        'Cybersecurity Analyst', 'Ethical Hacker', 'SOC Analyst', 'Penetration Tester',
-        'Cloud Security Engineer', 'Security Operations Engineer', 'InfoSec Auditor'
-      ]
-    },
-    {
-      id: 'days7_genai',
-      title: '7 Days Gen AI & Agentic AI Hands-on Master Program',
-      shortTitle: '7 Days Gen AI Master Program',
-      tagline: '🚀 Become AI-Ready in Just 7 Days. Learn frameworks like LangChain, LangGraph, CrewAI & AutoGen.',
-      theme: 'orange',
-      bulletPoints: [
-        'Python & Deep Learning Foundations from scratch',
-        'Transformers, Attention Mechanism & ChatGPT logic',
-        'Agentic AI, Vector Databases & RAG Search Engines',
-        'LangChain, LangGraph, CrewAI & Multi-Agent orchestration',
-        'Vision AI, LoRA Fine-Tuning & Production Safety MCP'
-      ],
-      duration: '7 Days (42 Hours)',
-      delivery: 'Live Instructor-Led Online',
-      overview: 'The 7 Days Generative AI & Agentic AI Hands-on Master Program is a crash course designed to take you from Python programming foundations all the way to deep learning, Large Language Models (LLMs), Agentic AI, and building real-world autonomous multi-agent systems. You will build and deploy three complete portfolio-ready AI products.',
-      modules: [
-        {
-          title: 'Day 1: Python & Deep Learning Foundations',
-          topics: [
-            'Python programming constructs & NumPy/Pandas',
-            'Data Visualization & Neural Networks foundations',
-            'Deep Learning architecture & NLP foundations'
-          ]
-        },
-        {
-          title: 'Day 2: Transformers & Large Language Models',
-          topics: [
-            'Attention Mechanism & Transformers architecture',
-            'GPT, BERT, T5 models & Prompt Engineering',
-            'Structured Outputs & ChatGPT inner workings'
-          ]
-        },
-        {
-          title: 'Day 3: Agentic AI & RAG',
-          topics: [
-            'Retrieval-Augmented Generation (RAG) & Vector DBs',
-            'Autonomous AI systems: Think, Plan, Reason & Act',
-            'AI Memory mechanisms & Retrieval Systems'
-          ]
-        },
-        {
-          title: 'Day 4: Build Multi-Agent AI Systems',
-          topics: [
-            'Multi-Agent frameworks: LangChain & LangGraph',
-            'CrewAI agent setups & AutoGen agent systems',
-            'AI Orchestration, Teams & Human-in-the-Loop workflows'
-          ]
-        },
-        {
-          title: 'Day 5: Fine-Tuning & Multimodal AI',
-          topics: [
-            'LoRA & PEFT fine-tuning concepts',
-            'Vision AI, OCR & Multimodal AI integration',
-            'Cross-session Intelligence & AI Memory'
-          ]
-        },
-        {
-          title: 'Day 6: Production AI',
-          topics: [
-            'AI Safety frameworks & Guardrails implementation',
-            'Model Context Protocol (MCP) & Prompt Security',
-            'AI Evaluation, Monitoring & Observability'
-          ]
-        },
-        {
-          title: 'Day 7: Build 3 Complete AI Products',
-          topics: [
-            'Banking AI: Autonomous Loan Processing Agent',
-            'Customer Support AI: Multi-Agent Support Platform',
-            'Sales AI: Lead Qualification & Lead Scoring System'
-          ]
-        }
-      ],
-      projects: [
-        'Banking AI Loan Processing System',
-        'Multi-Agent Customer Support Platform',
-        'Lead Qualification & Scoring AI Agent',
-        'RAG Document Search Engine'
-      ],
-      tools: [
-        'Python', 'Transformers', 'LangChain', 'LangGraph', 'CrewAI',
-        'AutoGen', 'Vector Databases', 'LoRA', 'PEFT', 'Vision AI',
-        'OCR', 'MCP', 'GitHub'
-      ],
-      careers: [
-        'AI Engineer', 'Generative AI Engineer', 'Agentic AI Developer',
-        'LLM Engineer', 'AI Product Manager', 'AI Consultant',
-        'AI Solutions Architect', 'AI Automation Engineer'
-      ]
+      projects: ['Network Audit', 'Vulnerability Assessment', 'SIEM Splunk Deployment', 'AWS IAM Setup'],
+      tools: ['Wireshark', 'Nmap', 'Metasploit', 'Splunk', 'Nessus', 'Burp Suite', 'AWS IAM', 'Linux Security'],
+      careers: ['Cybersecurity Analyst', 'Ethical Hacker', 'SOC Analyst', 'Penetration Tester', 'Cloud Security Engineer']
     },
     {
       id: 'fde',
       title: 'AI Forward Deployment Engineer (FDE)',
-      shortTitle: 'AI Forward Deployment Engineer',
-      tagline: 'Build and deploy client-ready AI solutions across LLMs, RAG, agents, data, cloud, and production operations.',
+      shortTitle: 'Forward Deployment Engineer',
+      tagline: 'Architect and deploy production-grade AI systems, LLM pipelines, autonomous agents, and enterprise integrations.',
       theme: 'indigo',
       bulletPoints: [
-        'FDE delivery mindset: engineering, consulting, and AI',
-        'LLMs, prompt engineering, RAG, vector databases, and agents',
-        'MCP, AI workflow automation, and AI-assisted software engineering',
-        'Data engineering, AI system design, cloud deployment, and CI/CD',
-        'Enterprise AI delivery, LLMOps, guardrails, monitoring, and cost control'
+        'Enterprise AI Architecture & System Design',
+        'Autonomous Agents, LangGraph, CrewAI & AutoGen',
+        'Production RAG, Vector Databases & Peft Fine-Tuning',
+        'Model Context Protocol (MCP) & Agent Workflows',
+        'Client-Facing Technical Engineering & Deployment'
       ],
-      duration: '6 Months',
-      delivery: 'Live Online/Offline Classes',
-      overview: 'The AI Forward Deployment Engineer program prepares learners to work directly with clients, translate real business problems into technical requirements, and ship production-ready AI solutions in live environments.',
+      duration: '8 Months',
+      delivery: 'Live Hybrid (Online + Client Simulation Labs)',
+      overview: 'The AI Forward Deployment Engineer (FDE) program builds technical professionals who bridge advanced AI engineering and real-world enterprise delivery.',
       modules: [
         {
-          title: 'FDE Foundations',
-          topics: [
-            'FDE vs Software Engineer and the client-embedded delivery model',
-            'FDE mindset: speed, empathy, and business translation',
-            'Four pillars: AI, Data, Cloud, and Software Engineering'
-          ]
+          title: 'Module 1: Enterprise AI System Design',
+          topics: ['AI System Architecture', 'Scalable LLM APIs', 'API Integration & Middleware']
         },
         {
-          title: 'AI, LLMs, RAG, and Agents',
-          topics: [
-            'GenAI foundations, transformers, tokens, and model selection',
-            'Prompt engineering, structured output, evaluations, and enterprise patterns',
-            'RAG pipelines, vector databases, advanced retrieval, and RAG evaluation',
-            'Agentic patterns, multi-agent systems, LangChain, and LangGraph'
-          ]
+          title: 'Module 2: Autonomous Agentic AI Systems',
+          topics: ['Multi-Agent Orchestration (CrewAI, LangGraph, AutoGen)', 'MCP Protocol & Agent Tooling']
         },
         {
-          title: 'Deployment and Enterprise Delivery',
-          topics: [
-            'MCP servers, workflow automation, and human checkpoints',
-            'AI-assisted software engineering with rapid prototyping and code review',
-            'Data engineering, system design, cloud architecture, Docker, Kubernetes, and CI/CD',
-            'LLMOps, guardrails, monitoring, drift, resilience, and production operations'
-          ]
+          title: 'Module 3: Enterprise RAG & LLMOps',
+          topics: ['Advanced RAG & Vector Databases', 'LLMOps, Guardrails & Cost Tracking']
+        },
+        {
+          title: 'Module 4: Deployment & Delivery',
+          topics: ['Docker, Kubernetes & CI/CD', 'Cloud Infrastructure (AWS)', 'Client-Facing AI Delivery']
         }
       ],
-      projects: [
-        'Research Agent with web search, page reading, synthesis, and report generation',
-        'Enterprise RAG or agent system architecture with data flow and interfaces',
-        'End-to-end deployed AI service with container, cloud, CI/CD, and monitoring',
-        'Production LLM system with versioning, guardrails, cost tracking, and observability'
-      ],
-      tools: [
-        'Python', 'LLM APIs', 'Vector Databases', 'LangChain', 'LangGraph',
-        'MCP', 'Docker', 'Kubernetes', 'AWS', 'Terraform',
-        'GitHub Actions', 'Databricks', 'Snowflake', 'dbt', 'Airflow'
-      ],
-      careers: [
-        'Forward Deployment Engineer', 'AI Solutions Engineer', 'AI Engineer',
-        'Enterprise AI Consultant', 'LLMOps Engineer', 'AI Solution Architect'
-      ]
+      projects: ['Autonomous Research Agent', 'Enterprise RAG System', 'End-to-End Deployed AI Service', 'Production LLM Guardrails'],
+      tools: ['Python', 'LLM APIs', 'Vector Databases', 'LangChain', 'LangGraph', 'MCP', 'Docker', 'Kubernetes', 'AWS', 'GitHub Actions'],
+      careers: ['Forward Deployment Engineer', 'AI Solutions Engineer', 'AI Engineer', 'Enterprise AI Consultant', 'LLMOps Engineer']
     }
   ];
 
@@ -517,11 +236,8 @@ export const ProgramsSection: React.FC<ProgramsSectionProps> = ({ onViewDetails 
     apids: 'long',
     apida: 'long',
     fde: 'long',
-    aiml: 'mid',
-    genai: 'mid',
     specialist: 'short',
     apcs: 'mid',
-    days7_genai: 'short',
   };
 
   const filteredPrograms = programs.filter((program) => programTerms[program.id] === activeTerm);

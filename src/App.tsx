@@ -388,8 +388,8 @@ function App() {
                 </p>
                 <h2 className="hero-copy-title">Get an Expert in:</h2>
                 <ul className="hero-expertise-list">
-                  <li>Data Analytics + AI</li>
-                  <li>Data Science + Gen AI + Agentic AI</li>
+                  <li>Data Science + AI Deployment</li>
+                  <li>Data Analytics + Gen AI</li>
                   <li>Data Engineering + AI</li>
                   <li>AI Integrated Cybersecurity + Forensic Specialist</li>
                   <li>AI + Forward Deployment Engineer</li>

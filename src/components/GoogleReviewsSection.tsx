@@ -72,9 +72,9 @@ export const GoogleReviewsSection: React.FC = () => {
     ));
   };
 
-  // Generate loop array so carousel rotates seamlessly
+  // Generate loop array so carousel rotates seamlessly with 6 visible cards (3x2 grid)
   const visibleCards = [];
-  for (let i = 0; i < 5; i++) {
+  for (let i = 0; i < 6; i++) {
     const idx = (currentIndex + i) % totalReviews;
     visibleCards.push({ ...googleReviewsData[idx], uniqueKey: `${googleReviewsData[idx].id}-${i}` });
   }

@@ -8,13 +8,13 @@ export interface CourseMeta {
 export const courseCatalog: CourseMeta[] = [
   {
     id: 'apids',
-    label: 'Advanced Program in Industrial Data Science & AI (APIDS)',
+    label: 'Advanced Program in Industrial Data Science with AI Deployment (APIDS)',
     brochurePath: '/APIDS-Brochure.pdf',
     category: 'live',
   },
   {
     id: 'apida',
-    label: 'Advanced Program in Industrial Data Analytics & AI (APIDA)',
+    label: 'Advanced Program in Industrial Data Science with Gen AI (APIDA)',
     brochurePath: '/apida-brochure.pdf',
     category: 'live',
   },
@@ -25,27 +25,9 @@ export const courseCatalog: CourseMeta[] = [
     category: 'live',
   },
   {
-    id: 'aiml',
-    label: 'Advanced AI/ML with Generative AI & Agentic AI (AIML-GAA)',
-    brochurePath: '/aiml-brochure.pdf',
-    category: 'live',
-  },
-  {
-    id: 'genai',
-    label: 'Master Program in Generative AI & Agentic AI (MPGAA)',
-    brochurePath: '/genai-agentic-ai-brochure.pdf',
-    category: 'live',
-  },
-  {
     id: 'apcs',
-    label: 'Advanced Program in Cybersecurity & Forensics (APCF)',
+    label: 'AI Integrated Advanced Program in Cybersecurity & Forensics (APCF)',
     brochurePath: '/apcf-brochure.pdf',
-    category: 'live',
-  },
-  {
-    id: 'days7_genai',
-    label: '7 Days Gen AI & Agentic AI Hands-on Master Program',
-    brochurePath: '/7-days-genai-brochure.pdf',
     category: 'live',
   },
   {

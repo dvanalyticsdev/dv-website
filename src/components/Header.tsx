@@ -335,7 +335,7 @@ export const Header: React.FC<HeaderProps> = ({
       <li className="nav-item">
         <a
           href={getPathFromPage('apply-job')}
-          className={activePage === 'apply-job' ? 'active' : ''}
+          className={`btn-enroll-header nav-upcoming-btn ${activePage === 'apply-job' ? 'active' : ''}`}
           onClick={(e) => {
             e.preventDefault();
             setMobileMenuOpen(false);
@@ -586,7 +586,7 @@ export const Header: React.FC<HeaderProps> = ({
                 <li className="nav-item">
                   <a
                     href={getPathFromPage('apply-job')}
-                    className={activePage === 'apply-job' ? 'active' : ''}
+                    className={`btn-enroll-header nav-upcoming-btn ${activePage === 'apply-job' ? 'active' : ''}`}
                     onClick={(e) => {
                       e.preventDefault();
                       setMobileMenuOpen(false);

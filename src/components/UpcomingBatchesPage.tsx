@@ -196,7 +196,7 @@ export const UpcomingBatchesPage: React.FC<UpcomingBatchesPageProps> = ({
               <span className="ub-program-code">APIDS</span>
               <span className="ub-seat-badge">8 Seats Remaining</span>
             </div>
-            <h3 className="ub-batch-title">Advanced Program in Industrial Data Science &amp; AI</h3>
+            <h3 className="ub-batch-title">Advanced Program in Industrial Data Science with AI Deployment</h3>
             <p className="ub-batch-summary">
               Master the complete data science lifecycle—from Python, SQL, and Machine Learning to Deep Learning, Generative AI, and Cloud deployment.
             </p>
@@ -224,7 +224,7 @@ export const UpcomingBatchesPage: React.FC<UpcomingBatchesPageProps> = ({
               <span className="ub-program-code">APIDA</span>
               <span className="ub-seat-badge">5 Seats Remaining</span>
             </div>
-            <h3 className="ub-batch-title">Advanced Program in Industrial Data Analytics &amp; AI</h3>
+            <h3 className="ub-batch-title">Advanced Program in Industrial Data Science with Gen AI</h3>
             <p className="ub-batch-summary">
               Combine Data Management, Advanced SQL, Power BI, Python for Analytics, ETL pipelines, and Business Intelligence for high-demand analytics roles.
             </p>

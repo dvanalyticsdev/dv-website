@@ -2,7 +2,7 @@ import { useEffect, useId, useMemo, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { coursesData } from '../data/coursesData';
 
-type CourseId = 'apids' | 'apida' | 'specialist' | 'aiml' | 'apcs' | 'fde';
+type CourseId = 'apids' | 'apida' | 'specialist' | 'apcs' | 'fde';
 type CourseDataId = Uppercase<CourseId>;
 
 interface SkillOption {
@@ -20,6 +20,8 @@ interface CourseRecommendation {
   id: CourseId;
   title: string;
   expectedPackage: string[];
+  keySkills: string[];
+  keyModules: string[];
 }
 
 interface SkillPackageExplorerProps {
@@ -29,39 +31,39 @@ interface SkillPackageExplorerProps {
 
 const skillOptions: SkillOption[] = [
   { id: 'sql', label: 'SQL', weights: { specialist: 3, apida: 3, apids: 2 } },
-  { id: 'python', label: 'Python Programming', weights: { apida: 2, apids: 3, aiml: 3, fde: 2 } },
+  { id: 'python', label: 'Python Programming', weights: { apida: 2, apids: 3, fde: 2 } },
   { id: 'sas', label: 'SAS Programming', weights: { apida: 2, apids: 2 } },
   { id: 'pyspark-scala', label: 'PySpark / Scala', weights: { apids: 3, fde: 2 } },
   { id: 'databricks', label: 'Databricks', weights: { apids: 3, apida: 2, fde: 3 } },
   { id: 'excel-ai', label: 'Excel + AI', weights: { specialist: 4, apida: 4, apids: 2 } },
   { id: 'power-bi', label: 'Power BI', weights: { specialist: 4, apida: 4, apids: 2 } },
   { id: 'tableau', label: 'Tableau', weights: { specialist: 4, apida: 4, apids: 2 } },
-  { id: 'statistics', label: 'Python Statistics', weights: { apida: 3, apids: 3, aiml: 2 } },
+  { id: 'statistics', label: 'Python Statistics', weights: { apida: 3, apids: 3 } },
   { id: 'data-analysis', label: 'Data Analysis', weights: { specialist: 4, apida: 4, apids: 2 } },
   { id: 'data-visualization', label: 'Data Visualization', weights: { specialist: 4, apida: 4, apids: 2 } },
-  { id: 'machine-learning', label: 'Machine Learning', weights: { apida: 2, apids: 4, aiml: 4, fde: 2 } },
-  { id: 'deep-learning', label: 'Deep Learning', weights: { apids: 3, aiml: 4 } },
-  { id: 'nlp', label: 'Natural Language Processing (NLP)', weights: { apids: 3, aiml: 4 } },
-  { id: 'computer-vision', label: 'Computer Vision', weights: { apids: 2, apida: 1, aiml: 3 } },
-  { id: 'genai', label: 'Generative AI', weights: { apids: 3, aiml: 4, fde: 4 } },
-  { id: 'agentic-ai', label: 'Agentic AI', weights: { aiml: 4, fde: 5, apids: 2 } },
-  { id: 'prompt-engineering', label: 'Prompt Engineering', weights: { aiml: 3, fde: 5, apids: 2 } },
-  { id: 'llms', label: 'LLMs', weights: { aiml: 4, fde: 5, apids: 2 } },
-  { id: 'rag-vector-db', label: 'RAG / Vector Databases', weights: { aiml: 4, fde: 5, apids: 3 } },
-  { id: 'mlops', label: 'MLOps', weights: { apida: 2, apids: 4, aiml: 4, fde: 4 } },
-  { id: 'llmops', label: 'LLMOps', weights: { apids: 3, aiml: 4, fde: 5 } },
+  { id: 'machine-learning', label: 'Machine Learning', weights: { apida: 2, apids: 4, fde: 2 } },
+  { id: 'deep-learning', label: 'Deep Learning', weights: { apids: 4, fde: 3 } },
+  { id: 'nlp', label: 'Natural Language Processing (NLP)', weights: { apids: 4, fde: 3 } },
+  { id: 'computer-vision', label: 'Computer Vision', weights: { apids: 3, apida: 1 } },
+  { id: 'genai', label: 'Generative AI', weights: { apids: 4, fde: 4 } },
+  { id: 'agentic-ai', label: 'Agentic AI', weights: { fde: 5, apids: 3 } },
+  { id: 'prompt-engineering', label: 'Prompt Engineering', weights: { fde: 5, apids: 2 } },
+  { id: 'llms', label: 'LLMs', weights: { fde: 5, apids: 3 } },
+  { id: 'rag-vector-db', label: 'RAG / Vector Databases', weights: { fde: 5, apids: 3 } },
+  { id: 'mlops', label: 'MLOps', weights: { apida: 2, apids: 4, fde: 4 } },
+  { id: 'llmops', label: 'LLMOps', weights: { apids: 3, fde: 5 } },
   { id: 'aiops', label: 'AIOps', weights: { apids: 3, fde: 3 } },
-  { id: 'cloud-platforms', label: 'Cloud Platforms', weights: { apids: 4, aiml: 3, fde: 5, apcs: 2 } },
+  { id: 'cloud-platforms', label: 'Cloud Platforms', weights: { apids: 4, fde: 5, apcs: 2 } },
   { id: 'data-engineering', label: 'Data Engineering', weights: { apids: 4, apida: 2, fde: 4 } },
-  { id: 'system-design', label: 'AI System Design', weights: { fde: 5, aiml: 2, apids: 2 } },
-  { id: 'system-design-general', label: 'System Design', weights: { fde: 4, apids: 3, aiml: 2, apcs: 1 } },
-  { id: 'forward-deployment', label: 'Forward Deployment Engineering', weights: { fde: 5, apids: 2, aiml: 1 } },
-  { id: 'ai-workflow-automation', label: 'AI Workflow Automation / MCP', weights: { fde: 5, aiml: 3 } },
-  { id: 'api-development', label: 'API Development', weights: { fde: 4, apids: 3, aiml: 2, apida: 1 } },
-  { id: 'client-delivery', label: 'Client-Facing AI Delivery', weights: { fde: 5, aiml: 2 } },
+  { id: 'system-design', label: 'AI System Design', weights: { fde: 5, apids: 2 } },
+  { id: 'system-design-general', label: 'System Design', weights: { fde: 4, apids: 3, apcs: 1 } },
+  { id: 'forward-deployment', label: 'Forward Deployment Engineering', weights: { fde: 5, apids: 2 } },
+  { id: 'ai-workflow-automation', label: 'AI Workflow Automation / MCP', weights: { fde: 5, apids: 2 } },
+  { id: 'api-development', label: 'API Development', weights: { fde: 4, apids: 3, apida: 1 } },
+  { id: 'client-delivery', label: 'Client-Facing AI Delivery', weights: { fde: 5 } },
   { id: 'banking-analytics', label: 'Banking / Credit Risk Analytics', weights: { apida: 3, apids: 3, specialist: 2 } },
   { id: 'fraud-analytics', label: 'Fraud / AML Analytics', weights: { apids: 3, apida: 3, specialist: 2, apcs: 1 } },
-  { id: 'forecasting', label: 'Forecasting / Churn / CLV', weights: { apids: 3, apida: 3, specialist: 2, aiml: 2 } },
+  { id: 'forecasting', label: 'Forecasting / Churn / CLV', weights: { apids: 3, apida: 3, specialist: 2 } },
   { id: 'dashboarding', label: 'Dashboarding & Reporting', weights: { specialist: 4, apida: 4, apids: 2 } },
   { id: 'networking-security', label: 'Networking & Security Fundamentals', weights: { apcs: 5 } },
   { id: 'cybersecurity', label: 'Cybersecurity / SOC', weights: { apcs: 5 } },
@@ -91,7 +93,7 @@ const skillCategories: SkillCategory[] = [
     ],
   },
   {
-    title: 'Data Mining',
+    title: 'Data Science & AI',
     skillIds: [
       'machine-learning',
       'deep-learning',
@@ -108,7 +110,7 @@ const skillCategories: SkillCategory[] = [
     ],
   },
   {
-    title: 'Deployment',
+    title: 'Deployment & Engineering',
     skillIds: [
       'mlops',
       'llmops',
@@ -123,7 +125,7 @@ const skillCategories: SkillCategory[] = [
     ],
   },
   {
-    title: 'Data Engineering',
+    title: 'Cybersecurity & Infrastructure',
     skillIds: [
       'data-engineering',
       'networking-security',
@@ -143,33 +145,38 @@ const skillOptionById = new Map(skillOptions.map((skill) => [skill.id, skill]));
 const courseRecommendations: Record<CourseId, CourseRecommendation> = {
   apids: {
     id: 'apids',
-    title: 'Advanced Program in Industrial Data Science & AI (APIDS)',
+    title: 'Advanced Program in Industrial Data Science with AI Deployment (APIDS)',
     expectedPackage: ['Fresher: 8-15 LPA', '1-5 YOE: 10-25 LPA', '5-10 YOE: 20-40 LPA', '10+ YOE: 40 LPA-1 Cr+'],
+    keySkills: ['Python', 'SQL', 'Databricks', 'PySpark', 'Machine Learning', 'Deep Learning', 'Generative AI', 'MLOps', 'Cloud Deployment'],
+    keyModules: ['Data Science Lifecycle', 'Predictive Modeling & ML', 'Deep Learning & Vision', 'GenAI & LLMs', 'Cloud MLOps'],
   },
   apida: {
     id: 'apida',
-    title: 'Advanced Program in Industrial Data Analytics & AI (APIDA)',
+    title: 'Advanced Program in Industrial Data Science with Gen AI (APIDA)',
     expectedPackage: ['Fresher: 6-10 LPA', '1-5 YOE: 8-20 LPA', '5-10 YOE: 15-30 LPA', '10+ YOE: 20-50 LPA'],
+    keySkills: ['SQL & Querying', 'Python Analytics', 'SAS', 'Excel + AI', 'Power BI & Tableau', 'Machine Learning', 'Gen AI Analytics', 'Banking/Fraud Analytics'],
+    keyModules: ['Data Analytics & SQL', 'BI Dashboards', 'Statistical ML', 'Gen AI for Data Analytics', 'Enterprise Case Studies'],
   },
   specialist: {
     id: 'specialist',
     title: 'Data Analytics Specialist (DAS)',
     expectedPackage: ['Fresher: 5-8 LPA', '1-5 YOE: 6-15 LPA', '5-10 YOE: 10-20 LPA', '10+ YOE: 20-40 LPA'],
-  },
-  aiml: {
-    id: 'aiml',
-    title: 'Advanced AI/ML with Generative AI & Agentic AI (AIML-GAA)',
-    expectedPackage: ['Fresher: 8-12 LPA', '1-5 YOE: 10-20 LPA', '5-10 YOE: 20-80 LPA', '10+ YOE: 40-80 LPA+'],
+    keySkills: ['Excel + AI', 'SQL', 'Power BI', 'Tableau', 'Data Analysis', 'Data Visualization', 'Dashboarding & Reporting'],
+    keyModules: ['Advanced Excel Analytics', 'SQL Queries & Joins', 'Power BI & Tableau', 'Business Reporting Projects'],
   },
   apcs: {
     id: 'apcs',
-    title: 'Advanced Program in Cybersecurity & Forensics (APCF)',
+    title: 'AI Integrated Advanced Program in Cybersecurity & Forensics (APCF)',
     expectedPackage: ['Fresher: 3-5 LPA', '1-5 YOE: 4-15 LPA', '5-10 YOE: 15-30 LPA', '10+ YOE: 25-40 LPA+'],
+    keySkills: ['Networking & SOC', 'Linux & Windows Security', 'Ethical Hacking', 'Digital Forensics', 'Threat Intelligence', 'Cloud Security', 'GRC'],
+    keyModules: ['Cyber Security Foundations', 'Ethical Hacking & VAPT', 'Digital Forensics Investigation', 'AI Threat Detection & Response'],
   },
   fde: {
     id: 'fde',
     title: 'AI Forward Deployment Engineer (FDE)',
     expectedPackage: ['Fresher: 10-15 LPA', '1-5 YOE: 10-30 LPA', '5-10 YOE: 25-50 LPA', '10+ YOE: 50 LPA-1 Cr+'],
+    keySkills: ['Python & AI System Design', 'LLMs & Prompt Engineering', 'RAG & Vector DBs', 'Agentic AI & LangChain', 'LLMOps', 'Client-Facing AI Delivery'],
+    keyModules: ['AI Architecture & System Design', 'Autonomous Agentic AI Systems', 'Enterprise RAG & LLMOps', 'Production Deployment & Operations'],
   },
 };
 
@@ -208,7 +215,10 @@ export const SkillPackageExplorer: React.FC<SkillPackageExplorerProps> = ({ onVi
 
   const recommendations = useMemo(() => {
     if (selectedSkills.length === 0) {
-      return [];
+      return (['apids', 'apida', 'fde', 'apcs'] as CourseId[]).map((courseId) => ({
+        ...courseRecommendations[courseId],
+        score: 0,
+      }));
     }
 
     const scores = selectedSkills.reduce<Partial<Record<CourseId, number>>>((acc, skillId) => {
@@ -260,6 +270,29 @@ export const SkillPackageExplorer: React.FC<SkillPackageExplorerProps> = ({ onVi
     </div>
   );
 
+  const renderCourseDepthDetails = (recommendation: CourseRecommendation) => (
+    <div className="course-card-depth-details">
+      <div className="course-depth-section">
+        <span className="course-depth-label">Key Skills Covered:</span>
+        <div className="course-skill-tags">
+          {recommendation.keySkills.map((skill) => (
+            <span key={skill} className="course-skill-tag">
+              {skill}
+            </span>
+          ))}
+        </div>
+      </div>
+      <div className="course-depth-section">
+        <span className="course-depth-label">Curriculum Highlights:</span>
+        <ul className="course-module-bullets">
+          {recommendation.keyModules.map((mod) => (
+            <li key={mod}>{mod}</li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  );
+
   const modalContent = (
     <div className="skill-package-modal" role="presentation" onClick={() => setIsOpen(false)}>
       <div
@@ -273,7 +306,7 @@ export const SkillPackageExplorer: React.FC<SkillPackageExplorerProps> = ({ onVi
         <div className="skill-package-modal-header">
           <div>
             <h2 id={`${panelId}-title`}>Explore skills and packages</h2>
-            <p>Select your skills to find the closest course path and expected package.</p>
+            <p>Select your skills to find the closest course path, in-depth curriculum coverage, and expected package.</p>
           </div>
           <button
             type="button"
@@ -327,7 +360,7 @@ export const SkillPackageExplorer: React.FC<SkillPackageExplorerProps> = ({ onVi
 
           <div className="package-result-panel">
             <div className="skill-panel-heading">
-              <h3>{recommendations.length > 0 ? 'Best suitable course' : 'Recommended courses'}</h3>
+              <h3>{selectedSkills.length > 0 ? 'Best suitable course' : 'Course Curriculum & Packages'}</h3>
               <span>{selectedSkills.length} selected</span>
             </div>
 
@@ -341,6 +374,7 @@ export const SkillPackageExplorer: React.FC<SkillPackageExplorerProps> = ({ onVi
                     <article className="course-recommendation-card best-course-card" key={recommendation.id}>
                       <h4>{course?.title || recommendation.title}</h4>
                       {renderExpectedPackage(recommendation.expectedPackage)}
+                      {renderCourseDepthDetails(recommendation)}
                       <button
                         type="button"
                         className="view-details-btn recommendation-details-btn"
@@ -362,6 +396,7 @@ export const SkillPackageExplorer: React.FC<SkillPackageExplorerProps> = ({ onVi
                   <article className="course-recommendation-card" key={recommendation.id}>
                     <h4>{course?.title || recommendation.title}</h4>
                     {renderExpectedPackage(recommendation.expectedPackage)}
+                    {renderCourseDepthDetails(recommendation)}
                     <button
                       type="button"
                       className="view-details-btn recommendation-details-btn"
