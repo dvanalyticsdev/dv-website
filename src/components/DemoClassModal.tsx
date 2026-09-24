@@ -12,11 +12,11 @@ export interface DemoSlot {
 }
 
 export const LATEST_DEMO_SLOT: DemoSlot = {
-  id: '2026-09-22-7pm',
-  dateStr: '22nd September 2026',
-  day: 'Tuesday',
+  id: '2026-09-24-7pm',
+  dateStr: '24th September 2026',
+  day: 'Thursday',
   timeStr: '7:00 PM - 8:00 PM',
-  fullLabel: 'Tue, 22nd Sept 2026 (7:00 PM - 8:00 PM)',
+  fullLabel: 'Thu, 24th Sept 2026 (7:00 PM - 8:00 PM)',
 };
 
 const DEFAULT_GOOGLE_SHEET_WEBHOOK =
