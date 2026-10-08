@@ -57,8 +57,8 @@ export const Footer: React.FC = () => {
                     </svg>
                   </div>
                   <p className="info-text">
-                    <a href="tel:+919019030033" className="center-link center-link-phone">(+91) 9019 030 033</a>
                     <a href="tel:+918095881188" className="center-link center-link-phone">(+91) 8095 881 188</a>
+                    <a href="tel:+917483596228" className="center-link center-link-phone">(+91) 7483 596 228</a>
                   </p>
                 </div>
 
@@ -121,7 +121,7 @@ export const Footer: React.FC = () => {
                   </div>
                   <p className="info-text">
                     <a href="tel:+918095881188" className="center-link center-link-phone">+91 8095 881 188</a>
-                    <a href="tel:+918249430414" className="center-link center-link-phone">+91 8249 430 414</a>
+                    <a href="tel:+917483596228" className="center-link center-link-phone">+91 7483 596 228</a>
                   </p>
                 </div>
 

@@ -220,7 +220,7 @@ const localBusinessSchemas = [
     url: siteUrl,
     logo: absoluteUrl('/logo.png'),
     image: absoluteUrl('/hero-mobile-bg.png'),
-    telephone: '+91-9019030033',
+    telephone: '+91-8095881188',
     email: 'info@dvanalyticsmds.com',
     priceRange: '₹₹',
     address: {
@@ -245,7 +245,7 @@ const localBusinessSchemas = [
     url: `${siteUrl}/data-analytics-course-bhubaneswar/`,
     logo: absoluteUrl('/logo.png'),
     image: absoluteUrl('/office-bg/bhubneshwar.png'),
-    telephone: '+91-9019030033',
+    telephone: '+91-8095881188',
     email: 'info@dvanalyticsmds.com',
     priceRange: '₹₹',
     address: {
@@ -271,7 +271,7 @@ const organizationSchema = {
   url: siteUrl,
   logo: absoluteUrl('/logo.png'),
   email: 'info@dvanalyticsmds.com',
-  telephone: '+91-9019030033',
+  telephone: '+91-8095881188',
   sameAs: [
     'https://www.linkedin.com/company/dvanalytics/',
     'https://www.youtube.com/@dvanalytics',
