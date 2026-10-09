@@ -30,6 +30,7 @@ const SampleVideoSection = lazy(() => import('./components/SampleVideoSection').
 const SeoLandingPage = lazy(() => import('./components/SeoLandingPage').then((module) => ({ default: module.SeoLandingPage })));
 const UpcomingBatchesPage = lazy(() => import('./components/UpcomingBatchesPage').then((module) => ({ default: module.UpcomingBatchesPage })));
 const ApplyJobPage = lazy(() => import('./components/jobs/ApplyJobPage').then((module) => ({ default: module.ApplyJobPage })));
+const FdeWorkshopPage = lazy(() => import('./components/FdeWorkshopPage').then((module) => ({ default: module.FdeWorkshopPage })));
 
 const heroPosterImages = [
   '/hero-stories/fde-student.jpg',
@@ -307,6 +308,13 @@ function App() {
       );
     }
 
+    if (activePage === 'workshop-fde') {
+      return (
+        <div data-section="workshop-fde">
+          <FdeWorkshopPage onNavigateHome={() => navigateToPage('home')} />
+        </div>
+      );
+    }
 
     if (activePage === 'not-found') {
       return (
@@ -486,6 +494,14 @@ function App() {
       </div>
     );
   };
+
+  if (activePage === 'workshop-fde') {
+    return (
+      <Suspense fallback={<div className="route-loading" aria-label="Loading page content" />}>
+        <FdeWorkshopPage onNavigateHome={() => navigateToPage('home')} />
+      </Suspense>
+    );
+  }
 
   return (
     <div ref={scrollRevealRef}>

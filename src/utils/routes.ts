@@ -71,6 +71,7 @@ export const getPageFromPath = (pathname: string) => {
   if (normalizedPath === '/payment' || normalizedPath === '/payment/index.php') return 'payment';
   if (normalizedPath === '/upcoming-batches') return 'upcoming-batches';
   if (normalizedPath === '/apply-job' || normalizedPath === '/jobs' || normalizedPath === '/careers') return 'apply-job';
+  if (normalizedPath === '/workshop/fde' || normalizedPath === '/workshop/fde/') return 'workshop-fde';
   if (parts[0] && seoLandingPageIdBySlug[parts[0]]) return seoLandingPageIdBySlug[parts[0]];
 
   return 'not-found';
@@ -88,6 +89,7 @@ export const getPathFromPage = (pageId: string) => {
   if (pageId === 'payment') return '/payment';
   if (pageId === 'upcoming-batches') return '/upcoming-batches/';
   if (pageId === 'apply-job') return '/apply-job/';
+  if (pageId === 'workshop-fde') return '/workshop/fde/';
   if (pageId === 'not-found') return '/404';
 
   if (pageId.startsWith('course-')) {

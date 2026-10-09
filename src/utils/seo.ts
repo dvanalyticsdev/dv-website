@@ -168,6 +168,12 @@ const basePages: Record<string, { title: string; description: string; image?: st
     title: 'Apply for Jobs | Careers & Placement Portal | DV Analytics',
     description: 'Explore current career opportunities and apply for positions that match your skills. Verify your LMS ID to submit your job application.',
   },
+  'workshop-fde': {
+    title: 'AI Forward Deployment Engineer Workshop | DV Analytics',
+    description: 'Register for the exclusive 2-hour AI Forward Deployment Engineer (FDE) live workshop. Learn LLMs, RAG, AI Agents and production cloud deployment.',
+    image: '/fde-workshop-banner.png',
+    noindex: true,
+  },
   'not-found': {
     title: 'Page Not Found | DV Analytics',
     description: 'The DV Analytics page you requested could not be found.',
