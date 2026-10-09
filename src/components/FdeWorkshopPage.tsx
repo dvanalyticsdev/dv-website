@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './FdeWorkshopPage.css';
 import { Footer } from './Footer';
-import { trackEvent } from '../utils/analytics';
+import { appendAttributionToPayload, trackEvent } from '../utils/analytics';
 
 interface FdeWorkshopPageProps {
   onNavigateHome?: () => void;
@@ -22,6 +22,8 @@ const initialFormState: FormState = {
 const WORKSHOP_NAME = 'FDE';
 const WORKSHOP_DATE = 'To Be Announced Soon';
 const WORKSHOP_TIME = '7:00 PM - 9:00 PM IST (2 Hours)';
+const CRM_ELEMENTOR_WEBHOOK_URL = 'https://crm.dvanalyticsmds.in/api/webhook/elementor-lead';
+const COUNTRY_CODE = '+91';
 
 const SALARY_ROLES_DATA = [
   {
@@ -107,10 +109,18 @@ export const FdeWorkshopPage: React.FC<FdeWorkshopPageProps> = ({ onNavigateHome
   const [errors, setErrors] = useState<Partial<FormState>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [whatsappOptin, setWhatsappOptin] = useState(true);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(3);
 
   const openRegisterModal = () => {
-    setIsModalOpen(true);
+    const el = document.getElementById('fde-registration-panel');
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      const phoneInput = document.getElementById('fde-reg-phone') as HTMLInputElement | null;
+      if (phoneInput) phoneInput.focus();
+    } else {
+      setIsModalOpen(true);
+    }
   };
 
   const closeRegisterModal = () => {
@@ -154,19 +164,52 @@ export const FdeWorkshopPage: React.FC<FdeWorkshopPageProps> = ({ onNavigateHome
     return isValid;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validateForm()) return;
 
     setIsSubmitting(true);
 
-    setTimeout(() => {
+    try {
+      const now = new Date();
+      const payload = new URLSearchParams();
+      payload.set('form_id', 'dv_website_workshop_fde');
+      payload.set('form_name', 'DV Website Workshop Registration - FDE');
+      payload.set('lead_type', 'workshop');
+      payload.set('intent', 'workshop_registration');
+      payload.set('source_type', 'website');
+      payload.set('pipeline', 'workshop');
+      payload.set('name', formData.name.trim());
+      payload.set('email', formData.email.trim());
+      payload.set('phone', `${COUNTRY_CODE} ${formData.phone.trim()}`);
+      payload.set('whatsapp_optin', whatsappOptin ? 'yes' : 'no');
+      payload.set('course', 'AI Forward Deployment Engineer (FDE)');
+      payload.set('workshop', 'AI Forward Deployment Engineer Workshop');
+      payload.set('page_url', window.location.href);
+      appendAttributionToPayload(payload);
+      payload.set('date', now.toISOString().slice(0, 10));
+      payload.set('time', now.toISOString().slice(11, 19));
+      payload.set('user_agent', window.navigator.userAgent);
+      payload.set('powered_by', 'DV Analytics website');
+
+      if (CRM_ELEMENTOR_WEBHOOK_URL) {
+        await fetch(CRM_ELEMENTOR_WEBHOOK_URL, {
+          method: 'POST',
+          body: payload,
+        }).catch((err) => console.warn('CRM webhook submission error:', err));
+      }
+
       setIsSubmitted(true);
-      setIsSubmitting(false);
       trackEvent('submit_workshop_registration', {
         workshop: WORKSHOP_NAME,
+        phone: `${COUNTRY_CODE} ${formData.phone.trim()}`,
       });
-    }, 400);
+    } catch (err) {
+      console.error('Registration submit error:', err);
+      setIsSubmitted(true);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -183,17 +226,116 @@ export const FdeWorkshopPage: React.FC<FdeWorkshopPageProps> = ({ onNavigateHome
         </div>
       </header>
 
-      {/* Poster Section with Ambient Spotlight Glow */}
-      <section className="fde-full-poster-section">
-        <div className="fde-spotlight-beam left"></div>
-        <div className="fde-spotlight-beam right"></div>
+      {/* Hero Section: Two-Column Split (Poster Left, Registration Panel Right) */}
+      <section className="fde-hero-split-section">
+        <div className="fde-hero-split-container">
+          {/* Left Column: Original High-Res Poster */}
+          <div className="fde-split-poster-col">
+            <div className="fde-split-poster-wrapper">
+              <img
+                src="/fde-workshop-poster.jpg?v=7"
+                alt="AI Forward Deployment Engineer Workshop"
+                className="fde-split-poster-img"
+              />
+            </div>
+          </div>
 
-        <div className="fde-full-poster-wrapper">
-          <img
-            src="/fde-workshop-banner.png"
-            alt="AI Forward Deployment Engineer Workshop Banner"
-            className="fde-full-poster-img"
-          />
+          {/* Right Column: Registration Panel (Opened & Scrollable) */}
+          <div className="fde-split-form-col">
+            <div id="fde-registration-panel" className="fde-registration-panel">
+              {isSubmitted ? (
+                <div className="fde-reg-success-box">
+                  <div className="fde-reg-success-badge">✓</div>
+                  <h3 className="fde-reg-success-title">Registration Confirmed!</h3>
+                  <p className="fde-reg-success-desc">
+                    Your free seat for the <strong>AI Forward Deployment Engineer Workshop</strong> has been reserved.
+                  </p>
+                  <div className="fde-reg-success-meta">
+                    <div><strong>Duration:</strong> {WORKSHOP_TIME}</div>
+                    <div><strong>Date:</strong> {WORKSHOP_DATE}</div>
+                  </div>
+                  <p className="fde-reg-success-hint">
+                    Confirmation & access link will be shared via WhatsApp & Email.
+                  </p>
+                </div>
+              ) : (
+                <form className="fde-reg-form" onSubmit={handleSubmit}>
+                  {/* Phone input with country code selector matching reference */}
+                  <div className="fde-reg-field-group">
+                    <div className="fde-phone-row">
+                      <div className="fde-country-prefix" aria-label="Country Code +91">
+                        +91
+                      </div>
+                      <input
+                        id="fde-reg-phone"
+                        name="phone"
+                        type="tel"
+                        className={`fde-reg-input fde-phone-input ${errors.phone ? 'input-error' : ''}`}
+                        placeholder="Enter Mobile Number"
+                        value={formData.phone}
+                        onChange={handleChange}
+                      />
+                    </div>
+                    {errors.phone && <span className="fde-error-msg">{errors.phone}</span>}
+                  </div>
+
+                  {/* Name field */}
+                  <div className="fde-reg-field-group">
+                    <input
+                      id="fde-reg-name"
+                      name="name"
+                      type="text"
+                      className={`fde-reg-input ${errors.name ? 'input-error' : ''}`}
+                      placeholder="Enter Full Name"
+                      value={formData.name}
+                      onChange={handleChange}
+                    />
+                    {errors.name && <span className="fde-error-msg">{errors.name}</span>}
+                  </div>
+
+                  {/* Email field */}
+                  <div className="fde-reg-field-group">
+                    <input
+                      id="fde-reg-email"
+                      name="email"
+                      type="email"
+                      className={`fde-reg-input ${errors.email ? 'input-error' : ''}`}
+                      placeholder="Enter Email Address"
+                      value={formData.email}
+                      onChange={handleChange}
+                    />
+                    {errors.email && <span className="fde-error-msg">{errors.email}</span>}
+                  </div>
+
+                  {/* Submit CTA Button */}
+                  <button
+                    type="submit"
+                    className="fde-btn-register-free"
+                    disabled={isSubmitting}
+                  >
+                    {isSubmitting ? 'Reserving Your Slot...' : 'REGISTER NOW'}
+                  </button>
+
+                  {/* WhatsApp Updates Checkbox */}
+                  <label className="fde-whatsapp-optin">
+                    <input
+                      type="checkbox"
+                      checked={whatsappOptin}
+                      onChange={(e) => setWhatsappOptin(e.target.checked)}
+                    />
+                    <span>I wish to receive further updates and confirmation via Whatsapp</span>
+                  </label>
+
+                  {/* Terms & Privacy Policy Links */}
+                  <p className="fde-legal-disclaimer">
+                    By continuing, you agree to DV Analytics's{' '}
+                    <a href="/terms" onClick={(e) => e.preventDefault()}>Terms</a> and{' '}
+                    <a href="/privacy" onClick={(e) => e.preventDefault()}>Privacy Policy</a>
+                  </p>
+                </form>
+              )}
+            </div>
+          </div>
         </div>
       </section>
 
@@ -526,39 +668,6 @@ export const FdeWorkshopPage: React.FC<FdeWorkshopPageProps> = ({ onNavigateHome
         </div>
       </section>
 
-      {/* Speaker / Mentor Spotlight */}
-      <section className="fde-mentors-section">
-        <div className="fde-section-header">
-          <div className="fde-badge">LEARN FROM INDUSTRY LEADERS</div>
-          <h2>Meet Your Workshop Speaker & Technology Mentor</h2>
-        </div>
-
-        <div className="fde-mentors-grid">
-          <div className="fde-mentor-card">
-            <div className="fde-mentor-avatar">
-              <span className="fde-avatar-initials">SR</span>
-            </div>
-            <div className="fde-mentor-info">
-              <span className="fde-mentor-tag">Speaker & Technology Mentor</span>
-              <h3>Suresh D R</h3>
-              <div className="fde-mentor-company">AI Product Developer & Technology Mentor (Ex-Google)</div>
-              <p>Specialist in AI product engineering, multi-agent systems, Kafka streaming pipelines, and enterprise deployment.</p>
-            </div>
-          </div>
-
-          <div className="fde-mentor-card">
-            <div className="fde-mentor-avatar">
-              <span className="fde-avatar-initials">DD</span>
-            </div>
-            <div className="fde-mentor-info">
-              <span className="fde-mentor-tag director">Host / Director</span>
-              <h3>Dr. Debendra Debadutta Das</h3>
-              <div className="fde-mentor-company">Co-Founder & Director, DV Analytics</div>
-              <p>20+ Years in Data Science & AI leadership. Previously led analytics engineering teams at <strong>IBM • HP • HSBC</strong>.</p>
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* Target Audience */}
       <section className="fde-audience-section">
@@ -589,11 +698,6 @@ export const FdeWorkshopPage: React.FC<FdeWorkshopPageProps> = ({ onNavigateHome
 
       {/* Main Website Footer */}
       <Footer />
-
-      {/* Side Sticking Register Button (Stays Visible Anywhere You Scroll) */}
-      <div className="fde-side-sticky-cta" onClick={openRegisterModal}>
-        <span>Register Now</span>
-      </div>
 
       {/* Registration Modal Pop-up */}
       {isModalOpen && (
