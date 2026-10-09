@@ -1,0 +1,314 @@
+﻿FDE Workshop Series â€” 12 Weeks (October â€“ December 2026)
+Suresh D R â€” AI Product Developer & Technology Mentor
+Type key: ðŸ§  Career / concept | ðŸ’¼ Consulting | ðŸ› ï¸ Technical (live build, code and tools on screen)
+Week
+Workshop
+Type
+1
+Is Your Job AI-Proof? Why FDEs Are the Career AI Can't Replace
+ðŸ§
+2
+A Day in the Life of a Forward Deployed Engineer
+ðŸ§
+3
+Why Consulting is the Most Important Skill for an FDE
+ðŸ’¼
+4
+Live Traffic Pipeline with Kafka
+ðŸ› ï¸
+5
+Real-Time AI Agents: How a Multi-Agent System Handles a Live Ride Request
+ðŸ› ï¸
+6
+Git & GitHub: Working on a Client Project Without Breaking It
+ðŸ› ï¸
+7
+Backend API: Serving the AI to Real Apps
+ðŸ› ï¸
+8
+Docker: Package It Once, Run It Anywhere
+ðŸ› ï¸
+9
+The AI Chatbot Built on Real Data
+ðŸ› ï¸
+10
+CI/CD with GitHub Actions: Merge Code, Watch It Go Live
+ðŸ› ï¸
+11
+Kubernetes and Safe Releases: Surviving Friday Rush Hour
+ðŸ› ï¸
+12
+Operate & Deliver: Monitoring, Handover and Your FDE Roadmap
+ðŸ› ï¸ ðŸ§
+Suggested format for every session (about 2 hours): 10 min recap of the previous week â†’ 80 min live session â†’ 20 min Q&A â†’ 10 min what's next.
+Each workshop below has the same parts: Topic, One-line description, and Landing page content (headline, pitch, tech stack, what you'll learn, and what you'll be able to do afterwards).
+Week 1 â€” Is Your Job AI-Proof? Why FDEs Are the Career AI Can't Replace ðŸ§
+One-line description: Why the one engineering role that sits face-to-face with the client is the hardest for AI to replace.
+Landing page content
+Headline: AI writes code today. It still can't sit with a client and figure out what they actually need.
+Pitch: Everyone is asking "will AI take my job?" In this session you'll see what AI can already do in software, what it still can't, and why the Forward Deployed Engineer role is built on exactly the part it can't. You'll leave with a clear view of where to put your effort over the next year.
+What you'll learn:
+The role
+What a Forward Deployed Engineer is, explained from zero
+The 5 skills of an FDE: Consulting, Data Engineering, AI, Software Engineering, Deployment
+How the work splits in practice: about 50% consulting, 30% engineering, 20% AI
+AI vs. the job
+Live demo: AI writes an API, a pipeline and a Dockerfile in minutes. What it still gets wrong without the right requirements
+Which engineering tasks AI is taking over, and which ones it can't (client trust, business judgment, deciding what to build)
+Your next step
+A self-check across the 5 skills to see where you stand today
+You'll be able to: explain what an FDE does, and name the 2-3 skills you should build first.
+CTA: Reserve your free seat
+Week 2 â€” A Day in the Life of a Forward Deployed Engineer ðŸ§
+One-line description: An hour-by-hour walk through what an FDE actually does in a normal working day.
+Landing page content
+Headline: Client call at 10, pipeline at 1, deployment at 5. See what an FDE's day really looks like.
+Pitch: Job descriptions never tell you what the work feels like. This session walks through one full FDE day using a real Uber/Ola project, from the first client call to the evening deployment, so you can decide whether this is the career for you.
+Tech stack you'll see on screen: Python, SQL, Kafka, Docker, GitHub, Kubernetes
+What you'll learn:
+The day
+10:00 Client call: the questions asked and the notes taken
+13:00 Build time: a data pipeline and an AI feature being built
+17:00 Deployment: shipping a change to a live system
+The method
+The 7-step FDE lifecycle: Discover, Translate, Design, Prototype, Deploy, Operate, Deliver
+Which of the 5 FDE skills is active at each hour of the day
+Reality check
+What typically goes wrong in a day (changed requirements, bad data, a failed deployment) and how an FDE handles each
+You'll be able to: describe an FDE's week to a friend and decide whether you want this job.
+CTA: Reserve your free seat
+Week 3 â€” Why Consulting is the Most Important Skill for an FDE ðŸ’¼
+One-line description: Live demo of turning a vague client ask ("build us something like Uber") into a written technical plan, using the questions an FDE asks on a real discovery call.
+Landing page content
+Headline: The FDE skill companies pay the most for has nothing to do with writing code.
+Pitch: A brilliant engineer who skips discovery builds the wrong thing, fast. Watch a role-played client call where a vague ask becomes a clear plan, and take home the exact questions and template to do the same.
+What you'll learn:
+Discover
+Ten discovery questions to ask before writing any code (users, volumes, data sources, existing systems, success numbers, constraints)
+Finding out what data actually exists, where it lives and how clean it is
+Translate
+Turning business answers into technical requirements: data sources to connect, pipelines needed, AI features, apps and APIs, expected load
+Drawing a first architecture diagram from the requirements (Rider App, Driver App, backend, Kafka, database, AI services)
+Estimating effort and spotting the risky parts early
+Communicate
+A one-page requirements template you can reuse on any client
+How to say "no" or "not yet" without losing the client's trust
+You'll be able to: run a discovery call and leave with a written plan the client agrees to.
+CTA: Reserve your seat
+Week 4 â€” Live Traffic Pipeline with Kafka ðŸ› ï¸
+One-line description: Build a real streaming pipeline, from thousands of simulated driver GPS pings to clean, queryable data.
+Landing page content
+Headline: Driver GPS and live traffic, flowing through Kafka into a clean database. Built on screen, not on slides.
+Pitch: AI is only as good as the data behind it. You'll watch a live streaming pipeline get built from scratch, including what happens when data arrives late, duplicated or wrong.
+Tech stack: Apache Kafka, Python, PostgreSQL, SQL, Docker
+What you'll learn:
+Kafka fundamentals
+Topics, partitions, producers, consumers and consumer groups
+Why Kafka sits between the apps and the database instead of writing straight to it
+Choosing a message key (driver ID) so one driver's events stay in order
+Building the pipeline
+A Python producer simulating thousands of drivers sending GPS pings
+A consumer that validates and cleans the stream: schema checks, duplicates, missing values, late events
+Sending bad messages to a dead-letter topic instead of losing them
+Catching fake locations: distance between two pings (haversine) divided by the time gap gives an impossible speed
+Loading clean data into PostgreSQL with idempotent upserts and an index for fast lookups
+Reliability
+Offsets and delivery guarantees: what happens when a consumer crashes mid-stream and how it resumes
+Reading consumer lag to see whether the pipeline is keeping up
+You'll be able to: build and debug a streaming pipeline that stays correct when messages are duplicated, late or out of order.
+CTA: Reserve your seat
+Week 5 â€” Real-Time AI Agents: How a Multi-Agent System Handles a Live Ride Request ðŸ› ï¸
+One-line description: Build a team of AI agents that reacts to a live ride request, uses real-time data from the Week 4 pipeline, and decides what to do within seconds.
+Landing page content
+Headline: A rider taps "Book". A team of AI agents has 3 seconds to respond. Watch them work in real time.
+Pitch: Most agent demos are chatbots answering one question. Real products use agents that react to live events, call tools on live data, recover when something fails, and ask a human before risky actions. You'll build exactly that with LangChain and LangGraph, on top of the traffic pipeline you built in Week 4.
+Tech stack: Python, LangChain, LangGraph, LangSmith, Kafka, PostgreSQL, Pydantic
+What you'll learn:
+Agent fundamentals
+What an agent really is: the loop of think â†’ call a tool â†’ read the result â†’ decide the next step
+How an agent differs from a single LLM call, and from a fixed workflow
+LangChain: building the parts
+Prompts and chat models
+Tools: plain Python functions with a schema that the model can call (nearby available drivers from PostgreSQL, live traffic speed for a zone, ETA from distance and live speed)
+Structured output with Pydantic, so the agent returns data your code can trust
+LangGraph: orchestrating the team
+State, nodes, edges and conditional routing
+The ride-request graph: Intake â†’ Data â†’ ETA â†’ Driver-matching â†’ Confirmation
+The supervisor pattern: one agent routes work between specialist agents
+Running steps in parallel (check drivers and traffic at the same time)
+Real-time behavior
+Event-driven triggers: a ride-request event arriving on Kafka starts one run of the graph
+Streaming intermediate progress to the Rider App
+Holding a time budget per request (3 seconds)
+Failure handling: tool timeouts, stale driver data, invalid model output, with retries and fallback paths
+Human-in-the-loop: pausing the graph for approval before a risky action such as a refund or driver reassignment
+Memory and checkpoints: saving state per ride so a run can pause and resume
+Production habits
+Tracing every step (LangSmith) to see why an agent made a decision
+Tracking cost (tokens) and latency per request
+The FDE judgment call: plain function vs. single agent vs. agent team
+You'll be able to: design and build a multi-agent workflow that reacts to live events, handles failures and keeps a human in control.
+CTA: Reserve your seat
+Week 6 â€” Git & GitHub: Working on a Client Project Without Breaking It ðŸ› ï¸
+One-line description: The Git workflow FDE teams use so client work stays safe, reviewable and reversible.
+Landing page content
+Headline: Two engineers, one client project, zero overwritten code.
+Pitch: Everything that comes next in this series (APIs, Docker, CI/CD) sits on Git. This hands-on session shows the exact workflow an FDE follows, including the mistakes: a merge conflict made on purpose, and a bad commit tracked down and undone.
+Tech stack: Git, GitHub, GitHub pull requests
+What you'll learn:
+Daily workflow
+Branches: one branch per feature instead of editing main directly
+Staging, commits and meaningful commit messages
+Pull requests, code review and merging on GitHub
+.gitignore and why secrets and keys must never be committed
+Collaboration
+Creating a merge conflict on purpose and resolving it
+Merge vs. rebase, explained on a small example
+A simple branching strategy for a client project
+Fixing mistakes
+Undoing a change safely with git revert
+Finding the exact commit that broke the service with git bisect
+Recovering "lost" work with git reflog
+Handover
+Keeping a clean history and a good README so the client can take the project over
+You'll be able to: work on a shared codebase without overwriting anyone's work, and recover from a bad commit.
+CTA: Reserve your seat
+Week 7 â€” Backend API: Serving the AI to Real Apps ðŸ› ï¸
+One-line description: Wrap the Week 5 agent system in a real API that the Rider App and Driver App can call.
+Landing page content
+Headline: An agent in a notebook is not a product. Put it behind an API and put it in front of a user.
+Pitch: See two apps and one backend connected live: a rider requests a trip, the agent team picks the driver, the driver's app receives it. This is the step where a prototype starts becoming something a person can tap.
+Tech stack: Python, FastAPI, Pydantic, Server-Sent Events / WebSockets, pytest, LangGraph
+What you'll learn:
+Designing the API
+Endpoints like /request-ride (starts the agent graph) and /ride/{id}/status
+Request and response models with Pydantic, and clear error responses (400, 404, 500, timeouts)
+Automatic API documentation with FastAPI's /docs
+Basic authentication for the Rider and Driver apps (API keys or JWT)
+Making it behave in real time
+Building the LangGraph graph once at startup instead of on every request
+Async endpoints, so many riders can be served at once
+Streaming live progress to the Rider App with server-sent events or WebSockets
+Setting and measuring a response-time budget (a driver matched in under 3 seconds)
+Testing
+Writing API tests with pytest and FastAPI's test client
+Mocking the LLM and tool calls so tests are fast and repeatable (these tests are reused in Week 10)
+Connecting the apps
+Wiring the Rider App and Driver App to the same backend, and handling CORS
+You'll be able to: expose an AI workflow as a tested, documented API that real apps can use.
+CTA: Reserve your seat
+Week 8 â€” Docker: Package It Once, Run It Anywhere ðŸ› ï¸
+One-line description: Containerize the API, the agent service, the database and Kafka so the app runs identically on any machine.
+Landing page content
+Headline: "It works on my laptop" is not good enough. Package the app once and run it anywhere.
+Pitch: Every client's environment is different. You'll watch the app fail on a clean machine, then run perfectly inside a container, and finish with the whole stack starting from one command.
+Tech stack: Docker, Docker Compose, Python, PostgreSQL, Kafka
+What you'll learn:
+Core concepts
+Images vs. containers, in plain words
+Pulling, running, listing and removing containers; reading logs with docker logs and getting inside with docker exec
+Writing a good Dockerfile
+FROM, WORKDIR, COPY, RUN, CMD, line by line, for the Week 7 API
+Layer caching: why the order of lines changes build time
+Smaller images with slim base images and multi-stage builds
+.dockerignore, running as a non-root user, and a container health check
+Multi-container apps
+Docker Compose: API + Kafka + PostgreSQL started with one command
+Networking (containers finding each other by name) and volumes (keeping database data)
+Environment variables and .env files, and keeping secrets out of the image
+You'll be able to: containerize an application and run the full stack on any machine with one command.
+CTA: Reserve your seat
+Week 9 â€” The AI Chatbot Built on Real Data ðŸ› ï¸
+One-line description: Build a support chatbot that answers from real ride data instead of making things up, and learn when a chatbot is the wrong answer.
+Landing page content
+Headline: A chatbot that knows where your driver actually is.
+Pitch: Most chatbot demos fall apart on real questions. You'll build one that retrieves facts from the product's data before answering, test it with tricky questions, and set the limits it must never cross.
+Tech stack: Python, LangChain, embeddings, a vector store (FAISS / Chroma / pgvector), PostgreSQL, FastAPI
+What you'll learn:
+Retrieval-augmented generation (RAG)
+Chunking policy documents (refund rules, FAQs) and turning them into embeddings
+Storing them in a vector store and retrieving the most relevant chunks
+Writing the prompt so the answer comes only from the retrieved text, with the source shown
+Live data, not just documents
+Why "Where is my driver?" needs a tool that queries live ride data, not a document search
+Giving the chatbot both: retrieval for policy questions, tools for live status
+Guardrails
+What the bot must refuse, and when it should hand over to a human
+Basic protection against prompt injection
+Testing
+Building a small test set of tricky questions and scoring the bot on it, so you know when a change makes it worse
+Judgment
+When a chatbot is the right answer and when a button or a form is better
+You'll be able to: build a chatbot that answers from your data, refuses what it should, and can be tested before a client sees it.
+CTA: Reserve your seat
+Week 10 â€” CI/CD with GitHub Actions: Merge Code, Watch It Go Live ðŸ› ï¸
+One-line description: Build the pipeline that tests, builds and deploys the backend automatically on every merge.
+Landing page content
+Headline: No more manual deployments. Merge to GitHub and the app tests, builds and ships itself.
+Pitch: Manual releases are slow and risky. You'll watch a failing test block a bad release, then a good change travel all the way to the live app without anyone touching a server.
+Tech stack: GitHub Actions, Docker, a container registry (GitHub Container Registry), pytest, Kubernetes
+What you'll learn:
+Workflow basics
+A workflow file in .github/workflows/: triggers, jobs, steps and runners
+Running on every pull request and every merge to main
+Caching dependencies to make runs faster
+The three stages
+Test: running the Week 7 pytest suite automatically, so a failing test blocks the merge
+Build: building the Docker image and pushing it to a registry with a version tag
+Deploy: rolling the new image out, staging first and then production
+Safety
+Keeping credentials in GitHub Secrets instead of the code
+Branch protection with required checks, so the pipeline is mandatory
+Environments with a manual approval step before production
+Rolling back when something slips through
+You'll be able to: set up a pipeline where every merge is tested, built and deployed automatically, with a safety net.
+CTA: Reserve your seat
+Week 11 â€” Kubernetes and Safe Releases: Surviving Friday Rush Hour ðŸ› ï¸
+One-line description: Deploy the containers on Kubernetes, break things on purpose, and release a new agent version without riders noticing.
+Landing page content
+Headline: One server crashes, traffic triples, a bad release goes out. And the app keeps running.
+Pitch: This is the "demo vs. real product" session. You'll simulate a Friday rush hour, kill a running pod, and ship a new agent version to a small slice of riders first, all live.
+Tech stack: Kubernetes, kubectl, Docker, YAML manifests
+What you'll learn:
+Core objects
+Pods, Deployments and Services, and how they fit together
+Writing a Deployment in YAML and applying it with kubectl apply -f
+ConfigMaps and Secrets for settings and keys
+Resource requests and limits, so one service can't starve the others
+Keeping it alive
+Liveness and readiness probes
+Self-healing: kill a pod and watch Kubernetes bring it back
+Autoscaling with the Horizontal Pod Autoscaler as traffic spikes
+Debugging with kubectl logs, kubectl describe and kubectl get pods
+Releasing safely
+Rolling updates and kubectl rollout undo
+Release strategies compared: rolling, blue-green and canary
+A canary release for the agent system: 5% of riders on the new agent version, compared with the old one on success rate, latency and cost, then decide
+Judgment
+When not to use Kubernetes: a small pilot is often better served by one VM with Docker Compose
+You'll be able to: deploy a containerized app on Kubernetes, scale it, recover it, and release changes without downtime.
+CTA: Reserve your seat
+Week 12 â€” Operate & Deliver: Monitoring, Handover and Your FDE Roadmap ðŸ› ï¸ ðŸ§
+One-line description: Add the dashboards, alerts and nightly reports a live product needs, hand it over to the client, and plan your own FDE path.
+Landing page content
+Headline: Shipping isn't the finish line. At 2am, someone has to know it broke.
+Pitch: The last two steps of the FDE lifecycle are Operate and Deliver. You'll see a live "incident" solved using only dashboards, run the client handover, and finish with your personal roadmap across the 5 FDE skills.
+Tech stack: Prometheus, Grafana, Apache Airflow, Python, Kubernetes
+What you'll learn:
+Monitoring
+Exposing metrics from the API with a /metrics endpoint (counters and latency histograms)
+Querying them with PromQL and building Grafana dashboards
+Alert rules for real problems: API error rate, slow responses, Kafka consumer lag
+Structured logs with a ride ID, so one ride can be traced across services
+Monitoring the AI
+Agent quality: match success rate, tool failure rate, response time (p95) and cost per request
+Spotting quality drift as real usage changes
+Incident response
+Finding the cause of a live incident using only logs and dashboards
+Reporting and handover
+A nightly Airflow job (extract, clean, load, report) that turns a day of rides into a business report for the client
+What goes into a client handover: README, architecture diagram, runbook, access transfer and training
+Your roadmap: which of the 5 FDE skills to build first
+You'll be able to: monitor a live AI system, respond to an incident, and hand a project over so the client can run it without you.
+CTA: Reserve your seat
+Author: Suresh D R â€” AI Product Developer & Technology Mentor

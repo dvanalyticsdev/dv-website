@@ -318,78 +318,165 @@
   margin-bottom: 3rem;
 }
 
-.fde-salary-card {
-  position: relative;
+/* Market Light Theme Compact Section */
+.fde-market-light-section {
+  background: #ffffff;
+  color: #1e293b;
+  padding: 3.25rem 1.5rem;
+  border-top: 1px solid #e2e8f0;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.fde-market-light-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.fde-market-split-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2.25rem;
+  align-items: stretch;
+  width: 100%;
+  margin-bottom: 2.5rem;
+}
+
+@media (max-width: 900px) {
+  .fde-market-split-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+}
+
+/* Symmetrical Twin Cards: Left Info Card & Right Graph Card */
+.fde-info-card,
+.fde-light-graph-card {
   background: #ffffff;
   border: 1px solid #e2e8f0;
+  border-radius: 16px;
   padding: 1.75rem;
-  border-radius: 14px;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: all 0.25s ease;
 }
 
-.fde-salary-card:hover {
-  border-color: #0284c7;
-  transform: translateY(-3px);
-  box-shadow: 0 12px 24px rgba(2, 132, 199, 0.12);
+.fde-info-card:hover,
+.fde-light-graph-card:hover {
+  border-color: #cbd5e1;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.07);
 }
 
-.fde-salary-card.featured {
-  background: linear-gradient(145deg, #f0f9ff 0%, #ffffff 100%);
-  border: 1.5px solid #0284c7;
+.fde-stat-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
 }
 
-/* Card Header Flex Layout */
-.fde-salary-card-header {
+.fde-stat-item {
   display: flex;
   align-items: flex-start;
-  justify-content: space-between;
-  gap: 0.75rem;
-  margin-bottom: 0.75rem;
+  gap: 0.85rem;
+  padding-bottom: 0.9rem;
+  border-bottom: 1px dashed #e2e8f0;
 }
 
-.fde-salary-card-header h3 {
-  font-size: 1.2rem;
-  font-weight: 700;
+.fde-stat-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.light-blue-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #0284c7;
+  box-shadow: 0 0 8px rgba(2, 132, 199, 0.4);
+  flex-shrink: 0;
+  margin-top: 0.35rem;
+}
+
+.fde-stat-content h3 {
+  font-size: 1.12rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0 0 0.15rem 0;
+}
+
+.fde-stat-content p {
+  font-size: 0.88rem;
+  color: #475569;
+  line-height: 1.45;
+  margin: 0;
+}
+
+.fde-card-header-meta {
+  margin-bottom: 1rem;
+}
+
+.card-sub-label {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  margin-bottom: 0.25rem;
+}
+
+.card-big-metric {
+  font-size: 1.25rem;
+  font-weight: 800;
   color: #0f172a;
   margin: 0;
   line-height: 1.3;
-  flex: 1 1 auto;
 }
 
-.fde-role-badge {
-  font-size: 0.7rem;
-  font-weight: 800;
-  text-transform: uppercase;
-  padding: 0.25rem 0.65rem;
-  border-radius: 4px;
-  background: #e0f2fe;
-  color: #0369a1;
+.fde-light-chart-area {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.fde-light-svg {
+  width: 100%;
+  height: auto;
+  max-height: 190px;
+  display: block;
+}
+
+/* Compact Role Selector Pills */
+.fde-light-roles-list {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  overflow-x: auto;
+  padding-bottom: 0.25rem;
+}
+
+.fde-light-pill {
+  background: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  color: #475569;
+  padding: 0.35rem 0.7rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
   white-space: nowrap;
-  flex-shrink: 0;
-  margin-top: 0.15rem;
+  transition: all 0.2s ease;
 }
 
-.fde-role-badge.highlight {
-  background: #ffedd5;
-  color: #c2410c;
-}
-
-.fde-salary-amount {
-  font-size: 1.85rem;
-  font-weight: 900;
-  color: #0284c7;
-  margin-bottom: 0.75rem;
-}
-
-.fde-salary-card.featured .fde-salary-amount {
+.fde-light-pill:hover {
+  border-color: #ea580c;
   color: #ea580c;
 }
 
-.fde-salary-card p {
-  font-size: 0.9rem;
-  color: #64748b;
-  margin: 0;
+.fde-light-pill.active {
+  background: #ea580c;
+  border-color: #ea580c;
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(234, 88, 12, 0.3);
 }
 
 .fde-market-callout {
@@ -410,6 +497,191 @@
   font-size: 0.95rem;
   color: #334155;
   margin: 0;
+}
+
+/* What is FDE & Why It Came Section */
+.fde-what-is-section {
+  padding: 5rem 1.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  border-top: 1px solid #e2e8f0;
+}
+
+.fde-what-is-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 2rem;
+  margin-bottom: 3.5rem;
+}
+
+.fde-what-box {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+}
+
+.fde-what-box.definition-box {
+  background: linear-gradient(145deg, #f0f9ff 0%, #ffffff 100%);
+  border-color: #bae6fd;
+}
+
+.fde-what-box h3 {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin-bottom: 1.25rem;
+  letter-spacing: -0.3px;
+}
+
+.fde-what-box p {
+  font-size: 0.98rem;
+  color: #334155;
+  line-height: 1.65;
+  margin-bottom: 1rem;
+}
+
+.fde-what-box p:last-child {
+  margin-bottom: 0;
+}
+
+.fde-why-reasons {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.fde-reason-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px dashed #e2e8f0;
+}
+
+.fde-reason-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.fde-reason-num {
+  font-size: 0.9rem;
+  font-weight: 900;
+  color: #ea580c;
+  background: #fff7ed;
+  border: 1px solid #ffedd5;
+  padding: 0.35rem 0.65rem;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
+.fde-reason-item h4 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 0.25rem 0;
+}
+
+.fde-reason-item p {
+  font-size: 0.9rem;
+  color: #475569;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Comparison Sub-section */
+.fde-comparison-container {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 2.25rem;
+}
+
+.fde-comparison-title {
+  text-align: center;
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin-bottom: 1.75rem;
+}
+
+.fde-comparison-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.fde-comparison-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 1.5rem;
+}
+
+.fde-comparison-card.fde-hero-card {
+  border: 2px solid #ea580c;
+  background: #ffffff;
+  box-shadow: 0 4px 16px rgba(234, 88, 12, 0.12);
+}
+
+.fde-comp-header {
+  font-size: 1.1rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.fde-comparison-card.traditional .fde-comp-header {
+  color: #64748b;
+}
+
+.fde-comparison-card.fde-hero-card .fde-comp-header {
+  color: #ea580c;
+}
+
+.fde-comparison-card ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.fde-comparison-card ul li {
+  position: relative;
+  padding-left: 1.4rem;
+  margin-bottom: 0.75rem;
+  font-size: 0.92rem;
+  color: #334155;
+  line-height: 1.5;
+}
+
+.fde-comparison-card ul li:last-child {
+  margin-bottom: 0;
+}
+
+.fde-comparison-card traditional ul li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: #94a3b8;
+  font-weight: bold;
+}
+
+.fde-comparison-card.traditional ul li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: #94a3b8;
+  font-size: 1.1rem;
+}
+
+.fde-comparison-card.fde-hero-card ul li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: #ea580c;
+  font-weight: 900;
 }
 
 /* Highlights Section */
@@ -555,6 +827,48 @@
   color: #64748b;
   line-height: 1.4;
   margin: 0;
+}
+
+/* Learning Outcomes Section */
+.fde-outcomes-section {
+  padding: 4.5rem 1.5rem;
+  background: #ffffff;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.fde-outcomes-grid {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.fde-outcome-card {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  padding: 1.75rem 1.5rem;
+  border-radius: 12px;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.fde-outcome-card:hover {
+  transform: translateY(-2px);
+  border-color: #0284c7;
+}
+
+.fde-outcome-card h4 {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin-bottom: 0.5rem;
+}
+
+.fde-outcome-card p {
+  font-size: 0.9rem;
+  color: #475569;
+  margin: 0;
+  line-height: 1.5;
 }
 
 /* Audience Section */
