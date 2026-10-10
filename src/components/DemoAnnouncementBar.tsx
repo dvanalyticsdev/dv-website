@@ -11,14 +11,14 @@ export const DemoAnnouncementBar: React.FC<DemoAnnouncementBarProps> = ({ onOpen
       <div className="demo-top-bar-container">
         <span className="demo-top-bar-badge">LIVE DEMO WEBINAR</span>
         <span className="demo-top-bar-text">
-          Data Science with Gen AI &amp; Agentic AI — <strong>Sept 30 @ 7:00 PM</strong>
+          Data Science with Gen AI &amp; Agentic AI — <strong>Wednesday, 14th Oct @ 7:00 PM - 8:00 PM</strong>
         </span>
         <button
           type="button"
           className="demo-top-bar-btn"
           onClick={onOpenDemoModal}
         >
-          🎓 Book Free Demo Class
+          🎓 Join Free Demo Class
         </button>
       </div>
     </div>

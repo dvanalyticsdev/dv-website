@@ -16,7 +16,7 @@ export const UpcomingBatchesPage: React.FC<UpcomingBatchesPageProps> = ({
   const [apidaSeats] = useState(() => Math.floor(Math.random() * 6) + 5);
   const [fdeSeats] = useState(() => Math.floor(Math.random() * 6) + 5);
 
-  // Countdown to October 10, 2026
+  // Countdown to October 17, 2026
   const [timeLeft, setTimeLeft] = useState({
     days: 12,
     hours: 14,
@@ -25,7 +25,7 @@ export const UpcomingBatchesPage: React.FC<UpcomingBatchesPageProps> = ({
   });
 
   useEffect(() => {
-    const targetDate = new Date('2026-10-10T10:00:00+05:30').getTime();
+    const targetDate = new Date('2026-10-17T10:00:00+05:30').getTime();
 
     const interval = setInterval(() => {
       const now = new Date().getTime();
@@ -75,7 +75,7 @@ export const UpcomingBatchesPage: React.FC<UpcomingBatchesPageProps> = ({
         <div className="container ub-hero-content">
           <div className="ub-urgency-badge">
             <span className="ub-pulse-dot"></span>
-            <span>NEXT BATCHES LAUNCHING OCTOBER 10TH, 2026</span>
+            <span>NEXT BATCHES LAUNCHING OCTOBER 17TH, 2026</span>
           </div>
 
           <h1 className="ub-hero-title">
@@ -88,7 +88,7 @@ export const UpcomingBatchesPage: React.FC<UpcomingBatchesPageProps> = ({
 
           {/* Countdown Clock */}
           <div className="ub-timer-wrapper">
-            <div className="ub-timer-label">October 10 Batch Countdown • Limited Seats Remaining</div>
+            <div className="ub-timer-label">October 17 Batch Countdown • Limited Seats Remaining</div>
             <div className="ub-timer-grid">
               <div className="ub-timer-box">
                 <div className="ub-timer-number">{String(timeLeft.days).padStart(2, '0')}</div>
@@ -133,7 +133,7 @@ export const UpcomingBatchesPage: React.FC<UpcomingBatchesPageProps> = ({
       <section className="ub-trends-section container">
         <div className="ub-section-title-area">
           <span className="ub-section-tag">2026 Market Demand &amp; Career ROI</span>
-          <h2 className="ub-section-heading">Why You Should Enroll in the October 10 Batch</h2>
+          <h2 className="ub-section-heading">Why You Should Enroll in the October 17 Batch</h2>
           <p className="ub-section-sub">
             The demand for enterprise AI, machine learning, and data analytics professionals has hit record highs across Bangalore, Bhubaneswar, and Dubai.
           </p>
@@ -187,7 +187,7 @@ export const UpcomingBatchesPage: React.FC<UpcomingBatchesPageProps> = ({
       {/* Flagship Batches Section (APIDS, APIDA, FDE) */}
       <section id="batches-schedule" className="ub-batches-section container">
         <div className="ub-section-title-area">
-          <span className="ub-section-tag">Flagship Programs • October 10 Batch</span>
+          <span className="ub-section-tag">Flagship Programs • October 17 Batch</span>
           <h2 className="ub-section-heading">Select Your Program</h2>
           <p className="ub-section-sub">
             Interactive live online classes, hands-on labs, and expert mentorship. Click below to view full course details.
@@ -218,7 +218,7 @@ export const UpcomingBatchesPage: React.FC<UpcomingBatchesPageProps> = ({
                 className="ub-btn-callback"
                 onClick={() => handleCallModalTrigger('APIDS')}
               >
-                Request Callback for Oct 10 Batch
+                Request Callback for Oct 17 Batch
               </button>
             </div>
           </div>
@@ -246,7 +246,7 @@ export const UpcomingBatchesPage: React.FC<UpcomingBatchesPageProps> = ({
                 className="ub-btn-callback"
                 onClick={() => handleCallModalTrigger('APIDA')}
               >
-                Request Callback for Oct 10 Batch
+                Request Callback for Oct 17 Batch
               </button>
             </div>
           </div>
@@ -274,7 +274,7 @@ export const UpcomingBatchesPage: React.FC<UpcomingBatchesPageProps> = ({
                 className="ub-btn-callback"
                 onClick={() => handleCallModalTrigger('FDE')}
               >
-                Request Callback for Oct 10 Batch
+                Request Callback for Oct 17 Batch
               </button>
             </div>
           </div>
@@ -282,7 +282,7 @@ export const UpcomingBatchesPage: React.FC<UpcomingBatchesPageProps> = ({
 
         {/* Bottom CTA Banner */}
         <div className="ub-cta-banner">
-          <h2>Seats Are Filling Fast for October 10th</h2>
+          <h2>Seats Are Filling Fast for October 17th</h2>
           <p>
             Batch sizes are strictly limited to ensure personalized code reviews and 1-on-1 career guidance for every learner.
           </p>
@@ -299,7 +299,7 @@ export const UpcomingBatchesPage: React.FC<UpcomingBatchesPageProps> = ({
               boxShadow: '0 10px 20px rgba(234, 88, 12, 0.4)',
             }}
           >
-            Request Immediate Callback for Oct 10 Batch
+            Request Immediate Callback for Oct 17 Batch
           </button>
         </div>
       </section>

@@ -17,12 +17,12 @@ const posterImages: Record<string, string> = {
 };
 
 const heroImages: Record<string, string> = {
-  apids: '/course-hero/APIDS.jpeg',
-  apida: '/course-hero/APIDA.jpeg',
+  apids: '/course-hero/APIDS.png',
+  apida: '/course-hero/APIDA.png',
   aiml: '/course-hero/Advance AIML.jpeg',
   genai: '/course-hero/Gen AI.jpeg',
-  specialist: '/course-hero/DAS.jpeg',
-  apcs: '/course-hero/APCF.jpeg',
+  specialist: '/course-hero/DAS.png',
+  apcs: '/course-hero/APCF.png',
   days7_genai: '/course-hero/7-days-genai.png',
   fde: '/course-hero/ai-forward-deployment-engineer.png',
 };

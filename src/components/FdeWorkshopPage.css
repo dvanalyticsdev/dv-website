@@ -55,6 +55,10 @@
   border-radius: 8px;
   border: none;
   cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   transition: all 0.2s ease;
   box-shadow: 0 2px 10px rgba(234, 88, 12, 0.3);
 }
@@ -62,6 +66,7 @@
 .fde-btn-header:hover {
   transform: translateY(-1px);
   box-shadow: 0 4px 16px rgba(234, 88, 12, 0.45);
+  color: #ffffff;
 }
 
 /* Side Sticking Register Button (Stays Visible Anywhere You Scroll) */
@@ -170,6 +175,132 @@
   flex-direction: column;
   position: relative;
   box-sizing: border-box;
+}
+
+/* Countdown & Join Community Panel */
+.fde-countdown-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+}
+
+.fde-panel-badge {
+  display: inline-block;
+  background: #fff7ed;
+  color: #ea580c;
+  border: 1px solid #ffedd5;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  padding: 0.35rem 0.85rem;
+  border-radius: 50px;
+  margin-bottom: 0.75rem;
+  text-transform: uppercase;
+}
+
+.fde-panel-title {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0 0 0.35rem 0;
+  line-height: 1.3;
+}
+
+.fde-panel-schedule {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #64748b;
+  margin: 0 0 1.5rem 0;
+}
+
+.fde-panel-timer-wrapper {
+  width: 100%;
+  margin-bottom: 1.5rem;
+}
+
+.fde-panel-desc {
+  font-size: 0.9rem;
+  color: #475569;
+  line-height: 1.5;
+  margin: 0 0 1.5rem 0;
+}
+
+.fde-btn-join-community {
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%);
+  color: #ffffff !important;
+  border: none;
+  border-radius: 12px;
+  padding: 1rem 1.5rem;
+  font-size: 1.05rem;
+  font-weight: 800;
+  text-decoration: none;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 6px 20px rgba(234, 88, 12, 0.35);
+  box-sizing: border-box;
+}
+
+.fde-btn-join-community:hover {
+  background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(234, 88, 12, 0.45);
+  color: #ffffff !important;
+}
+
+.fde-hero-cta-wrapper {
+  margin-top: 1.75rem;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.fde-btn-hero-large {
+  max-width: 420px;
+  font-size: 1.1rem;
+  padding: 1.1rem 2rem;
+}
+
+.fde-bottom-cta-section {
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  color: #ffffff;
+  padding: 4rem 2rem;
+  text-align: center;
+}
+
+.fde-bottom-cta-container {
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.fde-bottom-cta-container h2 {
+  font-size: 2.2rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+  color: #ffffff;
+}
+
+.fde-bottom-cta-container p {
+  font-size: 1.1rem;
+  color: #94a3b8;
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+.fde-btn-bottom-large {
+  max-width: 420px;
+  font-size: 1.15rem;
+  padding: 1.15rem 2.25rem;
 }
 
 /* Smooth custom scrollbar for the scrollable panel */
@@ -635,11 +766,13 @@
   padding: 3.25rem 1.5rem;
   border-top: none;
   border-bottom: none;
+  box-sizing: border-box;
 }
 
 .fde-market-light-container {
   max-width: 1200px;
   margin: 0 auto;
+  box-sizing: border-box;
 }
 
 .fde-market-split-grid {
@@ -649,12 +782,17 @@
   align-items: stretch;
   width: 100%;
   margin-bottom: 2.5rem;
+  box-sizing: border-box;
 }
 
 @media (max-width: 900px) {
+  .fde-market-light-section {
+    padding: 2.5rem 1.25rem;
+  }
   .fde-market-split-grid {
     grid-template-columns: 1fr;
-    gap: 2rem;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
   }
 }
 
@@ -670,6 +808,11 @@
   flex-direction: column;
   justify-content: space-between;
   transition: all 0.25s ease;
+  box-sizing: border-box;
+  max-width: 100%;
+  width: 100%;
+  min-width: 0;
+  overflow: hidden;
 }
 
 .fde-info-card:hover,
@@ -682,6 +825,8 @@
   display: flex;
   flex-direction: column;
   gap: 1.1rem;
+  width: 100%;
+  min-width: 0;
 }
 
 .fde-stat-item {
@@ -690,6 +835,8 @@
   gap: 0.85rem;
   padding-bottom: 0.9rem;
   border-bottom: 1px dashed #e2e8f0;
+  width: 100%;
+  min-width: 0;
 }
 
 .fde-stat-item:last-child {
@@ -707,11 +854,19 @@
   margin-top: 0.35rem;
 }
 
+.fde-stat-content {
+  flex: 1;
+  min-width: 0;
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
 .fde-stat-content h3 {
   font-size: 1.12rem;
   font-weight: 800;
   color: #0f172a;
   margin: 0 0 0.15rem 0;
+  word-break: break-word;
 }
 
 .fde-stat-content p {
@@ -719,10 +874,14 @@
   color: #475569;
   line-height: 1.45;
   margin: 0;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 .fde-card-header-meta {
   margin-bottom: 1rem;
+  width: 100%;
+  min-width: 0;
 }
 
 .card-sub-label {
@@ -733,6 +892,7 @@
   text-transform: uppercase;
   letter-spacing: 0.6px;
   margin-bottom: 0.25rem;
+  word-break: break-word;
 }
 
 .card-big-metric {
@@ -741,10 +901,16 @@
   color: #0f172a;
   margin: 0;
   line-height: 1.3;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 .fde-light-chart-area {
   width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  overflow: hidden;
   margin-bottom: 1rem;
 }
 
@@ -753,6 +919,8 @@
   height: auto;
   max-height: 190px;
   display: block;
+  max-width: 100%;
+  min-width: 0;
 }
 
 /* Compact Role Selector Pills */
@@ -761,7 +929,17 @@
   align-items: center;
   gap: 0.4rem;
   overflow-x: auto;
-  padding-bottom: 0.25rem;
+  padding-bottom: 0.4rem;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  max-width: 100%;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.fde-light-roles-list::-webkit-scrollbar {
+  display: none;
 }
 
 .fde-light-pill {
@@ -775,6 +953,7 @@
   cursor: pointer;
   white-space: nowrap;
   transition: all 0.2s ease;
+  flex-shrink: 0;
 }
 
 .fde-light-pill:hover {
@@ -794,6 +973,7 @@
   border: 1px solid #fed7aa;
   border-radius: 14px;
   padding: 1.5rem 1.75rem;
+  box-sizing: border-box;
 }
 
 .fde-callout-text h4 {
@@ -1614,5 +1794,334 @@
   }
   .fde-timer-unit {
     font-size: 0.65rem;
+  }
+  
+  /* Market Light & Salary Graph Mobile Polish */
+  .fde-section-header h2 {
+    font-size: 1.45rem;
+    margin-bottom: 0.5rem;
+  }
+  .fde-section-header p {
+    font-size: 0.88rem;
+    line-height: 1.5;
+  }
+  .fde-badge {
+    font-size: 0.7rem;
+    padding: 0.25rem 0.7rem;
+    margin-bottom: 0.6rem;
+  }
+  .fde-market-light-section {
+    padding: 2rem 0.85rem;
+  }
+  .fde-info-card,
+  .fde-light-graph-card {
+    padding: 1.15rem 0.9rem;
+    border-radius: 12px;
+  }
+  .card-big-metric {
+    font-size: 1.05rem;
+    line-height: 1.35;
+    word-break: break-word;
+  }
+  .card-sub-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.4px;
+  }
+  .fde-stat-content h3 {
+    font-size: 0.98rem;
+  }
+  .fde-stat-content p {
+    font-size: 0.82rem;
+  }
+  .fde-stat-list {
+    gap: 0.85rem;
+  }
+  .fde-stat-item {
+    gap: 0.65rem;
+    padding-bottom: 0.75rem;
+  }
+  .fde-light-svg {
+    max-height: none;
+    min-height: 150px;
+  }
+  .fde-light-pill {
+    padding: 0.35rem 0.6rem;
+    font-size: 0.7rem;
+    flex-shrink: 0;
+  }
+  .fde-market-callout {
+    padding: 1.15rem 0.9rem;
+    border-radius: 12px;
+  }
+  .fde-callout-text h4 {
+    font-size: 1rem;
+  }
+  .fde-callout-text p {
+    font-size: 0.85rem;
+    line-height: 1.5;
+  }
+}
+
+@media (max-width: 480px) {
+  .fde-market-light-section {
+    padding: 1.75rem 0.65rem;
+  }
+  .fde-info-card,
+  .fde-light-graph-card {
+    padding: 1rem 0.75rem;
+  }
+  .card-big-metric {
+    font-size: 0.96rem;
+  }
+  .fde-light-pill {
+    padding: 0.3rem 0.5rem;
+    font-size: 0.68rem;
+  }
+}
+
+/* Certificate Section Clean */
+.fde-certificate-section {
+  padding: 4.5rem 2rem;
+  background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
+  border-top: 1px solid #e2e8f0;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.fde-certificate-container {
+  max-width: 1180px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: 3.5rem;
+  align-items: center;
+}
+
+.fde-certificate-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+}
+
+.fde-certificate-content h2 {
+  font-size: 2.15rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0.65rem 0 0.85rem 0;
+  line-height: 1.25;
+}
+
+.fde-cert-subtitle {
+  font-size: 1.05rem;
+  color: #475569;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+.fde-cert-pill-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  margin-bottom: 2rem;
+}
+
+.fde-cert-pill {
+  background: #f0fdf4;
+  color: #166534;
+  border: 1px solid #bbf7d0;
+  font-size: 0.875rem;
+  font-weight: 700;
+  padding: 0.45rem 0.9rem;
+  border-radius: 50px;
+}
+
+.fde-cert-cta {
+  width: 100%;
+  max-width: 380px;
+}
+
+/* Certificate Preview Mockup */
+.fde-certificate-preview {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.fde-cert-mock-card {
+  position: relative;
+  width: 100%;
+  max-width: 520px;
+  background: #ffffff;
+  border-radius: 20px;
+  border: 2px solid #cbd5e1;
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.fde-cert-mock-inner {
+  padding: 2.25rem 2rem 1.85rem 2rem;
+  filter: blur(4px);
+  opacity: 0.55;
+  user-select: none;
+  pointer-events: none;
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.fde-cert-mock-header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid #e2e8f0;
+  padding-bottom: 0.85rem;
+}
+
+.fde-cert-mock-logo {
+  height: 38px;
+  width: auto;
+}
+
+.fde-cert-mock-code {
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: #64748b;
+  letter-spacing: 0.05em;
+}
+
+.fde-cert-mock-title {
+  font-size: 1.35rem;
+  font-weight: 900;
+  color: #0f172a;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.25rem;
+  text-transform: uppercase;
+}
+
+.fde-cert-mock-sub {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #94a3b8;
+  letter-spacing: 0.12em;
+  margin-bottom: 0.5rem;
+}
+
+.fde-cert-mock-name {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #ea580c;
+  margin-bottom: 0.85rem;
+  font-family: Georgia, serif;
+}
+
+.fde-cert-mock-text {
+  font-size: 0.825rem;
+  color: #475569;
+  line-height: 1.5;
+  margin-bottom: 1.75rem;
+  max-width: 420px;
+}
+
+.fde-cert-mock-footer {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 0.85rem;
+  border-top: 1px dashed #cbd5e1;
+}
+
+.fde-cert-signature-box {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.fde-sig-line {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: #0f172a;
+  border-bottom: 1.5px solid #0f172a;
+  padding-bottom: 2px;
+}
+
+.fde-sig-title {
+  font-size: 0.7rem;
+  color: #64748b;
+  margin-top: 2px;
+}
+
+.fde-cert-seal {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 0.4rem 0.8rem;
+  border-radius: 8px;
+  background: #fff7ed;
+  border: 1px solid #ffedd5;
+  color: #ea580c;
+}
+
+.fde-seal-star {
+  font-size: 0.85rem;
+  line-height: 1;
+}
+
+.fde-seal-text {
+  font-size: 0.65rem;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+}
+
+/* Lock Overlay */
+.fde-cert-lock-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(15, 23, 42, 0.22);
+  backdrop-filter: blur(2px);
+  padding: 1.5rem;
+}
+
+.fde-simple-lock-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 14px 35px rgba(15, 23, 42, 0.28), 0 4px 12px rgba(0, 0, 0, 0.12);
+  border: 2px solid #e2e8f0;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.fde-simple-lock-badge:hover {
+  transform: scale(1.08);
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.35);
+}
+
+@media (max-width: 960px) {
+  .fde-certificate-container {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+  .fde-certificate-content {
+    align-items: center;
+    text-align: center;
+  }
+  .fde-cert-item {
+    text-align: left;
   }
 }
