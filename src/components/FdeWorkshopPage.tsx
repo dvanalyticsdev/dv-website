@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './FdeWorkshopPage.css';
 import { Footer } from './Footer';
 import { appendAttributionToPayload, trackEvent } from '../utils/analytics';
@@ -20,7 +20,7 @@ const initialFormState: FormState = {
 };
 
 const WORKSHOP_NAME = 'FDE';
-const WORKSHOP_DATE = 'To Be Announced Soon';
+const WORKSHOP_DATE = 'October 15, 2026';
 const WORKSHOP_TIME = '7:00 PM - 9:00 PM IST (2 Hours)';
 const CRM_ELEMENTOR_WEBHOOK_URL = 'https://crm.dvanalyticsmds.in/api/webhook/elementor-lead';
 const COUNTRY_CODE = '+91';
@@ -111,6 +111,44 @@ export const FdeWorkshopPage: React.FC<FdeWorkshopPageProps> = ({ onNavigateHome
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [whatsappOptin, setWhatsappOptin] = useState(true);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(3);
+
+  // Live Countdown to October 15, 2026 at 7:00 PM IST
+  const [timeLeft, setTimeLeft] = useState(() => {
+    const targetDate = new Date('2026-10-15T19:00:00+05:30').getTime();
+    const now = new Date().getTime();
+    const difference = targetDate - now;
+    if (difference > 0) {
+      return {
+        days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+        hours: Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+        minutes: Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60)),
+        seconds: Math.floor((difference % (1000 * 60)) / 1000),
+      };
+    }
+    return { days: 0, hours: 0, minutes: 0, seconds: 0 };
+  });
+
+  useEffect(() => {
+    const targetDate = new Date('2026-10-15T19:00:00+05:30').getTime();
+
+    const interval = setInterval(() => {
+      const now = new Date().getTime();
+      const difference = targetDate - now;
+
+      if (difference > 0) {
+        setTimeLeft({
+          days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+          hours: Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+          minutes: Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60)),
+          seconds: Math.floor((difference % (1000 * 60)) / 1000),
+        });
+      } else {
+        setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+      }
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   const openRegisterModal = () => {
     const el = document.getElementById('fde-registration-panel');
@@ -350,6 +388,29 @@ export const FdeWorkshopPage: React.FC<FdeWorkshopPageProps> = ({ onNavigateHome
             Everyone is asking: "Will AI take my job?" Discover why the Forward Deployed Engineer (FDE) is the one engineering role built on what AI cannot replace — combining 50% Client Consulting, 30% Engineering & Infrastructure, and 20% Applied AI.
           </p>
 
+          {/* Live Countdown Clock matching Batch Countdown design */}
+          <div className="fde-timer-wrapper">
+            <div className="fde-timer-label">October 15 Workshop Countdown</div>
+            <div className="fde-timer-grid">
+              <div className="fde-timer-box">
+                <div className="fde-timer-number">{String(timeLeft.days).padStart(2, '0')}</div>
+                <div className="fde-timer-unit">Days</div>
+              </div>
+              <div className="fde-timer-box">
+                <div className="fde-timer-number">{String(timeLeft.hours).padStart(2, '0')}</div>
+                <div className="fde-timer-unit">Hours</div>
+              </div>
+              <div className="fde-timer-box">
+                <div className="fde-timer-number">{String(timeLeft.minutes).padStart(2, '0')}</div>
+                <div className="fde-timer-unit">Mins</div>
+              </div>
+              <div className="fde-timer-box">
+                <div className="fde-timer-number">{String(timeLeft.seconds).padStart(2, '0')}</div>
+                <div className="fde-timer-unit">Secs</div>
+              </div>
+            </div>
+          </div>
+
           <div className="fde-meta-grid">
             <div className="fde-meta-item">
               <label>Duration</label>
@@ -580,6 +641,17 @@ export const FdeWorkshopPage: React.FC<FdeWorkshopPageProps> = ({ onNavigateHome
               AI writes code fast, but a brilliant engineer who skips discovery builds the wrong thing. FDEs sit face-to-face with clients, translate vague problems into technical specifications, and ship working software that solves real business bottlenecks.
             </p>
           </div>
+        </div>
+      </section>
+
+      {/* Feature Banner: Take Your Software Engineering Career To New Heights */}
+      <section className="fde-feature-banner-section">
+        <div className="fde-feature-banner-wrapper">
+          <img
+            src="/fde-career-heights-banner.png"
+            alt="Take Your Software Engineering Career To New Heights - Register for the Masterclass, Participate in Live Quizzes, Conquer the Leaderboards"
+            className="fde-feature-banner-img"
+          />
         </div>
       </section>
 
