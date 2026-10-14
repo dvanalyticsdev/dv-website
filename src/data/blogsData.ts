@@ -20,6 +20,182 @@ export interface BlogPost {
 
 export const blogsData: BlogPost[] = [
   {
+    "id": "blog-35",
+    "title": "What Is an AI Agent?",
+    "excerpt": "An AI agent is a program that uses a large language model (LLM) to decide what to do next, uses tools to do it, and keeps going until the goal is done. A chatbot only answers. An agent acts.",
+    "date": "October 14, 2026",
+    "author": "DV Editorial Team",
+    "image": "/blogs/what_is_an_ai_agent.jpg",
+    "readTime": "5 min read",
+    "sections": [
+      {
+        "heading": "What is an AI Agent? Beyond Basic Chatbots",
+        "text": "Most people first meet AI as a chatbot. You ask a question and it replies. An AI agent goes one step further. You give it a goal, such as 'book me a trip to Goa under ₹30,000', and it works out the steps itself.",
+        "para2": "To do that, the agent can search the web, call an API, read a file, or run code. It looks at each result and decides what to do next. It stops when the goal is met or when it is stuck.",
+        "para3": "The word 'agent' matters because the AI is in charge of the steps. In ordinary software, a developer writes every step in advance. In an agent, the model chooses the steps while it runs."
+      },
+      {
+        "heading": "How Does an AI Agent Work? The Core Loop",
+        "text": "Every agent runs the same loop: think, act, observe, repeat. The model reads the goal and decides the next step. It calls a tool to carry out that step. It reads what came back, then decides again.",
+        "para2": "Take the Goa trip. The agent first thinks: 'I need flight prices.' It calls a flight-search tool. It sees the results and thinks: 'Now I need hotels that fit what is left of the budget.' It calls a hotel tool, compares the totals, and writes the final plan. Nobody scripted those steps.",
+        "para3": "The loop runs until the model decides the goal is met, then it gives the final answer."
+      },
+      {
+        "heading": "The Four Essential Parts of an AI Agent",
+        "text": "An effective AI agent relies on four foundational components working in harmony:",
+        "list": [
+          "The Model (LLM): Reads the goal and decides the next step (e.g., choosing to search flights first).",
+          "Tools: Allow the agent to interact with the real world (e.g., flight search, hotel search, payment API).",
+          "Memory: Keeps track of what has happened so far (e.g., remembering the ₹30,000 budget and the dates).",
+          "Instructions and Goal: Explicitly define what the agent is for and what it must not do (e.g., 'Never book without asking the user')."
+        ],
+        "para2": "Take away the tools and you have a chatbot. Take away the loop and you have a single prompt. An AI agent is all four working together."
+      },
+      {
+        "heading": "What Kinds of Tools Can an Agent Use?",
+        "text": "A tool is just a function the agent is authorized to call. Common tools include:",
+        "list": [
+          "Search: Web search or semantic search over your own internal documents.",
+          "APIs: Weather, payments, maps, email dispatch, and calendars.",
+          "Databases: Querying and updating structured records with SQL.",
+          "Code Execution: Running small Python scripts to do calculations or clean data.",
+          "Other Agents: Handing sub-tasks off to specialist domain agents."
+        ],
+        "para2": "The more tools you give an agent, the more it can do, and the more it can get wrong. High-performing production agents maintain a concise, well-described catalog of tools."
+      },
+      {
+        "heading": "AI Agent vs Chatbot vs Workflow: What is the Difference?",
+        "text": "Understanding when to deploy an agent versus an automated workflow or chatbot prevents costly architectural mistakes:",
+        "list": [
+          "Chatbot: Who chooses the steps? You, one question at a time. Can it use tools? Usually not. Best for questions and answers. Main risk: incorrect or hallucinated answers.",
+          "Workflow: Who chooses the steps? A developer, in advance. Can it use tools? Yes, in a fixed order. Best for repeatable, predictable jobs. Main risk: breaks on unexpected input.",
+          "AI Agent: Who chooses the steps? The model, while it runs. Can it use tools? Yes, in any order it picks. Best for open-ended jobs with many paths. Main risk: wrong actions, higher latency, and higher token cost."
+        ],
+        "para2": "A workflow is often the better choice. If you already know the sequence of steps, write them down. Use an agent only when the steps change dynamically from one request to the next."
+      },
+      {
+        "heading": "Where Are AI Agents Used Today?",
+        "text": "Organizations are deploying AI agents across several high-impact business domains:",
+        "list": [
+          "Customer Support: Reading support tickets, looking up customer orders, issuing refunds, or escalating to human specialists.",
+          "Coding & Engineering: Reading codebases, editing files, running automated tests, and resolving failures.",
+          "Enterprise Research: Searching multiple sources, synthesizing findings, and compiling structured reports with citations.",
+          "Operations & DevOps: Monitoring data pipelines, identifying failed jobs, and triggering automated recovery workflows.",
+          "Travel & Booking: Comparing flights and hotels against strict budgetary limits to build tailored itineraries."
+        ]
+      },
+      {
+        "heading": "What Can Go Wrong with AI Agents?",
+        "text": "Agents take real-world actions, which means an error can cost significantly more than a typo in a chat window. An agent can call the wrong tool, get trapped in an infinite execution loop, or incur runaway API expenses. It can also be tricked by hostile text on a web page, known as prompt injection.",
+        "para2": "Three disciplined habits drastically reduce these risks:",
+        "list": [
+          "1. Principle of Least Privilege: Give the agent only the specific tools it strictly needs.",
+          "2. Human-in-the-Loop: Require human confirmation before executing any action that spends money or cannot be undone.",
+          "3. Complete Audit Logging: Log every thought, tool call, and observation so you can see why the agent did what it did."
+        ]
+      },
+      {
+        "heading": "Should You Build an AI Agent?",
+        "text": "Start with the simplest thing that works. A well-crafted single prompt is often enough. If you need several steps in a known order, use a workflow. Build an agent only when the path really is unpredictable, and the cost of a mistake is low or a person checks the result.",
+        "para2": "If you want to learn this by building, a good first project is a small travel agent with a flight tool, a hotel tool, and a budget check. You will touch every part: the model, the tools, the memory, and the instructions."
+      },
+      {
+        "heading": "Frequently Asked Questions (FAQ)",
+        "text": "Common questions when getting started with AI agents:",
+        "list": [
+          "Is ChatGPT an AI agent? On its own, a standard chat reply is not. It becomes agent-like when it can browse the web, run code, or call tools and decide its own next steps.",
+          "Do AI agents need coding to build? Simple ones can be built with no-code tools. For precise control over tools, memory, and safety guardrails, you will want Python and frameworks such as LangGraph or AutoGen.",
+          "Are AI agents safe to run unattended? Not by default. Limit their tools, require human approvals for risky actions, and keep comprehensive logs."
+        ],
+        "extra": "DV Analytics trains you to build working AI agents with tools and memory, step by step, with expert industry mentors."
+      }
+    ]
+  },
+  {
+    "id": "blog-36",
+    "title": "How Do LLMs Work? Tokens, Context Windows and Next-Word Prediction",
+    "excerpt": "A large language model (LLM) works by predicting the next small piece of text, again and again, until it has written a full answer. It does not look up facts in a database. It uses patterns learned from huge amounts of text.",
+    "date": "October 12, 2026",
+    "author": "DV Editorial Team",
+    "image": "/blogs/how_llms_work.jpg",
+    "readTime": "5 min read",
+    "sections": [
+      {
+        "heading": "What is a Large Language Model?",
+        "text": "An LLM is a computer program trained on a very large amount of text: books, websites, source code, and articles. During training, it reads that text and learns which words tend to follow which. After training, you give it some text and it continues it.",
+        "para2": "ChatGPT, Claude, and Gemini are all products built on LLMs. The 'large' refers to the number of internal settings, called parameters, which can run into the hundreds of billions."
+      },
+      {
+        "heading": "What is a Token? Text Decomposition Explained",
+        "text": "An LLM does not read whole words. It reads tokens, which are small chunks of text. A short, common word is usually one token. A long or rare word is split into several.",
+        "para2": "For example, the sentence 'Learning agents is fun' might become tokens like: 'Learning', ' agents', ' is', ' fun'. A rare word like 'unbelievably' may split into 'un', ' believ', ' ably'.",
+        "list": [
+          "Context Capacity: Models are limited by how many tokens they can handle at once.",
+          "API Billing: Most commercial AI services charge by the token, so shorter prompts directly reduce cost.",
+          "Token Ratio: A practical rule of thumb for English is that one token is about three quarters of a word (or roughly 4 characters)."
+        ]
+      },
+      {
+        "heading": "How Next-Word Prediction Generates Full Answers",
+        "text": "At each step, the model looks at all the tokens so far and gives every possible next token in its vocabulary a probability score. It then picks one, adds it to the text, and repeats.",
+        "para2": "Imagine the text 'The capital of France is'. The model gives a very high probability to ' Paris' and tiny probabilities to everything else. It picks ' Paris'. Then it looks at the longer text ('The capital of France is Paris') and predicts the next token after that.",
+        "para3": "That is the whole loop. A long, helpful, and nuanced answer is just thousands of these small sequential predictions in a row."
+      },
+      {
+        "heading": "Why Do Answers Change Each Time? Temperature Explained",
+        "text": "If the model always picked the single most likely token, answers would be identical every time. Instead, most tools add a little randomness. A setting called temperature controls it:",
+        "list": [
+          "Low Temperature (near 0): The model picks the most likely tokens. Answers are steady, consistent, and predictable. Ideal for factual queries, classification, and code generation.",
+          "High Temperature (0.7 - 1.0): The model sometimes picks less likely tokens. Answers are more varied and creative. Ideal for brainstorming, creative writing, and divergent thinking."
+        ]
+      },
+      {
+        "heading": "What is a Context Window?",
+        "text": "The context window is the maximum number of tokens the model can evaluate in one go. It includes your prompt, any documents you paste in, the conversation history so far, and the answer being generated.",
+        "para2": "If a conversation grows past the window, the oldest parts are dropped or must be summarized. The model does not 'remember' them outside what is actively in the prompt window. A bigger window lets you paste in longer documents, but it also costs more, and models can be less reliable at finding details buried in the middle of very long inputs."
+      },
+      {
+        "heading": "What Are Embeddings, and Where Do They Fit?",
+        "text": "An embedding turns a piece of text into a list of numbers (a vector) that captures its semantic meaning. Texts with similar meanings get similar numbers.",
+        "para2": "Embeddings are used for search—for example, to find the exact paragraph in your company knowledge base that best matches a user's question. They are a separate tool that sits beside the LLM and powers Retrieval-Augmented Generation (RAG)."
+      },
+      {
+        "heading": "How is an LLM Trained? The Two Main Stages",
+        "text": "Training state-of-the-art language models occurs in two fundamental phases:",
+        "list": [
+          "1. Pre-training: The model reads a massive body of text and learns to predict the next token. This is the most computationally expensive step. It teaches grammar, world facts, and reasoning patterns.",
+          "2. Fine-tuning and Feedback (RLHF): The model is then adjusted with examples of high-quality answers and refined through human feedback, so it follows instructions and behaves helpfully and safely."
+        ],
+        "para2": "After training, the model's parametric knowledge is fixed up to a cutoff date. It does not continuously learn from your chats unless the product has an external retrieval or logging system designed to do so."
+      },
+      {
+        "heading": "Why Do LLMs Make Mistakes? Understanding Hallucination",
+        "text": "Because the model predicts likely text, not necessarily true text. When it does not know something, it can still produce a confident, fluent answer that is factually incorrect. This is called hallucination.",
+        "para2": "LLMs are also weak at exact tasks such as long arithmetic or counting characters unless they are given access to a code execution tool or calculator. They can also be sensitive to how a question is worded."
+      },
+      {
+        "heading": "What Does This Mean When You Use an LLM?",
+        "text": "Four practical rules of thumb for software engineers and analysts working with LLMs:",
+        "list": [
+          "Be Specific: The model continues your text; a clear, structured prompt gives a much better continuation.",
+          "Give It the Facts: If the answer depends on your own data, paste it in or connect a search/RAG tool. Do not expect the model to memorize private knowledge.",
+          "Watch the Length: Keep prompts focused, because tokens cost money and latency scales with context size.",
+          "Check Important Answers: Treat the output as a strong draft, not an unquestionable source."
+        ]
+      },
+      {
+        "heading": "Frequently Asked Questions (FAQ)",
+        "text": "Quick answers to foundational LLM questions:",
+        "list": [
+          "Does an LLM understand language? It handles language remarkably well and can follow multi-step reasoning. Whether that counts as true understanding is still debated, but for practical work, think of it as a powerful statistical pattern predictor.",
+          "Can an LLM search the internet? Not by itself. It can only do so if an external web search tool is connected to it, which is how modern AI search assistants operate.",
+          "Why do models have knowledge cutoffs? Pre-training requires months of cluster compute over a fixed snapshot of data. Information occurring after the cutoff date is inaccessible unless injected dynamically at runtime."
+        ],
+        "extra": "DV Analytics trains you to work with LLMs, prompts, and tokens on real-world industrial projects, step by step, with expert mentors."
+      }
+    ]
+  },
+  {
   "id": "blog-34",
   "title": "Mastering the 2026 Data Science & AI Interview: How Capstone Defense & Production System Design Get You Hired (APIDS, APIDA & FDE)",
   "excerpt": "In 2026, tech recruiters skip generic Q&A and test live problem decomposition, SQL optimization, RAG system design, and project defense. Discover how to ace modern AI and analytics hiring rounds.",

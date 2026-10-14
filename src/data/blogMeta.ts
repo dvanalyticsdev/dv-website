@@ -10,6 +10,8 @@ export interface BlogMeta {
 }
 
 export const blogMeta: BlogMeta[] = [
+  {"id":"blog-35","slug":"what-is-an-ai-agent","title":"What Is an AI Agent?","excerpt":"An AI agent is a program that uses a large language model (LLM) to decide what to do next, uses tools to do it, and keeps going until the goal is done. A chatbot only answers. An agent acts.","date":"October 14, 2026","author":"DV Editorial Team","image":"/blogs/what_is_an_ai_agent.jpg","readTime":"5 min read"},
+  {"id":"blog-36","slug":"how-do-llms-work-tokens-context-windows-next-word-prediction","title":"How Do LLMs Work? Tokens, Context Windows and Next-Word Prediction","excerpt":"A large language model (LLM) works by predicting the next small piece of text, again and again, until it has written a full answer. It does not look up facts in a database. It uses patterns learned from huge amounts of text.","date":"October 12, 2026","author":"DV Editorial Team","image":"/blogs/how_llms_work.jpg","readTime":"5 min read"},
   {"id":"blog-34","slug":"mastering-the-2026-data-science-ai-interview-how-capstone-defense-production-system-design-get-you-hired","title":"Mastering the 2026 Data Science & AI Interview: How Capstone Defense & Production System Design Get You Hired (APIDS, APIDA & FDE)","excerpt":"In 2026, tech recruiters skip generic Q&A and test live problem decomposition, SQL optimization, RAG system design, and project defense. Discover how to ace modern AI and analytics hiring rounds.","date":"September 24, 2026","author":"DV Editorial Team","image":"/blogs/ai_data_science_interview_defense.jpg","readTime":"8 min read"},
   {"id":"blog-33","slug":"building-enterprise-rag-agentic-ai-pipelines-in-2026-why-production-ai-engineering-is-techs-fastest-growing-career","title":"Building Enterprise RAG & Agentic AI Pipelines in 2026: Why Production AI Engineering Is Tech's Fastest-Growing Career (FDE & APIDS Focus)","excerpt":"With demand for Agentic AI Engineers surging by 260% year-on-year, enterprises need specialists who can build production-grade Retrieval-Augmented Generation (RAG) pipelines, manage Vector DBs, and deploy autonomous multi-agent workflows.","date":"September 22, 2026","author":"DV Editorial Team","image":"/blogs/enterprise_rag_agentic_ai_fde.jpg","readTime":"8 min read"},
   {"id":"blog-32","slug":"breaking-into-ai-data-science-from-a-non-cs-background-in-2026-why-skills-portfolios-outshine-computer-science-degrees","title":"Breaking Into AI & Data Science from a Non-CS Background in 2026: Why Skills & Portfolios Outshine Computer Science Degrees (APIDS, APIDA & FDE Roadmap)","excerpt":"Do you need a Computer Science degree to succeed in AI and Data Science in 2026? Discover how professionals from mechanical, electrical, commerce, and non-tech backgrounds are leveraging industrial skills-first training to land top tech roles.","date":"September 19, 2026","author":"DV Editorial Team","image":"/blogs/career_transition_non_cs_ai_data.jpg","readTime":"8 min read"},
@@ -48,4 +50,7 @@ export const blogMeta: BlogMeta[] = [
 
 export const blogSlugById = Object.fromEntries(blogMeta.map((blog) => [blog.id, blog.slug]));
 
-export const blogIdBySlug = Object.fromEntries(blogMeta.map((blog) => [blog.slug, blog.id]));
+export const blogIdBySlug: Record<string, string> = {
+  ...Object.fromEntries(blogMeta.map((blog) => [blog.slug, blog.id])),
+  'how-do-llms-work': 'blog-36',
+};

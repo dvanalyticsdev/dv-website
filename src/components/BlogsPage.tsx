@@ -37,7 +37,7 @@ export const BlogsPage: React.FC<BlogsPageProps> = ({
         {/* Hero Section */}
         <section 
           className="blog-reader-hero"
-          style={{ backgroundImage: `url('${activeBlog.image}')` }}
+          style={{ backgroundImage: `url('${activeBlog.image || defaultFallbackImage}')` }}
         >
           <div className="blog-hero-overlay"></div>
           <div className="container blog-hero-content">
@@ -128,23 +128,15 @@ export const BlogsPage: React.FC<BlogsPageProps> = ({
         <div className="blogs-grid">
           {blogsData.map((blog) => (
             <article key={blog.id} className="blog-card glow-card">
-              <div className="blog-card-img-wrapper">
-                <img
-                  src={blog.image && !blog.image.startsWith('data:') ? blog.image : defaultFallbackImage}
-                  alt={blog.title}
-                  className="blog-card-img"
-                  onError={(e) => {
-                    e.currentTarget.src = defaultFallbackImage;
-                  }}
-                />
-                <div className="blog-card-meta">
-                  <span>{blog.date}</span>
-                  <span>•</span>
-                  <span>{blog.readTime}</span>
-                </div>
-              </div>
               <div className="blog-card-content">
-                <span className="blog-author-tag">By {blog.author}</span>
+                <div className="blog-card-header">
+                  <span className="blog-author-tag">By {blog.author}</span>
+                  <div className="blog-card-meta">
+                    <span>{blog.date}</span>
+                    <span>•</span>
+                    <span>{blog.readTime}</span>
+                  </div>
+                </div>
                 <h3 className="blog-card-title">{blog.title}</h3>
                 <p className="blog-card-excerpt">{blog.excerpt}</p>
                 <a
