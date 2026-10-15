@@ -1,10 +1,35 @@
+export interface BlogTable {
+  headers: string[];
+  rows: string[][];
+  caption?: string;
+}
+
+export interface BlogFlowStep {
+  step: string;
+  title: string;
+  desc: string;
+}
+
+export interface BlogSubsection {
+  subheading: string;
+  text?: string;
+  paragraphs?: string[];
+  list?: string[];
+}
+
 export interface BlogSection {
-  heading: string;
-  text: string;
+  heading?: string;
+  subheading?: string;
+  text?: string;
   para2?: string;
   para3?: string;
+  paragraphs?: string[];
   list?: string[];
   extra?: string;
+  table?: BlogTable;
+  flowSteps?: BlogFlowStep[];
+  caption?: string;
+  subsections?: BlogSubsection[];
 }
 
 export interface BlogPost {
@@ -19,6 +44,694 @@ export interface BlogPost {
 }
 
 export const blogsData: BlogPost[] = [
+  {
+    "id": "blog-40",
+    "title": "How a Non Technical Graduate Can Become a Data Scientist",
+    "excerpt": "A non-technical graduate can build a successful career in data science by developing programming, statistics, and practical problem-solving skills. Discover the roadmap, essential skills, salary expectations, and portfolio strategies.",
+    "date": "October 15, 2026",
+    "author": "DV Editorial Team",
+    "image": "/blogs/non-tech_to_data_pro.jpg",
+    "readTime": "8 min read",
+    "sections": [
+      {
+        "heading": "Why Degree Background Does Not Define Your Career",
+        "text": "A non-technical graduate can build a career in data science by developing programming, statistics and practical problem-solving skills. Your degree influences your starting point, but it does not have to define your entire career.",
+        "para2": "A commerce graduate may understand financial statements. A marketing professional may recognise customer behaviour. Someone in operations may know why deliveries get delayed. This knowledge becomes useful when you can analyse the data behind those problems.",
+        "para3": "The transition takes consistent practice. A course can provide structure, while projects and feedback help you become ready for work. This guide explains the skills, learning steps and career expectations, along with the support available at DV Analytics."
+      },
+      {
+        "heading": "Understanding Data Science and AI",
+        "text": "Data science uses data, statistics and programming to answer questions and make predictions. A retailer might use it to investigate falling sales or forecast next month’s demand. The work involves checking the data, choosing an approach and explaining what the results mean.",
+        "para2": "Artificial intelligence is a broader field involving systems that recognise patterns, understand language or generate content. Machine learning connects many data science applications with AI by learning patterns from data.",
+        "para3": "AI deployment makes a model available through an application, API or scheduled workflow. It also involves testing, access control, monitoring and maintenance so people can use the solution reliably.",
+        "flowSteps": [
+          {
+            "step": "1",
+            "title": "Understand",
+            "desc": "Why are customers leaving?"
+          },
+          {
+            "step": "2",
+            "title": "Analyse and model",
+            "desc": "Study behaviour and predict churn risk."
+          },
+          {
+            "step": "3",
+            "title": "Deploy and learn",
+            "desc": "Deliver scores to users; monitor results."
+          }
+        ],
+        "caption": "Example workflow: understand customer churn, develop a model and make its output available to a retention team."
+      },
+      {
+        "heading": "Your Starting Point",
+        "text": "Begin with percentages, algebra, averages, variability and probability. You can strengthen your mathematics as projects become more demanding. AI coding tools can help you learn, but you should understand, test and be able to change the code you use."
+      },
+      {
+        "heading": "The Skills You Need to Build",
+        "text": "The following matrix outlines the foundational skill areas, what to practise, and the purpose behind each capability:",
+        "table": {
+          "headers": [
+            "Skill area",
+            "What to practise",
+            "Purpose"
+          ],
+          "rows": [
+            [
+              "Data fundamentals",
+              "Excel, summaries and quality checks",
+              "Understand business records"
+            ],
+            [
+              "SQL",
+              "Joins, aggregation and window functions",
+              "Retrieve and combine data"
+            ],
+            [
+              "Python",
+              "Functions, debugging, pandas and NumPy",
+              "Prepare data and build models"
+            ],
+            [
+              "Statistics",
+              "Sampling, probability and regression",
+              "Interpret evidence correctly"
+            ],
+            [
+              "Visualisation",
+              "Charts, dashboards and storytelling",
+              "Explain findings clearly"
+            ],
+            [
+              "Machine learning",
+              "Regression, classification and forecasting",
+              "Build and evaluate predictions"
+            ],
+            [
+              "Generative AI",
+              "Model APIs, retrieval and evaluation",
+              "Create language-based tools"
+            ],
+            [
+              "Deployment",
+              "Git, APIs, testing and cloud basics",
+              "Deliver usable applications"
+            ]
+          ]
+        }
+      },
+      {
+        "heading": "What Employers Look For",
+        "text": "Employers need evidence that you can work through a problem. A current Amazon data scientist posting, for example, describes Python development, SQL queries, machine learning and deploying solutions for other teams. Responsibilities vary by employer and seniority. [1]",
+        "para2": "Practise translating a business question into an analytical task, cleaning imperfect data and choosing a simple baseline before trying a complex model. Evaluate on unseen data, explain mistakes and produce work that someone else can reproduce.",
+        "para3": "Some positions require a quantitative degree or prior experience. Read eligibility requirements carefully and target roles that fit your background and demonstrated skills. Deployment-focused positions may also expect application development and integration experience."
+      },
+      {
+        "heading": "A Practical Learning Roadmap",
+        "text": "Progressing from non-technical foundations into applied data science requires structured, cumulative milestones:",
+        "flowSteps": [
+          {
+            "step": "1",
+            "title": "Data foundations",
+            "desc": "Excel, basic maths and data quality"
+          },
+          {
+            "step": "2",
+            "title": "SQL and Python",
+            "desc": "Query databases and write your own code"
+          },
+          {
+            "step": "3",
+            "title": "Statistics",
+            "desc": "Understand variation and evaluate evidence"
+          },
+          {
+            "step": "4",
+            "title": "Machine learning",
+            "desc": "Build a baseline and test on unseen data"
+          },
+          {
+            "step": "5",
+            "title": "AI deployment",
+            "desc": "Create an API or app; test and monitor it"
+          },
+          {
+            "step": "6",
+            "title": "Career preparation",
+            "desc": "Refine projects and practise interviews"
+          }
+        ],
+        "caption": "Read stages 1–3 from left to right, then stages 4–6. Progress depends on independent practice and demonstrated ability, not a fixed timetable."
+      },
+      {
+        "heading": "Putting the Learning Roadmap into Practice",
+        "text": "To execute this roadmap effectively, proceed through manageable, hands-on milestones:",
+        "subsections": [
+          {
+            "subheading": "Start with a small analysis",
+            "text": "Use a sales or expense dataset to practise spreadsheets and basic calculations. Identify missing values, duplicates and inconsistent dates. Create a few useful charts and explain three findings supported by the data."
+          },
+          {
+            "subheading": "Learn SQL and Python through questions",
+            "text": "Join customers to transactions, calculate monthly totals and identify repeat buyers. In Python, learn conditions, loops, functions and debugging before relying on analysis libraries. Aim to complete a small analysis independently."
+          },
+          {
+            "subheading": "Build statistical judgement",
+            "text": "Learn why averages can mislead, how samples differ from populations and why correlation does not establish causation. Apply each concept to a practical question, such as whether a change in spending is larger than normal variation."
+          },
+          {
+            "subheading": "Develop and evaluate a model",
+            "text": "Choose a manageable task such as churn prediction. Separate training and test data correctly, prevent data leakage and compare performance with a simple baseline. Explain why your evaluation metric suits the problem."
+          },
+          {
+            "subheading": "Make the solution usable",
+            "text": "Turn one model into an API or a small application. Validate inputs, handle failures and document how to run it. Deploy it in a controlled environment, monitor errors and practise restoring an earlier version. Then try a document assistant that provides source references."
+          },
+          {
+            "subheading": "Prepare for your first opportunity",
+            "text": "Refine projects, practise technical interviews and explain your work aloud. An internship, analyst position or junior technical role can provide experience while you continue developing modelling and deployment skills."
+          }
+        ]
+      },
+      {
+        "heading": "Industry Projects That Strengthen Your Profile",
+        "text": "Focus on building end-to-end projects that address tangible enterprise challenges:",
+        "table": {
+          "headers": [
+            "Project",
+            "What it demonstrates"
+          ],
+          "rows": [
+            [
+              "Retail sales forecasting",
+              "Time-based analysis, forecasting and scheduled reports"
+            ],
+            [
+              "Telecom churn prediction",
+              "Classification, evaluation and a retention dashboard"
+            ],
+            [
+              "Insurance claims analysis",
+              "Data quality, operational insights and human review"
+            ],
+            [
+              "Customer segmentation",
+              "Exploratory analysis, clustering and segment profiles"
+            ],
+            [
+              "Document assistant",
+              "Retrieval, model integration and source-based evaluation"
+            ]
+          ]
+        },
+        "extra": "These are portfolio ideas. Use public, synthetic or properly authorised data. Label simulated work clearly, and distinguish measured results from expected business benefits."
+      },
+      {
+        "heading": "Building a Credible Professional Profile",
+        "text": "Build two or three projects you can explain thoroughly. For each, describe the business objective, dataset, preparation steps, baseline, results and limitations. Include deployment instructions where relevant.",
+        "flowSteps": [
+          {
+            "step": "1",
+            "title": "Business case",
+            "desc": "Problem, user and success measure"
+          },
+          {
+            "step": "2",
+            "title": "Working solution",
+            "desc": "Code, demo and setup instructions"
+          },
+          {
+            "step": "3",
+            "title": "Evidence",
+            "desc": "Test results, limitations and improvements"
+          }
+        ],
+        "caption": "A strong portfolio connects a business problem to a working solution and evidence of its performance. None of these replaces the others.",
+        "para2": "Create a focused resume, an organised GitHub portfolio and a clear LinkedIn profile. Add a short project demonstration using safe sample data. Practise discussing your reasoning, mistakes and improvements during interviews.",
+        "para3": "Connect your previous background to your work. A commerce graduate might focus on financial analysis, while someone with sales experience could investigate retention. Present learning projects honestly; they do not automatically establish commercial experience."
+      },
+      {
+        "heading": "What Salary Should You Expect in India",
+        "text": "For a first data science role, approximately ₹5–8 lakh per annum can be a reasonable planning range, rather than a guaranteed outcome. A recent published salary guide places fresher data scientist pay around this level. Offers can fall below or above it depending on the employer and candidate. [2]",
+        "para2": "For context, Indeed reported an average data scientist base salary of approximately ₹12.28 lakh annually, based on 310 reported salaries and updated on 1 October 2026. This combines experience levels and is not a fresher salary expectation. [3]",
+        "table": {
+          "headers": [
+            "Figure",
+            "How to interpret it"
+          ],
+          "rows": [
+            [
+              "₹5–8 lakh per year",
+              "Illustrative first-role planning range; not a promise"
+            ],
+            [
+              "₹12.28 lakh per year",
+              "Reported average base salary across experience levels"
+            ]
+          ]
+        },
+        "para3": "Compare fixed salary, variable pay and total CTC separately. Previous non-technical experience may be useful, but employers will assess its relevance. Your first role should also provide real data, technical feedback and delivery experience."
+      },
+      {
+        "heading": "Future Job Opportunities",
+        "text": "Entry routes include data analyst, reporting analyst, BI analyst, analytics associate and data science intern. Stronger modelling and engineering skills can support a move into junior data science, machine learning or applied AI roles.",
+        "para2": "The World Economic Forum’s Future of Jobs Report 2025 identifies AI and big data among the fastest-growing skills through 2030. This signals a broad direction of demand, not guaranteed employment. Build lasting strengths in statistics, programming, evaluation and business communication. [4]"
+      },
+      {
+        "heading": "Learning with DV Analytics",
+        "text": "DV Analytics lists Data Analytics, Data Science with AI Deployment, Generative AI, Agentic AI and AI Forward Deployment Engineering among its offerings. Programme selection should reflect your current skills and target role. [5]",
+        "subsections": [
+          {
+            "subheading": "Choosing a suitable starting pathway",
+            "text": "A Data Analytics pathway can help you become confident in querying data, preparing reports and explaining business findings. A Data Science and AI Deployment pathway should build towards predictive modelling, AI applications and deployment. Ask for the current syllabus and confirm prerequisites and assessments."
+          }
+        ],
+        "extra": "DV Analytics offers online learning and classroom training options in Bangalore and Bhubaneswar. Confirm the format, schedule and availability for your selected programme and batch. [5, 6]"
+      },
+      {
+        "heading": "Support for Your Career Transition",
+        "text": "DV Analytics’s published training information describes live online and offline classes, recorded sessions and LMS access, practical projects, mentor-guided resume preparation, mock interviews, communication training and job referrals. Confirm the services included in your chosen programme. [6]",
+        "para2": "Use that support actively. Revisit a recording when a concept is unclear, bring specific questions to a mentor and use mock interviews to practise explaining your decisions. Ask for feedback on your code, analysis and project documentation.",
+        "para3": "Placement assistance supports preparation and access to opportunities. Employment depends on your readiness and employer requirements. A useful learning plan should help you identify gaps and show progress through work you can complete independently.",
+        "extra": "A non-technical background gives you a starting point with its own strengths. Build the foundations, complete projects you understand and gradually take on more demanding work. That makes your career transition practical and credible. Explore programmes at www.dvanalyticsmds.com."
+      }
+    ]
+  },
+  {
+    "id": "blog-39",
+    "title": "Building a Career in AI Forward Deployment Engineering",
+    "excerpt": "An AI Forward Deployed Engineer (AI FDE) combines software development, applied AI, and customer collaboration to turn business needs into working production solutions. Discover the key skills, real-world projects, and career roadmap.",
+    "date": "October 15, 2026",
+    "author": "DV Editorial Team",
+    "image": "/blogs/fde_enterprise_ai_deployment.jpg",
+    "readTime": "8 min read",
+    "sections": [
+      {
+        "heading": "From Business Need to Working Production AI",
+        "text": "Imagine an insurance team spending hours reading claim documents, checking policy details and preparing summaries. An AI tool could help, but someone has to understand the process, connect the tool to company systems and make sure employees can trust its output.",
+        "para2": "That is where an AI Forward Deployed Engineer, or AI FDE, comes in. The role combines software development, applied AI and close collaboration with customers. It is a career worth exploring if you enjoy building practical solutions and understanding how people will use them.",
+        "para3": "This article explains the role, the skills you need, the projects that can strengthen your profile and how DV Analytics can support your preparation."
+      },
+      {
+        "heading": "What AI Forward Deployment Engineering Means",
+        "text": "An AI Forward Deployed Engineer works closely with a customer or business team to turn a business need into a working AI solution. The work starts with understanding the problem and continues through development, deployment and user adoption.",
+        "para2": "“Forward deployed” describes that closeness to the customer. Depending on the employer, it may involve on-site work, remote collaboration or travel. You might spend one day discussing a workflow with business users and the next writing code or investigating a failed integration.",
+        "para3": "OpenAI’s description of the role includes discovery, technical scoping, system design, development and production rollout. It measures success through adoption and improvements to customer workflows. [1]",
+        "extra": "A data scientist often concentrates on analysis and modelling. An MLOps engineer focuses on the infrastructure and processes needed to operate models. An AI FDE brings engineering and AI skills directly into a customer’s situation, helping the solution fit their systems and ways of working. The responsibilities can overlap."
+      },
+      {
+        "heading": "Who Can Build This Career",
+        "text": "Software developers have a useful starting point because they already understand applications, APIs and debugging. They can build on that experience by learning AI integration, evaluation and customer discovery.",
+        "para2": "Data scientists and machine learning engineers bring experience with data and models. They may need more practice building applications, integrating business systems and managing delivery. Cloud, DevOps and data engineers can apply their infrastructure knowledge while developing AI application skills.",
+        "para3": "Technical consultants and implementation engineers may already be comfortable gathering requirements and working with customers. Strong programming and AI implementation skills help them take on more of the engineering work.",
+        "extra": "Fresh graduates and people from non-IT backgrounds can also work towards this career. The important step is to build solid software foundations before attempting complex AI deployments. Experience in banking, insurance, retail or operations becomes especially useful when it helps you understand a customer’s problem. Being eligible to learn does not automatically make someone ready for every FDE vacancy. For example, the OpenAI role reviewed for this article asks for at least five years of engineering or technical deployment experience, including customer-facing work. Requirements vary by employer. [1]"
+      },
+      {
+        "heading": "The Prerequisites You Need",
+        "text": "Start with a programming language you can use confidently. Python is a practical choice for AI applications; JavaScript or TypeScript is useful when you need a web interface. Learn to write functions, organise code, handle errors and understand code written by someone else.",
+        "para2": "SQL and database skills help you work with business information. Learn how APIs exchange data, how authentication works and how to use Git to track changes. You should also be able to test an application and investigate why it behaves unexpectedly.",
+        "para3": "Basic statistics will help you interpret evaluation results. You do not need research-level mathematics to begin building AI applications, although specialised modelling work may require deeper knowledge.",
+        "extra": "Communication matters throughout the job. Practise asking clear questions, explaining technical choices and telling a customer when a requirement needs more work. You will often have to make progress before every detail is clear."
+      },
+      {
+        "heading": "Learning Steps That Lead to Practical Skills",
+        "text": "Developing competency as an AI Forward Deployed Engineer requires mastering seven practical milestones:",
+        "subsections": [
+          {
+            "subheading": "Start with a small application",
+            "text": "Build something simple, such as a customer enquiry tracker with a database and an API. Add input validation, error handling and tests. This teaches you how software components fit together before you introduce AI."
+          },
+          {
+            "subheading": "Add a useful AI feature",
+            "text": "Use a model to classify enquiries, extract information or draft a summary. Learn how inputs affect outputs, how long requests take and what they cost. Define what a good result looks like, then test against that definition."
+          },
+          {
+            "subheading": "Build a document assistant",
+            "text": "Explore retrieval-augmented generation, or RAG. It retrieves relevant information from documents to help a model answer questions. Your assistant should show sources and handle questions that the documents cannot answer. Test both retrieval quality and answer quality."
+          },
+          {
+            "subheading": "Connect the solution to a workflow",
+            "text": "Move beyond a standalone demo. Connect your application to a database or a simulated ticketing system. For example, let it classify a support request, find relevant guidance and prepare a response for an employee to review."
+          },
+          {
+            "subheading": "Evaluate behaviour and control access",
+            "text": "Create test cases that include ordinary requests, difficult questions and inappropriate inputs. Check accuracy, unsupported answers, response time and cost. Add access controls and human approval before consequential actions, such as changing a customer record or sending a message."
+          },
+          {
+            "subheading": "Deploy and maintain the application",
+            "text": "Learn cloud fundamentals, containers, configuration and automated testing. Practise deploying an update and restoring an earlier version. Record errors and write clear instructions so another person can run and troubleshoot your application."
+          },
+          {
+            "subheading": "Practise working with a customer",
+            "text": "Ask a potential user how they handle the task today. Agree on a small, measurable objective, demonstrate your solution and use their feedback to improve it. A mentor-led simulation can help you practise, provided you describe it honestly as a learning project."
+          }
+        ]
+      },
+      {
+        "heading": "Applying Your Skills to Industry Projects",
+        "text": "Choose projects that show how someone would use your application during a normal working day. These examples are portfolio ideas, rather than a promise that every training programme includes them:",
+        "subsections": [
+          {
+            "subheading": "Banking policy assistant",
+            "text": "Help employees find answers in approved policy documents. Include source references, role-based access and a clear response when the information is unavailable. Test whether the system retrieves the right policy version."
+          },
+          {
+            "subheading": "Insurance claims document assistant",
+            "text": "Extract details from claim documents, identify missing information and prepare a summary for a reviewer. Keep people responsible for claim decisions. Measure extraction accuracy and review time in a controlled test."
+          },
+          {
+            "subheading": "Retail customer service assistant",
+            "text": "Connect a support tool to sample order data. Let it retrieve shipment details and draft responses, with escalation when a request needs human judgement. Test that one customer cannot access another customer’s information."
+          },
+          {
+            "subheading": "Manufacturing maintenance assistant",
+            "text": "Build a tool that retrieves guidance from equipment manuals. Include document references and make it clear when the material does not support an answer. Evaluate it with realistic questions from maintenance staff."
+          },
+          {
+            "subheading": "Telecom complaint routing",
+            "text": "Classify complaints and send them to the appropriate team in a simulated ticketing system. Track routing accuracy and exceptions. Show how an employee can correct a classification and how that feedback is reviewed."
+          }
+        ],
+        "extra": "Healthcare administration and logistics offer further possibilities, such as checking document completeness or explaining shipment exceptions. Use public, synthetic or properly authorised data. Separate measured results from expected benefits, and never present a classroom project as a live client engagement."
+      },
+      {
+        "heading": "Building a Strong AI FDE Profile",
+        "text": "Aim for two or three projects that you understand thoroughly. Each should explain the customer problem, the workflow and your design decisions. Include a short demonstration, an architecture diagram and an organised code repository with setup instructions.",
+        "para2": "Show how you evaluated the application. Document the test cases, results and known weaknesses. Explain how access is controlled, how failures are logged and how you would recover from a bad release. These details help an employer assess how you think about delivery.",
+        "para3": "Write resume statements around evidence. “Built a document assistant with source citations and tested it on 100 questions” is useful if it accurately describes your work. Avoid claiming expertise or commercial results that your projects do not demonstrate.",
+        "extra": "Use your LinkedIn profile and portfolio to tell a consistent story about your skills. State whether you are an aspiring AI FDE, an experienced developer moving into applied AI or a professional combining industry knowledge with engineering. Keep project links easy to find. Prepare for interviews by explaining why you chose an approach, what failed and what you changed. Practise responding to an unclear customer request, a tight deadline or a solution that works in a demo but fails with real inputs."
+      },
+      {
+        "heading": "Job Opportunities and Future Employment",
+        "text": "Relevant titles include AI Forward Deployed Engineer, Forward Deployed Software Engineer, Applied AI Engineer, AI Solutions Engineer and AI Implementation Engineer. Related opportunities may appear under Generative AI Engineer or Customer Engineer. AI Solutions Architect roles usually require broader experience.",
+        "para2": "Employer listings reviewed for the source article included FDE roles at OpenAI, a Forward-Deployed AI Engineer role at Turing and a Cloudera listing associated with Bangalore. These examples show that the work exists across organisations and locations; individual vacancies can change. [1–3]",
+        "para3": "The World Economic Forum’s Future of Jobs Report 2025 identifies AI and big data among the fastest-growing skills through 2030. That supports the broader direction of AI-related work, but it does not establish a specific forecast for the number of AI FDE jobs. [4]",
+        "extra": "For a beginner, an internship, junior developer position or AI implementation role can provide useful experience before taking responsibility for a complex customer deployment. Build transferable skills in software, integration, evaluation and communication so your career does not depend on one job title."
+      },
+      {
+        "heading": "How DV Analytics Can Support Your Learning",
+        "text": "DV Analytics lists AI Forward Deployment Engineering among its programmes, alongside Data Science, Data Analytics and AI. It advertises training in Bangalore and Bhubaneswar, with online learning options. [5]",
+        "para2": "Its published training information describes live online and offline classes, practical projects, recorded sessions, LMS access, resume guidance, mock interviews, communication training and job referrals. Confirm which facilities and support are included in your selected FDE programme and batch. [6]",
+        "para3": "Use the training to work towards clear milestones. First, build an application with a database. Then add an AI feature, connect it to a realistic workflow and deploy it with documented tests. Ask mentors to review your implementation and challenge your assumptions.",
+        "extra": "Mock interviews can help you practise explaining technical decisions to different audiences. Resume and portfolio guidance can help you present your work clearly. Placement support assists the job search, while employment depends on demonstrated ability and employer requirements. Before choosing a programme, discuss your starting skills, target role and the amount of independent practice you can commit to. Ask how projects cover integration, evaluation, deployment and customer communication. A useful learning plan should connect these areas through work you can demonstrate. Explore current training options at www.dvanalyticsmds.com."
+      }
+    ]
+  },
+  {
+    "id": "blog-38",
+    "title": "How to Become a Data Science and AI Deployment Engineer",
+    "excerpt": "Think about a company that wants to know which customers are likely to leave. Learn how AI deployment engineering connects model development with everyday business use, core skills needed, and practical career pathways.",
+    "date": "October 15, 2026",
+    "author": "DV Editorial Team",
+    "image": "/blogs/apids_industrial_data_science_ai.jpg",
+    "readTime": "8 min read",
+    "sections": [
+      {
+        "heading": "Connecting Model Development to Everyday Business Use",
+        "text": "Think about a company that wants to know which customers are likely to leave. A data scientist can study past behaviour and build a model that identifies those customers. But someone still needs to put that model into a working system so the customer service team can use its predictions.",
+        "para2": "That is where AI deployment engineering comes in. It connects the work done during model development with the people who need the results. Learning both areas helps you understand how an AI solution moves from an idea to everyday business use.",
+        "para3": "If you are a graduate, a working professional or someone planning a career change, this guide explains what to learn, how to practise and how DV Analytics can support your learning journey."
+      },
+      {
+        "heading": "Understanding Data Science and AI Deployment",
+        "text": "Data science uses programming, statistics and business knowledge to make sense of data. It can help a retailer forecast demand, a bank study customer behaviour or an insurer identify claims that need closer review.",
+        "para2": "AI deployment engineering makes those solutions available through applications, APIs or automated workflows. The work includes preparing the application for use, controlling access, checking performance and dealing with failures.",
+        "para3": "For example, a sales forecast becomes more useful when a store manager can view it each week and use it to plan stock. Building that dependable connection is part of deployment. Employers use different job titles for this work. You may find related responsibilities under Data Scientist, Machine Learning Engineer, AI Engineer or MLOps Engineer. Understanding the responsibilities matters more than memorising a title."
+      },
+      {
+        "heading": "Why These Skills Matter Today",
+        "text": "Businesses want AI tools that help people make better decisions and complete useful work. That creates a need for professionals who understand both the data and the practical demands of running an application.",
+        "para2": "The World Economic Forum’s Future of Jobs Report 2025 identifies AI and big data among the fastest-growing skills through 2030. It also places AI and machine learning specialists among the fastest-growing occupations. These are employer projections, not promises of a job for every learner. [1]",
+        "para3": "There is also work to do after a model goes live. Customer behaviour changes, data sources develop problems and predictions can become less reliable. Deployment and monitoring skills help teams recognise these issues and respond. Google’s MLOps guidance treats testing, delivery and retraining as important parts of operating machine learning systems. [2]"
+      },
+      {
+        "heading": "The Skills You Need to Build",
+        "text": "To succeed as an AI deployment engineer, you need a disciplined balance across data analysis, machine learning foundations, and modern software engineering:",
+        "subsections": [
+          {
+            "subheading": "Python and SQL",
+            "text": "Start here. Python helps you clean data, explore patterns, train models and build applications. SQL helps you retrieve and combine information from databases. Practise with questions such as which products grew fastest or which customers stopped buying."
+          },
+          {
+            "subheading": "Statistics and data preparation",
+            "text": "Learn probability, sampling, distributions, hypothesis testing and regression. Then apply them to imperfect datasets. Handle missing values, duplicates and inconsistent formats, and understand why information from the test set must not influence model training."
+          },
+          {
+            "subheading": "Machine learning",
+            "text": "Study regression, classification, clustering and forecasting. Begin with a simple baseline before trying more complex models. Learn to choose measures that fit the problem: a fraud detection model, for instance, must balance missed fraud against unnecessary alerts."
+          },
+          {
+            "subheading": "Generative AI",
+            "text": "Learn how language models can support document search, customer service and other workflows. Explore prompts, embeddings and retrieval-augmented generation, or RAG, which retrieves relevant information to help a model answer questions. Check answer quality, source support, privacy and cost."
+          },
+          {
+            "subheading": "Software development and deployment",
+            "text": "Get comfortable with Git, testing, APIs, containers and the basics of a cloud platform. Learn how your application accepts data, runs a model and returns a result. Add input checks, access controls and clear error messages."
+          },
+          {
+            "subheading": "Monitoring and communication",
+            "text": "Track errors, response times and model quality after deployment. Understand when a model needs investigation or retraining. Just as importantly, practise explaining your work to someone who does not write code. They should understand what the solution does, where it helps and where it has limits."
+          }
+        ]
+      },
+      {
+        "heading": "Who Should Learn These Skills",
+        "text": "You do not have to come from one particular degree programme to begin. Graduates in engineering, science, commerce, business and other disciplines can build these skills with the right preparation. Employer eligibility requirements will still vary.",
+        "para2": "IT professionals can draw on their experience in software, testing, databases or infrastructure. Data analysts can build on their SQL and reporting skills. Professionals from banking, insurance, telecom, retail or operations bring something equally useful: an understanding of how their industry works.",
+        "para3": "People returning after a career break can use projects to rebuild confidence and show recent work. Beginners from non-technical backgrounds should allow extra time for programming and mathematics. Progress comes from regular practice and a willingness to work through problems."
+      },
+      {
+        "heading": "A Learning Approach That Builds Confidence",
+        "text": "Begin with one small dataset and a few useful questions. Clean it, analyse it and explain what you found. This gives your Python, SQL and statistics practice a clear purpose.",
+        "para2": "Next, build a predictive model. Decide how you will judge its performance before training it, compare it with a simple baseline and test it on unseen data. Write down what worked and what did not.",
+        "para3": "Then make your model usable. Create a small application or API, deploy it in a controlled environment and try inputs that might cause problems. Check the logs and fix the issues you discover.",
+        "extra": "Once you can do this independently, add a generative AI application and a more demanding industry project. Keep your code organised and document your decisions as you go. A sustainable weekly routine helps: attend classes, practise independently, review mistakes and discuss difficulties with a mentor. Your readiness is better measured by what you can build and explain than by the number of videos you have watched."
+      },
+      {
+        "heading": "Industry Projects That Demonstrate Your Skills",
+        "text": "Choose projects that show how a business user would actually use your work. The following are portfolio ideas, rather than a promise that every course includes these exact projects:",
+        "subsections": [
+          {
+            "subheading": "Telecom customer retention",
+            "text": "Build a churn prediction model and deliver a weekly list of customers who may need attention. Add a dashboard that explains the main patterns and helps a retention team prioritise its work."
+          },
+          {
+            "subheading": "Retail demand forecasting",
+            "text": "Forecast demand for selected products and make the results available through an application or scheduled report. Track forecast errors so users can see where the system performs well and where it needs improvement."
+          },
+          {
+            "subheading": "Insurance claims review",
+            "text": "Create a tool that prioritises claims for human review. Include secure access, an audit trail and clear explanations. Present the model as decision support, with people responsible for consequential decisions."
+          },
+          {
+            "subheading": "Enterprise document assistant",
+            "text": "Build an assistant that answers questions from approved documents. Include source references, access controls and tests for questions the documents cannot answer. Measure whether its answers are useful and supported."
+          }
+        ],
+        "extra": "For every project, explain the business problem, data, baseline, evaluation results and deployment process. Use public, synthetic or properly authorised data. Be clear when a project is simulated, and separate measured results from expected benefits."
+      },
+      {
+        "heading": "Job Opportunities and Career Growth",
+        "text": "Your first role should match the skills you can demonstrate. Depending on your background, that could be an internship, a data analyst position or a junior data science or engineering role.",
+        "para2": "Data scientists focus on analysis and predictive modelling. Machine learning engineers build systems that use models reliably. AI engineers develop AI applications, while generative AI engineers often specialise in language-model tools. MLOps engineers concentrate on deployment, automation and ongoing operations.",
+        "para3": "AI Forward Deployment Engineers work closely with customers to adapt solutions to their workflows. These roles can require stronger software engineering skills, practical delivery experience and confident communication. As you gain experience, you can take responsibility for larger systems, specialise in an industry or move towards technical leadership. Hiring and salary outcomes depend on your skills, experience, interview performance and market conditions."
+      },
+      {
+        "heading": "Learning with DV Analytics",
+        "text": "DV Analytics offers programmes in Data Science, Data Analytics, AI, Generative AI and Forward Deployment Engineering, including Data Science with AI Deployment. Learners can explore online training and offline classroom options in Bangalore and Bhubaneswar. [3]",
+        "para2": "Online learning can help you fit classes around work and location. Classroom learning may suit you if you prefer an in-person routine and direct interaction. Confirm the curriculum, delivery mode and schedule for the programme and batch you choose.",
+        "para3": "Start by discussing your background and target role with the training team. Someone new to programming may need a different starting point from a software developer moving into AI. A useful learning plan should make those differences clear."
+      },
+      {
+        "heading": "Learning Benefits at DV Analytics",
+        "text": "DV Analytics’ published training information describes live online and offline classes, recorded sessions and LMS access, practical industry projects, mentor-guided resume preparation, mock interviews, communication training and job referrals. [4]",
+        "para2": "These resources become most useful when you use them actively. Revisit a recorded lesson when a concept is unclear. Bring specific questions to a mentor. Use mock interviews to practise explaining your own decisions, including mistakes and improvements in your projects.",
+        "para3": "Placement support can help you prepare and connect with opportunities; it does not guarantee employment. Your contribution is consistent practice, completed assignments and a portfolio that shows work you understand.",
+        "extra": "If you want to build a career in Data Science and AI Deployment Engineering, begin with the foundations and keep taking your projects one step further. Analyse the data, build the model, make it usable and learn from the results. That experience gives you something concrete to discuss with employers. Explore training options at www.dvanalyticsmds.com."
+      }
+    ]
+  },
+  {
+    "id": "blog-37",
+    "title": "Data Analytics vs Data Science: Which Course Should You Choose",
+    "excerpt": "Choosing between Data Analytics and Data Science starts with understanding the work you want to do. Both fields help organisations use data to solve problems, but their courses place different emphasis on business analysis, programming, statistics, and modelling.",
+    "date": "October 15, 2026",
+    "author": "DV Editorial Team",
+    "image": "/blogs/data_analyst_vs_data_scientist_vs_data_engineer.jpg",
+    "readTime": "7 min read",
+    "sections": [
+      {
+        "heading": "Choosing Between Data Analytics and Data Science",
+        "text": "Choosing between Data Analytics and Data Science starts with understanding the work you want to do. Both fields help organisations use data to solve problems, but their courses place different emphasis on business analysis, programming, statistics, and modelling.",
+        "para2": "Data Analytics is a practical starting point for learners interested in business performance, dashboards, and decision-making. Data Science suits learners who want to develop deeper programming and statistical skills to build and evaluate models. This guide explains the differences, who can learn these skills, how to prepare, and the career paths to consider."
+      },
+      {
+        "heading": "What is Data Analytics",
+        "text": "Data Analytics is the process of examining data to answer questions and support decisions. It involves defining a problem, collecting and cleaning information, analysing patterns, and communicating findings.",
+        "para2": "Consider a retailer whose sales have declined. An analyst might compare products, regions, prices, and stock availability to investigate the change and recommend action.",
+        "para3": "Analytics can describe what happened, investigate why it happened, forecast likely outcomes, or recommend decisions. It is therefore broader than reporting historical results."
+      },
+      {
+        "heading": "What is Data Science",
+        "text": "Data Science combines programming, statistics, mathematics, and subject knowledge to investigate problems and develop data-driven solutions. Its scope can include experiments, predictive modelling, and machine learning applications.",
+        "para2": "For example, a bank might use a model to estimate the probability that a borrower will miss repayments. The work includes preparing data, evaluating predictions on unseen examples, and monitoring performance.",
+        "para3": "The fields overlap substantially: data scientists also analyse data, and analysts may use predictive methods. IBM’s comparison of Data Science and Data Analytics explains this shared foundation."
+      },
+      {
+        "heading": "How the courses differ",
+        "text": "The following is a practical syllabus comparison to use when reviewing courses. Actual coverage varies by provider.",
+        "table": {
+          "headers": [
+            "Area to check",
+            "Data Analytics course",
+            "Data Science course"
+          ],
+          "rows": [
+            [
+              "Foundation",
+              "Excel, SQL, statistics, data cleaning",
+              "Python, SQL, statistics, data cleaning"
+            ],
+            [
+              "Analysis",
+              "Business metrics, comparisons, trends",
+              "Exploratory analysis, experiments, statistical reasoning"
+            ],
+            [
+              "Technical depth",
+              "Dashboards and reporting data models",
+              "Feature engineering and machine learning models"
+            ],
+            [
+              "Evaluation",
+              "Correct metrics, accurate reports, useful insights",
+              "Baselines, validation, error analysis, data leakage prevention"
+            ],
+            [
+              "Communication",
+              "Dashboards and business recommendations",
+              "Model findings, uncertainty, and limitations"
+            ],
+            [
+              "Final project",
+              "An analysis that supports a business decision",
+              "A model evaluated against a clearly defined problem"
+            ]
+          ]
+        },
+        "extra": "Do not judge a course by the number of tools in its brochure. Ask how much time learners spend solving problems independently, receiving feedback, and explaining their work."
+      },
+      {
+        "heading": "Who can learn these skills",
+        "text": "Students, graduates, working professionals, and career switchers can study either field. A non-IT background does not prevent someone from learning programming or statistics, although it can affect the amount of preparation needed.",
+        "para2": "A commerce graduate could begin with financial reporting and SQL. A sales professional could analyse customer retention or revenue. A mathematics graduate might focus on programming and applied modelling. An engineering graduate may need to strengthen business interpretation and communication.",
+        "para3": "These are starting suggestions, not restrictions. Choose based on your present skills and interests rather than your degree title alone. Course eligibility and employer requirements are separate: admission to a programme does not mean you meet every job’s qualification criteria."
+      },
+      {
+        "heading": "How to prepare step by step",
+        "text": "Start with a small dataset and one clear business question. Learn to check its accuracy before drawing conclusions.",
+        "list": [
+          "1. Build numerical confidence. Practise percentages, averages, growth rates, distributions, and basic probability.",
+          "2. Learn SQL. Work through filtering, grouping, joins, subqueries, and window functions.",
+          "3. Practise data cleaning. Handle duplicates, missing values, inconsistent categories, and incorrect dates.",
+          "4. Choose your next tools. For Analytics, build confidence in Excel and Power BI or Tableau. For Data Science, develop Python skills using pandas and NumPy.",
+          "5. Deepen the relevant methods. Analytics learners should practise metrics, dashboards, and business interpretation. Data Science learners should add statistical inference, machine learning, and careful model evaluation.",
+          "6. Explain your decisions. Describe what you did, why it matters, what could be wrong, and what action the evidence supports."
+        ],
+        "para2": "Excel is useful for many beginners, but it is not a mandatory prerequisite for learning Python. Similarly, completing an Analytics course is not required before starting a suitable beginner Data Science programme.",
+        "para3": "A manageable practice routine is 30 minutes of learning, 60 minutes of exercises, and 30 minutes of reviewing mistakes. Adjust this to your schedule; consistent independent practice matters more than collecting certificates."
+      },
+      {
+        "heading": "Build a portfolio that demonstrates your ability",
+        "text": "Aim for two or three complete projects that you can defend in an interview.",
+        "para2": "A sales analytics project could combine transaction cleaning, SQL queries, a profit dashboard, and recommendations. A customer analytics project could examine repeat purchases and retention. A Data Science project could extend this work by predicting customer churn and comparing its performance with a simple baseline.",
+        "para3": "For each project, document the question, dataset source, assumptions, methods, results, and limitations. Use public, synthetic, or properly authorised data. Explain the difference between an observed relationship and evidence of a cause.",
+        "extra": "A smaller project completed independently can show more ability than a complex project copied without understanding."
+      },
+      {
+        "heading": "Job opportunities and career progression",
+        "text": "Use these roles as a guide when exploring vacancies. Titles and responsibilities vary across employers.",
+        "table": {
+          "headers": [
+            "Career direction",
+            "Roles to explore",
+            "Possible progression"
+          ],
+          "rows": [
+            [
+              "Analytics and reporting",
+              "Data Analyst, Reporting Analyst",
+              "Senior Analyst, Analytics Lead"
+            ],
+            [
+              "Business intelligence",
+              "BI Analyst, Power BI Developer",
+              "BI Lead, BI Architect"
+            ],
+            [
+              "Industry analytics",
+              "Marketing, Risk, Operations, or Product Analyst",
+              "Domain Specialist, Analytics Manager"
+            ],
+            [
+              "Data Science",
+              "Junior Data Scientist, Data Scientist",
+              "Senior, Lead, or Principal Data Scientist"
+            ],
+            [
+              "Machine learning engineering",
+              "ML Engineer, with additional engineering preparation",
+              "Senior ML Engineer, ML Architect"
+            ]
+          ]
+        },
+        "para2": "Management is one growth route; technical specialisation is another. Experience in banking, insurance, telecom, retail, or manufacturing can help you formulate better questions and interpret results in context.",
+        "para3": "AI engineering and Forward Deployed Engineering are related paths, but they require additional capabilities. Depending on the role, these may include software development, APIs, cloud deployment, system integration, and working directly with customers. A Data Science course alone should not be treated as complete preparation for every AI role."
+      },
+      {
+        "heading": "What the growth outlook means for learners",
+        "text": "The World Economic Forum’s Future of Jobs Report 2025 identifies Big Data Specialists and AI and Machine Learning Specialists among the fastest-growing roles in percentage terms globally through 2030. It also identifies AI and big data among the fastest-growing skill areas.",
+        "para2": "These are global employer expectations, not a count of current vacancies in India. For an individual learner, the useful response is to build relevant skills and inspect actual job descriptions in the location and industry they want to enter.",
+        "para3": "Evaluate salary claims carefully. Compensation varies by role, experience, location, employer, and demonstrated ability. When comparing placement statistics, ask which cohort they describe, how many learners were placed, and whether the figures refer to fixed pay or total compensation."
+      },
+      {
+        "heading": "How to choose the right course",
+        "text": "Choose Data Analytics if you are most interested in business questions, reports, dashboards, and explaining performance. It can be a manageable entry point when your programming experience is limited.",
+        "para2": "Choose Data Science if you enjoy coding, statistical reasoning, and experimentation, and are ready to spend substantial time building and evaluating models.",
+        "para3": "Before enrolling, request the detailed syllabus, prerequisites, sample assignments, project assessment criteria, and a clear description of placement assistance. Check whether instructors review your work and whether you will complete projects independently.",
+        "extra": "If you remain unsure, try two small tasks: build a sales summary using Excel or SQL, then explore the same data in Python. Your interest in the work—and your willingness to practise it—will tell you more than a course title. The strongest choice is the course that matches your starting point, prepares you for specific responsibilities, and helps you produce work you can explain confidently."
+      },
+      {
+        "heading": "About DV Analytics",
+        "text": "DV Analytics is a Data Analytics, Data Science, and AI training institute offering industry-focused learning for students, graduates, working professionals, and career switchers. Its training combines practical skill development, hands-on industry projects, and expert mentorship to help learners prepare for data and AI careers.",
+        "subsections": [
+          {
+            "subheading": "Courses offered",
+            "list": [
+              "Data Analytics with AI",
+              "Data Science with AI Deployment",
+              "Data Engineering with AI",
+              "AI and Machine Learning",
+              "Generative AI",
+              "Agentic AI",
+              "AI Forward Deployment Engineering"
+            ]
+          },
+          {
+            "subheading": "Placement support",
+            "text": "DV Analytics provides placement assistance, mock interviews, and mentorship to support learners in preparing for job opportunities. Hands-on projects and LMS access help learners practise their skills and strengthen their understanding throughout the programme."
+          },
+          {
+            "subheading": "Training locations and learning modes",
+            "text": "Training is available in Bangalore (Bengaluru) and Bhubaneswar, with both online and offline classroom learning options. Learners can choose a mode that suits their location, schedule, and learning preferences.",
+            "paragraphs": [
+              "To explore the available courses, upcoming batches, and placement support, contact DV Analytics and discuss a learning path that matches your background and career goals."
+            ]
+          }
+        ]
+      }
+    ]
+  },
   {
     "id": "blog-35",
     "title": "What Is an AI Agent?",

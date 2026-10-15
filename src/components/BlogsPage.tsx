@@ -75,12 +75,61 @@ export const BlogsPage: React.FC<BlogsPageProps> = ({
             <div className="blog-body-content">
               {activeBlog.sections.map((section: any, idx: number) => (
                 <div key={idx} className="blog-body-section">
-                  <h2 className="blog-section-title">{section.heading}</h2>
-                  <div className="blog-section-divider"></div>
-                  <p className="blog-body-text">{section.text}</p>
+                  {section.heading && <h2 className="blog-section-title">{section.heading}</h2>}
+                  {section.heading && <div className="blog-section-divider"></div>}
+                  {section.text && <p className="blog-body-text">{section.text}</p>}
                   
                   {section.para2 && <p className="blog-body-text">{section.para2}</p>}
                   {section.para3 && <p className="blog-body-text">{section.para3}</p>}
+
+                  {section.paragraphs && section.paragraphs.map((para: string, pIdx: number) => (
+                    <p key={pIdx} className="blog-body-text">{para}</p>
+                  ))}
+
+                  {section.flowSteps && (
+                    <div className="blog-flow-container">
+                      <div className="blog-flow-grid">
+                        {section.flowSteps.map((step: any, sIdx: number) => (
+                          <div key={sIdx} className="blog-flow-step-card">
+                            <div className="blog-flow-step-header">
+                              <span className="blog-flow-step-num">{step.step}</span>
+                              <h4 className="blog-flow-step-title">{step.title}</h4>
+                            </div>
+                            <p className="blog-flow-step-desc">{step.desc}</p>
+                          </div>
+                        ))}
+                      </div>
+                      {section.caption && <p className="blog-figure-caption">{section.caption}</p>}
+                    </div>
+                  )}
+
+                  {section.table && (
+                    <div className="blog-table-container">
+                      <div className="blog-table-wrapper">
+                        <table className="blog-content-table">
+                          <thead>
+                            <tr>
+                              {section.table.headers.map((h: string, hIdx: number) => (
+                                <th key={hIdx}>{h}</th>
+                              ))}
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {section.table.rows.map((row: string[], rIdx: number) => (
+                              <tr key={rIdx}>
+                                {row.map((cell: string, cIdx: number) => (
+                                  <td key={cIdx}>{cell}</td>
+                                ))}
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                      {section.caption && !section.flowSteps && (
+                        <p className="blog-figure-caption">{section.caption}</p>
+                      )}
+                    </div>
+                  )}
                   
                   {section.list && (
                     <ul className="blog-body-list">
@@ -96,6 +145,30 @@ export const BlogsPage: React.FC<BlogsPageProps> = ({
                       ))}
                     </ul>
                   )}
+
+                  {section.subsections && section.subsections.map((sub: any, subIdx: number) => (
+                    <div key={subIdx} className="blog-subsection">
+                      <h3 className="blog-subsection-title">{sub.subheading}</h3>
+                      {sub.text && <p className="blog-body-text">{sub.text}</p>}
+                      {sub.paragraphs && sub.paragraphs.map((p: string, pIdx: number) => (
+                        <p key={pIdx} className="blog-body-text">{p}</p>
+                      ))}
+                      {sub.list && (
+                        <ul className="blog-body-list">
+                          {sub.list.map((item: string, lIdx: number) => (
+                            <li key={lIdx} className="blog-list-item">
+                              <span className="blog-list-bullet">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
+                                  <polyline points="20 6 9 17 4 12" strokeLinecap="round" strokeLinejoin="round"/>
+                                </svg>
+                              </span>
+                              <span>{item}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                    </div>
+                  ))}
                   
                   {section.extra && <p className="blog-body-text blog-extra-text">{section.extra}</p>}
                 </div>

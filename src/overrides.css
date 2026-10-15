@@ -1536,30 +1536,47 @@
 
 /* Blog Reader Body */
 .blog-reader-body {
-  padding: 0 0 6rem 0;
+  padding: 0 0 5rem 0;
 }
 
 .blog-body-card {
   position: relative;
   margin-top: -3.5rem;
   z-index: 2;
-  max-width: 900px;
+  max-width: 1120px;
   margin-left: auto;
   margin-right: auto;
-  padding: 0 2rem;
+  padding: 0;
 }
 
 .blog-body-content {
   background: #ffffff;
-  border: 1px solid #e2e8f0;
-  border-radius: 28px;
-  padding: 4rem;
-  box-shadow: 0 10px 40px rgba(5, 31, 64, 0.04);
+  border: none;
+  border-radius: 24px 24px 0 0;
+  padding: 3.5rem 3rem 4rem 3rem;
+  box-shadow: none;
+}
+
+@media (max-width: 1024px) {
+  .blog-body-card {
+    max-width: 100%;
+    margin-top: -2.75rem;
+  }
+
+  .blog-body-content {
+    padding: 3rem 2rem 3.5rem 2rem;
+    border-radius: 20px 20px 0 0;
+  }
 }
 
 @media (max-width: 640px) {
+  .blog-body-card {
+    margin-top: -2rem;
+  }
+
   .blog-body-content {
-    padding: 2.5rem 1.5rem;
+    padding: 2.25rem 1.25rem 3rem 1.25rem;
+    border-radius: 16px 16px 0 0;
   }
 }
 
@@ -4548,5 +4565,155 @@ button {
 .course-module-bullets li {
   margin-bottom: 0.2rem;
 }
+
+/* Blog Reader Enhancements: Tables, Subsections, and Native Flow Diagrams */
+.blog-subsection {
+  margin-top: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.blog-subsection-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #051f40;
+  margin: 0 0 0.85rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.blog-subsection-title::before {
+  content: '';
+  display: inline-block;
+  width: 5px;
+  height: 18px;
+  background-color: #ef5323;
+  border-radius: 3px;
+}
+
+.blog-table-container {
+  margin: 2rem 0;
+  width: 100%;
+}
+
+.blog-table-wrapper {
+  overflow-x: auto;
+  border-radius: 14px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 16px rgba(5, 31, 64, 0.04);
+  -webkit-overflow-scrolling: touch;
+}
+
+.blog-content-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.98rem;
+  line-height: 1.6;
+  background-color: #ffffff;
+}
+
+.blog-content-table thead {
+  background-color: #051f40;
+  color: #ffffff;
+}
+
+.blog-content-table th {
+  padding: 1rem 1.25rem;
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: 0.02em;
+  border: 1px solid #0a2e5c;
+  color: #ffffff;
+}
+
+.blog-content-table td {
+  padding: 1rem 1.25rem;
+  color: #334155;
+  border: 1px solid #e2e8f0;
+  vertical-align: top;
+}
+
+.blog-content-table tbody tr:nth-child(even) {
+  background-color: #f8fafc;
+}
+
+.blog-content-table tbody tr:hover {
+  background-color: #f1f5f9;
+}
+
+/* Native Flow Diagram / Process Step Cards */
+.blog-flow-container {
+  margin: 2.25rem 0;
+}
+
+.blog-flow-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.25rem;
+  position: relative;
+}
+
+.blog-flow-step-card {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 14px rgba(5, 31, 64, 0.03);
+}
+
+.blog-flow-step-card:hover {
+  border-color: #ef5323;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(239, 83, 35, 0.08);
+}
+
+.blog-flow-step-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.blog-flow-step-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #ef5323 0%, #ff7a45 100%);
+  color: #ffffff;
+  font-weight: 800;
+  font-size: 0.95rem;
+  flex-shrink: 0;
+}
+
+.blog-flow-step-title {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #051f40;
+}
+
+.blog-flow-step-desc {
+  margin: 0;
+  font-size: 0.93rem;
+  line-height: 1.55;
+  color: #475569;
+}
+
+.blog-figure-caption {
+  font-size: 0.9rem;
+  color: #64748b;
+  font-style: italic;
+  margin-top: 0.85rem;
+  text-align: center;
+}
+
 
 
