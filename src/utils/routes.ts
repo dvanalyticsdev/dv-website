@@ -114,6 +114,8 @@ export const getPageFromPath = (pathname: string): string => {
   if (normalizedPath === '/apply-job' || normalizedPath === '/jobs' || normalizedPath === '/careers') return 'apply-job';
   if (normalizedPath === '/workshop/fde' || normalizedPath === '/workshop/fde/') return 'workshop-fde';
   if (normalizedPath === '/lp/apids' || normalizedPath === '/lp/apids/') return 'lp-apids';
+  if (normalizedPath === '/lp/apida' || normalizedPath === '/lp/apida/') return 'lp-apida';
+  if (normalizedPath === '/lp/fde' || normalizedPath === '/lp/fde/') return 'lp-fde';
   if (parts[0] && seoLandingPageRedirects[parts[0]]) return getPageFromPath(seoLandingPageRedirects[parts[0]]);
   if (parts[0] && seoLandingPageIdBySlug[parts[0]]) return seoLandingPageIdBySlug[parts[0]];
 
@@ -134,6 +136,8 @@ export const getPathFromPage = (pageId: string) => {
   if (pageId === 'apply-job') return '/apply-job/';
   if (pageId === 'workshop-fde') return '/workshop/fde/';
   if (pageId === 'lp-apids') return '/lp/apids/';
+  if (pageId === 'lp-apida') return '/lp/apida/';
+  if (pageId === 'lp-fde') return '/lp/fde/';
   if (pageId === 'not-found') return '/404';
 
   if (pageId.startsWith('course-')) {

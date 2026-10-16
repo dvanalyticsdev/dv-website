@@ -181,6 +181,20 @@ const basePages: Record<string, { title: string; description: string; image?: st
     image: '/courses-poster/APIDS.png',
     noindex: true,
   },
+  'lp-apida': {
+    title: 'Advanced Program in Industrial Data Analytics & BI (APIDA) | DV Analytics',
+    description:
+      'Master Industrial Data Analytics, Power BI, SQL, Predictive Analytics & Business Intelligence with Live Mentorship and Placement Support.',
+    image: '/apida-training-banner.png',
+    noindex: true,
+  },
+  'lp-fde': {
+    title: 'Master Program in AI Forward Deployment Engineer (FDE) | DV Analytics',
+    description:
+      'Master AI deployment, system integration, automation, and real-world implementation of intelligent solutions. Live Online & Classroom Training.',
+    image: '/fde-training-banner.png',
+    noindex: true,
+  },
   'not-found': {
     title: 'Page Not Found | DV Analytics',
     description: 'The DV Analytics page you requested could not be found.',
@@ -571,7 +585,7 @@ export const getSeoForPage = (pageId: string) => {
   }
 
   const base = basePages[pageId] ?? basePages['not-found'];
-  if (['courses', 'services', 'about', 'alumni', 'blogs', 'faqs', 'upcoming-batches', 'lp-apids'].includes(pageId)) {
+  if (['courses', 'services', 'about', 'alumni', 'blogs', 'faqs', 'upcoming-batches', 'lp-apids', 'lp-apida', 'lp-fde'].includes(pageId)) {
     schema.push(breadcrumbSchema([
       { name: 'Home', path: '/' },
       { name: base.title.replace(` | ${siteName}`, '').replace(' | DV Analytics', ''), path },

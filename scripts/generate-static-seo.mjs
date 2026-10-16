@@ -85,7 +85,7 @@ const outputPathForRoute = (route) => {
   return join(distDir, route.replace(/^\/+/, ''), 'index.html');
 };
 
-const generatedRoutes = [...sitemapRoutes, '/enroll', '/payment', '/404', '/workshop/fde', '/lp/apids'];
+const generatedRoutes = [...sitemapRoutes, '/enroll', '/payment', '/404', '/workshop/fde', '/lp/apids', '/lp/apida', '/lp/fde'];
 
 for (const route of generatedRoutes) {
   const outputPath = outputPathForRoute(route);

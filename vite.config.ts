@@ -15,14 +15,16 @@ export default defineConfig({
           if (id.includes('/src/data/') || id.includes('\\src\\data\\')) {
             return 'site-data';
           }
-
         },
       },
     },
   },
   server: {
     proxy: {
-      '/api': 'http://localhost:8787',
+      '^/api/': {
+        target: 'http://localhost:8787',
+        changeOrigin: true,
+      },
     },
   },
 })

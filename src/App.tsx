@@ -32,6 +32,8 @@ const UpcomingBatchesPage = lazy(() => import('./components/UpcomingBatchesPage'
 const ApplyJobPage = lazy(() => import('./components/jobs/ApplyJobPage').then((module) => ({ default: module.ApplyJobPage })));
 const FdeWorkshopPage = lazy(() => import('./components/FdeWorkshopPage').then((module) => ({ default: module.FdeWorkshopPage })));
 const ApidsStoryLandingPage = lazy(() => import('./components/landing/ApidsStoryLandingPage').then((module) => ({ default: module.ApidsStoryLandingPage })));
+const ApidaStoryLandingPage = lazy(() => import('./components/landing/ApidaStoryLandingPage').then((module) => ({ default: module.ApidaStoryLandingPage })));
+const FdeStoryLandingPage = lazy(() => import('./components/landing/FdeStoryLandingPage').then((module) => ({ default: module.FdeStoryLandingPage })));
 
 const heroPosterImages = [
   '/hero-stories/fde-student.jpg',
@@ -523,6 +525,22 @@ function App() {
     return (
       <Suspense fallback={<div className="route-loading" aria-label="Loading page content" />}>
         <ApidsStoryLandingPage onNavigateHome={() => navigateToPage('home')} />
+      </Suspense>
+    );
+  }
+
+  if (activePage === 'lp-apida') {
+    return (
+      <Suspense fallback={<div className="route-loading" aria-label="Loading page content" />}>
+        <ApidaStoryLandingPage onNavigateHome={() => navigateToPage('home')} />
+      </Suspense>
+    );
+  }
+
+  if (activePage === 'lp-fde') {
+    return (
+      <Suspense fallback={<div className="route-loading" aria-label="Loading page content" />}>
+        <FdeStoryLandingPage onNavigateHome={() => navigateToPage('home')} />
       </Suspense>
     );
   }
