@@ -365,47 +365,236 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
 
   // 1. Core Program Capabilities (Word Doc)
   const programCapabilities = [
-    'Manage and analyse business data.',
-    'Create visualisations and communicate insights.',
-    'Build and evaluate predictive models.',
-    'Develop Generative AI assistants and agent workflows.',
-    'Build data pipelines and connect enterprise systems.',
-    'Deploy, monitor, and improve AI applications.',
-    'Translate business requirements into practical technical solutions.',
+    {
+      id: 1,
+      title: 'Business Data Analytics',
+      tag: 'DATA FOUNDATION',
+      desc: 'Manage and analyse business data.',
+      icon: (
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <ellipse cx="12" cy="5" rx="9" ry="3" />
+          <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3" />
+          <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5" />
+        </svg>
+      ),
+    },
+    {
+      id: 2,
+      title: 'Visual Storytelling',
+      tag: 'EXECUTIVE REPORTING',
+      desc: 'Create visualisations and communicate insights.',
+      icon: (
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <line x1="18" y1="20" x2="18" y2="10" />
+          <line x1="12" y1="20" x2="12" y2="4" />
+          <line x1="6" y1="20" x2="6" y2="14" />
+        </svg>
+      ),
+    },
+    {
+      id: 3,
+      title: 'Predictive Modelling',
+      tag: 'MACHINE LEARNING',
+      desc: 'Build and evaluate predictive models.',
+      icon: (
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <circle cx="18" cy="5" r="3" />
+          <circle cx="6" cy="12" r="3" />
+          <circle cx="18" cy="19" r="3" />
+          <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
+          <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
+        </svg>
+      ),
+    },
+    {
+      id: 4,
+      title: 'Generative & Agentic AI',
+      tag: 'GENAI WORKFLOWS',
+      desc: 'Develop Generative AI assistants and agent workflows.',
+      icon: (
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
+        </svg>
+      ),
+    },
+    {
+      id: 5,
+      title: 'Enterprise Data Pipelines',
+      tag: 'DATA ENGINEERING',
+      desc: 'Build data pipelines and connect enterprise systems.',
+      icon: (
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <rect x="2" y="2" width="20" height="8" rx="2" ry="2" />
+          <rect x="2" y="14" width="20" height="8" rx="2" ry="2" />
+          <line x1="6" y1="6" x2="6.01" y2="6" />
+          <line x1="6" y1="18" x2="6.01" y2="18" />
+        </svg>
+      ),
+    },
+    {
+      id: 6,
+      title: 'Production Deployment',
+      tag: 'PRODUCTION MLOPS',
+      desc: 'Deploy, monitor, and improve AI applications.',
+      icon: (
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z" />
+          <polyline points="12 12 12 16" />
+          <polyline points="10 14 12 12 14 14" />
+        </svg>
+      ),
+    },
+    {
+      id: 7,
+      title: 'Practical Business Solutions',
+      tag: 'ENTERPRISE IMPACT',
+      desc: 'Translate business requirements into practical technical solutions.',
+      icon: (
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+          <polyline points="22 4 12 14.01 9 11.01" />
+        </svg>
+      ),
+    },
   ];
 
-  // 2. Why these skills matter today (Word Doc Table)
+  // 2. Why these skills matter today (Word Doc Table transformed to Architecture Flow)
   const skillsMatterTable = [
     {
+      id: '01',
+      problemTitle: 'Customer Churn Risk',
       req: 'Identify customers likely to leave',
+      metricTag: 'Revenue Retention',
+      solutionTitle: 'Predictive Retention Dashboard',
       sol: 'Churn prediction connected to a retention dashboard',
+      techStack: ['Python', 'Scikit-Learn', 'Power BI'],
     },
     {
+      id: '02',
+      problemTitle: 'Inventory Stockouts & Waste',
       req: 'Improve inventory planning',
+      metricTag: 'Working Capital',
+      solutionTitle: 'Demand Forecasting Engine',
       sol: 'Demand forecasting integrated with stock reports',
+      techStack: ['Time-Series', 'XGBoost', 'PostgreSQL'],
     },
     {
+      id: '03',
+      problemTitle: 'Manual Document Backlog',
       req: 'Review large volumes of documents',
+      metricTag: '90% Faster Turnaround',
+      solutionTitle: 'AI Document Intelligence Pipeline',
       sol: 'AI document processing with validation and exception handling',
+      techStack: ['OCR', 'Vision LLM', 'Validation API'],
     },
     {
+      id: '04',
+      problemTitle: 'Information Silos & Hallucination',
       req: 'Help employees find approved information',
+      metricTag: 'Verified Truth Source',
+      solutionTitle: 'Enterprise Grounded Knowledge Assistant',
       sol: 'A knowledge assistant with source references',
+      techStack: ['Vector RAG', 'LangChain', 'Citations'],
     },
     {
+      id: '05',
+      problemTitle: 'Unplanned Machinery Breakdown',
       req: 'Reduce equipment downtime',
+      metricTag: 'Zero Unscheduled Outages',
+      solutionTitle: 'IoT Telemetry Predictive Maintenance',
       sol: 'Predictive maintenance with alerts and monitoring',
+      techStack: ['Anomaly Detection', 'Kafka', 'Real-Time Alerts'],
     },
   ];
 
-  // 3. Who Can Join (Word Doc)
+  // 3. Who Can Join (Word Doc Profiles with Persona Archetypes)
   const whoCanJoinProfiles = [
-    'Engineering, BTech, BE, BCA, MCA, and computer science learners.',
-    'BSc, mathematics, statistics, and economics graduates.',
-    'BCom, BBA, MBA, and other graduates willing to develop technical foundations.',
-    'Data analysts seeking modelling and deployment skills.',
-    'Software developers and data engineers moving into AI.',
-    'Working professionals, career switchers, and career returners.',
+    {
+      id: '01',
+      category: 'Tech & Engineering',
+      badge: 'High Technical Aptitude',
+      title: 'BTech, BE, BCA, MCA & CS Learners',
+      desc: 'Engineering, BTech, BE, BCA, MCA, and computer science learners.',
+      path: 'Fast-Track to AI Deployment',
+      icon: (
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <polyline points="16 18 22 12 16 6" />
+          <polyline points="8 6 2 12 8 18" />
+        </svg>
+      ),
+    },
+    {
+      id: '02',
+      category: 'Math & Sciences',
+      badge: 'Quantitative Foundation',
+      title: 'BSc, Mathematics, Statistics & Economics',
+      desc: 'BSc, mathematics, statistics, and economics graduates.',
+      path: 'Direct Path to Statistical Modelling',
+      icon: (
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <path d="M19 4H5v2l7 6-7 6v2h14v-3" />
+        </svg>
+      ),
+    },
+    {
+      id: '03',
+      category: 'Commerce & Management',
+      badge: 'Zero Coding Prerequisite',
+      title: 'BCom, BBA, MBA & Non-Tech Graduates',
+      desc: 'BCom, BBA, MBA, and other graduates willing to develop technical foundations.',
+      path: 'Comprehensive Foundations Bridge',
+      icon: (
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <rect x="2" y="7" width="20" height="14" rx="2" ry="2" />
+          <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
+        </svg>
+      ),
+    },
+    {
+      id: '04',
+      category: 'Analytics Professionals',
+      badge: 'Career Elevation',
+      title: 'Data Analysts & BI Specialists',
+      desc: 'Data analysts seeking modelling and deployment skills.',
+      path: 'Upgrade from BI to Applied AI & MLOps',
+      icon: (
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <line x1="18" y1="20" x2="18" y2="10" />
+          <line x1="12" y1="20" x2="12" y2="4" />
+          <line x1="6" y1="20" x2="6" y2="14" />
+        </svg>
+      ),
+    },
+    {
+      id: '05',
+      category: 'Developers & Engineers',
+      badge: 'GenAI Transition',
+      title: 'Software Developers & Data Engineers',
+      desc: 'Software developers and data engineers moving into AI.',
+      path: 'Leverage Coding for LLM & Agent Pipelines',
+      icon: (
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
+          <line x1="8" y1="21" x2="16" y2="21" />
+          <line x1="12" y1="17" x2="12" y2="21" />
+        </svg>
+      ),
+    },
+    {
+      id: '06',
+      category: 'Career Switchers & Returners',
+      badge: 'Full Career Support',
+      title: 'Working Professionals & Career Returners',
+      desc: 'Working professionals, career switchers, and career returners.',
+      path: '1-on-1 Mentorship & Placement Support',
+      icon: (
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+          <circle cx="9" cy="7" r="4" />
+          <polyline points="16 11 18 13 22 9" />
+        </svg>
+      ),
+    },
   ];
 
   // 4. Your Learning Path (12 Modules in 6x2 grid as shown in the image)
@@ -414,6 +603,7 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
       id: 1,
       title: 'Python & SQL',
       summary: 'Programming foundations, Git, debugging, APIs, and automated testing.',
+      techChips: ['Python 3.12', 'Advanced SQL', 'Git & APIs'],
       topics: [
         'Programming fundamentals, data structures, and functions',
         'Complex SQL queries, joins, aggregations, and subqueries',
@@ -430,6 +620,7 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
       id: 2,
       title: 'Data Management',
       summary: 'Collection, cleaning, joins, validation, and schema access controls.',
+      techChips: ['PostgreSQL', 'Data Cleaning', 'Schema Design'],
       topics: [
         'Ingestion from APIs, databases, flat files, and web scrapers',
         'Data cleaning, type casting, imputation, and transformation',
@@ -448,6 +639,7 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
       id: 3,
       title: 'Analysis & Visualisation',
       summary: 'Exploratory analysis, business metrics, dashboards, and storytelling.',
+      techChips: ['Power BI', 'EDA & Insights', 'Executive Reports'],
       topics: [
         'Exploratory data analysis (EDA) and pattern detection',
         'Business KPI formulation (Churn, LTV, CAC, Revenue cohorts)',
@@ -466,6 +658,7 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
       id: 4,
       title: 'Statistics',
       summary: 'Probability, sampling, distributions, hypothesis testing, and experiments.',
+      techChips: ['Hypothesis Testing', 'A/B Testing', 'Distributions'],
       topics: [
         'Probability theory, discrete and continuous distributions',
         'Parametric and non-parametric hypothesis testing',
@@ -483,6 +676,7 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
       id: 5,
       title: 'Machine Learning',
       summary: 'Regression, classification, clustering, forecasting, and validation.',
+      techChips: ['XGBoost', 'Random Forest', 'Scikit-Learn'],
       topics: [
         'Supervised regression and classification algorithms',
         'Ensemble gradient boosting (Random Forest, XGBoost, LightGBM)',
@@ -503,6 +697,7 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
       id: 6,
       title: 'Deep Learning',
       summary: 'Neural networks, embeddings, transformers, and transfer learning.',
+      techChips: ['PyTorch', 'Transformers', 'Embeddings'],
       topics: [
         'Feedforward architectures, activation functions, and backpropagation',
         'Vector embeddings and dimensional representation',
@@ -520,6 +715,7 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
       id: 7,
       title: 'Generative AI',
       summary: 'LLM APIs, prompting, structured outputs, RAG, and evaluation.',
+      techChips: ['LLM APIs', 'Vector RAG', 'Prompt Eng'],
       topics: [
         'OpenAI and Anthropic API integration with structured JSON schemas',
         'Advanced prompt engineering, chain-of-thought, and few-shot methods',
@@ -536,6 +732,7 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
       id: 8,
       title: 'Agentic AI',
       summary: 'Tool calling, orchestration, state, permissions, and human approval.',
+      techChips: ['LangGraph', 'Tool Calling', 'Multi-Agent'],
       topics: [
         'Function calling and integrating external tools/databases',
         'Multi-agent state machines and orchestration with LangGraph',
@@ -556,6 +753,7 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
       id: 9,
       title: 'Data Engineering',
       summary: 'ETL/ELT, data modelling, warehouses, orchestration, and pipelines.',
+      techChips: ['Apache Airflow', 'dbt', 'ETL Pipelines'],
       topics: [
         'Production ETL/ELT data pipeline architecture and transformation',
         'Dimensional modeling, star schemas, and warehouse optimization',
@@ -573,6 +771,7 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
       id: 10,
       title: 'Deployment Engineering',
       summary: 'APIs, Docker, cloud hosting, CI/CD, monitoring, and rollback.',
+      techChips: ['FastAPI', 'Docker', 'AWS EC2/ECS'],
       topics: [
         'Asynchronous high-throughput REST APIs using FastAPI',
         'Multi-stage Docker containerization and cloud environments',
@@ -591,6 +790,7 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
       id: 11,
       title: 'MLOps',
       summary: 'Model tracking, artifact registry, automated retraining, and drift.',
+      techChips: ['MLflow', 'Drift Detection', 'CI/CD Pipelines'],
       topics: [
         'Experiment tracking and model versioning with MLflow',
         'Centralized model registry and deployment staging lifecycle',
@@ -607,6 +807,7 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
       id: 12,
       title: 'Consulting',
       summary: 'Requirement gathering, problem definition, design, and demos.',
+      techChips: ['Client Scoping', 'Architecture', 'Solution Demos'],
       topics: [
         'Client requirement scoping and translating business pain points',
         'Formulating technical architecture proposals and feasibility studies',
@@ -715,14 +916,97 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
 
   // 7. Career Opportunities (Word Doc)
   const careerRoles = [
-    'Data Analyst or BI Analyst',
-    'Junior Data Scientist or Data Scientist',
-    'Machine Learning Engineer',
-    'AI Application Developer or Generative AI Engineer',
-    'AI Integration Engineer',
-    'Data Engineer supporting AI applications',
-    'MLOps or Model Deployment Engineer',
-    'AI Solutions Engineer or Technical Implementation Consultant',
+    {
+      title: 'Data Analyst or BI Analyst',
+      tag: 'ANALYTICS',
+      icon: (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <line x1="18" y1="20" x2="18" y2="10" />
+          <line x1="12" y1="20" x2="12" y2="4" />
+          <line x1="6" y1="20" x2="6" y2="14" />
+        </svg>
+      ),
+    },
+    {
+      title: 'Junior Data Scientist or Data Scientist',
+      tag: 'CORE DATA SCIENCE',
+      icon: (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <circle cx="12" cy="12" r="10" />
+          <path d="m4.93 4.93 4.24 4.24" />
+          <path d="m14.83 9.17 4.24-4.24" />
+          <path d="m14.83 14.83 4.24 4.24" />
+          <path d="m9.17 14.83-4.24 4.24" />
+          <circle cx="12" cy="12" r="4" />
+        </svg>
+      ),
+    },
+    {
+      title: 'Machine Learning Engineer',
+      tag: 'ML ENGINEERING',
+      icon: (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <circle cx="18" cy="5" r="3" />
+          <circle cx="6" cy="12" r="3" />
+          <circle cx="18" cy="19" r="3" />
+          <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
+          <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
+        </svg>
+      ),
+    },
+    {
+      title: 'AI Application Developer or Generative AI Engineer',
+      tag: 'GENAI & LLMS',
+      icon: (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
+        </svg>
+      ),
+    },
+    {
+      title: 'AI Integration Engineer',
+      tag: 'INTEGRATION',
+      icon: (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <polyline points="16 18 22 12 16 6" />
+          <polyline points="8 6 2 12 8 18" />
+        </svg>
+      ),
+    },
+    {
+      title: 'Data Engineer supporting AI applications',
+      tag: 'AI INFRASTRUCTURE',
+      icon: (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <ellipse cx="12" cy="5" rx="9" ry="3" />
+          <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3" />
+          <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5" />
+        </svg>
+      ),
+    },
+    {
+      title: 'MLOps or Model Deployment Engineer',
+      tag: 'PRODUCTION MLOPS',
+      icon: (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z" />
+          <polyline points="12 12 12 16" />
+          <polyline points="10 14 12 12 14 14" />
+        </svg>
+      ),
+    },
+    {
+      title: 'AI Solutions Engineer or Technical Implementation Consultant',
+      tag: 'CONSULTING',
+      icon: (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+          <circle cx="9" cy="7" r="4" />
+          <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+          <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+        </svg>
+      ),
+    },
   ];
 
   const careerProgression = [
@@ -967,6 +1251,34 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
       </header>
 
       {/* =========================================================================
+          TOP BANNER / POSTER (ABOVE HERO SECTION)
+          ========================================================================= */}
+      <section className="lp-top-poster-section" aria-label="Program Banner">
+        <div className="lp-container">
+          <div
+            className="lp-top-poster-wrapper"
+            onClick={scrollToForm}
+            role="button"
+            tabIndex={0}
+            title="Click to register for APIDS"
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') scrollToForm();
+            }}
+          >
+            <img
+              src="/data-science-ai-deployment-banner.png"
+              alt="Data Science & AI Deployment Engineering Program Banner - DV Analytics"
+              className="lp-top-poster-img"
+              width="2171"
+              height="724"
+              loading="eager"
+              decoding="async"
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* =========================================================================
           HERO SECTION (WELL-BALANCED 2-COLUMN GRID, NO EMPTY HOLES)
           ========================================================================= */}
       <section className="lp-hero-section" id="hero-section">
@@ -998,33 +1310,63 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
                 Build practical skills in analytics, predictive modelling and AI applications.
               </p>
 
-              <div className="lp-hero-cta-group">
-                <div className="lp-delivery-mode-pill">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
-                    <line x1="2" y1="20" x2="22" y2="20" />
-                  </svg>
-                  <span>Live Online &amp; Offline</span>
-                </div>
-              </div>
 
-              {/* 4 Program highlights to perfectly balance height with form */}
-              <div className="lp-hero-badges-grid">
-                <div className="lp-hero-badge-item">
-                  <span className="lp-badge-check">✓</span>
-                  <span>6–8 Months Industry Immersion</span>
+              {/* 4 Graphical Program Highlights with SVG icons and bold metrics */}
+              <div className="lp-hero-features-grid">
+                <div className="lp-hero-feat-card">
+                  <div className="lp-hero-feat-icon-wrap">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
+                      <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                      <line x1="16" y1="2" x2="16" y2="6" />
+                      <line x1="8" y1="2" x2="8" y2="6" />
+                      <line x1="3" y1="10" x2="21" y2="10" />
+                    </svg>
+                  </div>
+                  <div className="lp-hero-feat-body">
+                    <span className="lp-hero-feat-headline">6–8 Months</span>
+                    <span className="lp-hero-feat-caption">Industry Immersion (Weekend/Weekday)</span>
+                  </div>
                 </div>
-                <div className="lp-hero-badge-item">
-                  <span className="lp-badge-check">✓</span>
-                  <span>100% Live Interactive Training</span>
+
+                <div className="lp-hero-feat-card">
+                  <div className="lp-hero-feat-icon-wrap">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
+                      <polygon points="23 7 16 12 23 17 23 7" />
+                      <rect x="1" y="5" width="15" height="14" rx="2" ry="2" />
+                    </svg>
+                  </div>
+                  <div className="lp-hero-feat-body">
+                    <span className="lp-hero-feat-headline">100% Live</span>
+                    <span className="lp-hero-feat-caption">Interactive Mentor-Led Training</span>
+                  </div>
                 </div>
-                <div className="lp-hero-badge-item">
-                  <span className="lp-badge-check">✓</span>
-                  <span>Any Graduate Eligible (Non-CS Welcome)</span>
+
+                <div className="lp-hero-feat-card">
+                  <div className="lp-hero-feat-icon-wrap">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
+                      <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
+                      <path d="M6 12v5c3 3 9 3 12 0v-5" />
+                    </svg>
+                  </div>
+                  <div className="lp-hero-feat-body">
+                    <span className="lp-hero-feat-headline">Any Graduate</span>
+                    <span className="lp-hero-feat-caption">Non-CS &amp; Freshers Fully Eligible</span>
+                  </div>
                 </div>
-                <div className="lp-hero-badge-item">
-                  <span className="lp-badge-check">✓</span>
-                  <span>1-on-1 Mentorship &amp; Placement Support</span>
+
+                <div className="lp-hero-feat-card">
+                  <div className="lp-hero-feat-icon-wrap">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
+                      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                      <circle cx="9" cy="7" r="4" />
+                      <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                      <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                    </svg>
+                  </div>
+                  <div className="lp-hero-feat-body">
+                    <span className="lp-hero-feat-headline">1-on-1 Mentorship</span>
+                    <span className="lp-hero-feat-caption">Dedicated Career &amp; Placement Support</span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1171,10 +1513,15 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
           </p>
 
           <div className="lp-capabilities-full-grid">
-            {programCapabilities.map((cap, i) => (
-              <div className="lp-capability-card" key={i}>
-                <div className="lp-capability-num">0{i + 1}</div>
-                <p className="lp-capability-text">{cap}</p>
+            {programCapabilities.map((cap) => (
+              <div className="lp-capability-card" key={cap.id}>
+                <div className="lp-cap-card-header">
+                  <div className="lp-cap-icon-box">{cap.icon}</div>
+                  <span className="lp-cap-tag">{cap.tag}</span>
+                  <span className="lp-cap-num">0{cap.id}</span>
+                </div>
+                <h3 className="lp-cap-title">{cap.title}</h3>
+                <p className="lp-capability-text">{cap.desc}</p>
               </div>
             ))}
           </div>
@@ -1195,32 +1542,67 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
           </p>
 
           <div className="lp-skills-matrix-wrap">
-            <div className="lp-skills-table-head">
-              <div className="lp-th-left">Business Requirement</div>
-              <div className="lp-th-arrow" />
-              <div className="lp-th-right">Data Science &amp; AI Solution</div>
+            <div className="lp-skills-matrix-grid">
+              {skillsMatterTable.map((item) => (
+                <div className="lp-matrix-flow-card" key={item.id}>
+                  {/* Left: Challenge */}
+                  <div className="lp-matrix-challenge-pane">
+                    <div className="lp-matrix-pane-header">
+                      <span className="lp-matrix-chip chip-challenge">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                          <circle cx="12" cy="12" r="10" />
+                          <line x1="12" y1="8" x2="12" y2="12" />
+                          <line x1="12" y1="16" x2="12.01" y2="16" />
+                        </svg>
+                        Challenge {item.id}
+                      </span>
+                      <span className="lp-matrix-kpi-badge">{item.metricTag}</span>
+                    </div>
+                    <h4 className="lp-matrix-heading">{item.problemTitle}</h4>
+                    <p className="lp-matrix-doc-text">
+                      <span className="lp-doc-label">Requirement:</span> {item.req}
+                    </p>
+                  </div>
+
+                  {/* Center: Pipeline Bridge Connector */}
+                  <div className="lp-matrix-bridge-pane">
+                    <div className="lp-matrix-bridge-line" />
+                    <div className="lp-matrix-bridge-badge">
+                      <div className="lp-matrix-bridge-icon">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                          <polyline points="9 18 15 12 9 6" />
+                        </svg>
+                      </div>
+                      <span className="lp-matrix-bridge-label">AI Pipeline</span>
+                    </div>
+                  </div>
+
+                  {/* Right: Deployed AI Solution */}
+                  <div className="lp-matrix-solution-pane">
+                    <div className="lp-matrix-pane-header">
+                      <span className="lp-matrix-chip chip-solution">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                          <polyline points="22 4 12 14.01 9 11.01" />
+                        </svg>
+                        Engineered Solution
+                      </span>
+                    </div>
+                    <h4 className="lp-matrix-heading sol-heading">{item.solutionTitle}</h4>
+                    <p className="lp-matrix-doc-text">
+                      <span className="lp-doc-label">Solution:</span> {item.sol}
+                    </p>
+                    <div className="lp-matrix-tech-chips">
+                      {item.techStack.map((tech, tIdx) => (
+                        <span className="lp-matrix-tech-chip" key={tIdx}>
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
-
-            {skillsMatterTable.map((row, i) => (
-              <div className="lp-skills-matrix-row" key={i}>
-                <div className="lp-skills-req-box">
-                  <span className="lp-req-badge">Requirement</span>
-                  <p className="lp-req-text">{row.req}</p>
-                </div>
-
-                <div className="lp-skills-arrow-col">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                    <line x1="5" y1="12" x2="19" y2="12" />
-                    <polyline points="12 5 19 12 12 19" />
-                  </svg>
-                </div>
-
-                <div className="lp-skills-sol-box">
-                  <span className="lp-sol-badge">AI Solution</span>
-                  <p className="lp-sol-text">{row.sol}</p>
-                </div>
-              </div>
-            ))}
           </div>
 
           <p className="lp-section-outro-note">
@@ -1239,10 +1621,21 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
           </div>
 
           <div className="lp-who-can-join-grid">
-            {whoCanJoinProfiles.map((profile, i) => (
-              <div className="lp-join-profile-card" key={i}>
-                <div className="lp-profile-num-tag">0{i + 1}</div>
-                <p className="lp-join-profile-text">{profile}</p>
+            {whoCanJoinProfiles.map((p) => (
+              <div className="lp-persona-card" key={p.id}>
+                <div className="lp-persona-head">
+                  <div className="lp-persona-icon-box">{p.icon}</div>
+                  <div className="lp-persona-meta">
+                    <span className="lp-persona-badge">{p.badge}</span>
+                    <span className="lp-persona-num">PROFILE {p.id}</span>
+                  </div>
+                </div>
+                <h3 className="lp-persona-title">{p.title}</h3>
+                <p className="lp-persona-desc">{p.desc}</p>
+                <div className="lp-persona-path-footer">
+                  <span className="lp-path-icon">↳</span>
+                  <span className="lp-path-text">{p.path}</span>
+                </div>
               </div>
             ))}
           </div>
@@ -1282,11 +1675,36 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
                   if (e.key === 'Enter') setSelectedModule(mod.id);
                 }}
               >
+                <div className="lp-flyer-module-top">
+                  <span className="lp-module-num-badge">
+                    {mod.id < 10 ? `MODULE 0${mod.id}` : `MODULE ${mod.id}`}
+                  </span>
+                  <span className="lp-module-topics-pill">{mod.topics.length} Topics</span>
+                </div>
+
                 <div className="lp-flyer-module-icon">{mod.icon}</div>
+                
                 <h3 className="lp-flyer-module-name">{mod.title}</h3>
-                <span className="lp-view-details-hint">
-                  VIEW TOPICS ▼
-                </span>
+
+                <p className="lp-flyer-module-summary">{mod.summary}</p>
+
+                <div className="lp-flyer-tech-chips">
+                  {mod.techChips.map((chip, cIdx) => (
+                    <span className="lp-flyer-tech-chip" key={cIdx}>
+                      {chip}
+                    </span>
+                  ))}
+                </div>
+
+                <div className="lp-flyer-card-footer">
+                  <span className="lp-view-details-action">
+                    <span>View Syllabus Details</span>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                      <path d="M5 12h14" />
+                      <path d="m12 5 7 7-7 7" />
+                    </svg>
+                  </span>
+                </div>
               </div>
             ))}
           </div>
@@ -1411,8 +1829,11 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
           <div className="lp-career-roles-grid">
             {careerRoles.map((role, i) => (
               <div className="lp-career-role-card" key={i}>
-                <span className="lp-career-check-icon">✓</span>
-                <span className="lp-career-role-name">{role}</span>
+                <div className="lp-career-icon-pill">{role.icon}</div>
+                <div className="lp-career-role-info">
+                  <span className="lp-career-tag-pill">{role.tag}</span>
+                  <span className="lp-career-role-name">{role.title}</span>
+                </div>
               </div>
             ))}
           </div>
