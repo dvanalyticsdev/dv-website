@@ -414,14 +414,25 @@
   justify-self: end;
 }
 
-.lp-hero-form-card::before {
+.lp-form-card-top-accent {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 24px;
+  border-radius: calc(var(--lp-radius-xl) - 1px) calc(var(--lp-radius-xl) - 1px) 0 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.lp-form-card-top-accent::before {
   content: '';
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
-  height: 5px;
-  border-radius: var(--lp-radius-xl) var(--lp-radius-xl) 0 0;
+  height: 4px;
   background: linear-gradient(90deg, var(--lp-primary), var(--lp-violet), var(--lp-emerald));
 }
 

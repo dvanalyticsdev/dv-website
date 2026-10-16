@@ -648,6 +648,7 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
 
             {/* Above-the-fold Lead Capture Form */}
             <div className="lp-hero-form-card" id="apids-lead-form">
+              <div className="lp-form-card-top-accent" aria-hidden="true" />
               {isSubmitted ? (
                 <div className="lp-form-success-banner">
                   <h3 style={{ fontSize: '1.4rem', fontWeight: 800, marginBottom: '8px' }}>
@@ -792,7 +793,7 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
 
           <div className="lp-metrics-strip">
             <div className="lp-metric-card">
-              <div className="lp-metric-number">1,800+</div>
+              <div className="lp-metric-number">9,000+</div>
               <div className="lp-metric-label">Learners Mentored &amp; Trained</div>
             </div>
             <div className="lp-metric-card">
