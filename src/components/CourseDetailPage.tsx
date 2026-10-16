@@ -7,11 +7,8 @@ import { AnimatedHeroGraphic } from './AnimatedHeroGraphic';
 const posterImages: Record<string, string> = {
   apids: '/courses-poster/APIDS.png',
   apida: '/courses-poster/APIDA.png',
-  aiml: '/courses-poster/Advance AIML.png',
-  genai: '/courses-poster/Gen AI.png',
   specialist: '/courses-poster/DAS.png',
   apcs: '/courses-poster/APCF.png',
-  days7_genai: '/courses-poster/7-days-genai.png',
   fde: '/courses-poster/ai-forward-deployment-engineer.png',
   flp: '/courses-poster/FLP.png',
 };
@@ -19,11 +16,8 @@ const posterImages: Record<string, string> = {
 const heroImages: Record<string, string> = {
   apids: '/course-hero/APIDS.png',
   apida: '/course-hero/APIDA.png',
-  aiml: '/course-hero/Advance AIML.jpeg',
-  genai: '/course-hero/Gen AI.jpeg',
   specialist: '/course-hero/DAS.png',
   apcs: '/course-hero/APCF.png',
-  days7_genai: '/course-hero/7-days-genai.png',
   fde: '/course-hero/ai-forward-deployment-engineer.png',
 };
 
@@ -41,20 +35,6 @@ const courseSuccessImages: Record<string, string[]> = {
     '/Success Stories/WhatsApp Image 2026-06-29 at 11.28.20 AM (2).jpeg',
     '/Success Stories/WhatsApp Image 2026-06-29 at 11.28.20 AM.jpeg',
   ],
-  aiml: [
-    '/Success Stories/WhatsApp Image 2026-06-29 at 11.28.08 AM (1).jpeg',
-    '/Success Stories/WhatsApp Image 2026-06-29 at 11.28.08 AM (2).jpeg',
-    '/Success Stories/WhatsApp Image 2026-06-29 at 11.28.08 AM.jpeg',
-    '/Success Stories/WhatsApp Image 2026-06-29 at 11.28.09 AM (1).jpeg',
-    '/Success Stories/WhatsApp Image 2026-06-29 at 11.28.09 AM.jpeg',
-  ],
-  genai: [
-    '/Success Stories/WhatsApp Image 2026-06-29 at 11.28.55 AM.jpeg',
-    '/Success Stories/WhatsApp Image 2026-06-29 at 11.28.56 AM (1).jpeg',
-    '/Success Stories/WhatsApp Image 2026-06-29 at 11.28.56 AM (2).jpeg',
-    '/Success Stories/WhatsApp Image 2026-06-29 at 11.28.56 AM (3).jpeg',
-    '/Success Stories/WhatsApp Image 2026-06-29 at 11.28.56 AM.jpeg',
-  ],
   specialist: [
     '/Success Stories/WhatsApp Image 2026-06-29 at 11.28.44 AM (1).jpeg',
     '/Success Stories/WhatsApp Image 2026-06-29 at 11.28.44 AM (2).jpeg',
@@ -67,8 +47,6 @@ const courseSuccessImages: Record<string, string[]> = {
 const allSuccessImages = [
   ...courseSuccessImages.apids,
   ...courseSuccessImages.apida,
-  ...courseSuccessImages.aiml,
-  ...courseSuccessImages.genai,
   ...courseSuccessImages.specialist,
 ];
 
@@ -76,9 +54,6 @@ const getCourseImages = (id: string): string[] => {
   const normalizedId = id.toLowerCase();
   if (normalizedId === 'apcs') {
     return allSuccessImages;
-  }
-  if (normalizedId === 'days7_genai') {
-    return ['/courses-poster/7-days-genai.png', ...allSuccessImages];
   }
   if (normalizedId === 'fde') {
     return ['/courses-poster/ai-forward-deployment-engineer.png', ...allSuccessImages];
@@ -184,30 +159,13 @@ export const CourseDetailPage: React.FC<CourseDetailPageProps> = ({
   const [expandedProjectDomains, setExpandedProjectDomains] = useState<number[]>([]);
   const [expandedProjectItems, setExpandedProjectItems] = useState<string[]>([]);
   const [expandedCareerGroups, setExpandedCareerGroups] = useState<number[]>([]);
-  const hasPlacementSupport = ['apids', 'apida', 'aiml'].includes(courseId.toLowerCase());
-  const hasSixCourseStats = ['apids', 'apida', 'aiml', 'specialist', 'apcs', 'fde'].includes(courseId.toLowerCase());
-  const isSevenDayProgram = courseId.toLowerCase() === 'days7_genai';
-  const isMpgAAProgram = courseId.toLowerCase() === 'genai';
+  const hasPlacementSupport = ['apids', 'apida'].includes(courseId.toLowerCase());
+  const hasSixCourseStats = ['apids', 'apida', 'specialist', 'apcs', 'fde'].includes(courseId.toLowerCase());
   const isFlexiLearningProgram = courseId.toLowerCase() === 'flp';
   const courseStatDuration = ['specialist', 'apcs'].includes(courseId.toLowerCase())
     ? '2-3 Months'
     : course?.duration ?? '';
-  const courseStats: CourseStat[] = isSevenDayProgram
-    ? [
-        { label: 'Duration', value: '7 Days (42 Hours)', icon: 'duration' },
-        { label: 'Delivery', value: 'Live Online/Offline Classes', icon: 'delivery' },
-        { label: 'Learning Access', value: 'LMS Access', icon: 'lms' },
-        { label: 'Projects', value: 'Industry Real-Time Projects Hands-on', icon: 'projects' },
-      ]
-    : isMpgAAProgram
-    ? [
-        { label: 'Duration', value: course?.duration ?? '', icon: 'duration' },
-        { label: 'Delivery', value: 'Live Online/Offline Classes', icon: 'delivery' },
-        { label: 'Learning Access', value: 'LMS Access', icon: 'lms' },
-        { label: 'Projects', value: 'Industry Real-Time Projects Hands-on', icon: 'projects' },
-        { label: 'Career Support', value: 'Career Mentorship & Guidance', icon: 'support' },
-      ]
-    : isFlexiLearningProgram
+  const courseStats: CourseStat[] = isFlexiLearningProgram
     ? [
         { label: 'Duration', value: course?.duration ?? '', icon: 'duration' },
         { label: 'Learning Mode', value: 'Self-Paced Learning', icon: 'lms' },
@@ -715,7 +673,7 @@ export const CourseDetailPage: React.FC<CourseDetailPageProps> = ({
       {/* 11. Bottom CTA Section */}
       <section className="course-bottom-cta reveal-on-scroll">
         <div className="cta-box container text-center">
-          <h2>Ready to Launch Your Career in {course.title.match(/\(([^)]+)\)$/)?.[1] || (course.id === 'days7_genai' ? '7 Days Gen AI Master Program' : course.id.toUpperCase())}?</h2>
+          <h2>Ready to Launch Your Career in {course.title.match(/\(([^)]+)\)$/)?.[1] || course.id.toUpperCase()}?</h2>
           <p>
             {hasPlacementSupport
               ? 'Get mentored by industry experts and secure placements in top corporate groups.'

@@ -8,7 +8,7 @@ import { BrochureLeadModal } from './components/BrochureLeadModal';
 import { GetACallButton } from './components/GetACallButton';
 import { DemoClassModal } from './components/DemoClassModal';
 import { SkillPackageExplorer } from './components/SkillPackageExplorer';
-import { getPageFromPath } from './utils/routes';
+import { getPageFromPath, seoLandingPageRedirects } from './utils/routes';
 import { applySeoForPage, routePathByPageId } from './utils/seo';
 import { initAnalytics, trackEvent, trackPageView } from './utils/analytics';
 
@@ -31,6 +31,7 @@ const SeoLandingPage = lazy(() => import('./components/SeoLandingPage').then((mo
 const UpcomingBatchesPage = lazy(() => import('./components/UpcomingBatchesPage').then((module) => ({ default: module.UpcomingBatchesPage })));
 const ApplyJobPage = lazy(() => import('./components/jobs/ApplyJobPage').then((module) => ({ default: module.ApplyJobPage })));
 const FdeWorkshopPage = lazy(() => import('./components/FdeWorkshopPage').then((module) => ({ default: module.FdeWorkshopPage })));
+const ApidsStoryLandingPage = lazy(() => import('./components/landing/ApidsStoryLandingPage').then((module) => ({ default: module.ApidsStoryLandingPage })));
 
 const heroPosterImages = [
   '/hero-stories/fde-student.jpg',
@@ -60,6 +61,13 @@ const redirectUnknownRouteToHome = () => {
 };
 
 const getInitialPage = () => {
+  const currentSlug = window.location.pathname.replace(/^\/+|\/+$/g, '');
+  if (seoLandingPageRedirects[currentSlug]) {
+    const targetUrl = `${seoLandingPageRedirects[currentSlug]}${window.location.search}${window.location.hash}`;
+    window.history.replaceState({}, '', targetUrl);
+    return getPageFromPath(seoLandingPageRedirects[currentSlug]);
+  }
+
   const pageId = getPageFromPath(window.location.pathname);
 
   if (shouldRedirectUnknownRoute(pageId)) {
@@ -134,6 +142,14 @@ function App() {
 
   useEffect(() => {
     const handlePopState = () => {
+      const currentSlug = window.location.pathname.replace(/^\/+|\/+$/g, '');
+      if (seoLandingPageRedirects[currentSlug]) {
+        const targetUrl = `${seoLandingPageRedirects[currentSlug]}${window.location.search}${window.location.hash}`;
+        window.history.replaceState({}, '', targetUrl);
+        setActivePage(getPageFromPath(seoLandingPageRedirects[currentSlug]));
+        return;
+      }
+
       const pageId = getPageFromPath(window.location.pathname);
 
       if (shouldRedirectUnknownRoute(pageId)) {
@@ -499,6 +515,14 @@ function App() {
     return (
       <Suspense fallback={<div className="route-loading" aria-label="Loading page content" />}>
         <FdeWorkshopPage onNavigateHome={() => navigateToPage('home')} />
+      </Suspense>
+    );
+  }
+
+  if (activePage === 'lp-apids') {
+    return (
+      <Suspense fallback={<div className="route-loading" aria-label="Loading page content" />}>
+        <ApidsStoryLandingPage onNavigateHome={() => navigateToPage('home')} />
       </Suspense>
     );
   }

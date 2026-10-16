@@ -1,7 +1,7 @@
 import { blogIdBySlug, blogMeta, blogSlugById, type BlogMeta } from '../data/blogMeta.ts';
 import { courseCatalog } from '../data/courseMeta.ts';
 import { seoLandingPages } from '../data/seoLandingPages.ts';
-import { getPathFromPage, seoLandingPageSlugById, serviceSlugById } from './routes.ts';
+import { getPathFromPage, serviceSlugById } from './routes.ts';
 
 export const siteUrl = 'https://www.dvanalyticsmds.com';
 export const siteName = 'DV Analytics';
@@ -100,7 +100,7 @@ const courseSeoById: Record<string, { name: string; title: string; description: 
       name: course.label,
       title: formatSeoTitle(courseTitleById[course.id] ?? course.label),
       description: `${course.label} at DV Analytics covers real projects, mentor support, placement preparation, transparent fees, EMI options, and certification.`,
-      duration: course.id === 'days7_genai' ? '7 Days' : course.category === 'self-paced' ? 'Self-paced' : 'Live training program',
+      duration: course.category === 'self-paced' ? 'Self-paced' : 'Live training program',
       topics: courseSearchFocusById[course.id] ?? ['Data Science', 'AI', 'Analytics'],
     },
   ])
@@ -172,6 +172,13 @@ const basePages: Record<string, { title: string; description: string; image?: st
     title: 'AI Forward Deployment Engineer Workshop | DV Analytics',
     description: 'Register for the exclusive 2-hour AI Forward Deployment Engineer (FDE) live workshop. Learn LLMs, RAG, AI Agents and production cloud deployment.',
     image: '/fde-workshop-banner.png',
+    noindex: true,
+  },
+  'lp-apids': {
+    title: 'Industrial Data Science & AI Program (APIDS) | DV Analytics',
+    description:
+      'Master Industrial Data Science with Cloud AI Deployment. Classroom training in Bangalore & Bhubaneswar + Live Online Pan-India. 100% Placement Support.',
+    image: '/courses-poster/APIDS.png',
     noindex: true,
   },
   'not-found': {
@@ -458,6 +465,33 @@ export const getSeoForPage = (pageId: string) => {
     }
   }
 
+  if (pageId.startsWith('enroll')) {
+    const courseId = pageId.startsWith('enroll-') ? pageId.replace('enroll-', '') : '';
+    const course = courseId ? courseSeoById[courseId] : undefined;
+    const courseShortTitle = courseId ? (courseTitleById[courseId] ?? course?.name ?? '') : '';
+    const enrollTitle = courseShortTitle
+      ? formatSeoTitle(`Enroll in ${courseShortTitle}`, siteName)
+      : (basePages['enroll']?.title ?? 'Enroll in DV Analytics Programs | Reserve Your Seat');
+    const enrollDesc = course
+      ? `Enroll in ${course.name} at DV Analytics. Reserve your seat for upcoming batches with 1-on-1 mentorship and full placement support.`
+      : (basePages['enroll']?.description ?? 'Start your admission inquiry for DV Analytics Data Science, AI, GenAI, Cybersecurity, and analytics career programs.');
+
+    schema.push(breadcrumbSchema([
+      { name: 'Home', path: '/' },
+      ...(course && courseId ? [{ name: 'Courses', path: '/courses/' }, { name: course.name, path: getPathFromPage(`course-${courseId}`) }] : []),
+      { name: 'Enrollment', path },
+    ]));
+
+    return {
+      title: enrollTitle,
+      description: truncate(enrollDesc),
+      canonical: absoluteUrl(path),
+      image: absoluteUrl(courseId && coursePosterById[courseId] ? coursePosterById[courseId] : defaultSocialImage),
+      noindex: true,
+      schema,
+    };
+  }
+
   if (pageId.startsWith('service-')) {
     const title = serviceTitles[pageId] ?? 'Enterprise AI Service';
     schema.push(breadcrumbSchema([
@@ -537,7 +571,7 @@ export const getSeoForPage = (pageId: string) => {
   }
 
   const base = basePages[pageId] ?? basePages['not-found'];
-  if (['courses', 'services', 'about', 'alumni', 'blogs', 'faqs', 'upcoming-batches'].includes(pageId)) {
+  if (['courses', 'services', 'about', 'alumni', 'blogs', 'faqs', 'upcoming-batches', 'lp-apids'].includes(pageId)) {
     schema.push(breadcrumbSchema([
       { name: 'Home', path: '/' },
       { name: base.title.replace(` | ${siteName}`, '').replace(' | DV Analytics', ''), path },
@@ -595,7 +629,6 @@ export const sitemapRoutes = [
   ...courseCatalog.map((course) => getPathFromPage(`course-${course.id}`)),
   getPathFromPage('services'),
   ...Object.keys(serviceSlugById).map(getPathFromPage),
-  ...Object.keys(seoLandingPageSlugById).map(getPathFromPage),
   getPathFromPage('about'),
   getPathFromPage('alumni'),
   getPathFromPage('blogs'),

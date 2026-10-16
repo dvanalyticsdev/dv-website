@@ -38,6 +38,230 @@
   ],
   "routes": [
     {
+      "src": "^/data-science-course-bangalore/?$",
+      "status": 302,
+      "headers": {
+        "Location": "/courses/apids/"
+      }
+    },
+    {
+      "src": "^/data-science-course-bhubaneswar/?$",
+      "status": 302,
+      "headers": {
+        "Location": "/courses/apids/"
+      }
+    },
+    {
+      "src": "^/data-science-course-india/?$",
+      "status": 302,
+      "headers": {
+        "Location": "/courses/apids/"
+      }
+    },
+    {
+      "src": "^/data-science-course-online/?$",
+      "status": 302,
+      "headers": {
+        "Location": "/courses/apids/"
+      }
+    },
+    {
+      "src": "^/data-science-course-with-placement/?$",
+      "status": 302,
+      "headers": {
+        "Location": "/courses/apids/"
+      }
+    },
+    {
+      "src": "^/ai-course-india/?$",
+      "status": 302,
+      "headers": {
+        "Location": "/courses/apids/"
+      }
+    },
+    {
+      "src": "^/ai-course-bangalore/?$",
+      "status": 302,
+      "headers": {
+        "Location": "/courses/apids/"
+      }
+    },
+    {
+      "src": "^/ai-course-bhubaneswar/?$",
+      "status": 302,
+      "headers": {
+        "Location": "/courses/apids/"
+      }
+    },
+    {
+      "src": "^/ai-course-for-freshers/?$",
+      "status": 302,
+      "headers": {
+        "Location": "/courses/apids/"
+      }
+    },
+    {
+      "src": "^/ai-course-for-working-professionals/?$",
+      "status": 302,
+      "headers": {
+        "Location": "/courses/apids/"
+      }
+    },
+    {
+      "src": "^/data-analytics-course-bangalore/?$",
+      "status": 302,
+      "headers": {
+        "Location": "/courses/data-analytics-specialist/"
+      }
+    },
+    {
+      "src": "^/data-analytics-course-bhubaneswar/?$",
+      "status": 302,
+      "headers": {
+        "Location": "/courses/data-analytics-specialist/"
+      }
+    },
+    {
+      "src": "^/data-analytics-course-india/?$",
+      "status": 302,
+      "headers": {
+        "Location": "/courses/data-analytics-specialist/"
+      }
+    },
+    {
+      "src": "^/data-analytics-course-online/?$",
+      "status": 302,
+      "headers": {
+        "Location": "/courses/data-analytics-specialist/"
+      }
+    },
+    {
+      "src": "^/data-analytics-course-karnataka/?$",
+      "status": 302,
+      "headers": {
+        "Location": "/courses/data-analytics-specialist/"
+      }
+    },
+    {
+      "src": "^/data-analytics-course-odisha/?$",
+      "status": 302,
+      "headers": {
+        "Location": "/courses/data-analytics-specialist/"
+      }
+    },
+    {
+      "src": "^/data-analytics-course-fees/?$",
+      "status": 302,
+      "headers": {
+        "Location": "/courses/data-analytics-specialist/"
+      }
+    },
+    {
+      "src": "^/generative-ai-data-analytics-course-bhubaneswar/?$",
+      "status": 302,
+      "headers": {
+        "Location": "/courses/apida/"
+      }
+    },
+    {
+      "src": "^/forward-deployment-engineer-course-india/?$",
+      "status": 302,
+      "headers": {
+        "Location": "/courses/ai-forward-deployment-engineer/"
+      }
+    },
+    {
+      "src": "^/forward-deployment-engineer-course-bangalore/?$",
+      "status": 302,
+      "headers": {
+        "Location": "/courses/ai-forward-deployment-engineer/"
+      }
+    },
+    {
+      "src": "^/forward-deployment-engineer-course-bhubaneswar/?$",
+      "status": 302,
+      "headers": {
+        "Location": "/courses/ai-forward-deployment-engineer/"
+      }
+    },
+    {
+      "src": "^/generative-ai-course/?$",
+      "status": 302,
+      "headers": {
+        "Location": "/courses/ai-forward-deployment-engineer/"
+      }
+    },
+    {
+      "src": "^/generative-ai-course-india/?$",
+      "status": 302,
+      "headers": {
+        "Location": "/courses/ai-forward-deployment-engineer/"
+      }
+    },
+    {
+      "src": "^/generative-ai-course-bangalore/?$",
+      "status": 302,
+      "headers": {
+        "Location": "/courses/ai-forward-deployment-engineer/"
+      }
+    },
+    {
+      "src": "^/generative-ai-course-bhubaneswar/?$",
+      "status": 302,
+      "headers": {
+        "Location": "/courses/ai-forward-deployment-engineer/"
+      }
+    },
+    {
+      "src": "^/agentic-ai-course/?$",
+      "status": 302,
+      "headers": {
+        "Location": "/courses/ai-forward-deployment-engineer/"
+      }
+    },
+    {
+      "src": "^/agentic-ai-course-india/?$",
+      "status": 302,
+      "headers": {
+        "Location": "/courses/ai-forward-deployment-engineer/"
+      }
+    },
+    {
+      "src": "^/agentic-ai-course-bangalore/?$",
+      "status": 302,
+      "headers": {
+        "Location": "/courses/ai-forward-deployment-engineer/"
+      }
+    },
+    {
+      "src": "^/cybersecurity-course/?$",
+      "status": 302,
+      "headers": {
+        "Location": "/courses/cybersecurity-forensics/"
+      }
+    },
+    {
+      "src": "^/cybersecurity-course-india/?$",
+      "status": 302,
+      "headers": {
+        "Location": "/courses/cybersecurity-forensics/"
+      }
+    },
+    {
+      "src": "^/cybersecurity-course-bangalore/?$",
+      "status": 302,
+      "headers": {
+        "Location": "/courses/cybersecurity-forensics/"
+      }
+    },
+    {
+      "src": "^/cybersecurity-course-bhubaneswar/?$",
+      "status": 302,
+      "headers": {
+        "Location": "/courses/cybersecurity-forensics/"
+      }
+    },
+    {
       "handle": "filesystem"
     },
     {

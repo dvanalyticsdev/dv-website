@@ -1,7 +1,7 @@
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { getPageFromPath } from '../src/utils/routes.ts';
+import { getPageFromPath, seoLandingPageRedirects } from '../src/utils/routes.ts';
 import { getSeoForPage, sitemapRoutes } from '../src/utils/seo.ts';
 
 const rootDir = dirname(dirname(fileURLToPath(import.meta.url)));
@@ -85,7 +85,7 @@ const outputPathForRoute = (route) => {
   return join(distDir, route.replace(/^\/+/, ''), 'index.html');
 };
 
-const generatedRoutes = [...sitemapRoutes, '/enroll', '/payment', '/404'];
+const generatedRoutes = [...sitemapRoutes, '/enroll', '/payment', '/404', '/workshop/fde', '/lp/apids'];
 
 for (const route of generatedRoutes) {
   const outputPath = outputPathForRoute(route);
@@ -95,10 +95,29 @@ for (const route of generatedRoutes) {
   await writeFile(outputPath, finalHtml);
 }
 
+for (const [slug, targetUrl] of Object.entries(seoLandingPageRedirects)) {
+  const outputPath = join(distDir, slug, 'index.html');
+  await mkdir(dirname(outputPath), { recursive: true });
+  const redirectHtml = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="refresh" content="0; url=${targetUrl}">
+  <link rel="canonical" href="https://www.dvanalyticsmds.com${targetUrl}">
+  <title>Redirecting to DV Analytics...</title>
+</head>
+<body>
+  <p>Redirecting to <a href="${targetUrl}">DV Analytics Course Page</a>...</p>
+  <script>window.location.replace('${targetUrl}');</script>
+</body>
+</html>`;
+  await writeFile(outputPath, redirectHtml);
+}
+
 const getRoutePriorityAndFreq = (route) => {
   if (route === '/') return { priority: '1.0', changefreq: 'daily' };
   if (route.startsWith('/upcoming-batches')) return { priority: '0.9', changefreq: 'daily' };
-  if (route.startsWith('/courses')) return { priority: '0.9', changefreq: 'weekly' };
+  if (route.startsWith('/courses') || route.startsWith('/lp')) return { priority: '0.9', changefreq: 'weekly' };
   if (route.startsWith('/journal')) return { priority: '0.8', changefreq: 'weekly' };
   if (route.startsWith('/services')) return { priority: '0.8', changefreq: 'monthly' };
   return { priority: '0.6', changefreq: 'monthly' };

@@ -4,10 +4,7 @@ export const courseSlugById: Record<string, string> = {
   apids: 'apids',
   apida: 'apida',
   specialist: 'data-analytics-specialist',
-  aiml: 'aiml-gaa',
-  genai: 'genai-agentic-ai',
   apcs: 'cybersecurity-forensics',
-  days7_genai: '7-days-genai',
   fde: 'ai-forward-deployment-engineer',
   flp: 'flexi-learning-program',
 };
@@ -41,6 +38,50 @@ const seoLandingPageIdBySlug = Object.fromEntries(
   Object.entries(seoLandingPageSlugById).map(([pageId, slug]) => [slug, pageId])
 );
 
+export const seoLandingPageRedirects: Record<string, string> = {
+  // Data Science -> APIDS (/courses/apids/)
+  'data-science-course-bangalore': '/courses/apids/',
+  'data-science-course-bhubaneswar': '/courses/apids/',
+  'data-science-course-india': '/courses/apids/',
+  'data-science-course-online': '/courses/apids/',
+  'data-science-course-with-placement': '/courses/apids/',
+  'ai-course-india': '/courses/apids/',
+  'ai-course-bangalore': '/courses/apids/',
+  'ai-course-bhubaneswar': '/courses/apids/',
+  'ai-course-for-freshers': '/courses/apids/',
+  'ai-course-for-working-professionals': '/courses/apids/',
+
+  // Data Analytics -> DAS (/courses/data-analytics-specialist/)
+  'data-analytics-course-bangalore': '/courses/data-analytics-specialist/',
+  'data-analytics-course-bhubaneswar': '/courses/data-analytics-specialist/',
+  'data-analytics-course-india': '/courses/data-analytics-specialist/',
+  'data-analytics-course-online': '/courses/data-analytics-specialist/',
+  'data-analytics-course-karnataka': '/courses/data-analytics-specialist/',
+  'data-analytics-course-odisha': '/courses/data-analytics-specialist/',
+  'data-analytics-course-fees': '/courses/data-analytics-specialist/',
+
+  // Data Analytics + Gen AI -> APIDA (/courses/apida/)
+  'generative-ai-data-analytics-course-bhubaneswar': '/courses/apida/',
+
+  // Forward Deployment Engineer (FDE) & GenAI / Agentic AI -> FDE (/courses/ai-forward-deployment-engineer/)
+  'forward-deployment-engineer-course-india': '/courses/ai-forward-deployment-engineer/',
+  'forward-deployment-engineer-course-bangalore': '/courses/ai-forward-deployment-engineer/',
+  'forward-deployment-engineer-course-bhubaneswar': '/courses/ai-forward-deployment-engineer/',
+  'generative-ai-course': '/courses/ai-forward-deployment-engineer/',
+  'generative-ai-course-india': '/courses/ai-forward-deployment-engineer/',
+  'generative-ai-course-bangalore': '/courses/ai-forward-deployment-engineer/',
+  'generative-ai-course-bhubaneswar': '/courses/ai-forward-deployment-engineer/',
+  'agentic-ai-course': '/courses/ai-forward-deployment-engineer/',
+  'agentic-ai-course-india': '/courses/ai-forward-deployment-engineer/',
+  'agentic-ai-course-bangalore': '/courses/ai-forward-deployment-engineer/',
+
+  // Cybersecurity -> APCF (/courses/cybersecurity-forensics/)
+  'cybersecurity-course': '/courses/cybersecurity-forensics/',
+  'cybersecurity-course-india': '/courses/cybersecurity-forensics/',
+  'cybersecurity-course-bangalore': '/courses/cybersecurity-forensics/',
+  'cybersecurity-course-bhubaneswar': '/courses/cybersecurity-forensics/',
+};
+
 const legacyPageAliases: Record<string, string> = {
   '/home': 'home',
   '/about': 'about',
@@ -51,14 +92,14 @@ const legacyPageAliases: Record<string, string> = {
   '/faq': 'faqs',
 };
 
-export const getPageFromPath = (pathname: string) => {
+export const getPageFromPath = (pathname: string): string => {
   const normalizedPath = pathname.replace(/\/+$/, '') || '/';
   const parts = normalizedPath.split('/').filter(Boolean);
 
   if (normalizedPath === '/') return 'home';
   if (legacyPageAliases[normalizedPath]) return legacyPageAliases[normalizedPath];
   if (normalizedPath === '/courses') return 'courses';
-  if (parts[0] === 'courses' && parts[1]) return `course-${courseIdBySlug[parts[1]] ?? parts[1]}`;
+  if (parts[0] === 'courses' && parts[1]) return courseIdBySlug[parts[1]] ? `course-${courseIdBySlug[parts[1]]}` : 'not-found';
   if (normalizedPath === '/services') return 'services';
   if (parts[0] === 'services' && parts[1]) return serviceIdBySlug[parts[1]] ?? `service-${parts[1]}`;
   if (normalizedPath === '/who-we-are') return 'about';
@@ -67,11 +108,13 @@ export const getPageFromPath = (pathname: string) => {
   if (parts[0] === 'journal' && parts[1]) return `blog-${parts[1]}`;
   if (normalizedPath === '/faqs') return 'faqs';
   if (normalizedPath === '/enroll') return 'enroll';
-  if (parts[0] === 'enroll' && parts[1]) return `enroll-${courseIdBySlug[parts[1]] ?? parts[1]}`;
+  if (parts[0] === 'enroll' && parts[1]) return courseIdBySlug[parts[1]] ? `enroll-${courseIdBySlug[parts[1]]}` : 'enroll';
   if (normalizedPath === '/payment' || normalizedPath === '/payment/index.php') return 'payment';
   if (normalizedPath === '/upcoming-batches') return 'upcoming-batches';
   if (normalizedPath === '/apply-job' || normalizedPath === '/jobs' || normalizedPath === '/careers') return 'apply-job';
   if (normalizedPath === '/workshop/fde' || normalizedPath === '/workshop/fde/') return 'workshop-fde';
+  if (normalizedPath === '/lp/apids' || normalizedPath === '/lp/apids/') return 'lp-apids';
+  if (parts[0] && seoLandingPageRedirects[parts[0]]) return getPageFromPath(seoLandingPageRedirects[parts[0]]);
   if (parts[0] && seoLandingPageIdBySlug[parts[0]]) return seoLandingPageIdBySlug[parts[0]];
 
   return 'not-found';
@@ -90,6 +133,7 @@ export const getPathFromPage = (pageId: string) => {
   if (pageId === 'upcoming-batches') return '/upcoming-batches/';
   if (pageId === 'apply-job') return '/apply-job/';
   if (pageId === 'workshop-fde') return '/workshop/fde/';
+  if (pageId === 'lp-apids') return '/lp/apids/';
   if (pageId === 'not-found') return '/404';
 
   if (pageId.startsWith('course-')) {
@@ -111,7 +155,11 @@ export const getPathFromPage = (pageId: string) => {
   }
 
   if (pageId.startsWith('lp-')) {
-    return `/${seoLandingPageSlugById[pageId] ?? pageId.replace('lp-', '')}/`;
+    const slug = seoLandingPageSlugById[pageId] ?? pageId.replace('lp-', '');
+    if (seoLandingPageRedirects[slug]) {
+      return seoLandingPageRedirects[slug];
+    }
+    return `/${slug}/`;
   }
 
   return '/';
