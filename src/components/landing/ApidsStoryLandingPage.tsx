@@ -147,7 +147,6 @@ const LpCustomSelect: React.FC<CustomSelectProps> = ({
         </svg>
       </button>
 
-      {/* Visually hidden native select to guarantee standard browser form validation */}
       <select
         value={value}
         required={required}
@@ -206,7 +205,6 @@ const LpCustomSelect: React.FC<CustomSelectProps> = ({
 };
 
 export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ onNavigateHome }) => {
-  // Scroll progress tracker
   const [scrollProgress, setScrollProgress] = useState(0);
 
   // Registration Form State
@@ -222,14 +220,11 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  // Active Curriculum Module (1 to 4)
-  const [activeModule, setActiveModule] = useState(1);
-
-  // Active Capstone Project Slide (0 to 3)
-  const [activeProjectSlide, setActiveProjectSlide] = useState(0);
+  // Selected module for popup / detail expansion
+  const [selectedModule, setSelectedModule] = useState<number | null>(null);
 
   // Active FAQ Accordion Item
-  const [openFaq, setOpenFaq] = useState<number | null>(0);
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   // Countdown timer targeting Next Batch: October 24, 2026
   const calculateBatchCountdown = () => {
@@ -242,7 +237,7 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
         days: Math.floor(difference / (1000 * 60 * 60 * 24)),
         hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
         minutes: Math.floor((difference / (1000 * 60)) % 60),
-        seconds: Math.floor((difference / 1000) % 60),
+        seconds: Math.floor((difference / (1000 * 60)) % 60),
       };
     }
     return { days: 0, hours: 0, minutes: 0, seconds: 0 };
@@ -269,6 +264,26 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
     }, 1000);
     return () => clearInterval(timer);
   }, []);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setSelectedModule(null);
+      }
+    };
+
+    if (selectedModule !== null) {
+      document.addEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = '';
+    };
+  }, [selectedModule]);
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -324,12 +339,6 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
       payload.set('user_agent', window.navigator.userAgent);
       payload.set('powered_by', 'DV Analytics website');
 
-      // CRM webhook disabled for now during testing (leads will not reach CRM sales team)
-      // await fetch('https://crm.dvanalyticsmds.in/api/webhook/elementor-lead', {
-      //   method: 'POST',
-      //   body: payload,
-      // }).catch(() => null);
-
       trackEvent('submit_lp_registration', {
         course: formData.course,
         course_name: courseLabel,
@@ -350,38 +359,274 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
     document.getElementById('apids-lead-form')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
   };
 
-  // 1. Why Data Science & Market Demands 2026
-  const marketDemands = [
+  // =========================================================================
+  // DATA STRUCTURES (STRICT WORD DOC ORDER)
+  // =========================================================================
+
+  // 1. Core Program Capabilities (Word Doc)
+  const programCapabilities = [
+    'Manage and analyse business data.',
+    'Create visualisations and communicate insights.',
+    'Build and evaluate predictive models.',
+    'Develop Generative AI assistants and agent workflows.',
+    'Build data pipelines and connect enterprise systems.',
+    'Deploy, monitor, and improve AI applications.',
+    'Translate business requirements into practical technical solutions.',
+  ];
+
+  // 2. Why these skills matter today (Word Doc Table)
+  const skillsMatterTable = [
     {
-      id: 1,
-      badge: 'Surging Adoption',
-      stat: '85%+',
-      statLabel: 'Enterprises Deploying AI',
-      title: 'The AI Transformation Wave',
-      desc: 'Companies are aggressively automating manual operations and replacing static reporting with predictive analytics and intelligent agent systems.',
-      takeaway: 'High corporate priority across Banking, Healthcare, Retail & Telecom.',
+      req: 'Identify customers likely to leave',
+      sol: 'Churn prediction connected to a retention dashboard',
     },
     {
-      id: 2,
-      badge: 'Critical Talent Deficit',
-      stat: '11.5M+',
-      statLabel: 'Global Data Openings',
-      title: 'Shortage of Deployment Engineers',
-      desc: 'While basic code writers are plentiful, organizations face an acute deficit of engineers who can handle Big Data, deploy LLMs, and maintain production APIs.',
-      takeaway: 'Industry rewards end-to-end full lifecycle problem solvers.',
+      req: 'Improve inventory planning',
+      sol: 'Demand forecasting integrated with stock reports',
     },
     {
-      id: 3,
-      badge: 'Role Evolution',
-      stat: '40%+',
-      statLabel: 'Annual Job Surge',
-      title: 'From Toy Notebooks to Cloud APIs',
-      desc: 'The market no longer values notebook-only coders. High-paying roles require Big Data (PySpark), Generative AI (RAG), and Cloud MLOps on AWS.',
-      takeaway: 'Full-stack AI deployment skills command top hiring premiums.',
+      req: 'Review large volumes of documents',
+      sol: 'AI document processing with validation and exception handling',
+    },
+    {
+      req: 'Help employees find approved information',
+      sol: 'A knowledge assistant with source references',
+    },
+    {
+      req: 'Reduce equipment downtime',
+      sol: 'Predictive maintenance with alerts and monitoring',
     },
   ];
 
-  // 2. Industry Market Salary Benchmarks
+  // 3. Who Can Join (Word Doc)
+  const whoCanJoinProfiles = [
+    'Engineering, BTech, BE, BCA, MCA, and computer science learners.',
+    'BSc, mathematics, statistics, and economics graduates.',
+    'BCom, BBA, MBA, and other graduates willing to develop technical foundations.',
+    'Data analysts seeking modelling and deployment skills.',
+    'Software developers and data engineers moving into AI.',
+    'Working professionals, career switchers, and career returners.',
+  ];
+
+  // 4. Your Learning Path (12 Modules in 6x2 grid as shown in the image)
+  const learningPathModules = [
+    {
+      id: 1,
+      title: 'Python & SQL',
+      summary: 'Programming foundations, Git, debugging, APIs, and automated testing.',
+      topics: [
+        'Programming fundamentals, data structures, and functions',
+        'Complex SQL queries, joins, aggregations, and subqueries',
+        'Git version control, branches, and team pull requests',
+        'REST APIs, exception handling, and automated unit testing',
+      ],
+      icon: (
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14.5v-9l6 4.5-6 4.5z" />
+        </svg>
+      ),
+    },
+    {
+      id: 2,
+      title: 'Data Management',
+      summary: 'Collection, cleaning, joins, validation, and schema access controls.',
+      topics: [
+        'Ingestion from APIs, databases, flat files, and web scrapers',
+        'Data cleaning, type casting, imputation, and transformation',
+        'Relational data modeling, foreign keys, and integrity constraints',
+        'Defensive data validation rules and enterprise access controls',
+      ],
+      icon: (
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <ellipse cx="12" cy="5" rx="9" ry="3" />
+          <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3" />
+          <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5" />
+        </svg>
+      ),
+    },
+    {
+      id: 3,
+      title: 'Analysis & Visualisation',
+      summary: 'Exploratory analysis, business metrics, dashboards, and storytelling.',
+      topics: [
+        'Exploratory data analysis (EDA) and pattern detection',
+        'Business KPI formulation (Churn, LTV, CAC, Revenue cohorts)',
+        'Interactive dashboards in Power BI and executive reports',
+        'Visual storytelling and communicating insights to leadership',
+      ],
+      icon: (
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <line x1="18" y1="20" x2="18" y2="10" />
+          <line x1="12" y1="20" x2="12" y2="4" />
+          <line x1="6" y1="20" x2="6" y2="14" />
+        </svg>
+      ),
+    },
+    {
+      id: 4,
+      title: 'Statistics',
+      summary: 'Probability, sampling, distributions, hypothesis testing, and experiments.',
+      topics: [
+        'Probability theory, discrete and continuous distributions',
+        'Parametric and non-parametric hypothesis testing',
+        'Confidence intervals, p-values, and statistical power',
+        'A/B test design, experimentation guardrails, and uncertainty',
+      ],
+      icon: (
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <path d="M3 20h18" />
+          <path d="M4 18c4-1 6-14 8-14s4 13 8 14" />
+        </svg>
+      ),
+    },
+    {
+      id: 5,
+      title: 'Machine Learning',
+      summary: 'Regression, classification, clustering, forecasting, and validation.',
+      topics: [
+        'Supervised regression and classification algorithms',
+        'Ensemble gradient boosting (Random Forest, XGBoost, LightGBM)',
+        'Unsupervised clustering (K-Means, hierarchical, DBSCAN)',
+        'Time-series forecasting, feature engineering, and cross-validation',
+      ],
+      icon: (
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <circle cx="18" cy="5" r="3" />
+          <circle cx="6" cy="12" r="3" />
+          <circle cx="18" cy="19" r="3" />
+          <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
+          <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
+        </svg>
+      ),
+    },
+    {
+      id: 6,
+      title: 'Deep Learning',
+      summary: 'Neural networks, embeddings, transformers, and transfer learning.',
+      topics: [
+        'Feedforward architectures, activation functions, and backpropagation',
+        'Vector embeddings and dimensional representation',
+        'Transformer models, self-attention, and Hugging Face pipelines',
+        'Transfer learning with industry pre-trained foundation models',
+      ],
+      icon: (
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 4.44-5.04z" />
+          <path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-4.44-5.04z" />
+        </svg>
+      ),
+    },
+    {
+      id: 7,
+      title: 'Generative AI',
+      summary: 'LLM APIs, prompting, structured outputs, RAG, and evaluation.',
+      topics: [
+        'OpenAI and Anthropic API integration with structured JSON schemas',
+        'Advanced prompt engineering, chain-of-thought, and few-shot methods',
+        'Retrieval-Augmented Generation (RAG) with vector databases',
+        'Document chunking, citation grounding, and RAG evaluation',
+      ],
+      icon: (
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
+        </svg>
+      ),
+    },
+    {
+      id: 8,
+      title: 'Agentic AI',
+      summary: 'Tool calling, orchestration, state, permissions, and human approval.',
+      topics: [
+        'Function calling and integrating external tools/databases',
+        'Multi-agent state machines and orchestration with LangGraph',
+        'Permission boundaries, safety sandboxing, and execution limits',
+        'Human-in-the-loop approval workflows for sensitive actions',
+      ],
+      icon: (
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <rect x="3" y="11" width="18" height="10" rx="2" />
+          <circle cx="12" cy="5" r="2" />
+          <path d="M12 7v4" />
+          <line x1="8" y1="16" x2="8" y2="16" />
+          <line x1="16" y1="16" x2="16" y2="16" />
+        </svg>
+      ),
+    },
+    {
+      id: 9,
+      title: 'Data Engineering',
+      summary: 'ETL/ELT, data modelling, warehouses, orchestration, and pipelines.',
+      topics: [
+        'Production ETL/ELT data pipeline architecture and transformation',
+        'Dimensional modeling, star schemas, and warehouse optimization',
+        'Automated workflow scheduling with Apache Airflow and dbt',
+        'Batch data processing and data quality validation checks',
+      ],
+      icon: (
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <circle cx="12" cy="12" r="3" />
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
+        </svg>
+      ),
+    },
+    {
+      id: 10,
+      title: 'Deployment Engineering',
+      summary: 'APIs, Docker, cloud hosting, CI/CD, monitoring, and rollback.',
+      topics: [
+        'Asynchronous high-throughput REST APIs using FastAPI',
+        'Multi-stage Docker containerization and cloud environments',
+        'Cloud hosting on AWS EC2/ECS with security groups',
+        'GitHub Actions CI/CD pipelines, health endpoints, and rollbacks',
+      ],
+      icon: (
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z" />
+          <polyline points="12 12 12 16" />
+          <polyline points="10 14 12 12 14 14" />
+        </svg>
+      ),
+    },
+    {
+      id: 11,
+      title: 'MLOps',
+      summary: 'Model tracking, artifact registry, automated retraining, and drift.',
+      topics: [
+        'Experiment tracking and model versioning with MLflow',
+        'Centralized model registry and deployment staging lifecycle',
+        'Automated model retraining pipelines triggered by data updates',
+        'Continuous data drift, concept drift, and performance telemetry',
+      ],
+      icon: (
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <path d="M18.178 8c5.096 0 5.096 8 0 8-5.095 0-7.26-8-12.355-8-5.096 0-5.096 8 0 8 5.095 0 7.26-8 12.355-8Z" />
+        </svg>
+      ),
+    },
+    {
+      id: 12,
+      title: 'Consulting',
+      summary: 'Requirement gathering, problem definition, design, and demos.',
+      topics: [
+        'Client requirement scoping and translating business pain points',
+        'Formulating technical architecture proposals and feasibility studies',
+        'Executive solution demonstrations and interactive stakeholder decks',
+        'User training, technical handoff documentation, and client buy-in',
+      ],
+      icon: (
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+          <circle cx="9" cy="7" r="4" />
+          <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+          <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+        </svg>
+      ),
+    },
+  ];
+
+  const activePopupModule = selectedModule !== null ? learningPathModules.find((m) => m.id === selectedModule) : null;
+
+  // 5. Industry Salary Benchmarks (Preserved as explicitly requested)
   const salaryTiers = [
     {
       id: 1,
@@ -419,145 +664,269 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
     },
   ];
 
-  // 3. Curriculum Modules (Directly aligned with /courses/apids/ & coursesData.ts)
-  const curriculumModules = [
+  // 6. Tools and Applications (Word Doc Table)
+  const toolsTableData = [
     {
-      id: 1,
-      number: '01',
-      badge: 'Module 01 // Foundation & Big Data',
-      title: 'Data Management & Programming',
-      duration: 'Months 1–2',
-      desc: 'Master enterprise database extraction, Python fundamentals, SAS data structures, and distributed Big Data processing at scale.',
-      topics: [
-        'Relational Database Modeling, Normalization & SQL Server / MySQL',
-        'Complex SQL: Joins, Subqueries, CTEs, Window Functions & Stored Procedures',
-        'Python Programming: Data Structures, OOP, Functions, APIs & File Handling',
-        'Base SAS: Data Step Programming, PROC SQL & Macro Processing',
-        'PySpark & Scala: Spark SQL, Big Data Architecture & Spark MLlib',
-      ],
-      tools: ['SQL Server', 'MySQL', 'Python 3.12', 'Base SAS', 'PySpark', 'Apache Spark'],
-      outcome: 'Extract, clean, and process multi-million row transactional datasets with sub-second queries without memory bottlenecks.',
+      area: 'Programming and data preparation',
+      tools: 'Python, SQL, pandas, NumPy',
+      app: 'Data processing and application logic',
     },
     {
-      id: 2,
-      number: '02',
-      badge: 'Module 02 // Visual Intelligence',
-      title: 'Data Analysis & Visualization',
-      duration: 'Months 2–3',
-      desc: 'Convert terabytes of raw operational data into high-impact executive dashboards and actionable business intelligence metrics.',
-      topics: [
-        'Excel AI & Copilot: Advanced Formulae, Automation & MIS Reporting',
-        'Power BI: Data Modeling, DAX Measures, Power Query & Real-Time Dashboards',
-        'Tableau: Visual Analytics, LOD Expressions, Storytelling & Geospatial Maps',
-        'Business Metric Definition: Churn Rate, LTV, CAC & Revenue Cohorts',
-      ],
-      tools: ['Power BI', 'Tableau', 'Excel AI', 'DAX Studio', 'Power Query'],
-      outcome: 'Deliver interactive executive dashboards that C-suite stakeholders rely on for strategic business decisions.',
+      area: 'Visualisation and reporting',
+      tools: 'Power BI, Matplotlib, Seaborn',
+      app: 'Dashboards and analytical communication',
     },
     {
-      id: 3,
-      number: '03',
-      badge: 'Module 03 // Core Intelligence & GenAI',
-      title: 'Data Mining, Machine Learning & AI',
-      duration: 'Months 3–5',
-      desc: 'Build predictive machine learning models, deep neural networks, and modern Generative AI & Autonomous Agentic pipelines.',
-      topics: [
-        'Python Applied Statistics: Hypothesis Testing, ANOVA, Correlation & Distribution Analysis',
-        'Machine Learning: Scikit-Learn, Gradient Boosting (XGBoost, LightGBM, CatBoost)',
-        'Deep Learning & NLP: PyTorch, Neural Architectures, Transformers & Embeddings',
-        'Generative AI: Large Language Models (LLMs), Prompt Engineering & Vector Databases',
-        'Agentic AI: Autonomous Multi-Agent Workflows using LangChain & LangGraph',
-      ],
-      tools: ['Scikit-Learn', 'XGBoost', 'PyTorch', 'LangChain', 'LangGraph', 'ChromaDB'],
-      outcome: 'Design and validate enterprise-grade predictive engines and multi-agent reasoning systems on private data.',
+      area: 'Statistics and Machine Learning',
+      tools: 'SciPy, statsmodels, scikit-learn, XGBoost',
+      app: 'Statistical analysis and prediction',
     },
     {
-      id: 4,
-      number: '04',
-      badge: 'Module 04 // Cloud Production Delivery',
-      title: 'AI Deployment & Operations (MLOps)',
-      duration: 'Months 5–6+',
-      desc: 'Ship enterprise AI models into production on AWS Cloud with high-throughput REST APIs, containerization, and automated CI/CD.',
-      topics: [
-        'FastAPI: High-Performance Asynchronous REST APIs for Model Inference',
-        'Docker: Multi-Stage Containerization & Production Cloud Environments',
-        'AWS Cloud Infrastructure: Amazon EC2, S3, Security Groups & ECS Deployment',
-        'Production MLOps: Experiment Tracking with MLflow, Model Registry & Drift Detection',
-        'LLMOps & AIOps: Prompt Monitoring, Latency Optimization & Automated Retraining',
-      ],
-      tools: ['Docker', 'AWS Cloud', 'FastAPI', 'MLflow', 'GitHub Actions', 'Postman'],
-      outcome: 'Deploy a containerized, live, production AI microservice accessible globally via a high-performance REST API.',
+      area: 'Deep Learning',
+      tools: 'PyTorch or TensorFlow, Hugging Face',
+      app: 'Neural networks and pretrained models',
+    },
+    {
+      area: 'Generative and Agentic AI',
+      tools: 'LLM APIs, LangChain, LlamaIndex, LangGraph',
+      app: 'Retrieval, assistants, and tool-based workflows',
+    },
+    {
+      area: 'Databases',
+      tools: 'PostgreSQL, pgvector or another vector database',
+      app: 'Structured storage and semantic retrieval',
+    },
+    {
+      area: 'Data Engineering',
+      tools: 'dbt, Airflow, Spark where required',
+      app: 'Transformations and pipelines',
+    },
+    {
+      area: 'Application development',
+      tools: 'FastAPI, Streamlit, REST APIs',
+      app: 'Model services and user interfaces',
+    },
+    {
+      area: 'Deployment and operations',
+      tools: 'Git, Docker, GitHub Actions, MLflow, AWS',
+      app: 'Deployment, tracking, and monitoring',
     },
   ];
 
-  // 4. Capstone Projects (Directly aligned with /courses/apids/ & coursesData.ts)
-  const capstoneProjects = [
+  // 7. Career Opportunities (Word Doc)
+  const careerRoles = [
+    'Data Analyst or BI Analyst',
+    'Junior Data Scientist or Data Scientist',
+    'Machine Learning Engineer',
+    'AI Application Developer or Generative AI Engineer',
+    'AI Integration Engineer',
+    'Data Engineer supporting AI applications',
+    'MLOps or Model Deployment Engineer',
+    'AI Solutions Engineer or Technical Implementation Consultant',
+  ];
+
+  const careerProgression = [
+    'Senior Data Scientist',
+    'AI Solutions Architect',
+    'AI Engineering Lead',
+    'Forward Deployed Engineer',
+  ];
+
+  // 8. Industry Projects (All 6 from Word doc - PURE CSS & SVG, ZERO external images for optimal SEO)
+  const industryProjects = [
     {
-      domain: 'Banking & Financial Services',
-      title: 'Enterprise Credit Risk Application Scorecard & ECL',
-      badge: 'BFSI Risk Modeling',
-      problem: 'Assess credit default risk and compute Expected Credit Loss (IFRS 9) across 500,000+ loan applications.',
-      solution: 'Engineered end-to-end scorecard with automated feature engineering, WOE/IV transformation, XGBoost, and SHAP interpretability.',
-      techStack: ['SQL Server', 'Python', 'XGBoost', 'FastAPI', 'AWS'],
-      metric: 'Sub-100ms API latency with 0.88 AUC-ROC benchmark',
+      industry: 'Banking',
+      subtitle: 'Credit Risk Analytics',
+      project: 'Credit risk and collections analytics',
+      deliverable: 'Data pipeline, risk model, explanations, scoring API, and dashboard with human review.',
+      tag: 'BFSI Risk Modeling',
+      icon: (
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <line x1="3" y1="21" x2="21" y2="21" />
+          <line x1="3" y1="10" x2="21" y2="10" />
+          <polyline points="5 6 12 3 19 6" />
+          <line x1="4" y1="10" x2="4" y2="21" />
+          <line x1="20" y1="10" x2="20" y2="21" />
+          <line x1="8" y1="14" x2="8" y2="17" />
+          <line x1="12" y1="14" x2="12" y2="17" />
+          <line x1="16" y1="14" x2="16" y2="17" />
+        </svg>
+      ),
     },
     {
-      domain: 'Healthcare & Life Sciences',
-      title: 'Clinical Patient Readmission & Risk Analytics',
-      badge: 'Healthcare AI',
-      problem: 'Identify high-risk hospital readmissions within 30 days of discharge from electronic health records (EHR).',
-      solution: 'Trained deep learning and tree models on EHR tabular and clinical notes to flag readmission triggers and support triage.',
-      techStack: ['Python', 'PyTorch', 'Scikit-Learn', 'Docker', 'Power BI'],
-      metric: '34% reduction in avoidable hospital readmissions',
+      industry: 'Retail',
+      subtitle: 'Demand Forecasting',
+      project: 'Demand forecasting and inventory planning',
+      deliverable: 'Forecasting pipeline, stock-risk indicators, dashboard, and planning assistant.',
+      tag: 'Supply Chain AI',
+      icon: (
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <circle cx="9" cy="21" r="1" />
+          <circle cx="20" cy="21" r="1" />
+          <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+        </svg>
+      ),
     },
     {
-      domain: 'Retail & E-Commerce',
-      title: 'Dynamic Pricing & Agentic RAG Shopping Assistant',
-      badge: 'GenAI & Retail',
-      problem: 'Optimize catalog pricing in real-time and deliver autonomous conversational product discovery.',
-      solution: 'Multi-agent RAG workflow ingesting private product catalogs with real-time vector search and dynamic elasticity pricing.',
-      techStack: ['LangGraph', 'ChromaDB', 'FastAPI', 'OpenAI APIs', 'AWS'],
-      metric: '99.2% catalog retrieval precision & 18% sales lift',
+      industry: 'Telecom',
+      subtitle: 'Churn Prediction',
+      project: 'Customer churn and retention',
+      deliverable: 'Customer features, churn model, retention recommendations, and service integration.',
+      tag: 'Predictive Retention',
+      icon: (
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <path d="M4.93 19.07a10 10 0 0 1 0-14.14" />
+          <path d="M7.76 16.24a6 6 0 0 1 0-8.48" />
+          <circle cx="12" cy="12" r="2" />
+          <path d="M16.24 7.76a6 6 0 0 1 0 8.48" />
+          <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
+        </svg>
+      ),
     },
     {
-      domain: 'Telecom & Networking',
-      title: 'Customer Churn & Autonomous Telecom Service Desk',
-      badge: 'Big Data & Telecom',
-      problem: 'Detect subscriber churn signals and automate technical fault ticket routing across high-value accounts.',
-      solution: 'Distributed PySpark data pipeline processing 4M+ daily call records combined with automated LangChain resolution workflows.',
-      techStack: ['PySpark', 'Scala', 'Python', 'Tableau', 'Docker'],
-      metric: '4.2M daily events analyzed with 4x faster ticket triage',
+      industry: 'Insurance',
+      subtitle: 'Claims Document AI',
+      project: 'Claims document processing',
+      deliverable: 'Information extraction, validation, exception routing, and review interface.',
+      tag: 'Vision & Language AI',
+      icon: (
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+          <polyline points="14 2 14 8 20 8" />
+          <line x1="16" y1="13" x2="8" y2="13" />
+        </svg>
+      ),
+    },
+    {
+      industry: 'Manufacturing',
+      subtitle: 'Predictive Maintenance',
+      project: 'Predictive maintenance',
+      deliverable: 'Equipment-data processing, anomaly detection, alerts, and monitoring.',
+      tag: 'IoT Telemetry',
+      icon: (
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <circle cx="12" cy="12" r="3" />
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
+        </svg>
+      ),
+    },
+    {
+      industry: 'Enterprise Operations',
+      subtitle: 'Knowledge Assistant',
+      project: 'Knowledge assistant and service workflow',
+      deliverable: 'Permission-aware retrieval, referenced answers, approved tool actions, and escalation.',
+      tag: 'Agentic RAG Assistant',
+      icon: (
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <circle cx="12" cy="12" r="10" />
+          <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+          <line x1="12" y1="17" x2="12.01" y2="17" />
+        </svg>
+      ),
     },
   ];
 
-  const handleNextProject = () => {
-    setActiveProjectSlide((prev) => (prev + 1) % capstoneProjects.length);
-  };
+  // What each capstone should demonstrate (Word Doc)
+  const capstoneDemonstrations = [
+    'A clear business problem and measurable success criteria.',
+    'Data preparation and quality checks.',
+    'A baseline and justified modelling approach.',
+    'Evaluation of accuracy, reliability, latency, and cost.',
+    'A deployed application with appropriate access controls and logging.',
+    'Documentation, user testing, and an improvement plan.',
+  ];
 
-  const handlePrevProject = () => {
-    setActiveProjectSlide((prev) => (prev - 1 + capstoneProjects.length) % capstoneProjects.length);
-  };
+  // 9. Benefits at DV Analytics ("Learn with DV Analytics" - 6 Cards matching flyer image)
+  const platformBenefits = [
+    {
+      title: 'Live Classes',
+      desc: 'Instructor-led learning, interaction, and guided practice.',
+      icon: (
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+          <circle cx="9" cy="7" r="4" />
+          <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+          <rect x="2" y="3" width="14" height="10" rx="1" />
+        </svg>
+      ),
+    },
+    {
+      title: 'LMS Access',
+      desc: 'Recordings, notes, assignments, and learning resources.',
+      icon: (
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
+          <line x1="2" y1="20" x2="22" y2="20" />
+        </svg>
+      ),
+    },
+    {
+      title: 'Industry Projects',
+      desc: 'Practical experience across the complete solution lifecycle.',
+      icon: (
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+          <polyline points="14 2 14 8 20 8" />
+          <circle cx="12" cy="14" r="2" />
+        </svg>
+      ),
+    },
+    {
+      title: 'AI Tests & Mock Interviews',
+      desc: 'Structured assessment, interview practice, and feedback.',
+      icon: (
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
+          <rect x="8" y="2" width="8" height="4" rx="1" ry="1" />
+          <path d="m9 14 2 2 4-4" />
+        </svg>
+      ),
+    },
+    {
+      title: 'Profile Building',
+      desc: 'Support with résumés, LinkedIn profiles, GitHub portfolios, and project presentations.',
+      icon: (
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <circle cx="12" cy="8" r="4" />
+          <path d="M6 21v-2a6 6 0 0 1 12 0v2" />
+        </svg>
+      ),
+    },
+    {
+      title: '100% Placement Support',
+      desc: 'Career guidance, interview preparation, and assistance with relevant opportunities.',
+      icon: (
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+          <circle cx="9" cy="7" r="4" />
+          <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+          <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+        </svg>
+      ),
+    },
+  ];
 
+  // 11. Frequently Asked Questions
   const faqs = [
     {
-      q: 'Can a non-technical or non-CS graduate enroll in APIDS?',
-      a: 'Yes, absolutely. Over 65% of our alumni come from non-CS backgrounds including B.Com, BBA, B.Sc, Mechanical, Civil, and Electrical engineering. The program begins from foundational SQL and Python before progressing to advanced machine learning and cloud deployment.',
+      q: 'Can a non-technical or non-CS graduate enroll in this program?',
+      a: 'Yes, absolutely. Learners from BCom, BBA, BSc, and various engineering backgrounds successfully enroll. The program begins with programming foundations in Python and SQL before progressing to machine learning and production deployment.',
     },
     {
-      q: 'How are the live online sessions conducted?',
-      a: 'Sessions are 100% live and two-way interactive with industry practitioners. You code along in real-time, ask questions directly, and receive full HD session recordings and LMS resources for 24/7 revision.',
+      q: 'What is the delivery mode: Live Online or In-Person Offline?',
+      a: 'Both options are supported. You can attend live interactive online sessions from anywhere, or participate in structured weekend and weekday batches with guided laboratory support.',
     },
     {
-      q: 'How does DV Analytics placement support work?',
-      a: 'Placement preparation starts from Month 4. You receive 1-on-1 resume transformation, GitHub portfolio audits, mock technical interviews with veteran hiring leads, and direct interview referrals across our network of 50+ hiring partner companies.',
+      q: 'What does 100% placement support mean?',
+      a: '100% placement support means dedicated placement assistance: resume transformation, LinkedIn audit, GitHub reviews, AI platform mock interviews, and direct employer interview connections until placed. Outcomes depend on skills, performance, eligibility, and employer selection.',
     },
     {
-      q: 'Are flexible installment and EMI fee options available?',
-      a: 'Yes. We offer zero-cost EMI plans, monthly installment options, and early-bird scholarship discounts. You can discuss the fee schedule during your 1-on-1 counseling call.',
+      q: 'What are the hardware and system prerequisites?',
+      a: 'Any modern computer (Windows, macOS, or Linux) with at least 8GB RAM and an internet connection. Heavy cloud model training and API hosting utilize managed cloud laboratory environments.',
     },
     {
-      q: 'How is APIDS different from traditional online coding platforms?',
-      a: 'Traditional bootcamps only teach basic syntax and toy datasets (like Titanic survival). APIDS focuses on complete production systems: data management, Big Data with PySpark, Generative AI agents, and deploying models to AWS cloud with MLOps. This makes your GitHub portfolio interview-defensible.',
+      q: 'Are installment and EMI fee options available?',
+      a: 'Yes, zero-cost EMI plans and structured milestone installments are available to support learners.',
     },
   ];
 
@@ -568,79 +937,93 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
         <div className="lp-progress-bar-fill" style={{ width: `${scrollProgress}%` }} />
       </div>
 
-      {/* Standalone Distraction-Free Header */}
+      {/* Top Header (Distraction-Free: Logo on left, Call Now on right) */}
       <header className="lp-standalone-header">
-        <div className="lp-header-inner">
-          <a
-            href="/"
-            className="lp-logo-link"
-            onClick={(e) => {
-              if (onNavigateHome) {
-                e.preventDefault();
-                onNavigateHome();
-              }
-            }}
-          >
-            <img src="/logo.png" alt="DV Analytics Logo" className="lp-logo-img" />
-          </a>
-
-
-          <div className="lp-header-actions">
-            <a href="tel:+918095881188" className="lp-header-phone-btn">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
-                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
-              </svg>
-              <span>Call Now</span>
+        <div className="lp-container">
+          <div className="lp-header-inner">
+            <a
+              href="/"
+              className="lp-logo-link"
+              onClick={(e) => {
+                if (onNavigateHome) {
+                  e.preventDefault();
+                  onNavigateHome();
+                }
+              }}
+            >
+              <img src="/logo.png" alt="DV Analytics - Transforming You" className="lp-logo-img" />
             </a>
+
+            <div className="lp-header-actions">
+              <a href="tel:+918095881188" className="lp-header-phone-btn">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
+                  <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+                </svg>
+                <span>Call Now</span>
+              </a>
+            </div>
           </div>
         </div>
       </header>
 
       {/* =========================================================================
-          SCENE 1: THE HERO (MINIMAL, CLEAN & POWERFUL)
+          HERO SECTION (WELL-BALANCED 2-COLUMN GRID, NO EMPTY HOLES)
           ========================================================================= */}
-      <section className="lp-hero-section">
+      <section className="lp-hero-section" id="hero-section">
         <div className="lp-container">
           <div className="lp-hero-grid">
             <div className="lp-hero-left">
-              <div className="lp-hero-batch-badge">
-                <span className="lp-hero-batch-dot" />
-                <span className="lp-hero-batch-title">Next Batch: <strong>24th October 2026</strong></span>
-                <span className="lp-hero-batch-divider">•</span>
-                <span className="lp-hero-batch-time">Closing in {timeLeft.days}d {timeLeft.hours}h {timeLeft.minutes}m</span>
+              <div className="lp-hero-batch-pill">
+                <span className="lp-batch-dot" />
+                <span>Next Batch: <strong>24th October 2026</strong></span>
+                <span className="lp-batch-sep">•</span>
+                <span className="lp-batch-timer">Closes in {timeLeft.days}d {timeLeft.hours}h {timeLeft.minutes}m</span>
               </div>
 
-              <h1 className="lp-hero-title">
-                The Era of Just Writing Syntax is Over. <br />
-                <span className="lp-title-gradient">Advanced Program in Industrial Data Science with AI Deployment (APIDS)</span>
+              <div className="lp-hero-kicker-line">
+                <span className="lp-kicker-text">DV ANALYTICS</span>
+              </div>
+
+              <h1 className="lp-hero-main-heading">
+                Data Science &amp;<br />
+                AI Deployment<br />
+                Engineering
               </h1>
-              <p className="lp-hero-tagline">
-                A <strong>6–8 month</strong> comprehensive program covering the full lifecycle: from SQL &amp; PySpark Big Data to Generative AI agents and live AWS MLOps deployment.
+
+              <p className="lp-hero-bold-tagline">
+                Any Graduate Can Be a Data Scientist
               </p>
 
-              <div className="lp-hero-highlights-grid">
-                <div className="lp-hero-pill">
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="lp-pill-check">
-                    <polyline points="20 6 9 17 4 12" />
+              <p className="lp-hero-sub-text">
+                Build practical skills in analytics, predictive modelling and AI applications.
+              </p>
+
+              <div className="lp-hero-cta-group">
+                <div className="lp-delivery-mode-pill">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
+                    <line x1="2" y1="20" x2="22" y2="20" />
                   </svg>
+                  <span>Live Online &amp; Offline</span>
+                </div>
+              </div>
+
+              {/* 4 Program highlights to perfectly balance height with form */}
+              <div className="lp-hero-badges-grid">
+                <div className="lp-hero-badge-item">
+                  <span className="lp-badge-check">✓</span>
                   <span>6–8 Months Industry Immersion</span>
                 </div>
-                <div className="lp-hero-pill">
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="lp-pill-check">
-                    <polyline points="20 6 9 17 4 12" />
-                  </svg>
+                <div className="lp-hero-badge-item">
+                  <span className="lp-badge-check">✓</span>
                   <span>100% Live Interactive Training</span>
                 </div>
-                <div className="lp-hero-pill">
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="lp-pill-check">
-                    <polyline points="20 6 9 17 4 12" />
-                  </svg>
+                <div className="lp-hero-badge-item">
+                  <span className="lp-badge-check">✓</span>
                   <span>Any Graduate Eligible (Non-CS Welcome)</span>
                 </div>
-                <div className="lp-hero-pill">
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="lp-pill-check">
-                    <polyline points="20 6 9 17 4 12" />
-                  </svg>
+                <div className="lp-hero-badge-item">
+                  <span className="lp-badge-check">✓</span>
                   <span>1-on-1 Mentorship &amp; Placement Support</span>
                 </div>
               </div>
@@ -657,8 +1040,8 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
                   <p style={{ fontSize: '0.92rem', marginBottom: '0', lineHeight: 1.6 }}>
                     Thank you, <strong>{formData.name}</strong>. Your registration for{' '}
                     <strong>{courses.find((c) => c.id === formData.course)?.label || 'APIDS'}</strong> has been
-                    received. Our Senior Academic Counselor will call you at <strong>{formData.phone}</strong> shortly to
-                    finalize your admission and onboarding.
+                    received. Our Academic Counselor will call you at <strong>{formData.phone}</strong> shortly to
+                    finalize your admission.
                   </p>
                 </div>
               ) : (
@@ -762,8 +1145,8 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
                     </div>
                   </div>
 
-                  <button type="submit" className="lp-form-submit-btn" disabled={isSubmitting}>
-                    {isSubmitting ? 'Submitting Registration...' : 'Complete Registration →'}
+                  <button type="submit" className="lp-orange-submit-btn" disabled={isSubmitting}>
+                    {isSubmitting ? 'Submitting Registration...' : 'REGISTER NOW →'}
                   </button>
 
                   <p className="lp-form-privacy-note">Your information is strictly confidential. No spam.</p>
@@ -775,72 +1158,23 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
       </section>
 
       {/* =========================================================================
-          SCENE 2: PROOF & HIRING MARQUEE
+          WORD DOC ORDER 1: ABOUT THE PROGRAM (FULL-WIDTH BALANCED SECTION)
           ========================================================================= */}
-      <section className="lp-marquee-section">
+      <section className="lp-content-section" id="about-program" style={{ background: '#ffffff' }}>
         <div className="lp-container">
-          <p className="lp-marquee-header">Our Placed Alumni Work Across Top Tech Enterprises</p>
-          <div className="lp-marquee-logos">
-            <span className="lp-company-logo-item">AMAZON</span>
-            <span className="lp-company-logo-item">DELOITTE</span>
-            <span className="lp-company-logo-item">ACCENTURE</span>
-            <span className="lp-company-logo-item">IBM</span>
-            <span className="lp-company-logo-item">INFOSYS</span>
-            <span className="lp-company-logo-item">PWC</span>
-            <span className="lp-company-logo-item">CAPGEMINI</span>
-            <span className="lp-company-logo-item">TCS</span>
+          <div className="lp-flyer-section-header">
+            <h2 className="lp-flyer-title">About the Program</h2>
           </div>
 
-          <div className="lp-metrics-strip">
-            <div className="lp-metric-card">
-              <div className="lp-metric-number">9,000+</div>
-              <div className="lp-metric-label">Learners Mentored &amp; Trained</div>
-            </div>
-            <div className="lp-metric-card">
-              <div className="lp-metric-number">50+</div>
-              <div className="lp-metric-label">Enterprise Hiring Partners</div>
-            </div>
-            <div className="lp-metric-card">
-              <div className="lp-metric-number">6–8 Mos</div>
-              <div className="lp-metric-label">Comprehensive Duration</div>
-            </div>
-            <div className="lp-metric-card">
-              <div className="lp-metric-number">100%</div>
-              <div className="lp-metric-label">Production Capstones</div>
-            </div>
-          </div>
-        </div>
-      </section>
+          <p className="lp-section-intro-text">
+            Data Science &amp; AI Deployment Engineering combines data analysis, statistics, machine learning, AI application development, and production deployment. The program is designed to help learners understand the complete solution lifecycle—from identifying a business problem and preparing data to developing models, integrating applications, and monitoring results.
+          </p>
 
-      {/* =========================================================================
-          NEW SECTION: WHY DATA SCIENCE & 2026 MARKET DEMAND
-          ========================================================================= */}
-      <section className="lp-story-section" style={{ background: '#ffffff' }}>
-        <div className="lp-container">
-          <div className="lp-section-header">
-            <span className="lp-section-kicker">Market Intelligence // 2026 Landscape</span>
-            <h2 className="lp-section-title">Why Data Science &amp; AI Engineering in 2026?</h2>
-            <p className="lp-section-desc">
-              Enterprises are moving beyond experimental scripts to production systems. Organizations urgently seek professionals with hands-on Big Data, Generative AI, and cloud deployment skills.
-            </p>
-          </div>
-
-          <div className="lp-market-grid">
-            {marketDemands.map((item) => (
-              <div className="lp-market-card" key={item.id}>
-                <div className="lp-market-card-top">
-                  <span className="lp-market-badge">{item.badge}</span>
-                </div>
-                <div className="lp-market-stat-block">
-                  <div className="lp-market-stat-num">{item.stat}</div>
-                  <div className="lp-market-stat-lbl">{item.statLabel}</div>
-                </div>
-                <h3 className="lp-market-card-title">{item.title}</h3>
-                <p className="lp-market-card-desc">{item.desc}</p>
-                <div className="lp-market-takeaway-chip">
-                  <span className="lp-takeaway-dot" />
-                  <span>{item.takeaway}</span>
-                </div>
+          <div className="lp-capabilities-full-grid">
+            {programCapabilities.map((cap, i) => (
+              <div className="lp-capability-card" key={i}>
+                <div className="lp-capability-num">0{i + 1}</div>
+                <p className="lp-capability-text">{cap}</p>
               </div>
             ))}
           </div>
@@ -848,17 +1182,136 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
       </section>
 
       {/* =========================================================================
-          NEW SECTION: INDUSTRY MARKET SALARY BENCHMARKS
+          WORD DOC ORDER 2: WHY THESE SKILLS MATTER TODAY
           ========================================================================= */}
-      <section className="lp-story-section">
+      <section className="lp-content-section" id="why-skills-matter">
         <div className="lp-container">
-          <div className="lp-section-header">
-            <span className="lp-section-kicker">Compensation Benchmarks // Industry Trends</span>
-            <h2 className="lp-section-title">Industry Market Salary by Experience Level</h2>
-            <p className="lp-section-desc">
-              Based on independent compensation reports from AmbitionBox, Glassdoor &amp; NASSCOM (2025–2026). Career progression accelerates significantly as engineers master deployment and GenAI.
+          <div className="lp-flyer-section-header">
+            <h2 className="lp-flyer-title">Why These Skills Matter Today</h2>
+          </div>
+
+          <p className="lp-section-intro-text">
+            A model becomes useful when people can apply its outputs within their work. Organisations need solutions that use reliable data, produce measurable results, connect with existing systems, and remain dependable after deployment.
+          </p>
+
+          <div className="lp-skills-matrix-wrap">
+            <div className="lp-skills-table-head">
+              <div className="lp-th-left">Business Requirement</div>
+              <div className="lp-th-arrow" />
+              <div className="lp-th-right">Data Science &amp; AI Solution</div>
+            </div>
+
+            {skillsMatterTable.map((row, i) => (
+              <div className="lp-skills-matrix-row" key={i}>
+                <div className="lp-skills-req-box">
+                  <span className="lp-req-badge">Requirement</span>
+                  <p className="lp-req-text">{row.req}</p>
+                </div>
+
+                <div className="lp-skills-arrow-col">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                    <line x1="5" y1="12" x2="19" y2="12" />
+                    <polyline points="12 5 19 12 12 19" />
+                  </svg>
+                </div>
+
+                <div className="lp-skills-sol-box">
+                  <span className="lp-sol-badge">AI Solution</span>
+                  <p className="lp-sol-text">{row.sol}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <p className="lp-section-outro-note">
+            This program connects analytical thinking with the engineering skills needed to deliver such applications.
+          </p>
+        </div>
+      </section>
+
+      {/* =========================================================================
+          WORD DOC ORDER 3: WHO CAN JOIN
+          ========================================================================= */}
+      <section className="lp-content-section" id="who-can-join" style={{ background: '#ffffff' }}>
+        <div className="lp-container">
+          <div className="lp-flyer-section-header">
+            <h2 className="lp-flyer-title">Who Can Join</h2>
+          </div>
+
+          <div className="lp-who-can-join-grid">
+            {whoCanJoinProfiles.map((profile, i) => (
+              <div className="lp-join-profile-card" key={i}>
+                <div className="lp-profile-num-tag">0{i + 1}</div>
+                <p className="lp-join-profile-text">{profile}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="lp-prep-note-box">
+            <h4 className="lp-prep-title">Preparation Guidelines:</h4>
+            <p className="lp-prep-desc">
+              Beginners should develop Python, SQL, basic mathematics, and computer fundamentals. Learners from nontechnical backgrounds may require additional foundation training. Job readiness depends on demonstrated skills and practical work.
             </p>
           </div>
+        </div>
+      </section>
+
+      {/* =========================================================================
+          WORD DOC ORDER 4: YOUR LEARNING PATH (LEARNING APPROACH)
+          6x2 Grid matching Flyer Layout
+          ========================================================================= */}
+      <section className="lp-content-section" id="learning-path">
+        <div className="lp-container">
+          <div className="lp-flyer-section-header">
+            <h2 className="lp-flyer-title">Your Learning Path</h2>
+          </div>
+
+          <p className="lp-section-intro-text">
+            Learn through concept sessions, guided practice, assignments, case studies, code reviews, and complete industry projects.
+          </p>
+
+          <div className="lp-learning-path-flyer-grid">
+            {learningPathModules.map((mod) => (
+              <div
+                className="lp-flyer-module-card"
+                key={mod.id}
+                onClick={() => setSelectedModule(mod.id)}
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') setSelectedModule(mod.id);
+                }}
+              >
+                <div className="lp-flyer-module-icon">{mod.icon}</div>
+                <h3 className="lp-flyer-module-name">{mod.title}</h3>
+                <span className="lp-view-details-hint">
+                  VIEW TOPICS ▼
+                </span>
+              </div>
+            ))}
+          </div>
+
+          <div className="lp-learning-to-delivery-callout">
+            <h3 className="lp-delivery-title">From Learning to Delivery:</h3>
+            <p className="lp-delivery-desc">
+              Apply the learning stages together in capstone projects. Define the business requirement, prepare data, develop and evaluate the solution, integrate it into a workflow, and demonstrate a working deployment.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* =========================================================================
+          WORD DOC ORDER 5: INDUSTRY MARKET SALARY BENCHMARKS
+          ========================================================================= */}
+      <section className="lp-content-section" id="salary-benchmarks" style={{ background: '#ffffff' }}>
+        <div className="lp-container">
+          <div className="lp-flyer-section-header">
+            <h2 className="lp-flyer-title">Industry Market Salary by Experience Level</h2>
+          </div>
+
+          <p className="lp-section-intro-text">
+            Based on independent compensation reports from AmbitionBox, Glassdoor &amp; NASSCOM (2025–2026). Career progression accelerates significantly as engineers master deployment and GenAI.
+          </p>
 
           <div className="lp-salary-grid">
             {salaryTiers.map((tier) => (
@@ -903,499 +1356,187 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
       </section>
 
       {/* =========================================================================
-          SCENE 3: THE 4 CORE MODULES (OFFICIAL APIDS CURRICULUM)
+          WORD DOC ORDER 6: TOOLS AND APPLICATIONS
           ========================================================================= */}
-      <section className="lp-story-section" style={{ background: '#ffffff' }}>
+      <section className="lp-content-section" id="tools-applications">
         <div className="lp-container">
-          <div className="lp-section-header">
-            <span className="lp-section-kicker">Official Curriculum // Aligned with /courses/apids</span>
-            <h2 className="lp-section-title">4 Core Modules: From Data Architecture to Cloud AI</h2>
-            <p className="lp-section-desc">
-              Duration: <strong>6–8 Months</strong> • Live Interactive Training • Real-World Industry Datasets • Production Deployment on AWS.
-            </p>
+          <div className="lp-flyer-section-header">
+            <h2 className="lp-flyer-title">Tools and Applications</h2>
           </div>
 
-          {/* Module Selection Navigation Tabs */}
-          <div className="lp-roadmap-nav">
-            {curriculumModules.map((m) => (
-              <button
-                key={m.id}
-                className={`lp-roadmap-tab-btn ${activeModule === m.id ? 'active' : ''}`}
-                onClick={() => setActiveModule(m.id)}
-              >
-                <span>Module {m.number}</span>
-                <span>•</span>
-                <span>{m.title.split('&')[0]}</span>
-              </button>
+          <p className="lp-section-intro-text">
+            The following is an illustrative toolkit. Projects should use a focused selection suited to their requirements.
+          </p>
+
+          <div className="lp-toolkit-table-container">
+            <table className="lp-toolkit-table">
+              <thead>
+                <tr>
+                  <th>Area</th>
+                  <th>Example Tools</th>
+                  <th>Application</th>
+                </tr>
+              </thead>
+              <tbody>
+                {toolsTableData.map((row, i) => (
+                  <tr key={i}>
+                    <td className="lp-toolkit-area-cell">
+                      <strong>{row.area}</strong>
+                    </td>
+                    <td className="lp-toolkit-tools-cell">
+                      <span className="lp-tool-pill-badge">{row.tools}</span>
+                    </td>
+                    <td className="lp-toolkit-app-cell">{row.app}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      {/* =========================================================================
+          WORD DOC ORDER 7: CAREER OPPORTUNITIES
+          ========================================================================= */}
+      <section className="lp-content-section" id="career-opportunities" style={{ background: '#ffffff' }}>
+        <div className="lp-container">
+          <div className="lp-flyer-section-header">
+            <h2 className="lp-flyer-title">Career Opportunities</h2>
+          </div>
+
+          <p className="lp-section-intro-text">
+            Depending on prior experience, technical ability, and portfolio quality, learners can prepare for:
+          </p>
+
+          <div className="lp-career-roles-grid">
+            {careerRoles.map((role, i) => (
+              <div className="lp-career-role-card" key={i}>
+                <span className="lp-career-check-icon">✓</span>
+                <span className="lp-career-role-name">{role}</span>
+              </div>
             ))}
           </div>
 
-          {/* Active Module Detail Panel */}
-          {curriculumModules.map((mod) => {
-            if (mod.id !== activeModule) return null;
-            return (
-              <div className="lp-phase-active-panel" key={mod.id}>
-                <div className="lp-phase-left">
-                  <div className="lp-module-header-row">
-                    <span className="lp-phase-badge">{mod.badge}</span>
-                    <span className="lp-module-duration-pill">{mod.duration}</span>
-                  </div>
-                  <h3 className="lp-phase-title">{mod.title}</h3>
-                  <p className="lp-phase-desc">{mod.desc}</p>
+          <div className="lp-progression-box">
+            <h4 className="lp-progression-heading">Career Progression Potential:</h4>
+            <p className="lp-progression-desc">
+              With relevant delivery experience, potential progression includes:
+            </p>
+            <div className="lp-progression-badges">
+              {careerProgression.map((prog, i) => (
+                <span className="lp-progression-badge" key={i}>
+                  {prog}
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
 
-                  <div className="lp-phase-topics-grid">
-                    {mod.topics.map((topic, i) => (
-                      <div className="lp-phase-topic-item" key={i}>
-                        <span className="lp-topic-check">
-                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                            <polyline points="20 6 9 17 4 12"></polyline>
-                          </svg>
-                        </span>
-                        <span>{topic}</span>
-                      </div>
-                    ))}
+      {/* =========================================================================
+          WORD DOC ORDER 8: BUILD END-TO-END INDUSTRY PROJECTS
+          NO EXTERNAL IMAGES — 100% SEO-SAFE PURE CSS & VECTOR SVG CARDS
+          ========================================================================= */}
+      <section className="lp-content-section" id="industry-projects">
+        <div className="lp-container">
+          <div className="lp-flyer-section-header">
+            <h2 className="lp-flyer-title">Build End-to-End Industry Projects</h2>
+          </div>
+
+          <p className="lp-section-intro-text">
+            Proposed projects can use public, synthetic, or appropriately authorised datasets. Every project features an end-to-end architecture with verifiable production deliverables.
+          </p>
+
+          {/* All 6 Projects in clean 3x2 grid with pure CSS + SVG, zero images */}
+          <div className="lp-pure-projects-grid">
+            {industryProjects.map((proj, i) => (
+              <div className="lp-pure-project-card" key={i}>
+                <div className="lp-pure-proj-head">
+                  <div className="lp-pure-proj-icon">{proj.icon}</div>
+                  <div className="lp-pure-proj-chart" aria-hidden="true">
+                    <span className="lp-mini-bar b1" />
+                    <span className="lp-mini-bar b2" />
+                    <span className="lp-mini-bar b3" />
+                    <span className="lp-mini-bar b4" />
                   </div>
                 </div>
 
-                <div className="lp-phase-visual-card">
-                  <p className="lp-visual-card-header">Core Tech Stack Mastery</p>
-                  <div className="lp-tools-pills-wrap">
-                    {mod.tools.map((t) => (
-                      <span className="lp-tool-pill" key={t}>
-                        {t}
-                      </span>
-                    ))}
-                  </div>
+                <div className="lp-pure-proj-meta">
+                  <span className="lp-pure-proj-tag">{proj.tag}</span>
+                  <h3 className="lp-pure-proj-industry">{proj.industry}</h3>
+                  <span className="lp-pure-proj-sub">{proj.subtitle}</span>
+                </div>
 
-                  <div className="lp-phase-outcome-box">
-                    <p className="lp-outcome-title">Measurable Production Outcome:</p>
-                    <p className="lp-outcome-text">{mod.outcome}</p>
+                <div className="lp-pure-proj-body">
+                  <div className="lp-pure-proj-point">
+                    <span className="lp-point-label">Project:</span>
+                    <p className="lp-point-val">{proj.project}</p>
+                  </div>
+                  <div className="lp-pure-proj-point">
+                    <span className="lp-point-label">End-to-End Deliverable:</span>
+                    <p className="lp-point-val">{proj.deliverable}</p>
                   </div>
                 </div>
               </div>
-            );
-          })}
-        </div>
-      </section>
-
-      {/* =========================================================================
-          SCENE 4: INTERACTIVE CAPSTONE PROJECTS SLIDE CARDS (FROM /courses/apids)
-          ========================================================================= */}
-      <section className="lp-story-section">
-        <div className="lp-container">
-          <div className="lp-section-header">
-            <span className="lp-section-kicker">Real Production Capstones // Defensible Portfolios</span>
-            <h2 className="lp-section-title">Enterprise Projects Built on Real Industry Data</h2>
-            <p className="lp-section-desc">
-              Zero toy datasets. Explore the actual production pipelines built across 4 major industry verticals.
-            </p>
+            ))}
           </div>
 
-          {/* Interactive Slide Card Carousel */}
-          <div className="lp-slider-container">
-            <div className="lp-slider-nav-bar">
-              <div className="lp-slider-counter">
-                <span className="lp-counter-current">0{activeProjectSlide + 1}</span>
-                <span className="lp-counter-divider">/</span>
-                <span className="lp-counter-total">0{capstoneProjects.length}</span>
-                <span className="lp-counter-label">• {capstoneProjects[activeProjectSlide].domain}</span>
-              </div>
-
-              <div className="lp-slider-nav-actions">
-                <button
-                  type="button"
-                  className="lp-slider-nav-btn"
-                  onClick={handlePrevProject}
-                  aria-label="Previous project slide"
-                >
-                  ←
-                </button>
-                <div className="lp-slider-dots">
-                  {capstoneProjects.map((_, idx) => (
-                    <button
-                      key={idx}
-                      type="button"
-                      className={`lp-slider-dot ${activeProjectSlide === idx ? 'active' : ''}`}
-                      onClick={() => setActiveProjectSlide(idx)}
-                      aria-label={`Go to slide ${idx + 1}`}
-                    />
-                  ))}
+          {/* What each capstone should demonstrate from doc */}
+          <div className="lp-capstone-criteria-box">
+            <h3 className="lp-criteria-main-title">What Each Capstone Should Demonstrate:</h3>
+            <div className="lp-criteria-grid-6">
+              {capstoneDemonstrations.map((item, idx) => (
+                <div className="lp-criteria-item-card" key={idx}>
+                  <span className="lp-crit-num">0{idx + 1}</span>
+                  <p className="lp-crit-text">{item}</p>
                 </div>
-                <button
-                  type="button"
-                  className="lp-slider-nav-btn"
-                  onClick={handleNextProject}
-                  aria-label="Next project slide"
-                >
-                  →
-                </button>
-              </div>
-            </div>
-
-            {/* Slide Card Viewport */}
-            <div className="lp-slider-viewport">
-              <div
-                className="lp-slider-track"
-                style={{ transform: `translateX(-${activeProjectSlide * 100}%)` }}
-              >
-                {capstoneProjects.map((proj, idx) => (
-                  <div className="lp-project-slide-card" key={idx}>
-                    <div className="lp-project-slide-head">
-                      <span className="lp-project-domain-badge">{proj.domain}</span>
-                      <span className="lp-project-badge-tag">{proj.badge}</span>
-                    </div>
-
-                    <h3 className="lp-project-slide-title">{proj.title}</h3>
-
-                    <div className="lp-project-slide-body-grid">
-                      <div className="lp-project-slide-left">
-                        <div className="lp-project-point">
-                          <span className="lp-point-label">Business Problem:</span>
-                          <p className="lp-point-desc">{proj.problem}</p>
-                        </div>
-                        <div className="lp-project-point">
-                          <span className="lp-point-label">Technical Solution:</span>
-                          <p className="lp-point-desc">{proj.solution}</p>
-                        </div>
-                      </div>
-
-                      <div className="lp-project-slide-right">
-                        <div className="lp-project-impact-box">
-                          <div className="lp-impact-label">Production Benchmark Metric:</div>
-                          <div className="lp-impact-val">{proj.metric}</div>
-                        </div>
-
-                        <div className="lp-project-stack-wrap">
-                          <div className="lp-stack-label">Enterprise Tech Stack:</div>
-                          <div className="lp-project-tags">
-                            {proj.techStack.map((s) => (
-                              <span className="lp-project-tag" key={s}>
-                                {s}
-                              </span>
-                            ))}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
+              ))}
             </div>
           </div>
         </div>
       </section>
 
       {/* =========================================================================
-          SCENE 5: THE COMPARISON (OLD BOOTCAMPS VS APIDS)
+          WORD DOC ORDER 9: LEARN WITH DV ANALYTICS
+          3x2 Grid matching Flyer Layout
           ========================================================================= */}
-      <section className="lp-story-section" style={{ background: '#ffffff' }}>
+      <section className="lp-content-section" id="learn-with-dv" style={{ background: '#ffffff' }}>
         <div className="lp-container">
-          <div className="lp-section-header">
-            <span className="lp-section-kicker">Chapter // The Dilemma</span>
-            <h2 className="lp-section-title">Why Traditional Coding Bootcamps Fail</h2>
-            <p className="lp-section-desc">
-              Most institutes still teach textbook syntax and toy datasets from 2018. In 2026, AI can write basic code in seconds. Companies hire engineers who architect and deploy complete systems.
-            </p>
+          <div className="lp-flyer-section-header">
+            <h2 className="lp-flyer-title">Learn with DV Analytics</h2>
           </div>
 
-          <div className="lp-comparison-grid">
-            <div className="lp-compare-card card-legacy">
-              <div className="lp-compare-header">
-                <span className="lp-compare-tag">The Outdated Way</span>
-                <h3 className="lp-compare-title">Generic Online Bootcamps</h3>
+          <div className="lp-flyer-benefits-grid">
+            {platformBenefits.map((b, i) => (
+              <div className="lp-flyer-benefit-card" key={i}>
+                <div className="lp-flyer-benefit-icon">{b.icon}</div>
+                <div className="lp-flyer-benefit-content">
+                  <h3 className="lp-flyer-benefit-title">{b.title}</h3>
+                  <p className="lp-flyer-benefit-desc">{b.desc}</p>
+                </div>
               </div>
-              <ul className="lp-compare-list">
-                <li className="lp-compare-item">
-                  <span className="lp-item-icon" aria-hidden="true">
-                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                      <line x1="18" y1="6" x2="6" y2="18"></line>
-                      <line x1="6" y1="6" x2="18" y2="18"></line>
-                    </svg>
-                  </span>
-                  <span>Basic Python loops and pre-cleaned Titanic/Iris toy datasets.</span>
-                </li>
-                <li className="lp-compare-item">
-                  <span className="lp-item-icon" aria-hidden="true">
-                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                      <line x1="18" y1="6" x2="6" y2="18"></line>
-                      <line x1="6" y1="6" x2="18" y2="18"></line>
-                    </svg>
-                  </span>
-                  <span>Zero exposure to real cloud deployment or high-throughput APIs.</span>
-                </li>
-                <li className="lp-compare-item">
-                  <span className="lp-item-icon" aria-hidden="true">
-                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                      <line x1="18" y1="6" x2="6" y2="18"></line>
-                      <line x1="6" y1="6" x2="18" y2="18"></line>
-                    </svg>
-                  </span>
-                  <span>Trained by junior teaching assistants with zero corporate consulting exposure.</span>
-                </li>
-                <li className="lp-compare-item">
-                  <span className="lp-item-icon" aria-hidden="true">
-                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                      <line x1="18" y1="6" x2="6" y2="18"></line>
-                      <line x1="6" y1="6" x2="18" y2="18"></line>
-                    </svg>
-                  </span>
-                  <span>Leaves you with a GitHub profile identical to 10,000 other applicants.</span>
-                </li>
-              </ul>
-            </div>
-
-            <div className="lp-compare-card card-apids">
-              <span className="lp-card-crown-badge">The Industry Standard</span>
-              <div className="lp-compare-header">
-                <span className="lp-compare-tag">The APIDS Immersion</span>
-                <h3 className="lp-compare-title">APIDS: Industrial Data Science with AI Deployment</h3>
-              </div>
-              <ul className="lp-compare-list">
-                <li className="lp-compare-item">
-                  <span className="lp-item-icon" aria-hidden="true">
-                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                      <polyline points="20 6 9 17 4 12"></polyline>
-                    </svg>
-                  </span>
-                  <span>Multi-million row enterprise banking, retail &amp; healthcare datasets.</span>
-                </li>
-                <li className="lp-compare-item">
-                  <span className="lp-item-icon" aria-hidden="true">
-                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                      <polyline points="20 6 9 17 4 12"></polyline>
-                    </svg>
-                  </span>
-                  <span>Full-lifecycle AI: From SQL extraction to AWS Cloud MLOps &amp; Docker deployment.</span>
-                </li>
-                <li className="lp-compare-item">
-                  <span className="lp-item-icon" aria-hidden="true">
-                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                      <polyline points="20 6 9 17 4 12"></polyline>
-                    </svg>
-                  </span>
-                  <span>Mentored directly by founders with 18+ years of international corporate delivery.</span>
-                </li>
-                <li className="lp-compare-item">
-                  <span className="lp-item-icon" aria-hidden="true">
-                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                      <polyline points="20 6 9 17 4 12"></polyline>
-                    </svg>
-                  </span>
-                  <span>Production-grade GitHub portfolio ready to defend during technical hiring rounds.</span>
-                </li>
-              </ul>
-            </div>
+            ))}
           </div>
+
+          <p className="lp-flyer-compliance-footnote">
+            Placement assistance. Employment outcomes depend on skills and employer selection.
+          </p>
         </div>
       </section>
 
       {/* =========================================================================
-          SCENE 6: THE LEARNING ECOSYSTEM
+          WORD DOC ORDER 10: PROGRAM OUTCOME & REGISTRATION COUNTDOWN GATE
           ========================================================================= */}
-      <section className="lp-story-section">
+      <section className="lp-content-section" id="program-outcome">
         <div className="lp-container">
-          <div className="lp-section-header">
-            <span className="lp-section-kicker">Chapter // Learning Delivery</span>
-            <h2 className="lp-section-title">How You Will Learn: Live, Practical &amp; Interactive</h2>
-            <p className="lp-section-desc">
-              Experience two-way interactive live sessions with real-time screen sharing, cloud lab sandboxes, and dedicated mentor guidance.
-            </p>
-          </div>
-
-          <div className="lp-campuses-grid">
-            {/* Live Interactive Card */}
-            <div className="lp-campus-card online">
-              <span className="lp-campus-badge">100% Live &amp; Interactive</span>
-              <h3 className="lp-campus-city">Live Expert Sessions</h3>
-              <p className="lp-campus-address">
-                Two-way interactive live sessions led by industry veterans. Ask doubts in real-time, code along with mentors, and collaborate with peers across India.
-              </p>
-              <ul className="lp-campus-facilities-list">
-                <li className="lp-campus-facility-item">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
-                  </svg>
-                  <span>Weekend &amp; Evening Flexible Timings</span>
-                </li>
-                <li className="lp-campus-facility-item">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
-                  </svg>
-                  <span>Live Architecture Coding &amp; Whiteboarding</span>
-                </li>
-                <li className="lp-campus-facility-item">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
-                  </svg>
-                  <span>Instant In-Class Doubt Resolution</span>
-                </li>
-              </ul>
-              <button onClick={scrollToForm} className="lp-campus-cta-btn">
-                Check Live Batch Schedule →
-              </button>
-            </div>
-
-            {/* Production AI Deployment Card */}
-            <div className="lp-campus-card bangalore">
-              <span className="lp-campus-badge">Production AI Deployment</span>
-              <h3 className="lp-campus-city">Live AI Deployment &amp; MLOps</h3>
-              <p className="lp-campus-address">
-                Move models out of notebooks into live cloud production. Package predictive algorithms, LLMs, and multi-agent systems as containerized cloud microservices on AWS.
-              </p>
-              <ul className="lp-campus-facilities-list">
-                <li className="lp-campus-facility-item">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
-                  </svg>
-                  <span>FastAPI High-Throughput Inference APIs</span>
-                </li>
-                <li className="lp-campus-facility-item">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
-                  </svg>
-                  <span>Docker Containerization &amp; AWS Cloud Infrastructure</span>
-                </li>
-                <li className="lp-campus-facility-item">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
-                  </svg>
-                  <span>Production MLOps, MLflow Tracking &amp; Drift Monitoring</span>
-                </li>
-              </ul>
-              <button onClick={scrollToForm} className="lp-campus-cta-btn">
-                Explore AI Deployment Stack →
-              </button>
-            </div>
-
-            {/* 24/7 LMS & Mentorship Card */}
-            <div className="lp-campus-card bhubaneswar">
-              <span className="lp-campus-badge">24/7 LMS &amp; Mentorship</span>
-              <h3 className="lp-campus-city">LMS &amp; Career Support</h3>
-              <p className="lp-campus-address">
-                Never fall behind. Access HD session recordings anytime, alongside downloadable repository codebases and 1-on-1 interview preparation support.
-              </p>
-              <ul className="lp-campus-facilities-list">
-                <li className="lp-campus-facility-item">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
-                  </svg>
-                  <span>Lifetime LMS Access to All Recordings</span>
-                </li>
-                <li className="lp-campus-facility-item">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
-                  </svg>
-                  <span>ATS Resume, GitHub &amp; LinkedIn Optimization</span>
-                </li>
-                <li className="lp-campus-facility-item">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
-                  </svg>
-                  <span>1-on-1 Technical Mock Interviews</span>
-                </li>
-              </ul>
-              <button onClick={scrollToForm} className="lp-campus-cta-btn">
-                Apply for Next Batch →
-              </button>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* =========================================================================
-          SCENE 7: ALUMNI TRANSFORMATIONS
-          ========================================================================= */}
-      <section className="lp-story-section" style={{ background: '#ffffff' }}>
-        <div className="lp-container">
-          <div className="lp-section-header">
-            <span className="lp-section-kicker">Chapter // Career Outcomes</span>
-            <h2 className="lp-section-title">Real Alumni. Real Transformations.</h2>
-            <p className="lp-section-desc">
-              From non-technical degrees and career breaks to high-growth Data Science &amp; AI careers.
-            </p>
-          </div>
-
-          <div className="lp-testimonials-grid">
-            <div className="lp-testi-card">
-              <div className="lp-transition-pill">
-                <span className="lp-prev-role">B.E. Mechanical</span>
-                <span className="lp-trans-arrow" aria-hidden="true">
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                    <line x1="5" y1="12" x2="19" y2="12"></line>
-                    <polyline points="12 5 19 12 12 19"></polyline>
-                  </svg>
-                </span>
-                <span className="lp-next-role">Data Scientist</span>
-              </div>
-              <p className="lp-testi-quote">
-                "Coming from a mechanical engineering background with zero coding, I was terrified of Python. DV
-                Analytics taught SQL and ML from the absolute ground up. Today I am deploying models at a top financial
-                firm."
-              </p>
-              <div className="lp-student-footer">
-                <span className="lp-student-name">Sourabh P.</span>
-                <span className="lp-student-placed">Placed at Top MNC</span>
-              </div>
-            </div>
-
-            <div className="lp-testi-card">
-              <div className="lp-transition-pill">
-                <span className="lp-prev-role">B.Com Fresher</span>
-                <span className="lp-trans-arrow" aria-hidden="true">
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                    <line x1="5" y1="12" x2="19" y2="12"></line>
-                    <polyline points="12 5 19 12 12 19"></polyline>
-                  </svg>
-                </span>
-                <span className="lp-next-role">Data Analyst</span>
-              </div>
-              <p className="lp-testi-quote">
-                "People told me Data Science requires a CS degree. The real-world banking capstone project gave me the
-                exact confidence needed to clear technical interview rounds."
-              </p>
-              <div className="lp-student-footer">
-                <span className="lp-student-name">Ananya M.</span>
-                <span className="lp-student-placed">Placed at Tech Global</span>
-              </div>
-            </div>
-
-            <div className="lp-testi-card">
-              <div className="lp-transition-pill">
-                <span className="lp-prev-role">3-Yr Career Break</span>
-                <span className="lp-trans-arrow" aria-hidden="true">
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                    <line x1="5" y1="12" x2="19" y2="12"></line>
-                    <polyline points="12 5 19 12 12 19"></polyline>
-                  </svg>
-                </span>
-                <span className="lp-next-role">AI Engineer</span>
-              </div>
-              <p className="lp-testi-quote">
-                "Restarting my career after a 3-year gap felt impossible. The 1-on-1 resume transformation and mentor
-                mock interviews completely changed the trajectory of my career."
-              </p>
-              <div className="lp-student-footer">
-                <span className="lp-student-name">Priyanka R.</span>
-                <span className="lp-student-placed">Placed at Analytics Firm</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* =========================================================================
-          SCENE 8: COUNTDOWN & FINAL DECISION GATE
-          ========================================================================= */}
-      <section className="lp-final-cta-section">
-        <div className="lp-container">
-          <div className="lp-final-cta-box">
-            <span className="lp-chapter-badge">NEXT BATCH: 24TH OCTOBER // RESERVE YOUR SEAT</span>
-            <h2 className="lp-section-title" style={{ maxWidth: '700px', margin: '0 auto 12px' }}>
-              Next Batch Commences on 24th October. Limited Seats Available.
+          <div className="lp-outcome-decision-card">
+            <span className="lp-chapter-badge">PROGRAM OUTCOME // NEXT BATCH: 24TH OCTOBER</span>
+            <h2 className="lp-outcome-heading">
+              Build a portfolio that demonstrates your ability to turn business data into insights, predictive models, and deployed AI applications.
             </h2>
-            <p className="lp-section-desc" style={{ maxWidth: '600px', margin: '0 auto' }}>
-              We maintain small batch sizes of 15–20 learners per batch to guarantee 1-on-1 mentor guidance. Reserve
-              your seat before registration closes in:
+
+            <p className="lp-outcome-subtext">
+              We maintain small batch sizes of 15–20 learners per batch to guarantee 1-on-1 mentor guidance. Reserve your seat before registration closes in:
             </p>
 
             <div className="lp-countdown-strip">
@@ -1417,15 +1558,13 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
               </div>
             </div>
 
-            <div className="lp-final-cta-row">
-              <button onClick={scrollToForm} className="lp-btn-cta-primary">
-                Apply for Next Batch Now →
+            <div className="lp-outcome-cta-row">
+              <button type="button" onClick={scrollToForm} className="lp-orange-cta-btn">
+                <span>REGISTER NOW</span>
+                <span className="lp-arrow-icon">→</span>
               </button>
-              <a
-                href="tel:+918095881188"
-                className="lp-btn-cta-secondary"
-              >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" style={{ flexShrink: 0 }}>
+              <a href="tel:+918095881188" className="lp-btn-cta-secondary">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ flexShrink: 0 }}>
                   <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
                 </svg>
                 <span>Call Now</span>
@@ -1436,21 +1575,24 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
       </section>
 
       {/* =========================================================================
-          SCENE 9: FAQ ACCORDION
+          WORD DOC ORDER 11: FREQUENTLY ASKED QUESTIONS
           ========================================================================= */}
-      <section className="lp-story-section" style={{ background: '#ffffff', paddingTop: '20px' }}>
+      <section className="lp-content-section" id="faqs" style={{ background: '#ffffff', paddingTop: '30px' }}>
         <div className="lp-container">
-          <div className="lp-section-header">
-            <span className="lp-section-kicker">Got Questions?</span>
-            <h2 className="lp-section-title">Frequently Asked Questions</h2>
+          <div className="lp-flyer-section-header">
+            <h2 className="lp-flyer-title">Frequently Asked Questions</h2>
           </div>
 
           <div className="lp-faq-container">
             {faqs.map((faq, idx) => (
               <div className={`lp-faq-item ${openFaq === idx ? 'open' : ''}`} key={idx}>
-                <button className="lp-faq-question-btn" onClick={() => setOpenFaq(openFaq === idx ? null : idx)}>
+                <button
+                  type="button"
+                  className="lp-faq-question-btn"
+                  onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
+                >
                   <span>{faq.q}</span>
-                  <span className="lp-faq-icon">+</span>
+                  <span className="lp-faq-icon">{openFaq === idx ? '−' : '+'}</span>
                 </button>
                 {openFaq === idx && <div className="lp-faq-answer">{faq.a}</div>}
               </div>
@@ -1459,6 +1601,21 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
         </div>
       </section>
 
+      {/* =========================================================================
+          WORD DOC ORDER 12: BOTTOM BANNER
+          ========================================================================= */}
+      <div className="lp-flyer-bottom-banner">
+        <div className="lp-container">
+          <div className="lp-flyer-banner-inner">
+            <h3 className="lp-flyer-banner-text">Build Your Data Science &amp; AI Career</h3>
+            <button type="button" onClick={scrollToForm} className="lp-flyer-banner-orange-btn">
+              <span>REGISTER NOW</span>
+              <span className="lp-arrow-icon">→</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
       {/* Standalone Footer */}
       <footer className="lp-standalone-footer">
         <div className="lp-container">
@@ -1466,20 +1623,90 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
         </div>
       </footer>
 
-      {/* Mobile Floating Sticky Action Bar */}
+      {/* Mobile Sticky Bar */}
       <div className="lp-mobile-sticky-bar">
         <div className="lp-mobile-actions-grid lp-mobile-actions-grid-2">
           <a href="tel:+918095881188" className="lp-mobile-btn lp-mobile-call">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" style={{ flexShrink: 0 }}>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ flexShrink: 0 }}>
               <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
             </svg>
             Call Now
           </a>
-          <button onClick={scrollToForm} className="lp-mobile-btn lp-mobile-apply">
-            Apply Now →
+          <button type="button" onClick={scrollToForm} className="lp-mobile-btn lp-mobile-apply">
+            Register Now →
           </button>
         </div>
       </div>
+
+      {/* Module Details Modal Popup */}
+      {selectedModule !== null && activePopupModule && (
+        <div className="lp-modal-backdrop" onClick={() => setSelectedModule(null)}>
+          <div
+            className="lp-module-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="modal-module-title"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="lp-modal-header">
+              <div className="lp-modal-header-left">
+                <div className="lp-modal-icon">{activePopupModule.icon}</div>
+                <div>
+                  <span className="lp-modal-badge">Module 0{activePopupModule.id}</span>
+                  <h3 id="modal-module-title" className="lp-modal-title">
+                    {activePopupModule.title}
+                  </h3>
+                </div>
+              </div>
+              <button
+                type="button"
+                className="lp-modal-close-btn"
+                onClick={() => setSelectedModule(null)}
+                aria-label="Close details"
+              >
+                ✕
+              </button>
+            </div>
+
+            <div className="lp-modal-body">
+              <p className="lp-modal-summary">{activePopupModule.summary}</p>
+
+              <div>
+                <h4 className="lp-modal-topics-title">Topics &amp; Practical Deliverables:</h4>
+                <ul className="lp-modal-topics-list">
+                  {activePopupModule.topics.map((t, idx) => (
+                    <li key={idx}>
+                      <span className="lp-modal-topic-check">✓</span>
+                      <span>{t}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+
+            <div className="lp-modal-footer">
+              <button
+                type="button"
+                className="lp-modal-btn-close"
+                onClick={() => setSelectedModule(null)}
+              >
+                Close
+              </button>
+              <button
+                type="button"
+                className="lp-modal-btn-register"
+                onClick={() => {
+                  setSelectedModule(null);
+                  scrollToForm();
+                }}
+              >
+                <span>REGISTER NOW</span>
+                <span className="lp-arrow-icon">→</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
