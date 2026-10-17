@@ -2009,13 +2009,13 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
 </section>
 
       {/* -------------------------------------------------------------------------
-          SECTION 9: INDUSTRY PROJECTS WITH AI DEPLOYMENT
+          SECTION 9: INDUSTRY PROJECTS WITH END-TO-END AI DEPLOYMENT
           ------------------------------------------------------------------------- */}
       <section className="industry-projects-section" id="projects" style={{ padding: '60px 0', borderBottom: '1px solid var(--line)' }}>
         <div className="wrap">
           <div className="sec-head">
             <span className="eyebrow">Real-World Capstones</span>
-            <h2>Industry Projects with AI Deployment</h2>
+            <h2>Industry Projects with End-to-End AI Deployment</h2>
             <p className="lead">
               Industry-focused projects covering data preparation, analysis, modelling, deployment and monitoring. Move beyond toy datasets to build verifiable business assets.
             </p>
@@ -2114,7 +2114,10 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
         <div className="wrap">
           <div className="sec-head">
             <span className="eyebrow">Proven Methodology</span>
-            <h2>Success @ DV Analytics: The 6-Step Career Engine</h2>
+            <h2>
+              Success @ DV Analytics:{' '}
+              <span className="career-engine-highlight">The 6-Step Career Engine</span>
+            </h2>
             <p className="lead">
               A disciplined, mentor-led pathway ensuring you build skills step by step and present your work with executive confidence.
             </p>

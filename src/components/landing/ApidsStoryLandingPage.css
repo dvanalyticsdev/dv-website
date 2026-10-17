@@ -2745,9 +2745,9 @@ footer.lp-footer .wrap {
 
 .proj-badge {
   align-self: flex-start;
-  font: 700 0.74rem/1 var(--mono);
-  padding: 5px 12px;
-  border-radius: 999px;
+  font: 700 0.82rem/1 var(--mono);
+  padding: 7px 14px;
+  border-radius: 6px;
   background: #FFFFFF;
   color: #000000;
   letter-spacing: 0.05em;
@@ -2816,6 +2816,25 @@ footer.lp-footer .wrap {
 /* --------------------------------------------------------------------------
    CAREER ENGINE (SUCCESS @ DV ANALYTICS)
    -------------------------------------------------------------------------- */
+.career-engine-section .sec-head {
+  max-width: 1100px;
+}
+
+.career-engine-section .sec-head h2 {
+  font-size: clamp(1.6rem, 2.8vw, 2.45rem);
+  white-space: nowrap;
+}
+
+.career-engine-highlight {
+  color: #EF5323;
+}
+
+@media (max-width: 960px) {
+  .career-engine-section .sec-head h2 {
+    white-space: normal;
+  }
+}
+
 .career-engine-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
