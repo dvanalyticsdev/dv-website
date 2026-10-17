@@ -108,6 +108,16 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
   const [formError, setFormError] = useState('');
   const [selectedModule, setSelectedModule] = useState<number | null>(null);
   const [showDeepDive, setShowDeepDive] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  useEffect(() => {
+    if (!mobileMenuOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setMobileMenuOpen(false);
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [mobileMenuOpen]);
 
   // Verified Google Reviews Carousel State
   const [reviewIndex, setReviewIndex] = useState(0);
@@ -225,13 +235,17 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
 
   const scrollToForm = () => {
     const heroForm = document.getElementById('apids-hero-lead-form');
-    const bottomForm = document.getElementById('apids-lead-form');
-    if (window.scrollY > 1200 && bottomForm) {
-      bottomForm.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    } else if (heroForm) {
+    if (heroForm) {
       heroForm.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    } else if (bottomForm) {
-      bottomForm.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  };
+
+  const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
+    e.preventDefault();
+    setMobileMenuOpen(false);
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
@@ -300,7 +314,7 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
           {formError && <div className="lp-form-error-banner">{formError}</div>}
 
           <div className="lp-form-field">
-            <label className="lp-form-label">Full Name *</label>
+            <label className="lp-form-label">Full Name</label>
             <input
               type="text"
               className="lp-form-input"
@@ -313,7 +327,7 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
 
           <div className="lp-form-row-2">
             <div className="lp-form-field">
-              <label className="lp-form-label">Email Address *</label>
+              <label className="lp-form-label">Email Address</label>
               <input
                 type="email"
                 className="lp-form-input"
@@ -325,7 +339,7 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
             </div>
 
             <div className="lp-form-field">
-              <label className="lp-form-label">Phone Number *</label>
+              <label className="lp-form-label">Phone Number</label>
               <input
                 type="tel"
                 className="lp-form-input"
@@ -341,7 +355,7 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
 
           <div className="lp-form-row-2">
             <div className="lp-form-field">
-              <label className="lp-form-label">Highest Qualification *</label>
+              <label className="lp-form-label">Highest Qualification</label>
               <LpCustomSelect
                 options={qualificationOptions}
                 value={formData.qualification}
@@ -352,7 +366,7 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
             </div>
 
             <div className="lp-form-field">
-              <label className="lp-form-label">Experience *</label>
+              <label className="lp-form-label">Experience</label>
               <LpCustomSelect
                 options={experienceOptions}
                 value={formData.experience}
@@ -365,7 +379,7 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
 
           <div className="lp-form-row-2">
             <div className="lp-form-field">
-              <label className="lp-form-label">State / Location *</label>
+              <label className="lp-form-label">State / Location</label>
               <LpCustomSelect
                 options={locationOptions}
                 value={formData.state}
@@ -376,7 +390,7 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
             </div>
 
             <div className="lp-form-field">
-              <label className="lp-form-label">Course *</label>
+              <label className="lp-form-label">Course</label>
               <input
                 type="text"
                 className="lp-form-input"
@@ -631,10 +645,100 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
             <img src="/logo.png" alt="DV Analytics" className="logo" />
           </a>
 
-          <button type="button" onClick={scrollToForm} className="btn">
-            REGISTER NOW →
-          </button>
+          {/* Desktop Navigation */}
+          <nav className="lp-nav" aria-label="Main Navigation">
+            <a href="#skills" onClick={(e) => scrollToSection(e, 'skills')}>Curriculum</a>
+            <a href="#tools" onClick={(e) => scrollToSection(e, 'tools')}>Tools</a>
+            <a href="#projects" onClick={(e) => scrollToSection(e, 'projects')}>Projects</a>
+            <a href="#career-engine" onClick={(e) => scrollToSection(e, 'career-engine')}>Career Engine</a>
+            <a href="#reviews" onClick={(e) => scrollToSection(e, 'reviews')}>Reviews</a>
+            <a href="#faq" onClick={(e) => scrollToSection(e, 'faq')}>FAQ</a>
+            <a href="#offices" onClick={(e) => scrollToSection(e, 'offices')}>Offices</a>
+          </nav>
+
+          <div className="top-actions">
+            <button type="button" onClick={scrollToForm} className="btn top-cta-btn">
+              REGISTER NOW →
+            </button>
+
+            {/* Mobile Hamburger Toggle */}
+            <button
+              type="button"
+              className="lp-hamburger-btn"
+              onClick={() => setMobileMenuOpen((prev) => !prev)}
+              aria-label={mobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
+              aria-expanded={mobileMenuOpen}
+            >
+              {mobileMenuOpen ? (
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <line x1="18" y1="6" x2="6" y2="18" />
+                  <line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
+              ) : (
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <line x1="3" y1="6" x2="21" y2="6" />
+                  <line x1="3" y1="12" x2="21" y2="12" />
+                  <line x1="3" y1="18" x2="21" y2="18" />
+                </svg>
+              )}
+            </button>
+          </div>
         </div>
+
+        {/* Mobile Dropdown Drawer */}
+        <div className={`lp-mobile-menu ${mobileMenuOpen ? 'open' : ''}`} aria-hidden={!mobileMenuOpen}>
+          <nav className="lp-mobile-nav" aria-label="Mobile Navigation">
+            <a href="#skills" onClick={(e) => scrollToSection(e, 'skills')}>
+              <span>Curriculum (9 Pillars)</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </a>
+            <a href="#tools" onClick={(e) => scrollToSection(e, 'tools')}>
+              <span>34+ Core Tools</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </a>
+            <a href="#projects" onClick={(e) => scrollToSection(e, 'projects')}>
+              <span>Industry Projects</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </a>
+            <a href="#career-engine" onClick={(e) => scrollToSection(e, 'career-engine')}>
+              <span>6-Step Career Engine</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </a>
+            <a href="#reviews" onClick={(e) => scrollToSection(e, 'reviews')}>
+              <span>Student Reviews</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </a>
+            <a href="#faq" onClick={(e) => scrollToSection(e, 'faq')}>
+              <span>FAQs</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </a>
+            <a href="#offices" onClick={(e) => scrollToSection(e, 'offices')}>
+              <span>Visit Our Offices</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </a>
+          </nav>
+          <div className="lp-mobile-menu-footer">
+            <button
+              type="button"
+              onClick={() => {
+                setMobileMenuOpen(false);
+                scrollToForm();
+              }}
+              className="btn lp-mobile-cta-btn"
+            >
+              REGISTER NOW →
+            </button>
+          </div>
+        </div>
+
+        {/* Mobile Backdrop */}
+        {mobileMenuOpen && (
+          <div
+            className="lp-mobile-backdrop"
+            onClick={() => setMobileMenuOpen(false)}
+            aria-hidden="true"
+          />
+        )}
       </header>
 
       {/* -------------------------------------------------------------------------
@@ -672,7 +776,6 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
         <div className="wrap">
           <div className="hero-content-grid">
             <div className="hero-left-content">
-              <span className="eyebrow">Data Science with AI Deployment Engineering · APIDS</span>
               <div style={{ font: '700 0.85rem/1 var(--mono)', color: 'var(--navy)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '8px' }}>
                 DV Analytics | Transforming You
               </div>
@@ -765,25 +868,22 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
         <div className="wrap">
           <div className="min-grid">
             <article>
-              <span className="eyebrow">In one minute</span>
               <h3>What is it?</h3>
               <p>
                 Data Science with AI Deployment Engineering combines data understanding with deployment engineering to make AI solutions usable in daily business operations.
               </p>
             </article>
             <article>
-              <span className="eyebrow">Peak Industry Demand</span>
               <h3>Why is it in demand?</h3>
               <p>
                 Organisations need professionals who connect data and AI capabilities with practical business outcomes across banking, retail, healthcare, telecom, and e-commerce.
               </p>
             </article>
             <article>
-              <span className="eyebrow">Getting Started</span>
               <h3>How do I start?</h3>
               <p>
                 Build foundational skills step-by-step from Python and SQL to machine learning, APIs, and cloud deployment with mentor review.{' '}
-                <a href="#apids-lead-form" onClick={(e) => { e.preventDefault(); scrollToForm(); }}>
+                <a href="#apids-hero-lead-form" onClick={(e) => { e.preventDefault(); scrollToForm(); }}>
                   Join DV Analytics
                 </a>.
               </p>
@@ -798,7 +898,6 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
       <section className="what" id="what-is-apids">
         <div className="wrap">
           <div className="sec-head">
-            <span className="eyebrow">Program Definition</span>
             <h2>What is Data Science with AI Deployment Engineering?</h2>
           </div>
           <div className="what-text">
@@ -852,7 +951,6 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
       <section className="why-demand" style={{ padding: '60px 0', borderBottom: '1px solid var(--line)' }}>
         <div className="wrap">
           <div className="sec-head">
-            <span className="eyebrow">Industry Relevance</span>
             <h2>Why is it in Demand?</h2>
             <p className="lead">
               Organisations need professionals who can connect data and AI capabilities with practical business outcomes. Building an isolated model is only one part of the solution.
@@ -904,7 +1002,6 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
       <section className="learning-journey-stages" style={{ padding: '60px 0', borderBottom: '1px solid var(--line)' }}>
         <div className="wrap">
           <div className="sec-head">
-            <span className="eyebrow">The 7-Step Roadmap</span>
             <h2>How to Become a Data Scientist with AI Deployment Engineering</h2>
             <p className="lead">
               Progress depends on consistent practice. Attending classes should be followed by independent coding, assignments and practical project work.
@@ -1165,7 +1262,6 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
         <div className="wrap">
           <div className="know-more-bar">
             <div className="know-more-info">
-              <span className="eyebrow">Industry Market Context</span>
               <h3>Want to understand why companies hire APIDS &amp; why AI cannot replace it?</h3>
               <p>Explore our deep-dive analysis on 2026 hiring demand, the 5-specialist breakdown, and the Barbell Theory of tech careers.</p>
             </div>
@@ -1191,7 +1287,6 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
           <section id="why-fde">
             <div className="wrap">
               <div className="sec-head">
-                <span className="eyebrow">Why APIDS for You</span>
                 <h2>Why companies are hiring Data Science &amp; AI Deployment Engineers</h2>
                 <p className="lead">
                   AI products rarely work the day a customer buys them. Someone has to make them work in the customer&#39;s real world.
@@ -1214,7 +1309,6 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
 
               <div className="vs">
                 <div className="vs-box then">
-                  <span className="eyebrow">Earlier</span>
                   <h3>Five specialists for one product</h3>
                   <ul>
                     <li>A business analyst to frame the question</li>
@@ -1225,7 +1319,6 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
                   </ul>
                 </div>
                 <div className="vs-box now">
-                  <span className="eyebrow">Now</span>
                   <h3>One person who covers the full path</h3>
                   <ul>
                     <li>Uses AI copilots as a force multiplier to code faster</li>
@@ -1244,7 +1337,6 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
           <section className="ai" id="ai-cannot-replace">
             <div className="wrap">
               <div className="sec-head">
-                <span className="eyebrow">AI and the Deployment Engineer</span>
                 <h2>Why AI cannot replace a Data Science &amp; AI Deployment Engineer</h2>
                 <p className="lead">
                   AI is exceptional at isolated tasks. A role that is only one task gets automated quickly. The AI Deployment Engineer job is multiple connected disciplines plus the human element: framing real client needs, judging edge cases, and taking responsibility for live production.
@@ -1373,7 +1465,6 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
       <section className="who-can" id="who-can-start" style={{ padding: '60px 0', borderBottom: '1px solid var(--line)' }}>
         <div className="wrap">
           <div className="sec-head">
-            <span className="eyebrow">Audience &amp; Eligibility</span>
             <h2>Who Can Start This Career?</h2>
             <p className="lead">
               <strong>(ANY GRADUATE CAN BE A DATA SCIENTIST)</strong> · The programme is designed for learners from technical and non-technical backgrounds, fresh graduates, and experienced professionals transitioning into high-impact AI careers.
@@ -1442,7 +1533,6 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
       <section id="skills" style={{ padding: '60px 0', borderBottom: '1px solid var(--line)' }}>
         <div className="wrap">
           <div className="sec-head">
-            <span className="eyebrow">Comprehensive Syllabus</span>
             <h2>The 9 Pillars of Data Science with AI Deployment Engineering</h2>
             <p className="lead">
               You do not need to master everything at once. You learn the skills module by module, then deploy them together on real-world projects. <strong>Tap any pillar below to inspect the complete syllabus and practical deliverables.</strong>
@@ -1491,7 +1581,6 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
 
           <div className="split" style={{ marginTop: '40px' }}>
             <div>
-              <span className="eyebrow">Work Breakdown</span>
               <h3>How much of the job is code?</h3>
               <div className="bar" role="img" aria-label="60% Code & Data, 20% Cloud & Systems, 20% Client & Strategy">
                 <div className="b1">60%<span className="bar-tag"> Code</span></div>
@@ -1506,7 +1595,6 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
             </div>
 
             <div>
-              <span className="eyebrow">Learning Sequence</span>
               <h3>In what order do you learn?</h3>
               <ol className="order">
                 <li data-n="1">
@@ -1545,7 +1633,6 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
 <section className="tools" id="tools">
   <div className="wrap">
     <div className="sec-head">
-      <span className="eyebrow">Tools you will learn</span>
       <h2>The tools an Applied Data Scientist &amp; AI Deployment Engineer uses every day</h2>
       <p className="lead">You do not need to know any of these today. You pick them up step by step, one project at a time. Each tool is here because real companies use it.</p>
     </div>
@@ -2014,7 +2101,6 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
       <section className="industry-projects-section" id="projects" style={{ padding: '60px 0', borderBottom: '1px solid var(--line)' }}>
         <div className="wrap">
           <div className="sec-head">
-            <span className="eyebrow">Real-World Capstones</span>
             <h2>Industry Projects with End-to-End AI Deployment</h2>
             <p className="lead">
               Industry-focused projects covering data preparation, analysis, modelling, deployment and monitoring. Move beyond toy datasets to build verifiable business assets.
@@ -2110,10 +2196,9 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
       {/* -------------------------------------------------------------------------
           SECTION 10: SUCCESS @ DV ANALYTICS (6-STEP CAREER ENGINE)
           ------------------------------------------------------------------------- */}
-      <section className="career-engine-section" style={{ padding: '60px 0', borderBottom: '1px solid var(--line)' }}>
+      <section className="career-engine-section" id="career-engine" style={{ padding: '60px 0', borderBottom: '1px solid var(--line)' }}>
         <div className="wrap">
           <div className="sec-head">
-            <span className="eyebrow">Proven Methodology</span>
             <h2>
               Success @ DV Analytics:{' '}
               <span className="career-engine-highlight">The 6-Step Career Engine</span>
@@ -2178,7 +2263,6 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
       <section className="lp-stories-section" id="stories" aria-label="Student Success Stories">
         <div className="wrap">
           <div className="sec-head" style={{ textAlign: 'center', margin: '0 auto 36px', alignItems: 'center' }}>
-            <span className="eyebrow">Proven Results</span>
             <h2>Student Success Stories</h2>
             <p className="lead" style={{ textAlign: 'center' }}>
               Real career transformations from our classroom to industry leaders. Verified placements across premier global tech, banking, and analytics enterprises.
@@ -2249,7 +2333,6 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
         <div className="wrap">
           <div className="lp-reviews-header-row">
             <div className="sec-head" style={{ margin: 0, maxWidth: '620px' }}>
-              <span className="eyebrow">Student Testimonials</span>
               <h2>Verified Google Reviews</h2>
               <p className="lead" style={{ margin: 0 }}>
                 Authentic, unedited feedback from our learners. See what students say about our curriculum, mentoring, hands-on projects, and placement support.
@@ -2389,7 +2472,6 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
         <div className="wrap faq">
 
           <div className="sec-head">
-            <span className="eyebrow">Frequently Asked Questions</span>
             <h2>Data Science with AI Deployment Engineering FAQs</h2>
             <p className="lead">
               Clear, transparent answers directly addressing curriculum, prerequisites, faculty, placement support, and salary benchmarks.
@@ -2522,62 +2604,206 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
       </section>
 
       {/* -------------------------------------------------------------------------
-          SECTION 12: JOIN DV ANALYTICS & WORKING LEAD CAPTURE FORM
+          OFFICE LOCATIONS (Bangalore, Bhubaneswar, Dubai)
           ------------------------------------------------------------------------- */}
-      <section className="join" id="join">
-        <div className="wrap join-grid">
-          <div>
-            <span className="eyebrow">Join DV Analytics</span>
-            <h2>Learn to become a Data Science &amp; AI Deployment Engineer</h2>
-            <p className="lead" style={{ marginTop: '14px' }}>
-              DV Analytics trains you to build real AI projects from the client&#39;s first question to a live production system, step by step, with expert mentors.
+      <section className="lp-offices-section" id="offices">
+        <div className="wrap">
+          <div className="sec-head" style={{ textAlign: 'center', margin: '0 auto 48px', alignItems: 'center' }}>
+            <h2>Visit Our Offices</h2>
+            <p className="lead" style={{ textAlign: 'center' }}>
+              Connect with our academic counselors and mentors across our global delivery centers.
             </p>
-
-            <ul className="build">
-              <li>Take a vague business request and frame high-impact predictive &amp; GenAI solutions</li>
-              <li>Build the data pipelines, model training workflows, FastAPI microservices and dashboards</li>
-              <li>Package, containerize with Docker, release on Cloud and monitor data drift in production</li>
-              <li>Explain and present your end-to-end AI capstone to executive stakeholders in plain words</li>
-            </ul>
-
-            <div className="stack">
-              <span>Python</span>
-              <span>SQL Server</span>
-              <span>Excel AI</span>
-              <span>Power BI</span>
-              <span>Tableau</span>
-              <span>SAS Studio</span>
-              <span>PyTorch</span>
-              <span>FastAPI</span>
-              <span>Docker</span>
-              <span>AWS / Cloud</span>
-              <span>LangChain</span>
-              <span>RAG</span>
-            </div>
-
-            <div className="join-direct-contact">
-              <p className="join-direct-label">Prefer to speak with an admissions counselor directly?</p>
-              <div className="join-contact-links">
-                <a href="tel:+918095881188" className="join-contact-pill">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
-                  </svg>
-                  <span>+91 80958 81188</span>
-                </a>
-                <a href="mailto:info@dvanalyticsmds.com" className="join-contact-pill">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                    <rect width="20" height="16" x="2" y="4" rx="2"/>
-                    <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
-                  </svg>
-                  <span>info@dvanalyticsmds.com</span>
-                </a>
-              </div>
-            </div>
           </div>
 
-          {/* High-Converting Lead Capture Form Card */}
-          <div className="join-form-wrapper" id="apids-lead-form">
-            {renderLeadForm('Register for APIDS', 'Reserve your seat for the Data Science & AI Deployment batch.')}
+          {/* 3-Column Card Grid matching site theme */}
+          <div className="center-cards-grid">
+            {/* Bangalore Center */}
+            <div className="center-card bangalore">
+              <div className="center-card-footer-panel">
+                <div className="footer-flex-row">
+                  <div className="footer-col company-col">
+                    <div className="center-header-row">
+                      <span className="center-badge teal">Bangalore, India</span>
+                      <div className="center-icon-wrapper teal">
+                        <svg className="center-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                          <circle cx="12" cy="10" r="3"></circle>
+                        </svg>
+                      </div>
+                    </div>
+                    <h3 className="center-company">
+                      <a href="https://www.dvanalyticsmds.com/" target="_blank" rel="noreferrer" className="center-link">
+                        DV Data &amp; Analytics Private Limited
+                      </a>
+                    </h3>
+                  </div>
+
+                  <div className="footer-col address-col">
+                    <div className="info-icon">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+                      </svg>
+                    </div>
+                    <p className="info-text">
+                      #52, 3rd Floor:<br />
+                      Malleshpalya Maruthinagar Bengaluru.<br />
+                      Bangalore 560075<br />
+                      India
+                    </p>
+                  </div>
+
+                  <div className="footer-col phone-col">
+                    <div className="info-icon">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                      </svg>
+                    </div>
+                    <p className="info-text">
+                      <a href="tel:+918095881188" className="center-link center-link-phone">(+91) 8095 881 188</a>
+                      <a href="tel:+917483596228" className="center-link center-link-phone">(+91) 7483 596 228</a>
+                    </p>
+                  </div>
+
+                  <div className="footer-col email-col">
+                    <div className="info-icon">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                        <polyline points="22,6 12,13 2,6"></polyline>
+                      </svg>
+                    </div>
+                    <p className="info-text">
+                      <a href="mailto:info@dvanalyticsmds.com" className="center-link">info@dvanalyticsmds.com</a>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Bhubaneswar Center */}
+            <div className="center-card bhubaneswar">
+              <div className="center-card-footer-panel">
+                <div className="footer-flex-row">
+                  <div className="footer-col company-col">
+                    <div className="center-header-row">
+                      <span className="center-badge teal">Bhubaneswar, India</span>
+                      <div className="center-icon-wrapper teal">
+                        <svg className="center-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                          <circle cx="12" cy="10" r="3"></circle>
+                        </svg>
+                      </div>
+                    </div>
+                    <h3 className="center-company">
+                      <a href="https://www.dvanalyticsmds.com/" target="_blank" rel="noreferrer" className="center-link">
+                        DV Data &amp; Analytics Private Limited
+                      </a>
+                    </h3>
+                  </div>
+
+                  <div className="footer-col address-col">
+                    <div className="info-icon">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+                      </svg>
+                    </div>
+                    <p className="info-text">
+                      Plot No A/7<br />
+                      Adjacent to Maharaja Cine Complex, Bhoinagar, Acharya Vihar<br />
+                      Bhubaneswar 751022<br />
+                      India
+                    </p>
+                  </div>
+
+                  <div className="footer-col phone-col">
+                    <div className="info-icon">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                      </svg>
+                    </div>
+                    <p className="info-text">
+                      <a href="tel:+918095881188" className="center-link center-link-phone">+91 8095 881 188</a>
+                      <a href="tel:+917483596228" className="center-link center-link-phone">+91 7483 596 228</a>
+                    </p>
+                  </div>
+
+                  <div className="footer-col email-col">
+                    <div className="info-icon">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                        <polyline points="22,6 12,13 2,6"></polyline>
+                      </svg>
+                    </div>
+                    <p className="info-text">
+                      <a href="mailto:info@dvanalyticsmds.com" className="center-link">info@dvanalyticsmds.com</a>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Dubai Center */}
+            <div className="center-card dubai">
+              <div className="center-card-footer-panel">
+                <div className="footer-flex-row">
+                  <div className="footer-col company-col">
+                    <div className="center-header-row">
+                      <span className="center-badge teal">Dubai, UAE</span>
+                      <div className="center-icon-wrapper teal">
+                        <svg className="center-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                          <circle cx="12" cy="10" r="3"></circle>
+                        </svg>
+                      </div>
+                    </div>
+                    <h3 className="center-company">
+                      <a href="https://www.agentifyaiglobal.com/" target="_blank" rel="noreferrer" className="center-link">
+                        <span className="center-company-stack">
+                          <span>Agentify AI</span>
+                          <span>Global</span>
+                        </span>
+                      </a>
+                    </h3>
+                  </div>
+
+                  <div className="footer-col address-col">
+                    <div className="info-icon">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+                      </svg>
+                    </div>
+                    <p className="info-text">
+                      Villa 335<br />
+                      Murooj al Furzan East 1<br />
+                      Near Gate 3 Jabel Ali First<br />
+                      Al Furjan, Dubai, UAE
+                    </p>
+                  </div>
+
+                  <div className="footer-col phone-col">
+                    <div className="info-icon">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                      </svg>
+                    </div>
+                    <p className="info-text">
+                      <a href="tel:+971525533211" className="center-link center-link-phone">+971 52 553 3211</a>
+                    </p>
+                  </div>
+
+                  <div className="footer-col email-col">
+                    <div className="info-icon">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                        <polyline points="22,6 12,13 2,6"></polyline>
+                      </svg>
+                    </div>
+                    <p className="info-text">
+                      <a href="mailto:Sales@agentifyaiglobal.com" className="center-link">Sales@agentifyaiglobal.com</a>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
