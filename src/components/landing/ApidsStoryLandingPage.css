@@ -2843,7 +2843,7 @@ footer.lp-footer .wrap {
 }
 
 .engine-card {
-  background: #FFFFFF;
+  background: #F4F5F8;
   border: 1px solid var(--line);
   border-radius: 14px;
   padding: 24px 22px;
@@ -2851,9 +2851,11 @@ footer.lp-footer .wrap {
   flex-direction: column;
   gap: 10px;
   box-shadow: 0 4px 14px rgba(20, 26, 74, 0.03);
+  transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .engine-card:hover {
+  background: #ECEEF4;
   border-color: var(--navy);
   box-shadow: 0 6px 20px rgba(20, 26, 74, 0.07);
 }

@@ -2150,7 +2150,7 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
 
             <div className="engine-card">
               <span className="engine-step">Step 05</span>
-              <h3>AI Integrated Tests &amp; Mock Interviews</h3>
+              <h3>AI Enabled Tests &amp; Mock Interviews</h3>
               <p>Use practical assessments to identify skill gaps and mock interviews to improve technical explanations, business reasoning and executive communication.</p>
             </div>
 
