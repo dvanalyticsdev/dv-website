@@ -116,6 +116,8 @@
   background: var(--accent);
   flex-shrink: 0;
   box-shadow: 0 0 6px rgba(239, 83, 35, 0.7);
+  margin-right: 8px;
+  vertical-align: middle;
 }
 
 .lp-page-wrapper .lead {
@@ -258,7 +260,7 @@
    HERO SECTION (CLEAN FULL-WIDTH EDITORIAL ARCHITECTURE)
    -------------------------------------------------------------------------- */
 .hero {
-  padding-block: clamp(36px, 5vw, 64px) clamp(32px, 4.5vw, 56px);
+  padding-block: clamp(36px, 5vw, 64px) clamp(16px, 2.4vw, 28px);
 }
 
 .hero .wrap {
@@ -668,15 +670,22 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  gap: 6px 16px;
-  margin-bottom: 14px;
+  align-items: center;
+  gap: 10px 16px;
+  margin-bottom: 16px;
 }
 
 .steps-title {
-  font: 600 0.8rem/1 var(--mono);
-  letter-spacing: 0.12em;
+  display: inline-flex;
+  align-items: center;
+  font: 700 0.82rem/1.2 var(--mono);
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: #FFFFFF;
+  background: var(--accent);
+  padding: 7px 15px;
+  border-radius: 8px;
+  box-shadow: 0 3px 10px rgba(239, 83, 35, 0.28);
 }
 
 .stages-head .hint {
@@ -997,6 +1006,73 @@
   font-size: 1rem;
 }
 
+/* Why is it in Demand Section Box Theme (Navy Blue & White Text matching Image 2) */
+.why-demand .why-card {
+  background: #141A4A;
+  color: #FFFFFF;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 10px 30px rgba(10, 16, 48, 0.18);
+  border-radius: 16px;
+  padding: 26px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.why-demand .why-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--accent);
+  box-shadow: 0 16px 36px rgba(10, 16, 48, 0.32);
+}
+
+.why-demand .why-card h3 {
+  font-size: 1.32rem;
+  font-weight: 750;
+  color: #FFFFFF;
+  margin: 0;
+  line-height: 1.3;
+}
+
+.why-demand .why-card p {
+  color: rgba(255, 255, 255, 0.84);
+  font-size: 0.95rem;
+  line-height: 1.55;
+  margin: 0;
+}
+
+.why-demand .why-card .who-badge {
+  font: 800 0.88rem/1.2 var(--mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #111111;
+  background: #FFFFFF;
+  border: 1.5px solid var(--line);
+  padding: 6px 14px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  width: fit-content;
+  align-self: flex-start;
+}
+
+.why-demand .who-note-box {
+  margin-top: 28px;
+  background: #FFFFFF;
+  border: 1.5px solid var(--line);
+  border-left: 4px solid var(--accent);
+  padding: 18px 22px;
+  border-radius: 12px;
+  font-size: 0.94rem;
+  line-height: 1.6;
+  color: #334155;
+  box-shadow: 0 4px 14px rgba(20, 26, 74, 0.04);
+}
+
+.why-demand .who-note-box strong {
+  color: var(--ink);
+  font-weight: 700;
+}
+
 .vs {
   margin-top: 28px;
   display: grid;
@@ -1022,8 +1098,10 @@
 }
 
 .vs-box .eyebrow {
-  display: block;
-  margin-bottom: 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
 }
 
 .vs-box.now .eyebrow {
@@ -1086,7 +1164,14 @@
   border-block: 1px solid var(--line);
 }
 
-.ai h2, .ai h3 {
+.ai h2 {
+  color: var(--ink);
+  font-size: clamp(2rem, 3.8vw, 2.75rem);
+  font-weight: 850;
+  line-height: 1.15;
+}
+
+.ai h3 {
   color: var(--ink);
 }
 
@@ -1103,6 +1188,7 @@
   border: 1px solid var(--line);
   border-radius: 14px;
   background: #FFFFFF;
+  box-shadow: 0 4px 16px rgba(20, 26, 74, 0.04);
 }
 
 .tbl-wrap table {
@@ -1114,7 +1200,7 @@
 
 .tbl-wrap th, .tbl-wrap td {
   text-align: left;
-  padding: 15px 18px;
+  padding: 16px 20px;
   vertical-align: top;
   border-bottom: 1px solid var(--line);
 }
@@ -1124,11 +1210,21 @@
 }
 
 .tbl-wrap th {
-  font: 600 0.74rem/1.2 var(--mono);
-  letter-spacing: 0.1em;
+  font: 750 0.92rem/1.3 var(--mono);
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--muted);
-  background: var(--navy-soft);
+  color: #FFFFFF;
+  background: #141A4A;
+  padding: 18px 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.tbl-wrap table thead tr th:first-child {
+  border-top-left-radius: 13px;
+}
+
+.tbl-wrap table thead tr th:last-child {
+  border-top-right-radius: 13px;
 }
 
 .tbl-wrap td:first-child {

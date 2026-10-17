@@ -755,43 +755,6 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
             </div>
           </div>
 
-          {/* Program Details Component Grid (From Document) */}
-          <div style={{ marginTop: '36px' }}>
-            <span className="eyebrow">Program Architecture</span>
-            <h2 style={{ fontSize: '1.45rem', marginTop: '6px' }}>Program Details &amp; Learning Specifications</h2>
-            <div className="pdetails-grid">
-              <div className="pdetail-card">
-                <span className="pdetail-label">Duration</span>
-                <span className="pdetail-val">6-9 Months</span>
-                <p className="pdetail-desc">Structured learning, supported by regular assignments and project practice.</p>
-              </div>
-              <div className="pdetail-card">
-                <span className="pdetail-label">Platform</span>
-                <span className="pdetail-val">Online / Offline</span>
-                <p className="pdetail-desc">Live interactive online batches &amp; classroom centers at Bangalore and Bhubaneswar.</p>
-              </div>
-              <div className="pdetail-card">
-                <span className="pdetail-label">Projects</span>
-                <span className="pdetail-val">Industry Real Time</span>
-                <p className="pdetail-desc">Industry-focused capstones covering data preparation, modelling, deployment and monitoring.</p>
-              </div>
-              <div className="pdetail-card">
-                <span className="pdetail-label">Profile</span>
-                <span className="pdetail-val">Resume &amp; Profile Building</span>
-                <p className="pdetail-desc">Resume preparation, LinkedIn optimisation, GitHub portfolio, and project presentations.</p>
-              </div>
-              <div className="pdetail-card">
-                <span className="pdetail-label">Placement</span>
-                <span className="pdetail-val">100% Placement Support</span>
-                <p className="pdetail-desc">Delivered under the programme’s stated eligibility and written support terms.</p>
-              </div>
-              <div className="pdetail-card" style={{ gridColumn: 'span 2' }}>
-                <span className="pdetail-label">Average Salary</span>
-                <span className="pdetail-val">40+ LPA</span>
-                <p className="pdetail-desc">Individual offers vary based on individual competence, technical mastery, and employer evaluation criteria.</p>
-              </div>
-            </div>
-          </div>
         </div>
       </section>
 
@@ -959,7 +922,7 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
                 <span className="sn">1</span>
                 <span className="st">
                   <b>Step 1 · Build Programming &amp; Data Foundations</b>
-                  <small>Learn SQL and Python. Practise extracting, cleaning, joining and transforming data.</small>
+                  <small>Learn SQL, SAS and Python. Practise extracting, cleaning, joining and transforming data.</small>
                 </span>
                 <span className="sx" aria-hidden="true" />
               </summary>
@@ -968,7 +931,7 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
                   <h4>What the learner does</h4>
                   <ul className="do">
                     <li>Masters database querying: schema design, constraints, filtering, joins, subqueries, and window functions.</li>
-                    <li>Writes clean Python code: loops, functions, data structures, and file handling for automated data tasks.</li>
+                    <li>Writes clean Python and SAS code: loops, functions, DATA steps, PROC SQL, data structures, and file handling for automated data tasks.</li>
                     <li>Resolves dirty data extracts: handles missing values, duplicates, type mismatches, and automated transformations.</li>
                     <li>Establishes version control hygiene with Git branching and reproducible GitHub repositories.</li>
                   </ul>
@@ -978,7 +941,8 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
                   <p>Ability to extract, clean, and deliver an analysis-ready dataset from complex raw sources.</p>
                   <h4 className="h2b">Skills used</h4>
                   <div className="tags">
-                    <span>SQL Programming</span>
+                    <span>SQL Server</span>
+                    <span>SAS Studio</span>
                     <span>Python 3.12</span>
                     <span>PostgreSQL</span>
                     <span>Git</span>
@@ -1044,6 +1008,8 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
                   <p>Rigorous, evidence-backed decision frameworks that quantify risk and uncertainty.</p>
                   <h4 className="h2b">Skills used</h4>
                   <div className="tags">
+                    <span>Excel Statistics</span>
+                    <span>Python Statistics</span>
                     <span>Hypothesis Testing</span>
                     <span>Probability</span>
                     <span>A/B Testing</span>
@@ -1149,6 +1115,8 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
                     <span>AWS Cloud</span>
                     <span>PySpark</span>
                     <span>MLOps</span>
+                    <span>LLMOps</span>
+                    <span>AIOps</span>
                   </div>
                 </div>
               </div>
@@ -1223,7 +1191,7 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
           <section id="why-fde">
             <div className="wrap">
               <div className="sec-head">
-                <span className="eyebrow">Why APIDS in 2026</span>
+                <span className="eyebrow">Why APIDS for You</span>
                 <h2>Why companies are hiring Data Science &amp; AI Deployment Engineers</h2>
                 <p className="lead">
                   AI products rarely work the day a customer buys them. Someone has to make them work in the customer&#39;s real world.
