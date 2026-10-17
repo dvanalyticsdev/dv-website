@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { googleReviewsData, GOOGLE_REVIEWS_LINK } from '../../data/googleReviewsData';
 import './ApidsStoryLandingPage.css';
 
 interface SelectOption {
@@ -100,44 +101,180 @@ export const ApidaStoryLandingPage: React.FC<ApidaStoryLandingPageProps> = ({ on
     qualification: '',
     experience: '',
     state: '',
-    course: 'APIDA (Industrial Data Analytics & BI)',
+    course: 'APIDA (Industrial Data Analytics & AI)',
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [formError, setFormError] = useState('');
   const [selectedModule, setSelectedModule] = useState<number | null>(null);
+  const [showDeepDive, setShowDeepDive] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  useEffect(() => {
+    if (!mobileMenuOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setMobileMenuOpen(false);
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [mobileMenuOpen]);
+
+  // Verified Google Reviews Carousel State
+  const [reviewIndex, setReviewIndex] = useState(0);
+  const [isReviewPaused, setIsReviewPaused] = useState(false);
+
+  const totalReviews = googleReviewsData.length;
+
+  const nextReview = useCallback(() => {
+    setReviewIndex((prev) => (prev + 1) % totalReviews);
+  }, [totalReviews]);
+
+  const prevReview = useCallback(() => {
+    setReviewIndex((prev) => (prev - 1 + totalReviews) % totalReviews);
+  }, [totalReviews]);
+
+  useEffect(() => {
+    if (isReviewPaused) return;
+    const interval = setInterval(() => {
+      nextReview();
+    }, 4200);
+    return () => clearInterval(interval);
+  }, [isReviewPaused, nextReview]);
+
+  const renderReviewStars = (rating: number) => {
+    return Array.from({ length: 5 }, (_, i) => (
+      <svg
+        key={i}
+        viewBox="0 0 24 24"
+        width="15"
+        height="15"
+        fill={i < rating ? '#f59e0b' : '#e2e8f0'}
+        stroke={i < rating ? '#d97706' : '#cbd5e1'}
+        strokeWidth="1"
+        aria-hidden="true"
+      >
+        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+      </svg>
+    ));
+  };
+
+  // Student placement stories marquee
+  const homepageStoryGroups = [
+    [
+      'WhatsApp Image 2026-07-01 at 11.19.49 AM.jpeg',
+      'WhatsApp Image 2026-07-01 at 11.19.50 AM (1).jpeg',
+      'WhatsApp Image 2026-07-01 at 11.19.50 AM (2).jpeg',
+      'WhatsApp Image 2026-07-01 at 11.19.50 AM.jpeg',
+      'WhatsApp Image 2026-07-01 at 11.19.51 AM.jpeg',
+    ],
+    [
+      'WhatsApp Image 2026-06-29 at 11.28.19 AM.jpeg',
+      'WhatsApp Image 2026-06-29 at 11.28.20 AM (1).jpeg',
+      'WhatsApp Image 2026-06-29 at 11.28.20 AM (2).jpeg',
+      'WhatsApp Image 2026-06-29 at 11.28.20 AM.jpeg',
+    ],
+    [
+      'WhatsApp Image 2026-06-29 at 11.28.08 AM (1).jpeg',
+      'WhatsApp Image 2026-06-29 at 11.28.08 AM (2).jpeg',
+      'WhatsApp Image 2026-06-29 at 11.28.08 AM.jpeg',
+      'WhatsApp Image 2026-06-29 at 11.28.09 AM (1).jpeg',
+      'WhatsApp Image 2026-06-29 at 11.28.09 AM.jpeg',
+    ],
+    [
+      'WhatsApp Image 2026-06-29 at 11.28.55 AM.jpeg',
+      'WhatsApp Image 2026-06-29 at 11.28.56 AM (1).jpeg',
+      'WhatsApp Image 2026-06-29 at 11.28.56 AM (2).jpeg',
+      'WhatsApp Image 2026-06-29 at 11.28.56 AM (3).jpeg',
+      'WhatsApp Image 2026-06-29 at 11.28.56 AM.jpeg',
+    ],
+    [
+      'WhatsApp Image 2026-06-29 at 11.28.44 AM (1).jpeg',
+      'WhatsApp Image 2026-06-29 at 11.28.44 AM (2).jpeg',
+      'WhatsApp Image 2026-06-29 at 11.28.44 AM.jpeg',
+      'WhatsApp Image 2026-06-29 at 11.28.45 AM (1).jpeg',
+      'WhatsApp Image 2026-06-29 at 11.28.45 AM.jpeg',
+    ],
+  ];
+
+  const buildHomepageStories = (): string[] => {
+    const completeRounds = Math.min(...homepageStoryGroups.map((group) => group.length));
+    return Array.from({ length: completeRounds }, (_, index) =>
+      homepageStoryGroups.map((group) => group[index]),
+    ).flat();
+  };
+
+  const successStoryPosters = buildHomepageStories();
 
   const qualificationOptions: SelectOption[] = [
-    { value: 'B.E. / B.Tech / M.Tech', label: 'B.E. / B.Tech / M.Tech' },
-    { value: 'BCA / MCA', label: 'BCA / MCA' },
-    { value: 'B.Sc / M.Sc (Maths / Stats / CS / Physics)', label: 'B.Sc / M.Sc (Maths / Stats / CS)' },
-    { value: 'B.Com / BBA / MBA', label: 'B.Com / BBA / MBA' },
-    { value: 'Other Graduate Degree', label: 'Other Graduate Degree' },
+    { value: 'Diploma', label: 'Diploma' },
+    { value: 'Graduate', label: 'Graduate' },
+    { value: 'Postgraduate', label: 'Postgraduate' },
+    { value: 'Doctorate', label: 'Doctorate' },
+    { value: 'Other', label: 'Other' },
   ];
 
   const experienceOptions: SelectOption[] = [
-    { value: 'Fresher / College Final Year', label: 'Fresher / College Final Year' },
-    { value: '0-2 Years (Junior Analyst / Dev)', label: '0-2 Years (Junior Analyst / Dev)' },
-    { value: '2-5 Years (Mid-level Professional)', label: '2-5 Years (Mid-level Professional)' },
-    { value: '5+ Years (Senior / Manager)', label: '5+ Years (Senior / Manager)' },
-    { value: 'Non-tech Professional Transitioning', label: 'Non-tech Professional Transitioning' },
+    { value: 'Fresher', label: 'Fresher' },
+    { value: 'Less than 1 year', label: 'Less than 1 year' },
+    { value: '1–3 years', label: '1–3 years' },
+    { value: '3–5 years', label: '3–5 years' },
+    { value: '5–10 years', label: '5–10 years' },
+    { value: 'More than 10 years', label: 'More than 10 years' },
   ];
 
   const locationOptions: SelectOption[] = [
-    { value: 'Karnataka / Bangalore', label: 'Karnataka / Bangalore' },
-    { value: 'Maharashtra / Mumbai / Pune', label: 'Maharashtra / Mumbai / Pune' },
-    { value: 'Delhi NCR / Gurgaon / Noida', label: 'Delhi NCR / Gurgaon / Noida' },
-    { value: 'Telangana / Hyderabad', label: 'Telangana / Hyderabad' },
-    { value: 'Tamil Nadu / Chennai', label: 'Tamil Nadu / Chennai' },
-    { value: 'West Bengal / Kolkata', label: 'West Bengal / Kolkata' },
-    { value: 'Other Indian State', label: 'Other Indian State' },
-    { value: 'International / NRI', label: 'International / NRI' },
+    { value: 'Andhra Pradesh', label: 'Andhra Pradesh' },
+    { value: 'Arunachal Pradesh', label: 'Arunachal Pradesh' },
+    { value: 'Assam', label: 'Assam' },
+    { value: 'Bihar', label: 'Bihar' },
+    { value: 'Chhattisgarh', label: 'Chhattisgarh' },
+    { value: 'Goa', label: 'Goa' },
+    { value: 'Gujarat', label: 'Gujarat' },
+    { value: 'Haryana', label: 'Haryana' },
+    { value: 'Himachal Pradesh', label: 'Himachal Pradesh' },
+    { value: 'Jharkhand', label: 'Jharkhand' },
+    { value: 'Karnataka', label: 'Karnataka' },
+    { value: 'Kerala', label: 'Kerala' },
+    { value: 'Madhya Pradesh', label: 'Madhya Pradesh' },
+    { value: 'Maharashtra', label: 'Maharashtra' },
+    { value: 'Manipur', label: 'Manipur' },
+    { value: 'Meghalaya', label: 'Meghalaya' },
+    { value: 'Mizoram', label: 'Mizoram' },
+    { value: 'Nagaland', label: 'Nagaland' },
+    { value: 'Odisha', label: 'Odisha' },
+    { value: 'Punjab', label: 'Punjab' },
+    { value: 'Rajasthan', label: 'Rajasthan' },
+    { value: 'Sikkim', label: 'Sikkim' },
+    { value: 'Tamil Nadu', label: 'Tamil Nadu' },
+    { value: 'Telangana', label: 'Telangana' },
+    { value: 'Tripura', label: 'Tripura' },
+    { value: 'Uttar Pradesh', label: 'Uttar Pradesh' },
+    { value: 'Uttarakhand', label: 'Uttarakhand' },
+    { value: 'West Bengal', label: 'West Bengal' },
+    { value: 'Andaman and Nicobar Islands', label: 'Andaman and Nicobar Islands' },
+    { value: 'Chandigarh', label: 'Chandigarh' },
+    { value: 'Dadra and Nagar Haveli and Daman and Diu', label: 'Dadra and Nagar Haveli and Daman and Diu' },
+    { value: 'Delhi', label: 'Delhi' },
+    { value: 'Jammu and Kashmir', label: 'Jammu and Kashmir' },
+    { value: 'Ladakh', label: 'Ladakh' },
+    { value: 'Lakshadweep', label: 'Lakshadweep' },
+    { value: 'Puducherry', label: 'Puducherry' },
+    { value: 'Dubai', label: 'Dubai' },
   ];
 
   const scrollToForm = () => {
-    const el = document.getElementById('apida-lead-form');
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    const heroForm = document.getElementById('apida-hero-lead-form');
+    if (heroForm) {
+      heroForm.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  };
+
+  const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
+    e.preventDefault();
+    setMobileMenuOpen(false);
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
@@ -174,107 +311,246 @@ export const ApidaStoryLandingPage: React.FC<ApidaStoryLandingPageProps> = ({ on
     setTimeout(() => {
       setIsSubmitting(false);
       setIsSubmitted(true);
-    }, 800);
+    }, 900);
   };
+
+  const renderLeadForm = (
+    title = 'Register for APIDA',
+    subtitle = 'Reserve your seat for the Industrial Data Analytics & AI batch.'
+  ) => (
+    <div className="lp-form-card">
+      {isSubmitted ? (
+        <div className="lp-form-success-banner">
+          <h3 style={{ fontSize: '1.4rem', fontWeight: 800, marginBottom: '8px', color: '#065f46' }}>
+            Registration Submitted Successfully!
+          </h3>
+          <p style={{ color: '#047857', fontSize: '0.95rem', lineHeight: 1.5, marginBottom: '14px' }}>
+            Thank you, <strong>{formData.name}</strong>. An admissions counselor from DV Analytics will reach out within 2 hours with the complete APIDA syllabus, industry projects, and batch schedule.
+          </p>
+          <button
+            type="button"
+            onClick={() => setIsSubmitted(false)}
+            className="lp-orange-submit-btn"
+            style={{ marginTop: '10px' }}
+          >
+            Submit Another Registration
+          </button>
+        </div>
+      ) : (
+        <form onSubmit={handleSubmit} className="lp-lead-form">
+          <div className="lp-form-header">
+            <h3>{title}</h3>
+            <p>{subtitle}</p>
+          </div>
+
+          {formError && <div className="lp-form-error-banner">{formError}</div>}
+
+          <div className="lp-form-field">
+            <label className="lp-form-label">Full Name</label>
+            <input
+              type="text"
+              className="lp-form-input"
+              placeholder="Enter your name"
+              value={formData.name}
+              required
+              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+            />
+          </div>
+
+          <div className="lp-form-row-2">
+            <div className="lp-form-field">
+              <label className="lp-form-label">Email ID</label>
+              <input
+                type="email"
+                className="lp-form-input"
+                placeholder="name@email.com"
+                value={formData.email}
+                required
+                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+              />
+            </div>
+
+            <div className="lp-form-field">
+              <label className="lp-form-label">Phone Number</label>
+              <input
+                type="tel"
+                className="lp-form-input"
+                placeholder="10-digit mobile"
+                value={formData.phone}
+                required
+                onChange={(e) => setFormData({ ...formData, phone: e.target.value.replace(/\D/g, '').slice(0, 10) })}
+              />
+            </div>
+          </div>
+
+          <div className="lp-form-row-2">
+            <div className="lp-form-field">
+              <label className="lp-form-label">Highest Qualification</label>
+              <LpCustomSelect
+                options={qualificationOptions}
+                value={formData.qualification}
+                placeholder="Select qualification"
+                required
+                onChange={(val) => setFormData({ ...formData, qualification: val })}
+              />
+            </div>
+
+            <div className="lp-form-field">
+              <label className="lp-form-label">Experience Level</label>
+              <LpCustomSelect
+                options={experienceOptions}
+                value={formData.experience}
+                placeholder="Select experience"
+                required
+                onChange={(val) => setFormData({ ...formData, experience: val })}
+              />
+            </div>
+          </div>
+
+          <div className="lp-form-row-2">
+            <div className="lp-form-field">
+              <label className="lp-form-label">State / Location</label>
+              <LpCustomSelect
+                options={locationOptions}
+                value={formData.state}
+                placeholder="Select state"
+                required
+                onChange={(val) => setFormData({ ...formData, state: val })}
+              />
+            </div>
+
+            <div className="lp-form-field">
+              <label className="lp-form-label">Course</label>
+              <input
+                type="text"
+                className="lp-form-input"
+                value="APIDA (Industrial Data Analytics & AI)"
+                readOnly
+                tabIndex={-1}
+                style={{
+                  backgroundColor: '#f1f5f9',
+                  color: '#0f172a',
+                  fontWeight: 700,
+                  cursor: 'not-allowed',
+                  borderColor: '#cbd5e1',
+                }}
+              />
+            </div>
+          </div>
+
+          <button type="submit" className="lp-orange-submit-btn" disabled={isSubmitting}>
+            {isSubmitting ? 'Submitting Registration...' : 'REGISTER NOW →'}
+          </button>
+
+          <p className="lp-form-privacy-note">Your information is strictly confidential. No spam.</p>
+        </form>
+      )}
+    </div>
+  );
 
   const learningPathModules = [
     {
       id: 1,
-      title: 'Data Management & Advanced SQL',
-      summary: 'Master relational schema architecture, complex SQL querying, dimensional data warehousing on Snowflake, indexing, and scalable ETL data pipelines.',
-      techChips: ['PostgreSQL', 'Advanced SQL', 'Snowflake', 'ETL Pipelines', 'Query Optimization'],
+      title: 'Pillar 1: Enterprise Data Management',
+      summary: 'Data management forms the bedrock of industrial analytics: master SQL Server, MySQL, Python, and Base & Advanced SAS to extract and clean enterprise records.',
+      techChips: ['SQL Server', 'MySQL', 'Python 3.12', 'Base SAS', 'Advanced SAS', 'PROC SQL'],
       topics: [
-        'Enterprise relational schema design, 3NF normalization, and dimensional star/snowflake modeling',
-        'Advanced SQL mastery: Window functions (RANK, DENSE_RANK, LEAD, LAG), CTEs, and nested subqueries',
-        'Database indexing strategies, query execution plans, and large-scale performance tuning',
-        'Building robust data extraction, cleaning, and transformation (ETL) pipelines with Python & SQL',
-        'Connecting cloud data warehouses (Snowflake, Google BigQuery) with enterprise reporting layers',
+        'Relational Database Concepts: SQL Server / MySQL architecture, tables, schemas, primary & foreign keys',
+        'Advanced SQL: Joins, subqueries, CTEs, views, stored procedures, window functions, and query optimization',
+        'Python for Data Wrangling: Variables, functions, OOP, Pandas & NumPy for cleaning and reshaping datasets',
+        'Base SAS Programming: DATA step processing, input formats, conditional logic, and dataset merging',
+        'Advanced SAS with PROC SQL: Querying relational tables within SAS, macro variables, and automated ETL scripts',
+        'Practical Deliverable: Clean, validate, and merge multi-table transactional records from banking and retail databases',
       ],
       icon: (
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <ellipse cx="12" cy="5" rx="9" ry="3" />
-          <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3" />
-          <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5" />
+          <polyline points="16 18 22 12 16 6" />
+          <polyline points="8 6 2 12 8 18" />
         </svg>
       ),
     },
     {
       id: 2,
-      title: 'Business Intelligence & Executive Dashboards',
-      summary: 'Build high-impact interactive dashboards in Microsoft Power BI and Tableau. Master DAX formulas, Power Query ETL, and executive data storytelling.',
-      techChips: ['Power BI', 'DAX Formulas', 'Tableau', 'Power Query', 'Executive Dashboards'],
+      title: 'Pillar 2: Data Analysis & Visualisation',
+      summary: 'Transform raw numbers into strategic business insights: design executive KPI dashboards in Microsoft Power BI, Tableau, and Excel with AI.',
+      techChips: ['Excel + AI', 'Power BI', 'DAX', 'Tableau', 'Power Query', 'Executive Storytelling'],
       topics: [
-        'Power BI desktop & service: Data modeling, calculated tables, columns, and relationship cardinality',
-        'Advanced DAX: Time intelligence, CALCULATE modifiers, and complex iterator functions (SUMX, AVERAGEX)',
-        'Tableau visualization: Level of Detail (LOD) expressions, parameters, sets, and dynamic interactive actions',
-        'Executive UI/UX design: Designing C-suite KPI scorecards, mobile layouts, and drill-down interfaces',
-        'Automated report scheduling, row-level security (RLS), and corporate workspace governance',
+        'Excel with AI Workflows: Power Query transformations, dynamic arrays, lookup functions, and AI formula assistants',
+        'Power BI Data Modeling: Star schema design, table relationships, DAX calculated measures, and dynamic time-intelligence KPIs',
+        'Executive Dashboard Design: Drill-through analytics, interactive filters, row-level security (RLS), and automated cloud refresh',
+        'Tableau Visual Analytics: Visual storytelling, parameters, calculated fields, geographic maps, and dual-axis charts',
+        'Business Decision Framing: Translating complex operational metrics into actionable executive recommendations',
+        'Practical Deliverable: Construct an interactive executive business intelligence dashboard and present insights to decision-makers',
       ],
       icon: (
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
-          <line x1="3" y1="9" x2="21" y2="9" />
-          <line x1="9" y1="21" x2="9" y2="9" />
+          <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
+          <line x1="8" y1="21" x2="16" y2="21" />
+          <line x1="12" y1="17" x2="12" y2="21" />
         </svg>
       ),
     },
     {
       id: 3,
-      title: 'Statistical Analysis & Predictive Modeling',
-      summary: 'Move from backward-looking reports to predictive foresight. Use business statistics, hypothesis testing, regression, and time-series forecasting.',
-      techChips: ['Python for Analytics', 'Pandas & NumPy', 'Hypothesis Testing', 'Predictive Modeling', 'Time Series'],
+      title: 'Pillar 3: Statistical Analytics & Business Modeling',
+      summary: 'Master quantitative reasoning: probability distributions, inferential hypothesis testing, regression diagnostics, and risk analytics.',
+      techChips: ['Descriptive Statistics', 'Probability', 'Hypothesis Testing', 'Correlation Analysis', 'Inferential Statistics'],
       topics: [
-        'Descriptive and inferential statistics: Probability distributions, confidence intervals, and p-values',
-        'Hypothesis testing in business: A/B testing, ANOVA, Chi-Square, and z-test / t-test validation',
-        'Exploratory Data Analysis (EDA): Detecting outliers, data imputations, and feature engineering with Pandas',
-        'Predictive regression & classification algorithms with Scikit-learn for churn, lead, and risk scoring',
-        'Time series forecasting (ARIMA, Exponential Smoothing, Prophet) for sales and inventory planning',
+        'Descriptive & Exploratory Analysis: Measures of central tendency, dispersion, variance, skewness, and outlier identification',
+        'Probability Foundations: Discrete and continuous probability distributions, standard normal distribution, and sampling errors',
+        'Hypothesis Testing Protocols: Formulating null/alternative hypotheses, p-values, t-tests, ANOVA, and Chi-Square tests',
+        'Statistical Inference in Python & SAS: Confidence intervals, parametric vs non-parametric methods, and regression validation',
+        'Correlation & Collinearity: Identifying genuine business relationships vs confounding variables and multicollinearity',
+        'Practical Deliverable: Conduct an end-to-end statistical hypothesis evaluation on a telecom/finance customer behavior dataset',
       ],
       icon: (
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <line x1="18" y1="20" x2="18" y2="10" />
-          <line x1="12" y1="20" x2="12" y2="4" />
-          <line x1="6" y1="20" x2="6" y2="14" />
+          <path d="M3 3v18h18" />
+          <path d="M18 17V9" />
+          <path d="M13 17V5" />
+          <path d="M8 17v-3" />
         </svg>
       ),
     },
     {
       id: 4,
-      title: 'Industrial & Operational Domain Analytics',
-      summary: 'Apply analytics directly to manufacturing, supply chain, retail, energy, and financial operations to eliminate waste and optimize operational throughput.',
-      techChips: ['Supply Chain Analytics', 'Manufacturing Yield', 'Inventory Optimization', 'OEE & Downtime', 'Financial Modeling'],
+      title: 'Pillar 4: Machine Learning & Predictive Analytics',
+      summary: 'Design, train, and validate predictive machine learning algorithms across classification, regression, clustering, and customer churn.',
+      techChips: ['scikit-learn', 'XGBoost', 'Feature Engineering', 'Cross-Validation', 'Churn Prediction', 'Credit Risk'],
       topics: [
-        'Manufacturing analytics: Overall Equipment Effectiveness (OEE), scrap rate reduction, and downtime analysis',
-        'Supply chain & logistics: Safety stock calculations, reorder point modeling, lead time variance, and fleet routing',
-        'Retail & commercial analytics: Market basket analysis, RFM customer segmentation, and CAC / LTV optimization',
-        'Financial & operational KPI modeling: Unit economics, margin waterfall charts, and cost variance analysis',
-        'Real-time IoT sensor anomaly detection and production line bottleneck identification',
+        'ML Workflow Fundamentals: Problem formulation, target definition, train/validation/test split, and preventing data leakage',
+        'Supervised Learning: Linear regression, logistic regression, decision trees, random forests, and gradient boosted trees (XGBoost)',
+        'Unsupervised Learning: K-Means clustering, customer RFM segmentation, and principal component analysis (PCA)',
+        'Industrial Use Cases: Building customer churn prediction, credit risk default assessment, and sales forecasting models',
+        'Model Evaluation & Tuning: ROC-AUC curves, precision-recall trade-offs, confusion matrices, and hyperparameter optimization',
+        'Practical Deliverable: Train, benchmark, and validate a predictive machine learning classifier against a meaningful business baseline',
       ],
       icon: (
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <circle cx="12" cy="12" r="3" />
-          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
+          <path d="M12 2a10 10 0 1 0 10 10H12V2z" />
+          <path d="M12 2a10 10 0 0 1 10 10h-10V2z" />
         </svg>
       ),
     },
     {
       id: 5,
-      title: 'Business Consulting & Decision Storytelling',
-      summary: 'The executive bridge. Transform raw analytical findings into high-stakes boardroom recommendations, strategic action plans, and measurable enterprise ROI.',
-      techChips: ['Business Consulting', 'Problem Decomposition', 'Stakeholder Management', 'Executive Demos', 'ROI Measurement'],
+      title: 'Pillar 5: MLOps & Gen AI Business Integration',
+      summary: 'Bridge analytics into operational production: model deployment via FastAPI, monitoring drift, Docker, and Gen AI business assistants.',
+      techChips: ['FastAPI', 'Docker', 'MLOps', 'CI/CD Pipelines', 'Gen AI Assistants', 'Streamlit'],
       topics: [
-        'Problem scoping: Translating ambiguous executive business questions into structured analytical frameworks',
-        'Structured problem solving using MECE principles and hypothesis-driven issue trees',
-        'Data storytelling: Crafting persuasive executive decks and defending analytical methodologies',
-        'Change management & operational runbooks: Ensuring operational teams adopt and act on BI dashboards',
-        'Measuring business ROI: Quantifying cost savings, efficiency gains, and bottom-line revenue uplift',
+        'Model Serving with FastAPI: Exposing trained machine learning models as high-throughput, secure REST microservices',
+        'Containerization with Docker: Packaging analytics applications into reproducible, portable container images',
+        'MLOps & Production Monitoring: Tracking model latency, data drift, concept drift, and automated retraining triggers',
+        'Generative AI for Analytics: Prompt engineering, LLM integration, and natural language analytics assistants',
+        'Interactive App Delivery: Building full interactive analytical tools in Streamlit for business stakeholder review',
+        'Practical Deliverable: Deploy a containerized predictive model with an interactive web UI and automated inference monitoring',
       ],
       icon: (
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
-          <circle cx="9" cy="7" r="4" />
-          <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
-          <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+          <rect x="2" y="2" width="20" height="8" rx="2" ry="2" />
+          <rect x="2" y="14" width="20" height="8" rx="2" ry="2" />
+          <line x1="6" y1="6" x2="6.01" y2="6" />
+          <line x1="6" y1="18" x2="6.01" y2="18" />
         </svg>
       ),
     },
@@ -303,10 +579,100 @@ export const ApidaStoryLandingPage: React.FC<ApidaStoryLandingPageProps> = ({ on
             <img src="/logo.png" alt="DV Analytics" className="logo" />
           </a>
 
-          <button type="button" onClick={scrollToForm} className="btn">
-            REGISTER NOW →
-          </button>
+          {/* Desktop Navigation */}
+          <nav className="lp-nav" aria-label="Main Navigation">
+            <a href="#skills" onClick={(e) => scrollToSection(e, 'skills')}>Curriculum</a>
+            <a href="#tools" onClick={(e) => scrollToSection(e, 'tools')}>Tools</a>
+            <a href="#projects" onClick={(e) => scrollToSection(e, 'projects')}>Projects</a>
+            <a href="#career-engine" onClick={(e) => scrollToSection(e, 'career-engine')}>Career Engine</a>
+            <a href="#reviews" onClick={(e) => scrollToSection(e, 'reviews')}>Reviews</a>
+            <a href="#faq" onClick={(e) => scrollToSection(e, 'faq')}>FAQ</a>
+            <a href="#offices" onClick={(e) => scrollToSection(e, 'offices')}>Offices</a>
+          </nav>
+
+          <div className="top-actions">
+            <button type="button" onClick={scrollToForm} className="btn top-cta-btn">
+              REGISTER NOW →
+            </button>
+
+            {/* Mobile Hamburger Toggle */}
+            <button
+              type="button"
+              className="lp-hamburger-btn"
+              onClick={() => setMobileMenuOpen((prev) => !prev)}
+              aria-label={mobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
+              aria-expanded={mobileMenuOpen}
+            >
+              {mobileMenuOpen ? (
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <line x1="18" y1="6" x2="6" y2="18" />
+                  <line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
+              ) : (
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <line x1="3" y1="6" x2="21" y2="6" />
+                  <line x1="3" y1="12" x2="21" y2="12" />
+                  <line x1="3" y1="18" x2="21" y2="18" />
+                </svg>
+              )}
+            </button>
+          </div>
         </div>
+
+        {/* Mobile Dropdown Drawer */}
+        <div className={`lp-mobile-menu ${mobileMenuOpen ? 'open' : ''}`} aria-hidden={!mobileMenuOpen}>
+          <nav className="lp-mobile-nav" aria-label="Mobile Navigation">
+            <a href="#skills" onClick={(e) => scrollToSection(e, 'skills')}>
+              <span>Curriculum (5 Pillars)</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </a>
+            <a href="#tools" onClick={(e) => scrollToSection(e, 'tools')}>
+              <span>Industrial Tech Stack</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </a>
+            <a href="#projects" onClick={(e) => scrollToSection(e, 'projects')}>
+              <span>BFSI &amp; Telecom Projects</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </a>
+            <a href="#career-engine" onClick={(e) => scrollToSection(e, 'career-engine')}>
+              <span>6-Step Career Engine</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </a>
+            <a href="#reviews" onClick={(e) => scrollToSection(e, 'reviews')}>
+              <span>Student Reviews</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </a>
+            <a href="#faq" onClick={(e) => scrollToSection(e, 'faq')}>
+              <span>FAQs</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </a>
+            <a href="#offices" onClick={(e) => scrollToSection(e, 'offices')}>
+              <span>Visit Our Offices</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </a>
+          </nav>
+          <div className="lp-mobile-menu-footer">
+            <button
+              type="button"
+              onClick={() => {
+                setMobileMenuOpen(false);
+                scrollToForm();
+              }}
+              className="btn lp-mobile-cta-btn"
+            >
+              REGISTER NOW →
+            </button>
+          </div>
+        </div>
+
+        {/* Mobile Backdrop */}
+        {mobileMenuOpen && (
+          <div
+            className="lp-mobile-backdrop"
+            onClick={() => setMobileMenuOpen(false)}
+            aria-hidden="true"
+          />
+        )}
       </header>
 
       {/* -------------------------------------------------------------------------
@@ -325,8 +691,8 @@ export const ApidaStoryLandingPage: React.FC<ApidaStoryLandingPageProps> = ({ on
             }}
           >
             <img
-              src="/industrial-data-analytics-banner.png"
-              alt="Advanced Program in Industrial Data Analytics with Business Intelligence (APIDA) - DV Analytics"
+              src="/apida-training-banner.png"
+              alt="Advanced Program in Industrial Data Analytics &amp; AI (APIDA) Banner - DV Analytics"
               className="lp-top-poster-img"
               width="2172"
               height="724"
@@ -338,80 +704,94 @@ export const ApidaStoryLandingPage: React.FC<ApidaStoryLandingPageProps> = ({ on
       </section>
 
       {/* -------------------------------------------------------------------------
-          HERO SECTION (CLEAN FULL-WIDTH EDITORIAL ARCHITECTURE)
+          HERO SECTION (2-COLUMN HERO + 5-STEP LIFECYCLE PATH)
           ------------------------------------------------------------------------- */}
       <section className="hero" id="hero-section">
         <div className="wrap">
-          <span className="eyebrow">Industrial Data Analytics &amp; Business Intelligence · APIDA</span>
-          <h1>
-            Advanced Program in Industrial Data Analytics with Business Intelligence. <em>Drive real enterprise decisions.</em>
-          </h1>
-          <p className="lead">
-            Industrial Data Analytics &amp; Business Intelligence is the critical bridge between massive operational industrial data (manufacturing, supply chain, energy, BFSI, retail) and executive boardroom decisions. Master enterprise SQL, Power BI, Tableau, Python, predictive modeling, and operational KPI optimization to lead high-ROI transformations.
-          </p>
+          <div className="hero-content-grid">
+            <div className="hero-left-content">
+              <div style={{ font: '700 0.85rem/1 var(--mono)', color: 'var(--navy)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '8px' }}>
+                DV Analytics | Transforming You
+              </div>
+              <h1>
+                Advanced Program in Industrial Data Analytics &amp; AI (APIDA)
+                <span style={{ display: 'block', fontSize: '1.25rem', fontWeight: 600, color: 'var(--accent)', marginTop: '8px' }}>
+                  (DATA MANAGEMENT · BUSINESS INTELLIGENCE · MACHINE LEARNING · GEN AI)
+                </span>
+              </h1>
+              <p className="lead">
+                A comprehensive industry-focused program combining Data Management, Business Intelligence, Statistical Modeling, and MLOps. Master SQL, SAS, Python, Power BI, Tableau, and Machine Learning to convert industrial enterprise data into actionable business intelligence.
+              </p>
 
-          <div className="cta">
-            <button type="button" onClick={scrollToForm} className="btn">
-              Join DV Analytics to Learn APIDA
-            </button>
-            <a className="btn ghost" href="#skills">
-              See the 5 Skills
-            </a>
-          </div>
+              {/* 6 Clean Inline Program Badges */}
+              <div className="hero-stats-row">
+                <div className="hero-stat-pill">
+                  <span className="h-stat-dot"></span>
+                  <span><b>Duration:</b> 5 Months</span>
+                </div>
+                <div className="hero-stat-pill">
+                  <span className="h-stat-dot"></span>
+                  <span><b>Platform:</b> Online/Offline</span>
+                </div>
+                <div className="hero-stat-pill">
+                  <span className="h-stat-dot"></span>
+                  <span><b>Projects:</b> Real-Time Industry Projects</span>
+                </div>
+                <div className="hero-stat-pill">
+                  <span className="h-stat-dot"></span>
+                  <span><b>Profile:</b> Resume &amp; BI Portfolio</span>
+                </div>
+                <div className="hero-stat-pill">
+                  <span className="h-stat-dot"></span>
+                  <span><b>Placement:</b> 100% Placement Support</span>
+                </div>
+                <div className="hero-stat-pill">
+                  <span className="h-stat-dot"></span>
+                  <span><b>Average Salary:</b> ₹25+ to 35+ LPA Benchmark</span>
+                </div>
+              </div>
+            </div>
 
-          {/* 4 Clean Inline Program Badges */}
-          <div className="hero-stats-row">
-            <div className="hero-stat-pill">
-              <span className="h-stat-dot"></span>
-              <span><b>5–6 Months</b> (Weekday / Weekend)</span>
-            </div>
-            <div className="hero-stat-pill">
-              <span className="h-stat-dot"></span>
-              <span><b>100% Live</b> Interactive Mentor-Led Training</span>
-            </div>
-            <div className="hero-stat-pill">
-              <span className="h-stat-dot"></span>
-              <span><b>₹7.5–16 LPA</b> High-Demand Salary Range</span>
-            </div>
-            <div className="hero-stat-pill">
-              <span className="h-stat-dot"></span>
-              <span><b>LMS Access</b> 24/7 Datasets &amp; Resources</span>
+            {/* Registration Box on Right Side of Hero */}
+            <div className="hero-right-form" id="apida-hero-lead-form">
+              {renderLeadForm('Register for APIDA', 'Reserve your seat for the Industrial Data Analytics & AI batch.')}
             </div>
           </div>
 
           {/* Full-Width 5-Step Path Card */}
-          <div className="path-card" aria-label="One Industrial Data Analytics Specialist owns the decision intelligence lifecycle">
+          <div className="path-card" aria-label="End-to-End Industrial Solution Lifecycle">
             <div className="path-top">
-              <span>One Project, Start to Finish</span>
-              <span>Raw Operational Data → Boardroom Action Plan</span>
+              <span>APIDA: The Complete Industrial Analytics Lifecycle</span>
+              <span>Enterprise Data Extraction → Predictive AI &amp; Executive BI</span>
             </div>
             <ol className="path">
               <li>
-                <b>1. Scope</b>
-                <span>Identify operational bottlenecks &amp; executive KPIs.</span>
+                <b>1. Data Extraction &amp; Management</b>
+                <span>SQL Server, MySQL, Python, Base &amp; Advanced SAS.</span>
               </li>
               <li>
-                <b>2. Ingest &amp; Model</b>
-                <span>Extract enterprise data with SQL, Snowflake &amp; ETL.</span>
+                <b>2. Business Intelligence &amp; Reporting</b>
+                <span>Excel AI, Power BI, DAX &amp; Tableau Storytelling.</span>
               </li>
               <li>
-                <b>3. Analyze &amp; Predict</b>
-                <span>Run statistical tests, forecasting &amp; anomaly detection.</span>
+                <b>3. Statistical &amp; Exploratory Analytics</b>
+                <span>Hypothesis testing, inferential stats &amp; feature engineering.</span>
               </li>
               <li>
-                <b>4. BI Dashboards</b>
-                <span>Build interactive Power BI &amp; Tableau drilldowns.</span>
+                <b>4. Machine Learning &amp; Predictive Modeling</b>
+                <span>Classification, regression, clustering, churn &amp; credit risk.</span>
               </li>
               <li>
-                <b>5. Drive ROI</b>
-                <span>Deliver data storytelling &amp; C-suite recommendations.</span>
+                <b>5. MLOps &amp; Gen AI Business Integration</b>
+                <span>Automated CI/CD pipelines, model monitoring &amp; enterprise AI assistants.</span>
               </li>
             </ol>
             <div className="path-bracket">
-              <strong>The APIDA Specialist owns the full decision intelligence pipeline.</strong>
-              <span>Transform complex industrial metrics into clear, high-impact business decisions.</span>
+              <strong>The Industrial Data Analyst connects raw enterprise records to predictive intelligence.</strong>
+              <span>From transactional SQL and SAS datasets to executive BI dashboards to deployed operational ML models.</span>
             </div>
           </div>
+
         </div>
       </section>
 
@@ -422,25 +802,22 @@ export const ApidaStoryLandingPage: React.FC<ApidaStoryLandingPageProps> = ({ on
         <div className="wrap">
           <div className="min-grid">
             <article>
-              <span className="eyebrow">In one minute</span>
-              <h3>What is it?</h3>
+              <h3>What is APIDA?</h3>
               <p>
-                An industry-focused analytics program combining advanced SQL, Power BI, Tableau, Python, and operational modeling to convert complex industrial data into executive decisions.
+                APIDA is an intensive program equipping you with the full technical stack required by global banks, telecom giants, and consulting firms: SQL, SAS, Python, Power BI, and Machine Learning.
               </p>
             </article>
             <article>
-              <span className="eyebrow">&nbsp;</span>
               <h3>Why is it in demand?</h3>
               <p>
-                Modern manufacturing plants, supply chains, logistics networks, and retail giants produce massive data but lack specialists who can translate raw metrics into operational profit.
+                Global enterprises sit on petabytes of transactional data. They desperately need professionals who not only build executive reports, but also develop predictive models and explain uncertainty.
               </p>
             </article>
             <article>
-              <span className="eyebrow">&nbsp;</span>
               <h3>How do I start?</h3>
               <p>
-                Master the 5 core pillars, work on real industrial datasets under senior corporate mentors, and build a standout analytics portfolio.{' '}
-                <a href="#apida-lead-form" onClick={(e) => { e.preventDefault(); scrollToForm(); }}>
+                Build foundational skills step by step from SQL and Excel AI to Power BI, SAS, Python, Machine Learning, and Gen AI applications with direct mentor guidance.{' '}
+                <a href="#apida-hero-lead-form" onClick={(e) => { e.preventDefault(); scrollToForm(); }}>
                   Join DV Analytics
                 </a>.
               </p>
@@ -450,37 +827,124 @@ export const ApidaStoryLandingPage: React.FC<ApidaStoryLandingPageProps> = ({ on
       </section>
 
       {/* -------------------------------------------------------------------------
-          SECTION 3: WHAT IS AN APIDA SPECIALIST (7-STAGE INTERACTIVE ACCORDION)
+          SECTION 3: WHAT IS INDUSTRIAL DATA ANALYTICS & AI
           ------------------------------------------------------------------------- */}
       <section className="what" id="what-is-apida">
         <div className="wrap">
           <div className="sec-head">
-            <span className="eyebrow">What is an APIDA Specialist</span>
-            <h2>An Industrial Data Analytics Specialist bridges the shop-floor to the boardroom</h2>
+            <h2>What is Industrial Data Analytics &amp; AI?</h2>
           </div>
           <div className="what-text">
             <p className="def">
-              An Industrial Data Analytics &amp; Business Intelligence Specialist works directly with operational leadership. They identify root-cause inefficiencies in supply chain, manufacturing, and retail, model the data in enterprise warehouses, and deploy live executive dashboards.
+              Industrial Data Analytics &amp; AI combines enterprise data management, business intelligence, statistical modeling, and machine learning to convert raw operational data into high-value strategic decisions.
             </p>
             <p>
-              &quot;Industrial analytics&quot; means solving high-stakes physical and financial operational bottlenecks—such as plant downtime, logistics delays, inventory holding costs, and customer churn—rather than generating static backward-looking slides.
+              In industries like Banking, Financial Services, Insurance (BFSI), Healthcare, and Telecom, analytics is not an abstract exercise. It directly drives regulatory credit risk modeling, fraudulent transaction detection, customer churn intervention, and executive revenue planning.
             </p>
             <p>
-              Think of a generic report and an executive flight deck. A spreadsheet operator builds manual tables with last month&#39;s numbers. An APIDA specialist builds an interactive real-time cockpit that predicts problems before they cost money.
+              The APIDA program teaches you how to bridge enterprise data platforms (SQL Server, SAS) with modern visual storytelling (Power BI, Tableau) and predictive AI algorithms (Python, scikit-learn, MLOps), making you indispensable across both legacy corporate systems and modern cloud environments.
             </p>
           </div>
 
+          {/* Highlighted Spotlight Example */}
           <div className="example">
-            <span className="eyebrow">An illustrative industry scenario, step by step</span>
-            <h3>An automotive parts manufacturer facing ₹1.2 Cr in quarterly assembly downtime</h3>
+            <div className="example-badge-row">
+              <span className="example-badge">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                </svg>
+                Real-World Industrial Scenario
+              </span>
+              <span className="example-tag">Example: Banking Credit Risk Scorecard &amp; IFRS 9 ECL Modeling</span>
+            </div>
+            <h3>End-to-End Default Risk Evaluation &amp; Executive Risk Intelligence</h3>
             <p>
-              Management assumes the plant needs &quot;new machines&quot;. The APIDA specialist analyzes machine IoT telemetry, maintenance logs, and shift rosters, discovering that 80% of halts are triggered by micro-vibrations in three specific feeder lines that lack automated preventative alerts.
+              A complete Industrial Data Analytics workflow spans every phase from raw core banking tables to executive dashboards:
+            </p>
+            <ol style={{ margin: '14px 0 0 20px', padding: 0, color: '#334155', lineHeight: 1.6, fontSize: '0.98rem' }}>
+              <li><strong>Data Extraction:</strong> Query historical loan transactions, repayment records, and credit bureau feeds from SQL Server relational tables.</li>
+              <li><strong>SAS Data Management:</strong> Use SAS DATA step and PROC SQL to clean, merge, and stratify accounts across delinquency (DPD) buckets.</li>
+              <li><strong>Statistical Risk Modeling:</strong> Perform hypothesis testing, calculate Weight of Evidence (WoE) and Information Value (IV) to select predictive risk factors.</li>
+              <li><strong>Machine Learning Scorecard:</strong> Train logistic regression and gradient boosting models to estimate Probability of Default (PD) and Loss Given Default (LGD).</li>
+              <li><strong>Executive Power BI Dashboard:</strong> Build an interactive executive risk dashboard with DAX measures, non-performing asset (NPA) trends, and portfolio health KPIs.</li>
+              <li><strong>Gen AI Integration:</strong> Equip underwriting officers with an AI assistant that explains credit decisions and parses borrower bank statements.</li>
+              <li><strong>MLOps &amp; Governance:</strong> Deploy model scoring pipelines with automated population drift tracking and regulatory audit documentation.</li>
+            </ol>
+            <div className="example-footer">
+              <span className="example-footer-lead">The learning objective: Move from isolated queries to complete industrial analytics solutions.</span>
+              <span className="example-footer-arrow">↓</span>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      {/* -------------------------------------------------------------------------
+          SECTION 4: WHY IS IT IN DEMAND? (INDUSTRY DOMAINS)
+          ------------------------------------------------------------------------- */}
+      <section className="why-demand" style={{ padding: '60px 0', borderBottom: '1px solid var(--line)' }}>
+        <div className="wrap">
+          <div className="sec-head">
+            <h2>Why are Industrial Data Analytics &amp; AI Professionals in High Demand?</h2>
+            <p className="lead">
+              Enterprises across banking, telecom, healthcare, and retail generate massive daily transaction volumes. Organizations need professionals who understand domain rules, extract clean data, build dashboards, and deploy predictive models.
+            </p>
+          </div>
+
+          <div className="why-grid" style={{ marginTop: '28px' }}>
+            <article className="why-card">
+              <span className="who-badge">Banking &amp; Finance</span>
+              <h3>Credit Risk &amp; ECL Modeling</h3>
+              <p>Develop application and behavioral scorecards, IFRS 9 Expected Credit Loss (ECL) frameworks, and real-time fraud detection systems.</p>
+            </article>
+            <article className="why-card">
+              <span className="who-badge">Insurance</span>
+              <h3>Claims Fraud &amp; Underwriting</h3>
+              <p>Detect suspicious insurance claims using anomaly detection, automate claims triage, and calculate actuarial risk reserves.</p>
+            </article>
+            <article className="why-card">
+              <span className="who-badge">Retail &amp; E-Commerce</span>
+              <h3>Demand Forecasting &amp; CLV</h3>
+              <p>Forecast store-level inventory demand, estimate Customer Lifetime Value (CLV), and design dynamic product recommendation engines.</p>
+            </article>
+            <article className="why-card">
+              <span className="who-badge">Telecom</span>
+              <h3>Subscriber Churn &amp; ARPU</h3>
+              <p>Predict subscriber churn before recharge lapses, analyze Average Revenue Per User (ARPU), and monitor network uptime metrics.</p>
+            </article>
+            <article className="why-card">
+              <span className="who-badge">Healthcare</span>
+              <h3>Hospital Operations &amp; KPIs</h3>
+              <p>Forecast patient admissions, bed occupancy rates, analyze clinical outcomes, and detect fraudulent healthcare billing claims.</p>
+            </article>
+            <article className="why-card">
+              <span className="who-badge">Manufacturing</span>
+              <h3>Predictive Maintenance</h3>
+              <p>Analyze IoT sensor telemetry, forecast machinery breakdown probabilities, and optimize supply chain delivery bottlenecks.</p>
+            </article>
+          </div>
+
+          <div className="who-note-box" style={{ marginTop: '28px' }}>
+            <strong>The Unique Value of SAS + Python + BI:</strong> While many candidates know only generic Python, top banks (Wells Fargo, HDFC, Citi, HSBC) and pharmaceutical leaders rely heavily on SAS for audited analytics. By mastering both SAS, SQL, Power BI, and Python ML, APIDA graduates stand out in enterprise hiring.
+          </div>
+        </div>
+      </section>
+
+      {/* -------------------------------------------------------------------------
+          SECTION 5: 7-STAGE LEARNING JOURNEY
+          ------------------------------------------------------------------------- */}
+      <section className="learning-journey-stages" style={{ padding: '60px 0', borderBottom: '1px solid var(--line)' }}>
+        <div className="wrap">
+          <div className="sec-head">
+            <h2>The 7 Stages of Your APIDA Learning Journey</h2>
+            <p className="lead">
+              A structured, mentor-led pathway designed to transition you from foundational data querying into advanced business intelligence, statistical modeling, and machine learning.
             </p>
           </div>
 
           <div className="stages">
             <div className="stages-head">
-              <span className="steps-title">The 7 stages of an industrial analytics project</span>
+              <span className="steps-title">The 7 stages of your learning journey</span>
               <span className="hint">Tap a stage to open details</span>
             </div>
 
@@ -488,28 +952,31 @@ export const ApidaStoryLandingPage: React.FC<ApidaStoryLandingPageProps> = ({ on
               <summary>
                 <span className="sn">1</span>
                 <span className="st">
-                  <b>Discover &amp; Scope Operational KPIs</b>
-                  <small>Sit with plant managers, supply chain heads, and finance leads.</small>
+                  <b>Step 1 · Enterprise Data Management (SQL &amp; SAS)</b>
+                  <small>Master SQL Server, MySQL, and SAS Base/Advanced programming to query and clean enterprise datasets.</small>
                 </span>
                 <span className="sx" aria-hidden="true" />
               </summary>
               <div className="sb">
                 <div>
-                  <h4>What the Analyst does</h4>
+                  <h4>What the learner does</h4>
                   <ul className="do">
-                    <li>Meets plant supervisors, supply chain directors, and operations managers on-site.</li>
-                    <li>Discovers the real cost drivers: unplanned line stoppages and excess safety stock.</li>
-                    <li>Agrees on one clear metric: improve Overall Equipment Effectiveness (OEE) by 14%.</li>
-                    <li>Creates a project scope document with agreed metric formulas and data owners.</li>
+                    <li>Writes complex SQL queries: inner/outer joins, subqueries, CTEs, views, and window functions.</li>
+                    <li>Masters Base SAS DATA step programming, conditional logic, informats, formats, and dataset concatenation.</li>
+                    <li>Executes relational queries within SAS using PROC SQL and automates batch scripts via SAS macros.</li>
+                    <li>Resolves real-world dirty data issues: missing values, duplicate records, and multi-source reconciliations.</li>
                   </ul>
                 </div>
                 <div>
-                  <h4>What the client gets</h4>
-                  <p>A crystal-clear definition of the operational problem and an agreed financial target.</p>
+                  <h4>What you achieve</h4>
+                  <p>Ability to extract, clean, and deliver an analysis-ready dataset from complex raw sources.</p>
                   <h4 className="h2b">Skills used</h4>
                   <div className="tags">
-                    <span>Business Consulting</span>
-                    <span>Problem Framing</span>
+                    <span>SQL Server</span>
+                    <span>MySQL</span>
+                    <span>Base SAS</span>
+                    <span>Advanced SAS</span>
+                    <span>PROC SQL</span>
                   </div>
                 </div>
               </div>
@@ -519,28 +986,30 @@ export const ApidaStoryLandingPage: React.FC<ApidaStoryLandingPageProps> = ({ on
               <summary>
                 <span className="sn">2</span>
                 <span className="st">
-                  <b>Enterprise Data &amp; ERP Audit</b>
-                  <small>Inspect ERP records (SAP/Oracle), SQL databases, and IoT logs.</small>
+                  <b>Step 2 · Advanced Business Intelligence &amp; Dashboards</b>
+                  <small>Build executive KPI dashboards with Microsoft Power BI, DAX formulas, and Tableau visual storytelling.</small>
                 </span>
                 <span className="sx" aria-hidden="true" />
               </summary>
               <div className="sb">
                 <div>
-                  <h4>What the Analyst does</h4>
+                  <h4>What the learner does</h4>
                   <ul className="do">
-                    <li>Connects to SAP ERP, maintenance logs, and live machine sensor feeds.</li>
-                    <li>Finds sensor timestamps are misaligned across 3 manufacturing shifts.</li>
-                    <li>Builds data validation rules in SQL and Python to clean corrupt telemetry.</li>
-                    <li>Confirms the dataset provides statistically significant baseline data for modeling.</li>
+                    <li>Designs dimensional data models (star schema, snowflake) and relationships in Power BI.</li>
+                    <li>Writes calculated columns and dynamic measures using DAX (CALCULATE, FILTER, time intelligence).</li>
+                    <li>Builds executive reports in Tableau: calculated fields, parameters, interactive filters, and drilldowns.</li>
+                    <li>Translates statistical and commercial findings into polished executive storytelling presentations.</li>
                   </ul>
                 </div>
                 <div>
-                  <h4>What the client gets</h4>
-                  <p>A verified data dictionary, quality audit report, and clean unified data tables.</p>
+                  <h4>What you achieve</h4>
+                  <p>Interactive executive dashboards answering core business performance questions.</p>
                   <h4 className="h2b">Skills used</h4>
                   <div className="tags">
-                    <span>Advanced SQL</span>
-                    <span>Python &amp; Pandas</span>
+                    <span>Power BI</span>
+                    <span>DAX Functions</span>
+                    <span>Tableau</span>
+                    <span>Executive Dashboards</span>
                   </div>
                 </div>
               </div>
@@ -550,28 +1019,30 @@ export const ApidaStoryLandingPage: React.FC<ApidaStoryLandingPageProps> = ({ on
               <summary>
                 <span className="sn">3</span>
                 <span className="st">
-                  <b>Dimensional Data Warehouse Modeling</b>
-                  <small>Architect star and snowflake schemas in Snowflake / PostgreSQL.</small>
+                  <b>Step 3 · Excel with AI &amp; Business Modeling</b>
+                  <small>Harness advanced lookup functions, Power Query, pivot modeling, and AI-assisted formula generation.</small>
                 </span>
                 <span className="sx" aria-hidden="true" />
               </summary>
               <div className="sb">
                 <div>
-                  <h4>What the Analyst does</h4>
+                  <h4>What the learner does</h4>
                   <ul className="do">
-                    <li>Designs central Fact tables for production runs, downtime events, and energy usage.</li>
-                    <li>Builds supporting Dimension tables for plant lines, shifts, operators, and machine models.</li>
-                    <li>Automates daily extraction and transformations with SQL CTEs and indexing.</li>
-                    <li>Optimizes query plans so dashboard queries return in milliseconds across millions of rows.</li>
+                    <li>Builds automated financial and MIS models using XLOOKUP, INDEX-MATCH, SUMIFS, and dynamic arrays.</li>
+                    <li>Automates data cleaning and transformation pipelines using Power Query and Power Pivot.</li>
+                    <li>Uses AI prompts to generate complex nested formulas, explain anomalies, and validate data integrity.</li>
+                    <li>Creates interactive KPI summary sheets and sensitivity analyses for management reviews.</li>
                   </ul>
                 </div>
                 <div>
-                  <h4>What the client gets</h4>
-                  <p>A scalable, high-performance dimensional data warehouse ready for live BI connections.</p>
+                  <h4>What you achieve</h4>
+                  <p>Automated, error-free operational reporting sheets that cut manual reporting hours by 80%.</p>
                   <h4 className="h2b">Skills used</h4>
                   <div className="tags">
-                    <span>Snowflake</span>
-                    <span>Data Warehousing</span>
+                    <span>Excel AI</span>
+                    <span>Power Query</span>
+                    <span>Power Pivot</span>
+                    <span>MIS Modeling</span>
                   </div>
                 </div>
               </div>
@@ -581,28 +1052,31 @@ export const ApidaStoryLandingPage: React.FC<ApidaStoryLandingPageProps> = ({ on
               <summary>
                 <span className="sn">4</span>
                 <span className="st">
-                  <b>Statistical Modeling &amp; Predictive Forecasting</b>
-                  <small>Detect anomaly patterns and forecast inventory and downtime risk.</small>
+                  <b>Step 4 · Statistical Analytics &amp; Hypothesis Testing</b>
+                  <small>Apply probability distributions, inferential statistics, t-tests, ANOVA, and regression diagnostics.</small>
                 </span>
                 <span className="sx" aria-hidden="true" />
               </summary>
               <div className="sb">
                 <div>
-                  <h4>What the Analyst does</h4>
+                  <h4>What the learner does</h4>
                   <ul className="do">
-                    <li>Runs hypothesis testing and correlation analysis between machine temperature and downtime.</li>
-                    <li>Builds predictive classification models in Scikit-learn to flag high-risk machines.</li>
-                    <li>Implements time-series forecasting (ARIMA / Prophet) for supply chain reorder cycles.</li>
-                    <li>Validates predictive accuracy against holdout data and calculates financial risk scores.</li>
+                    <li>Analyzes distributions, variance, standard errors, confidence intervals, and detects extreme outliers.</li>
+                    <li>Tests business assumptions using parametric and non-parametric tests (p-values, t-tests, Chi-Square, ANOVA).</li>
+                    <li>Identifies genuine driver variables using Pearson/Spearman correlation and checks for multicollinearity.</li>
+                    <li>Evaluates risk metrics and quantifies uncertainty for executive investment and credit decisions.</li>
                   </ul>
                 </div>
                 <div>
-                  <h4>What the client gets</h4>
-                  <p>Predictive insight models that foresee machine failures 72 hours before they occur.</p>
+                  <h4>What you achieve</h4>
+                  <p>Rigorous, evidence-backed decision frameworks that quantify risk and uncertainty.</p>
                   <h4 className="h2b">Skills used</h4>
                   <div className="tags">
-                    <span>Predictive Modeling</span>
-                    <span>Time Series</span>
+                    <span>Python Stats</span>
+                    <span>SAS Stats</span>
+                    <span>Hypothesis Testing</span>
+                    <span>Probability</span>
+                    <span>Regression Stats</span>
                   </div>
                 </div>
               </div>
@@ -612,28 +1086,30 @@ export const ApidaStoryLandingPage: React.FC<ApidaStoryLandingPageProps> = ({ on
               <summary>
                 <span className="sn">5</span>
                 <span className="st">
-                  <b>Executive BI Dashboards (Power BI &amp; Tableau)</b>
-                  <small>Craft interactive drill-down scorecards with custom DAX calculations.</small>
+                  <b>Step 5 · Machine Learning &amp; Predictive Analytics</b>
+                  <small>Train, evaluate, and tune supervised and unsupervised models for classification, regression, and churn.</small>
                 </span>
                 <span className="sx" aria-hidden="true" />
               </summary>
               <div className="sb">
                 <div>
-                  <h4>What the Analyst does</h4>
+                  <h4>What the learner does</h4>
                   <ul className="do">
-                    <li>Builds intuitive Power BI &amp; Tableau dashboards tailored to executive and shift users.</li>
-                    <li>Writes advanced DAX time-intelligence formulas (YTD, MoM, rolling 30-day averages).</li>
-                    <li>Creates visual drill-downs: from overall company profit down to individual machine cells.</li>
-                    <li>Incorporates user feedback from plant supervisors to streamline the layout.</li>
+                    <li>Frames business problems into predictive target variables: churn prediction, default risk, and revenue forecasting.</li>
+                    <li>Engineers domain features, prevents target leakage, and balances skewed classes with SMOTE.</li>
+                    <li>Trains and benchmarks ensemble algorithms: Decision Trees, Random Forests, and XGBoost.</li>
+                    <li>Evaluates model performance with ROC-AUC, precision-recall trade-offs, and cost-benefit matrices.</li>
                   </ul>
                 </div>
                 <div>
-                  <h4>What the client gets</h4>
-                  <p>An interactive, beautiful executive cockpit displaying real-time operational metrics.</p>
+                  <h4>What you achieve</h4>
+                  <p>High-accuracy predictive models evaluated and proven against meaningful business baselines.</p>
                   <h4 className="h2b">Skills used</h4>
                   <div className="tags">
-                    <span>Power BI &amp; DAX</span>
-                    <span>Tableau</span>
+                    <span>scikit-learn</span>
+                    <span>XGBoost</span>
+                    <span>Feature Engineering</span>
+                    <span>Model Validation</span>
                   </div>
                 </div>
               </div>
@@ -643,28 +1119,31 @@ export const ApidaStoryLandingPage: React.FC<ApidaStoryLandingPageProps> = ({ on
               <summary>
                 <span className="sn">6</span>
                 <span className="st">
-                  <b>Automate Scheduled Refresh &amp; Alerting</b>
-                  <small>Deploy to Power BI Service, configure Row-Level Security and alerts.</small>
+                  <b>Step 6 · MLOps &amp; Generative AI Business Integration</b>
+                  <small>Deploy predictive APIs with FastAPI, package in Docker, track drift, and build Gen AI assistants.</small>
                 </span>
                 <span className="sx" aria-hidden="true" />
               </summary>
               <div className="sb">
                 <div>
-                  <h4>What the Analyst does</h4>
+                  <h4>What the learner does</h4>
                   <ul className="do">
-                    <li>Publishes dashboards to corporate Power BI Service with automated daily/hourly refresh.</li>
-                    <li>Configures Row-Level Security (RLS) so managers see only their respective departments.</li>
-                    <li>Sets up automated email and Teams alerts when critical downtime thresholds are breached.</li>
-                    <li>Monitors ETL execution logs and data drift to ensure uninterrupted dashboard reliability.</li>
+                    <li>Exposes machine learning models through high-performance asynchronous REST endpoints using FastAPI.</li>
+                    <li>Packages analytical applications into portable Docker containers for seamless enterprise deployment.</li>
+                    <li>Tracks model performance in production: detecting data drift, schema changes, and latency bottlenecks.</li>
+                    <li>Builds Gen AI conversational assistants using LangChain to help stakeholders query analytics in plain English.</li>
                   </ul>
                 </div>
                 <div>
-                  <h4>What the client gets</h4>
-                  <p>A fully automated, zero-touch reporting portal that alerts teams before losses accumulate.</p>
+                  <h4>What you achieve</h4>
+                  <p>A production-ready microservice with automated prediction endpoints and conversational AI querying.</p>
                   <h4 className="h2b">Skills used</h4>
                   <div className="tags">
-                    <span>Power BI Service</span>
-                    <span>Automation</span>
+                    <span>FastAPI</span>
+                    <span>Docker</span>
+                    <span>MLOps</span>
+                    <span>GenAI &amp; LLMs</span>
+                    <span>Streamlit</span>
                   </div>
                 </div>
               </div>
@@ -674,28 +1153,30 @@ export const ApidaStoryLandingPage: React.FC<ApidaStoryLandingPageProps> = ({ on
               <summary>
                 <span className="sn">7</span>
                 <span className="st">
-                  <b>Executive Delivery &amp; Measurable ROI</b>
-                  <small>Present business ROI to board members and train operational staff.</small>
+                  <b>Step 7 · Capstone Projects, Profile Building &amp; Placement</b>
+                  <small>Document end-to-end BFSI &amp; Telecom capstones, optimize your resume, and clear mock interviews.</small>
                 </span>
                 <span className="sx" aria-hidden="true" />
               </summary>
               <div className="sb">
                 <div>
-                  <h4>What the Analyst does</h4>
+                  <h4>What the learner does</h4>
                   <ul className="do">
-                    <li>Presents analytical findings and financial impact to the CEO and Board of Directors.</li>
-                    <li>Demonstrates a verified ₹46 Lakh savings achieved in the first 60 days of deployment.</li>
-                    <li>Writes an operational dashboard user manual and trains 35 floor managers.</li>
-                    <li>Establishes an ongoing quarterly review cadence to continuously enhance analytics.</li>
+                    <li>Builds documented capstone projects across Banking, Telecom, E-Commerce, and Healthcare.</li>
+                    <li>Develops a high-impact technical resume and optimized LinkedIn presence highlighting SAS, SQL, and BI skills.</li>
+                    <li>Undergoes comprehensive technical assessments and mock interviews covering business scenarios and live SQL/Python tasks.</li>
+                    <li>Participates in recruitment drives with 100% placement support targeting ₹25+ to 35+ LPA benchmarks.</li>
                   </ul>
                 </div>
                 <div>
-                  <h4>What the client gets</h4>
-                  <p>Proven financial return on investment, empowered managers, and data-driven corporate culture.</p>
+                  <h4>What you achieve</h4>
+                  <p>A compelling technical portfolio and interview readiness backed by 100% placement support.</p>
                   <h4 className="h2b">Skills used</h4>
                   <div className="tags">
-                    <span>Executive Storytelling</span>
-                    <span>Decision Intelligence</span>
+                    <span>Profile Building</span>
+                    <span>BI Portfolio</span>
+                    <span>Mock Interviews</span>
+                    <span>Placement Support</span>
                   </div>
                 </div>
               </div>
@@ -705,324 +1186,339 @@ export const ApidaStoryLandingPage: React.FC<ApidaStoryLandingPageProps> = ({ on
       </section>
 
       {/* -------------------------------------------------------------------------
-          SECTION 4: WHY COMPANIES ARE HIRING APIDA SPECIALISTS
+          INTERACTIVE "KNOW MORE" DEEP-DIVE TRIGGER
           ------------------------------------------------------------------------- */}
-      <section id="why-fde">
+      <div className="know-more-section">
+        <div className="wrap">
+          <div className="know-more-bar">
+            <div className="know-more-info">
+              <h3>Want to understand why companies hire APIDA &amp; why AI cannot replace it?</h3>
+              <p>Explore our deep-dive analysis on industrial hiring demand, the 5-specialist breakdown, and the Barbell Theory of tech careers.</p>
+            </div>
+            <button
+              type="button"
+              className={`know-more-toggle-btn ${showDeepDive ? 'open' : ''}`}
+              onClick={() => setShowDeepDive(!showDeepDive)}
+              aria-expanded={showDeepDive}
+            >
+              <span>{showDeepDive ? 'Hide Market Analysis' : 'Know More (Market & AI Analysis)'}</span>
+              <span className="know-more-icon">{showDeepDive ? '↑' : '↓'}</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Collapsible Deep-Dive: Market & AI Analysis */}
+      {showDeepDive && (
+        <div className="deep-dive-content-wrapper">
+          <section id="why-fde">
+            <div className="wrap">
+              <div className="sec-head">
+                <h2>Why Global Enterprises Hire Industrial Data Analytics &amp; AI Professionals</h2>
+                <p className="lead">
+                  Modern business data is massive, regulated, and siloed in legacy enterprise databases. AI models cannot deliver business results without human analysts who know the data and the domain.
+                </p>
+              </div>
+              <div className="why-grid">
+                <article className="why-card">
+                  <h3>Enterprise data is complex and regulated</h3>
+                  <p>In banking and healthcare, data cannot simply be fed into an open AI tool. It requires strict governance, IFRS 9 / Basel compliance, and SAS-audited pipelines.</p>
+                </article>
+                <article className="why-card">
+                  <h3>Isolated dashboards fail to drive action</h3>
+                  <p>A static chart only shows what happened yesterday. Modern enterprises require predictive analytics that forecast what will happen tomorrow and recommend interventions.</p>
+                </article>
+                <article className="why-card">
+                  <h3>Departmental handoffs waste valuable time</h3>
+                  <p>When database admins, BI developers, and data scientists work in isolation, months are lost translating requirements. One professional covering the path moves 5x faster.</p>
+                </article>
+              </div>
+
+              <div className="vs">
+                <div className="vs-box then">
+                  <h3>The Siloed Model: 5 Specialists for One Insight</h3>
+                  <ul>
+                    <li>A Database Admin to write raw SQL queries</li>
+                    <li>A Reporting Analyst to build static Excel spreadsheets</li>
+                    <li>A BI Developer to recreate measures in Power BI</li>
+                    <li>A Statistician to interpret correlations in SAS</li>
+                    <li>A Machine Learning Engineer to attempt predictive modeling</li>
+                  </ul>
+                </div>
+                <div className="vs-box now">
+                  <h3>The APIDA Advantage: One High-Impact Professional</h3>
+                  <ul>
+                    <li>Queries and manages enterprise databases with SQL Server and SAS</li>
+                    <li>Constructs interactive executive BI dashboards in Power BI and Tableau</li>
+                    <li>Applies rigorous statistical testing and builds predictive ML models</li>
+                    <li>Translates complex analytical findings directly to executive leadership</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section className="ai" id="ai-cannot-replace">
+            <div className="wrap">
+              <div className="sec-head">
+                <h2>Why AI Cannot Replace an Industrial Data Analytics &amp; AI Professional</h2>
+                <p className="lead">
+                  AI tools can write boilerplate SQL queries or generate standard charts. But they lack the domain understanding, compliance judgment, and executive presentation capabilities required to lead industrial decision-making.
+                </p>
+              </div>
+
+              <div className="tbl-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>If your job is only…</th>
+                      <th>What AI can already do</th>
+                      <th>What is still missing</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Writing basic SELECT queries</td>
+                      <td>Generates SQL syntax from simple prompts</td>
+                      <td>Someone must understand custom ERP schemas, data anomalies, and business logic</td>
+                    </tr>
+                    <tr>
+                      <td>Generating basic Excel charts</td>
+                      <td>Creates standard bar and line graphs</td>
+                      <td>Someone must determine which KPIs actually drive executive revenue and profitability</td>
+                    </tr>
+                    <tr>
+                      <td>Running automated statistical tests</td>
+                      <td>Calculates p-values and summary tables</td>
+                      <td>Someone must determine whether statistical significance translates to practical commercial impact</td>
+                    </tr>
+                    <tr>
+                      <td>Fitting a standard regression model</td>
+                      <td>Trains standard AutoML algorithms</td>
+                      <td>Someone must evaluate regulatory fairness, prevent target leakage, and interpret feature weights</td>
+                    </tr>
+                    <tr>
+                      <td>Writing presentation bullet points</td>
+                      <td>Drafts generic summaries of numbers</td>
+                      <td>Someone must answer tough executive questions, defend trade-offs, and recommend strategic bets</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div className="four">
+                <h3>The Barbell Theory of Tech Careers</h3>
+                <p className="sub">
+                  AI automates the repetitive middle. Career resilience exists at the two outer ends: business context on the left, live deployment ownership on the right.
+                </p>
+                <div className="parts">
+                  <div className="part">
+                    <b>Basic Report Maker</b>
+                    <span className="d">Copies numbers into spreadsheets without understanding business drivers.</span>
+                    <div className="meter s1"><i /><i /><i /></div>
+                    <span className="tag w">High Risk</span>
+                  </div>
+
+                  <div className="part">
+                    <b>Single-Tool Specialist</b>
+                    <span className="d">Knows only one visualization tool; completely blocked when data is dirty.</span>
+                    <div className="meter s2"><i /><i /><i /></div>
+                    <span className="tag m">Medium Risk</span>
+                  </div>
+
+                  <div className="part">
+                    <b>Theoretical Modeler</b>
+                    <span className="d">Builds models in notebooks that never connect to real operational systems.</span>
+                    <div className="meter s2"><i /><i /><i /></div>
+                    <span className="tag m">Medium Risk</span>
+                  </div>
+
+                  <div className="part">
+                    <b>Industrial Analytics Pro</b>
+                    <span className="d">Extracts enterprise data, builds BI dashboards, and deploys predictive ML.</span>
+                    <div className="meter s3"><i /><i /><i /></div>
+                    <span className="tag s">Most Resilient</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="pull">
+                &quot;AI can produce the charts. It cannot sit with a department head, interpret risk, and <span>guide million-dollar decisions.</span>&quot;
+              </div>
+              <div className="note">
+                The safest career strategy in tech is building a multi-disciplinary mix of skills that is hard to copy. That is exactly what this program teaches.
+              </div>
+            </div>
+          </section>
+
+          <div className="deep-dive-collapse-bottom">
+            <button
+              type="button"
+              className="know-more-toggle-btn secondary"
+              onClick={() => {
+                setShowDeepDive(false);
+                const el = document.getElementById('skills');
+                if (el) el.scrollIntoView({ behavior: 'smooth' });
+              }}
+            >
+              <span>Collapse Analysis &amp; Continue to Skills ↑</span>
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* -------------------------------------------------------------------------
+          SECTION 6: WHO CAN START THIS CAREER?
+          ------------------------------------------------------------------------- */}
+      <section className="who-can" id="who-can-start" style={{ padding: '60px 0', borderBottom: '1px solid var(--line)' }}>
         <div className="wrap">
           <div className="sec-head">
-            <span className="eyebrow">Why APIDA in 2026</span>
-            <h2>Why companies are hiring Industrial Data Analytics Specialists</h2>
+            <h2>Who Can Build a High-Growth Career in Industrial Data Analytics?</h2>
             <p className="lead">
-              Every major enterprise is modernizing. Manual spreadsheets and gut-feeling decisions are being replaced by automated Business Intelligence and real-time operational analytics.
+              The APIDA program is crafted to support ambitious learners from diverse academic disciplines. No prior coding experience is required; we teach database programming and visual analytics step by step.
             </p>
           </div>
-          <div className="why-grid">
-            <article className="why-card">
-              <h3>Move beyond static Excel sheets</h3>
-              <p>Manual spreadsheets cannot scale to millions of sensor readings or enterprise ERP databases. Organizations demand automated, live BI pipelines with real-time refresh.</p>
-            </article>
-            <article className="why-card">
-              <h3>Massive industrial data growth</h3>
-              <p>Factories, logistics fleets, smart grids, and e-commerce warehouses generate petabytes of data daily. Companies need analysts who understand domain context and operational mechanics.</p>
-            </article>
-            <article className="why-card">
-              <h3>Direct C-suite visibility &amp; influence</h3>
-              <p>As an APIDA specialist, your dashboards and predictive forecasts are reviewed directly by Vice Presidents, Directors, and Managing Directors to make multi-crore capital decisions.</p>
-            </article>
+
+          <div className="who-can-grid">
+            <div className="who-can-card">
+              <span className="who-badge">Commerce &amp; Finance</span>
+              <h3>B.Com, BBA &amp; MBA Graduates</h3>
+              <p>Leverage your business understanding to master high-demand financial risk analytics, banking scorecards, and executive BI reporting.</p>
+            </div>
+            <div className="who-can-card">
+              <span className="who-badge">Tech &amp; Engineering</span>
+              <h3>B.Tech, BE, BCA &amp; MCA</h3>
+              <p>Combine your logical and technical foundation with SQL, SAS, Power BI, and Machine Learning to target high-paying data roles.</p>
+            </div>
+            <div className="who-can-card">
+              <span className="who-badge">Science &amp; Math</span>
+              <h3>B.Sc &amp; M.Sc (Stats / Maths / CS)</h3>
+              <p>Turn your quantitative background into practical industrial modeling across telecom, healthcare, and predictive analytics.</p>
+            </div>
+            <div className="who-can-card">
+              <span className="who-badge">Working Professionals</span>
+              <h3>Operations &amp; MIS Analysts</h3>
+              <p>Transition from manual Excel and legacy reporting into automated Power BI dashboards, Python modeling, and MLOps.</p>
+            </div>
+            <div className="who-can-card">
+              <span className="who-badge">Campus to Career</span>
+              <h3>Final-Year Students</h3>
+              <p>Secure a competitive campus placement advantage by mastering industry tools (SAS, SQL, Power BI) demanded by top BFSI recruiters.</p>
+            </div>
+            <div className="who-can-card">
+              <span className="who-badge">Confident Relaunch</span>
+              <h3>Professionals with a Career Gap</h3>
+              <p>Re-enter the professional workforce with demonstrable proof-of-work capstone projects across banking, retail, and telecom.</p>
+            </div>
           </div>
 
-          <div className="vs">
-            <div className="vs-box then">
-              <span className="eyebrow">Earlier</span>
-              <h3>Manual MIS &amp; Static Excel Reporting</h3>
-              <ul>
-                <li>Manual copy-pasting across disparate Excel workbooks</li>
-                <li>Reports delivered days after month-end closing</li>
-                <li>Descriptive only: explains what happened in the past</li>
-                <li>High risk of human formula errors and version confusion</li>
-                <li>No connection to cloud databases or predictive models</li>
-              </ul>
+          <div style={{ marginTop: '24px' }}>
+            <span style={{ font: '700 0.78rem/1 var(--mono)', textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--muted)' }}>
+              Eligible Degree Backgrounds Include:
+            </span>
+            <div className="degree-pills-wrap">
+              <span className="degree-pill">B.Com</span>
+              <span className="degree-pill">BBA</span>
+              <span className="degree-pill">BA</span>
+              <span className="degree-pill">B.Sc (All Streams)</span>
+              <span className="degree-pill">BCA</span>
+              <span className="degree-pill">B.Tech / B.E.</span>
+              <span className="degree-pill">MBA</span>
+              <span className="degree-pill">MCA</span>
+              <span className="degree-pill">M.Tech / M.Sc</span>
             </div>
-            <div className="vs-box now">
-              <span className="eyebrow">Now</span>
-              <h3>Modern Industrial Data Analytics &amp; BI (APIDA)</h3>
-              <ul>
-                <li>Automated SQL pipelines connecting cloud data warehouses</li>
-                <li>Live interactive Power BI &amp; Tableau dashboards updated hourly</li>
-                <li>Predictive &amp; Prescriptive: forecasts demand &amp; suggests optimal actions</li>
-                <li>Direct executive impact, scalable automation, and top-tier compensation</li>
-                <li>One analyst who owns the full decision intelligence pipeline</li>
-              </ul>
-            </div>
+          </div>
+
+          <div className="who-note-box">
+            <strong>Foundation-First Pedagogy:</strong> You do not need prior programming expertise to excel in APIDA. We start from SQL fundamentals and Excel AI before advancing into SAS, Power BI, Python, and Machine Learning algorithms.
           </div>
         </div>
       </section>
 
       {/* -------------------------------------------------------------------------
-          SECTION 5: WHY HUMAN ANALYSTS REMAIN INDISPENSABLE
+          SECTION 7: DETAILED CURRICULUM (THE 5 PILLARS)
           ------------------------------------------------------------------------- */}
-      <section className="ai" id="ai-cannot-replace">
+      <section id="skills" style={{ padding: '60px 0', borderBottom: '1px solid var(--line)' }}>
         <div className="wrap">
           <div className="sec-head">
-            <span className="eyebrow">Career Longevity</span>
-            <h2>Why AI complements — and cannot replace — the APIDA Specialist</h2>
+            <h2>The 5 Pillars of Industrial Data Analytics &amp; AI</h2>
             <p className="lead">
-              AI tools generate syntax and code snippets, but they lack shop-floor domain context, business judgment, and stakeholder accountability.
+              A comprehensive industry curriculum structured into 5 foundational pillars. Learn each skill systematically, then apply them together in real-world capstone projects. <strong>Tap any pillar below to inspect topics and deliverables.</strong>
             </p>
           </div>
 
-          <div className="tbl-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>Analytical Dimension</th>
-                  <th>What AI Does</th>
-                  <th>What the Human APIDA Specialist Delivers</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>1. Operational Domain Context</td>
-                  <td>Generates generic formulas without knowledge of real plant constraints.</td>
-                  <td>Understands machine calibration limits, shift schedules, vendor contracts, and physical factory realities.</td>
-                </tr>
-                <tr>
-                  <td>2. Data Quality &amp; Audit</td>
-                  <td>Blindly computes averages even when sensor logs have corrupt dropouts.</td>
-                  <td>Audits sensor reliability, handles missing data responsibly, and verifies data integrity with plant supervisors.</td>
-                </tr>
-                <tr>
-                  <td>3. Dashboard UX &amp; Decision Framing</td>
-                  <td>Outputs cluttered charts that confuse busy executives.</td>
-                  <td>Crafts clean, intuitive visual hierarchies that highlight urgent outliers, root causes, and recommended actions.</td>
-                </tr>
-                <tr>
-                  <td>4. Strategic Problem Solving</td>
-                  <td>Answers only what is explicitly typed into a prompt box.</td>
-                  <td>Discovers hidden operational bottlenecks, identifies cross-departmental waste, and formulates high-ROI questions.</td>
-                </tr>
-                <tr>
-                  <td>5. Trust &amp; Executive Ownership</td>
-                  <td>Cannot defend assumptions or take responsibility for forecasts.</td>
-                  <td>Stands in front of the board of directors, explains trade-offs, defends methodologies, and owns analytical outcomes.</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-          <div className="four">
-            <h3>The Barbell Theory of Analytical Careers</h3>
-            <p className="sub">
-              AI automates routine formula lookup. Value concentrates in two places: understanding the business operations on the left, and deploying live decision dashboards on the right.
-            </p>
-            <div className="parts">
-              <div className="part">
-                <span className="tag w">High Risk</span>
-                <b>Spreadsheet Typist</b>
-                <span className="d">Manually copies cells and formats tables without understanding the underlying business.</span>
-                <div className="meter s1">
-                  <i />
-                  <i />
-                  <i />
-                </div>
-              </div>
-
-              <div className="part">
-                <span className="tag m">Medium Risk</span>
-                <b>Pure SQL Writer</b>
-                <span className="d">Writes queries from tickets without knowing how data impacts factory or customer metrics.</span>
-                <div className="meter s2">
-                  <i />
-                  <i />
-                  <i />
-                </div>
-              </div>
-
-              <div className="part">
-                <span className="tag m">Medium Risk</span>
-                <b>Academic Statistician</b>
-                <span className="d">Builds complex formulas in notebooks that operational managers cannot read or execute.</span>
-                <div className="meter s2">
-                  <i />
-                  <i />
-                  <i />
-                </div>
-              </div>
-
-              <div className="part">
-                <span className="tag s">Most Resilient</span>
-                <b>Industrial BI Specialist</b>
-                <span className="d">Bridges physical operations, enterprise data warehouses, and executive boardroom decisions.</span>
-                <div className="meter s3">
-                  <i />
-                  <i />
-                  <i />
-                </div>
-              </div>
+          <div className="stages" style={{ marginTop: '28px' }}>
+            <div className="stages-head">
+              <span className="steps-title">The 5 Pillars of Curriculum</span>
+              <span className="hint">Tap a pillar to open details</span>
             </div>
+
+            {learningPathModules.map((m, idx) => (
+              <details className="stage" name="pillars-accordion" key={m.id} open={idx === 0}>
+                <summary>
+                  <span className="sn">{m.id}</span>
+                  <span className="st">
+                    <b>Pillar 0{m.id} · {m.title} {m.id === 1 ? '· (Foundation Start)' : ''}</b>
+                    <small>{m.summary}</small>
+                  </span>
+                  <span className="sx" aria-hidden="true" />
+                </summary>
+                <div className="sb">
+                  <div>
+                    <h4>Topics &amp; Practical Deliverables</h4>
+                    <ul className="do">
+                      {m.topics.map((t, tIdx) => (
+                        <li key={tIdx}>{t}</li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div>
+                    <h4>What you achieve</h4>
+                    <p>{m.summary}</p>
+                    <h4 className="h2b">Skills &amp; Technologies</h4>
+                    <div className="tags">
+                      {m.techChips.map((chip, cIdx) => (
+                        <span key={cIdx}>{chip}</span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </details>
+            ))}
           </div>
 
-          <div className="pull">
-            &quot;AI can calculate numbers. It cannot understand plant floor realities, look executives in the eye, and <span>take responsibility for strategic decisions.</span>&quot;
-          </div>
-          <div className="note">
-            The most future-proof career strategy in analytics is blending advanced technical data skills with real industrial domain acumen. That is exactly what APIDA delivers.
-          </div>
-        </div>
-      </section>
-
-      {/* -------------------------------------------------------------------------
-          SECTION 6: THE 5 SKILLS (MATCHING PILLARS & SPLIT WORK BREAKDOWN)
-          ------------------------------------------------------------------------- */}
-      <section id="skills">
-        <div className="wrap">
-          <div className="sec-head">
-            <span className="eyebrow">Skills</span>
-            <h2>The 5 skills that make up an Industrial Data Analytics Specialist</h2>
-            <p className="lead">
-              You do not need to master everything first. You learn the skills step by step, then combine them on real industrial capstone projects.
-            </p>
-          </div>
-
-          <div className="pillars">
-            <article
-              className="pillar"
-              onClick={() => setSelectedModule(1)}
-              role="button"
-              tabIndex={0}
-              title="Click to view detailed syllabus"
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') setSelectedModule(1);
-              }}
-            >
-              <span className="n">1 · START HERE</span>
-              <h3>Data Management &amp; SQL</h3>
-              <p>Master relational schema design, PostgreSQL, Snowflake, and automated ETL pipelines.</p>
-              <ul className="can">
-                <li>Write complex SQL queries &amp; CTEs</li>
-                <li>Design dimensional star schemas</li>
-                <li>Connect cloud data warehouses</li>
-              </ul>
-            </article>
-
-            <article
-              className="pillar"
-              onClick={() => setSelectedModule(2)}
-              role="button"
-              tabIndex={0}
-              title="Click to view detailed syllabus"
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') setSelectedModule(2);
-              }}
-            >
-              <span className="n">2</span>
-              <h3>Business Intelligence &amp; BI</h3>
-              <p>Build executive scorecards and drill-down dashboards in Power BI and Tableau.</p>
-              <ul className="can">
-                <li>Write advanced DAX calculations</li>
-                <li>Build interactive Tableau reports</li>
-                <li>Deploy to Power BI Service</li>
-              </ul>
-            </article>
-
-            <article
-              className="pillar"
-              onClick={() => setSelectedModule(3)}
-              role="button"
-              tabIndex={0}
-              title="Click to view detailed syllabus"
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') setSelectedModule(3);
-              }}
-            >
-              <span className="n">3</span>
-              <h3>Statistical &amp; Predictive Analytics</h3>
-              <p>Go beyond backward-looking charts. Use statistics and Python to forecast trends.</p>
-              <ul className="can">
-                <li>Conduct business hypothesis tests</li>
-                <li>Train predictive regression models</li>
-                <li>Forecast demand with time-series</li>
-              </ul>
-            </article>
-
-            <article
-              className="pillar"
-              onClick={() => setSelectedModule(4)}
-              role="button"
-              tabIndex={0}
-              title="Click to view detailed syllabus"
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') setSelectedModule(4);
-              }}
-            >
-              <span className="n">4</span>
-              <h3>Industrial Domain Analytics</h3>
-              <p>Apply data to manufacturing, supply chain, inventory, and financial operations.</p>
-              <ul className="can">
-                <li>Calculate Overall Equipment Effectiveness</li>
-                <li>Optimize inventory safety stocks</li>
-                <li>Diagnose operational bottlenecks</li>
-              </ul>
-            </article>
-
-            <article
-              className="pillar key"
-              onClick={() => setSelectedModule(5)}
-              role="button"
-              tabIndex={0}
-              title="Click to view detailed syllabus"
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') setSelectedModule(5);
-              }}
-            >
-              <span className="n">5 · FROM DAY ONE</span>
-              <h3>Consulting &amp; Decision Storytelling</h3>
-              <p>Understand people, business objectives, and how to deliver measurable ROI to leadership.</p>
-              <ul className="can">
-                <li>Deconstruct business bottlenecks</li>
-                <li>Present persuasive executive decks</li>
-                <li>Quantify bottom-line financial ROI</li>
-              </ul>
-            </article>
-          </div>
-
-          <div className="split">
+          <div className="split" style={{ marginTop: '40px' }}>
             <div>
-              <span className="eyebrow">Work Breakdown</span>
-              <h3>How much of the job is dashboards?</h3>
-              <p className="legend" style={{ marginTop: '8px' }}>
-                Dashboards are the final face, but high compensation comes from the full pipeline:
-              </p>
-              <div className="bar" role="img" aria-label="50% BI & Dashboards, 30% SQL & Data, 20% Predictive & Consulting">
-                <div className="b1">50%<span className="bar-tag"> BI</span></div>
-                <div className="b2">30%<span className="bar-tag"> Data</span></div>
-                <div className="b3">20%<span className="bar-tag"> Strategy</span></div>
+              <h3>How much of the job is code?</h3>
+              <div className="bar" role="img" aria-label="50% Data Management & BI, 30% Statistical & ML Modeling, 20% Business Strategy & Gen AI">
+                <div className="b1" style={{ width: '50%' }}>50%<span className="bar-tag"> Data &amp; BI</span></div>
+                <div className="b2" style={{ width: '30%' }}>30%<span className="bar-tag"> Stats &amp; ML</span></div>
+                <div className="b3" style={{ width: '20%' }}>20%<span className="bar-tag"> Strategy</span></div>
               </div>
               <div className="legend">
-                <div><b>50% BI &amp; Dashboards:</b> Power BI, DAX, Tableau, Excel, and visual data storytelling.</div>
-                <div><b>30% SQL &amp; Data Warehouses:</b> PostgreSQL, Snowflake, dimensional schema modeling, and ETL.</div>
-                <div><b>20% Predictive &amp; Strategy:</b> Statistical forecasting, domain metrics, and C-suite consulting.</div>
+                <div><b>50% Data Management &amp; BI:</b> SQL Server, MySQL, Base/Advanced SAS, Excel AI, Power BI DAX, and Tableau storytelling.</div>
+                <div><b>30% Stats &amp; Machine Learning:</b> Hypothesis testing, probability, scikit-learn, XGBoost, and churn/credit risk modeling.</div>
+                <div><b>20% Business Strategy &amp; Gen AI:</b> Framing executive KPIs, MLOps deployment with FastAPI, and Gen AI analytical assistants.</div>
               </div>
             </div>
 
             <div>
-              <span className="eyebrow">Learning Sequence</span>
-              <h3>In what order should you learn?</h3>
-              <ol className="order" style={{ marginTop: '14px' }}>
+              <h3>In what order do you learn?</h3>
+              <ol className="order">
                 <li data-n="1">
-                  <div><b>Data Management &amp; SQL:</b> Master database architecture, queries, and ETL pipelines.</div>
+                  <div><b>Enterprise Data Management:</b> Query relational databases with SQL Server and master Base/Advanced SAS programming.</div>
                 </li>
                 <li data-n="2">
-                  <div><b>Business Intelligence:</b> Build real-time interactive Power BI and Tableau dashboards.</div>
+                  <div><b>Data Analysis &amp; Visualisation:</b> Model business metrics with DAX in Power BI, design Tableau dashboards, and automate Excel.</div>
                 </li>
                 <li data-n="3">
-                  <div><b>Statistical Modeling:</b> Run exploratory analysis, hypothesis tests, and time-series forecasts.</div>
+                  <div><b>Statistical Analytics &amp; Modeling:</b> Learn probability distributions, conduct hypothesis tests, and diagnose regression assumptions.</div>
                 </li>
                 <li data-n="4">
-                  <div><b>Operational Analytics:</b> Solve supply chain, plant yield, and inventory challenges.</div>
+                  <div><b>Machine Learning &amp; Predictive Analytics:</b> Train supervised classification, regression, and clustering algorithms in Python.</div>
                 </li>
                 <li data-n="5">
-                  <div><b>Executive Storytelling:</b> Frame ROI, deliver board presentations, and drive adoption.</div>
+                  <div><b>MLOps &amp; Gen AI Business Integration:</b> Deploy predictive microservices with FastAPI, monitor drift, and build Gen AI assistants.</div>
                 </li>
               </ol>
             </div>
@@ -1031,748 +1527,1184 @@ export const ApidaStoryLandingPage: React.FC<ApidaStoryLandingPageProps> = ({ on
       </section>
 
       {/* -------------------------------------------------------------------------
-          SECTION 7: COMPLETE INDUSTRIAL ANALYTICS TOOLS WITH SVG LOGOS
+          SECTION 8: TOOLS SECTION (COURSE-SPECIFIC SUB-SECTIONS)
           ------------------------------------------------------------------------- */}
       <section className="tools" id="tools">
         <div className="wrap">
           <div className="sec-head">
-            <span className="eyebrow">Tools you will learn</span>
-            <h2>The tools an Industrial Data Analytics Specialist uses every day</h2>
-            <p className="lead">You do not need to know any of these today. You pick them up step by step, one project at a time. Each tool is here because real companies use it.</p>
+            <h2>The Tools an Industrial Data Analytics Professional Uses Every Day</h2>
+            <p className="lead">
+              You will gain practical, hands-on exposure to the entire analytics technology stack trusted by Fortune 500 banks, retail corporations, and top analytics consultancies.
+            </p>
           </div>
 
-          {/* Group 1: Enterprise Data & SQL */}
+          {/* Sub-section 1: Enterprise Data Management & Database Engineering (8 tools) */}
           <div className="tg">
             <div className="tg-head">
-              <h3>Work with data &amp; SQL</h3>
-              <span>Skill 1 · Data Management &amp; Advanced SQL</span>
+              <h3>Enterprise Data Management &amp; Database Systems</h3>
+              <span>Skill Group 1 · Database Extraction, Data Steps &amp; Transformation</span>
             </div>
             <div className="tgrid">
               <div className="tool">
                 <span className="tl" aria-hidden="true">
                   <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" focusable="false">
-                    <path fill="#4169E1" d="M23.5594 14.7228a.5269.5269 0 0 0-.0563-.1191c-.139-.2632-.4768-.3418-1.0074-.2321-1.6533.3411-2.2935.1312-2.5256-.0191 1.342-2.0482 2.445-4.522 3.0411-6.8297.2714-1.0507.7982-3.5237.1222-4.7316a1.5641 1.5641 0 0 0-.1509-.235C21.6931.9086 19.8007.0248 17.5099.0005c-1.4947-.0158-2.7705.3461-3.1161.4794a9.449 9.449 0 0 0-.5159-.0816 8.044 8.044 0 0 0-1.3114-.1278c-1.1822-.0184-2.2038.2642-3.0498.8406-.8573-.3211-4.7888-1.645-7.2219.0788C.9359 2.1526.3086 3.8733.4302 6.3043c.0409.818.5069 3.334 1.2423 5.7436.4598 1.5065.9387 2.7019 1.4334 3.582.553.9942 1.1259 1.5933 1.7143 1.7895.4474.1491 1.1327.1441 1.8581-.7279.8012-.9635 1.5903-1.8258 1.9446-2.2069.4351.2355.9064.3625 1.39.3772a.0569.0569 0 0 0 .0004.0041 11.0312 11.0312 0 0 0-.2472.3054c-.3389.4302-.4094.5197-1.5002.7443-.3102.064-1.1344.2339-1.1464.8115-.0025.1224.0329.2309.0919.3268.2269.4231.9216.6097 1.015.6331 1.3345.3335 2.5044.092 3.3714-.6787-.017 2.231.0775 4.4174.3454 5.0874.2212.5529.7618 1.9045 2.4692 1.9043.2505 0 .5263-.0291.8296-.0941 1.7819-.3821 2.5557-1.1696 2.855-2.9059.1503-.8707.4016-2.8753.5388-4.1012.0169-.0703.0357-.1207.057-.1362.0007-.0005.0697-.0471.4272.0307a.3673.3673 0 0 0 .0443.0068l.2539.0223.0149.001c.8468.0384 1.9114-.1426 2.5312-.4308.6438-.2988 1.8057-1.0323 1.5951-1.6698z" />
+                    <path fill="#CC292B" d="M12 2C6.48 2 2 3.79 2 6v12c0 2.21 4.48 4 10 4s10-1.79 10-4V6c0-2.21-4.48-4-10-4zm0 2c4.97 0 8 1.48 8 2s-3.03 2-8 2-8-1.48-8-2 3.03-2 8-2zm8 14c0 .52-3.03 2-8 2s-8-1.48-8-2v-2.22c1.94 1.34 4.86 2.22 8 2.22s6.06-.88 8-2.22V18zm0-4c0 .52-3.03 2-8 2s-8-1.48-8-2v-2.22c1.94 1.34 4.86 2.22 8 2.22s6.06-.88 8-2.22V14zm0-4c0 .52-3.03 2-8 2s-8-1.48-8-2V7.78c1.94 1.34 4.86 2.22 8 2.22s6.06-.88 8-2.22V10z"/>
                   </svg>
                 </span>
-                <div><strong>PostgreSQL &amp; SQL</strong><small>Complex joins, CTEs, and window functions</small></div>
+                <div>
+                  <strong>SQL Server</strong>
+                  <small>Query enterprise relational databases &amp; optimize joins</small>
+                </div>
+              </div>
+
+              <div className="tool">
+                <span className="tl" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#00758F" strokeWidth="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+                </span>
+                <div>
+                  <strong>MySQL</strong>
+                  <small>Manage open-source relational schemas &amp; constraints</small>
+                </div>
+              </div>
+
+              <div className="tool">
+                <span className="tl" aria-hidden="true">
+                  <img src="/tools/sas.png" alt="SAS Studio logo" className="tl-sas" width="34" height="17" loading="lazy" />
+                </span>
+                <div>
+                  <strong>Base SAS</strong>
+                  <small>DATA steps, conditional logic, informats &amp; formats</small>
+                </div>
+              </div>
+
+              <div className="tool">
+                <span className="tl" aria-hidden="true">
+                  <img src="/tools/sas.png" alt="SAS Studio logo" className="tl-sas" width="34" height="17" loading="lazy" />
+                </span>
+                <div>
+                  <strong>Advanced SAS</strong>
+                  <small>PROC SQL, SAS macro programming &amp; batch pipelines</small>
+                </div>
               </div>
 
               <div className="tool">
                 <span className="tl" aria-hidden="true">
                   <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" focusable="false">
-                    <path fill="#29B5E8" d="M12 0l1.24 3.73h3.93l-3.18 2.31 1.22 3.73-3.21-2.33-3.21 2.33 1.22-3.73-3.18-2.31h3.93L12 0zm0 14.23l-1.24 3.73H6.83l3.18 2.31-1.22 3.73 3.21-2.33 3.21 2.33-1.22-3.73 3.18-2.31h-3.93L12 24l-1.24-3.73h-3.93l3.18-2.31-1.22-3.73 3.21-2.33 3.21-2.33-1.22 3.73 3.18 2.31h-3.93L12 14.23zM0 12l3.73-1.24V6.83l2.31 3.18 3.73-1.22-2.33 3.21 2.33 3.21-3.73-1.22-2.31 3.18v-3.93L0 12zm24 0l-3.73 1.24v3.93l-2.31-3.18-3.73 1.22 2.33-3.21-2.33-3.21 3.73 1.22 2.31-3.18v3.93L24 12z" />
+                    <path fill="#336791" d="M12.002 0c-3.16 0-5.875 1.588-6.91 3.993-.36 1.074-.53 2.254-.487 3.535.045 1.353.305 2.82.808 4.341l.053.153c-.368.74-.707 1.56-.983 2.47-.563 1.89-.718 3.666-.374 4.737.207.643.62.857 1.11.857.55 0 1.206-.282 1.895-.826.634-.5 1.236-1.2 1.788-2.057.344.076.702.13 1.076.153.955.061 1.864-.092 2.66-.428.75-.32 1.344-.81 1.765-1.452.45-.688.68-1.55.672-2.536-.008-1.116-.32-2.132-.902-2.965-.512-.74-1.207-1.284-2.04-1.62.008-.2.008-.4 0-.588-.054-1.13-.36-2.155-.902-2.995-.58-.894-1.406-1.574-2.407-1.994-.6-.252-1.284-.42-2.008-.458z"/>
                   </svg>
                 </span>
-                <div><strong>Snowflake</strong><small>Cloud data warehousing at enterprise scale</small></div>
+                <div>
+                  <strong>PostgreSQL</strong>
+                  <small>Analytical SQL queries, CTEs &amp; window functions</small>
+                </div>
               </div>
 
               <div className="tool">
                 <span className="tl" aria-hidden="true">
                   <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" focusable="false">
-                    <path fill="#3776AB" d="M14.25.18l.9.2.73.26.59.3.45.32.34.34.25.34.16.33.1.3.04.26.02.2-.01.13V8.5l-.05.63-.13.55-.21.46-.26.38-.3.31-.33.25-.35.19-.35.14-.33.1-.3.07-.26.04-.21.02H8.77l-.69.05-.59.14-.5.22-.41.27-.33.32-.27.35-.2.36-.15.37-.1.35-.07.32-.04.27-.02.21v3.06H3.17l-.21-.03-.28-.07-.32-.12-.35-.18-.36-.26-.36-.36-.35-.46-.32-.59-.28-.73-.21-.88-.14-1.05-.05-1.23.06-1.22.16-1.04.24-.87.32-.71.36-.57.4-.44.42-.33.42-.24.4-.16.36-.1.32-.05.24-.01h.16l.06.01h8.16v-.83H6.18l-.01-2.75-.02-.37.05-.34.11-.31.17-.28.25-.26.31-.23.38-.2.44-.18.51-.15.58-.12.64-.1.71-.06.77-.04.84-.02 1.27.05zm-6.3 1.98l-.23.33-.08.41.08.41.23.34.33.22.41.09.41-.09.33-.22.23-.34.08-.41-.08-.41-.23-.33-.33-.22-.41-.09-.41.09zm13.09 3.95l.28.06.32.12.35.18.36.27.36.35.35.47.32.59.28.73.21.88.14 1.04.05 1.23-.06 1.23-.16 1.04-.24.86-.32.71-.36.57-.4.45-.42.33-.42.24-.4.16-.36.09-.32.05-.24.02-.16-.01h-8.22v.82h5.84l.01 2.76.02.36-.05.34-.11.31-.17.29-.25.25-.31.24-.38.2-.44.17-.51.15-.58.13-.64.09-.71.07-.77.04-.84.01-1.27-.04-1.07-.14-.9-.2-.73-.25-.59-.3-.45-.33-.34-.34-.25-.34-.16-.33-.1-.3-.04-.25-.02-.2.01-.13v-5.34l.05-.64.13-.54.21-.46.26-.38.3-.32.33-.24.35-.2.35-.14.33-.1.3-.06.26-.04.21-.02.13-.01h5.84l.69-.05.59-.14.5-.21.41-.28.33-.32.27-.35.2-.36.15-.36.1-.35.07-.32.04-.28.02-.21V6.07h2.09l.14.01zm-6.47 14.25l-.23.33-.08.41.08.41.23.33.33.23.41.08.41-.08.33-.23.23-.33.08-.41-.08-.41-.23-.33-.33-.23-.41-.08-.41.08z" />
+                    <path fill="#E25A1C" d="M12.005 0C5.378 0 0 5.378 0 12.005c0 6.628 5.378 12.005 12.005 12.005 6.628 0 12.005-5.377 12.005-12.005C24.01 5.378 18.633 0 12.005 0zm6.81 18.17l-1.99-1.99a5.955 5.955 0 0 1-4.82 2.45c-3.308 0-5.99-2.682-5.99-5.99 0-1.84.83-3.48 2.14-4.58l-1.41-1.41a7.96 7.96 0 0 0-2.73 5.99c0 4.41 3.59 8 8 8 2.44 0 4.62-1.1 6.09-2.83l.71.36z"/>
                   </svg>
                 </span>
-                <div><strong>Python 3.12</strong><small>Automate ETL pipelines and data transformations</small></div>
+                <div>
+                  <strong>PySpark &amp; Spark SQL</strong>
+                  <small>Large-scale distributed data processing &amp; DataFrames</small>
+                </div>
               </div>
 
               <div className="tool">
                 <span className="tl" aria-hidden="true">
                   <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" focusable="false">
-                    <path fill="#150458" d="M16.922 0h2.623v18.104h-2.623zm-4.126 12.94h2.623v2.57h-2.623zm0-7.037h2.623v5.446h-2.623zm0 11.197h2.623v5.446h-2.623zM4.456 5.896h2.622V24H4.455zm4.213 2.559h2.623v2.57H8.67zm0 4.151h2.623v5.447H8.67zm0-11.187h2.623v5.446H8.67Z" />
+                    <path fill="#F03C2E" d="M13.09 23.549a1.54 1.54 0 0 1-2.18 0L.451 13.089a1.54 1.54 0 0 1 0-2.179l7.191-7.19 2.733 2.733a1.85 1.85 0 0 0 .964 2.326v6.66a1.849 1.849 0 1 0 1.54 0V8.957l2.508 2.508a1.85 1.85 0 1 0 1.09-1.09l-2.634-2.634a1.85 1.85 0 0 0-2.378-2.377L8.73 2.63 10.91.451a1.54 1.54 0 0 1 2.179 0l10.459 10.46a1.54 1.54 0 0 1 0 2.179z"/>
                   </svg>
                 </span>
-                <div><strong>Pandas &amp; DuckDB</strong><small>In-memory analytics on massive tabular files</small></div>
+                <div>
+                  <strong>Git</strong>
+                  <small>Track every analytical script &amp; version history</small>
+                </div>
               </div>
 
               <div className="tool">
                 <span className="tl" aria-hidden="true">
                   <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" focusable="false">
-                    <path fill="#F03C2E" d="M13.09 23.549a1.54 1.54 0 0 1-2.18 0L.451 13.089a1.54 1.54 0 0 1 0-2.179l7.191-7.19 2.733 2.733a1.85 1.85 0 0 0 .964 2.326v6.66a1.849 1.849 0 1 0 1.54 0V8.957l2.508 2.508a1.85 1.85 0 1 0 1.09-1.09l-2.634-2.634a1.85 1.85 0 0 0-2.378-2.377L8.73 2.63 10.91.451a1.54 1.54 0 0 1 2.179 0l10.459 10.46a1.54 1.54 0 0 1 0 2.179z" />
+                    <path fill="#181717" d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
                   </svg>
                 </span>
-                <div><strong>Git</strong><small>Track every version of analysis queries</small></div>
+                <div>
+                  <strong>GitHub</strong>
+                  <small>Share analytics code, reviews &amp; project repositories</small>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Sub-section 2: Business Intelligence & Visual Storytelling (8 tools) */}
+          <div className="tg" style={{ marginTop: '28px' }}>
+            <div className="tg-head">
+              <h3>Business Intelligence &amp; Visual Analytics</h3>
+              <span>Skill Group 2 · Executive Dashboards, DAX &amp; Visual Storytelling</span>
+            </div>
+            <div className="tgrid">
+              <div className="tool">
+                <span className="tl" aria-hidden="true">
+                  <img src="/tools/power-bi.svg" alt="Microsoft Power BI logo" width="28" height="28" loading="lazy" />
+                </span>
+                <div>
+                  <strong>Microsoft Power BI</strong>
+                  <small>Build executive KPI dashboards &amp; interactive reports</small>
+                </div>
+              </div>
+
+              <div className="tool">
+                <span className="tl" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#F59E0B" strokeWidth="2"><path d="M12 2v20"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                </span>
+                <div>
+                  <strong>DAX (Data Analysis Expressions)</strong>
+                  <small>Dynamic business metrics, CALCULATE &amp; time intelligence</small>
+                </div>
               </div>
 
               <div className="tool">
                 <span className="tl" aria-hidden="true">
                   <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" focusable="false">
-                    <path fill="#181717" d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
+                    <path fill="#E97627" d="M11.39 0v2.75h1.22V0h-1.22zm0 21.25V24h1.22v-2.75h-1.22zM21.25 11.39v1.22H24v-1.22h-2.75zM0 11.39v1.22h2.75v-1.22H0zm11.08 4.62v3.08h1.84v-3.08h-1.84zm0-10.78v3.08h1.84V5.23h-1.84zm-5.85 5.85v1.84h3.08v-1.84H5.23zm10.78 0v1.84h3.08v-1.84h-3.08zm-5.08-1.54v4.92h2.16v-4.92h-2.16zm-5.08 7.39v1.54h1.54v-1.54H5.85zm12.3 0v1.54h1.54v-1.54h-1.54zm0-12.3v1.54h1.54V6.46h-1.54zm-12.3 0v1.54h1.54V6.46H5.85z"/>
                   </svg>
                 </span>
-                <div><strong>GitHub</strong><small>Host analytics repositories and data portfolios</small></div>
+                <div>
+                  <strong>Tableau Desktop</strong>
+                  <small>Interactive visual analytics &amp; geographical reporting</small>
+                </div>
+              </div>
+
+              <div className="tool">
+                <span className="tl" aria-hidden="true">
+                  <img src="/tools/excel.png" alt="Microsoft Excel logo" width="28" height="28" loading="lazy" />
+                </span>
+                <div>
+                  <strong>Excel + AI</strong>
+                  <small>Advanced pivot modeling, lookups &amp; Copilot formulas</small>
+                </div>
+              </div>
+
+              <div className="tool">
+                <span className="tl" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#0284C7" strokeWidth="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><line x1="12" y1="4" x2="12" y2="20"/><line x1="4" y1="12" x2="20" y2="12"/></svg>
+                </span>
+                <div>
+                  <strong>Power Query</strong>
+                  <small>Automated ETL pipelines, data cleaning &amp; transformation</small>
+                </div>
+              </div>
+
+              <div className="tool">
+                <span className="tl" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#6366F1" strokeWidth="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><path d="M10 6.5h4M10 17.5h4M6.5 10v4M17.5 10v4"/></svg>
+                </span>
+                <div>
+                  <strong>Power Pivot</strong>
+                  <small>Dimensional data modeling, star schemas &amp; relationships</small>
+                </div>
+              </div>
+
+              <div className="tool">
+                <span className="tl" aria-hidden="true">
+                  <img src="/tools/power-bi.svg" alt="Microsoft Power BI logo" width="28" height="28" loading="lazy" />
+                </span>
+                <div>
+                  <strong>Power BI Service</strong>
+                  <small>Cloud workspace sharing, scheduled refresh &amp; RLS security</small>
+                </div>
+              </div>
+
+              <div className="tool">
+                <span className="tl" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#E97627" strokeWidth="2"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg>
+                </span>
+                <div>
+                  <strong>Tableau Server &amp; Cloud</strong>
+                  <small>Executive dashboard distribution &amp; automated alerts</small>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Sub-section 3: Statistical Analytics & Inferential Modeling (8 tools) */}
+          <div className="tg" style={{ marginTop: '28px' }}>
+            <div className="tg-head">
+              <h3>Statistical Analytics &amp; Inferential Science</h3>
+              <span>Skill Group 3 · Hypothesis Testing, Probability &amp; Econometrics</span>
+            </div>
+            <div className="tgrid">
+              <div className="tool">
+                <span className="tl" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path fill="#3776AB" d="M14.25.18l.9.2.73.26.59.3.45.32.34.34.25.34.16.33.1.3.04.26.02.2-.01.13V8.5l-.05.63-.13.55-.21.46-.26.38-.3.31-.33.25-.35.19-.35.14-.33.1-.3.07-.26.04-.21.02H8.77l-.69.05-.59.14-.5.22-.41.27-.33.32-.27.35-.2.36-.15.37-.1.35-.07.32-.04.27-.02.21v3.06H3.17l-.21-.03-.28-.07-.32-.12-.35-.18-.36-.26-.36-.36-.35-.46-.32-.59-.28-.73-.21-.88-.14-1.05-.05-1.23.06-1.22.16-1.04.24-.87.32-.71.36-.57.4-.44.42-.33.42-.24.4-.16.36-.1.32-.05.24-.01h.16l.06.01h8.16v-.83H6.18l-.01-2.75-.02-.37.05-.34.11-.31.17-.28.25-.26.31-.23.38-.2.44-.18.51-.15.58-.12.64-.1.71-.06.77-.04.84-.02 1.27.05zm-6.3 1.98l-.23.33-.08.41.08.41.23.34.33.22.41.09.41-.09.33-.22.23-.34.08-.41-.08-.41-.23-.33-.33-.22-.41-.09-.41.09zm13.09 3.95l.28.06.32.12.35.18.36.27.36.35.35.47.32.59.28.73.21.88.14 1.04.05 1.23-.06 1.23-.16 1.04-.24.86-.32.71-.36.57-.4.45-.42.33-.42.24-.4.16-.36.09-.32.05-.24.02-.16-.01h-8.22v.82h5.84l.01 2.76.02.36-.05.34-.11.31-.17.29-.25.25-.31.24-.38.2-.44.17-.51.15-.58.13-.64.09-.71.07-.77.04-.84.01-1.27-.04-1.07-.14-.9-.2-.73-.25-.59-.3-.45-.33-.34-.34-.25-.34-.16-.33-.1-.3-.04-.25-.02-.2.01-.13v-5.34l.05-.64.13-.54.21-.46.26-.38.3-.32.33-.24.35-.2.35-.14.33-.1.3-.06.26-.04.21-.02.13-.01h5.84l.69-.05.59-.14.5-.21.41-.28.33-.32.27-.35.2-.36.15-.36.1-.35.07-.32.04-.28.02-.21V6.07h2.09l.14.01zm-6.47 14.25l-.23.33-.08.41.08.41.23.33.33.23.41.08.41-.08.33-.23.23-.33.08-.41-.08-.41-.23-.33-.33-.23-.41-.08-.41.08z"/></svg>
+                </span>
+                <div>
+                  <strong>Python Programming</strong>
+                  <small>Automated scripting, data wrangling &amp; API requests</small>
+                </div>
+              </div>
+
+              <div className="tool">
+                <span className="tl" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" focusable="false">
+                    <rect x="3" y="6" width="3.5" height="12" rx="1.5" fill="#150458"/>
+                    <rect x="8.5" y="3" width="3.5" height="18" rx="1.5" fill="#E70488"/>
+                    <rect x="14" y="7" width="3.5" height="14" rx="1.5" fill="#150458"/>
+                    <rect x="19.5" y="5" width="3.5" height="10" rx="1.5" fill="#00C896"/>
+                    <circle cx="15.75" cy="4.25" r="1.5" fill="#E70488"/>
+                  </svg>
+                </span>
+                <div>
+                  <strong>Pandas</strong>
+                  <small>High-performance data frames, reshaping &amp; cleaning</small>
+                </div>
+              </div>
+
+              <div className="tool">
+                <span className="tl" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#013243" strokeWidth="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/></svg>
+                </span>
+                <div>
+                  <strong>NumPy</strong>
+                  <small>Vectorized numerical computing, arrays &amp; matrix math</small>
+                </div>
+              </div>
+
+              <div className="tool">
+                <span className="tl" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#4F46E5" strokeWidth="2"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>
+                </span>
+                <div>
+                  <strong>Statsmodels</strong>
+                  <small>OLS regression, p-values &amp; econometric diagnostics</small>
+                </div>
+              </div>
+
+              <div className="tool">
+                <span className="tl" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" focusable="false">
+                    <path d="M3 19h18" stroke="#2563EB" strokeWidth="2" strokeLinecap="round" />
+                    <path d="M3 19c3.2 0 5.2-14 9-14s5.8 14 9 14" stroke="#2563EB" strokeWidth="2" strokeLinecap="round" />
+                    <path d="M12 5v14" stroke="#93C5FD" strokeWidth="1.5" strokeDasharray="2 2" />
+                    <circle cx="12" cy="5" r="2" fill="#2563EB" />
+                    <path d="M8.5 12v7M15.5 12v7" stroke="#93C5FD" strokeWidth="1.5" strokeDasharray="2 2" />
+                  </svg>
+                </span>
+                <div>
+                  <strong>SciPy &amp; Inferential Stats</strong>
+                  <small>Hypothesis testing (t-tests, ANOVA, Chi-Square) &amp; p-values</small>
+                </div>
+              </div>
+
+              <div className="tool">
+                <span className="tl" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#F37626" strokeWidth="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/><circle cx="5" cy="5" r="1.5" fill="#F37626"/><circle cx="19" cy="19" r="1.5" fill="#F37626"/></svg>
+                </span>
+                <div>
+                  <strong>Jupyter Notebook</strong>
+                  <small>Interactive exploratory data analysis &amp; reproducible notes</small>
+                </div>
+              </div>
+
+              <div className="tool">
+                <span className="tl" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#0284C7" strokeWidth="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                </span>
+                <div>
+                  <strong>Matplotlib &amp; Seaborn</strong>
+                  <small>Statistical distribution plots &amp; correlation heatmaps</small>
+                </div>
+              </div>
+
+              <div className="tool">
+                <span className="tl" aria-hidden="true">
+                  <img src="/tools/sas.png" alt="SAS Studio logo" className="tl-sas" width="34" height="17" loading="lazy" />
+                </span>
+                <div>
+                  <strong>SAS STAT</strong>
+                  <small>Inferential procedures (PROC REG, GLM &amp; LOGISTIC)</small>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Sub-section 4: Machine Learning & Predictive Modeling (8 tools) */}
+          <div className="tg" style={{ marginTop: '28px' }}>
+            <div className="tg-head">
+              <h3>Machine Learning &amp; Predictive Analytics</h3>
+              <span>Skill Group 4 · Supervised Classification, Regression &amp; Ensembles</span>
+            </div>
+            <div className="tgrid">
+              <div className="tool">
+                <span className="tl" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" focusable="false">
+                    <path fill="#F89939" d="M12 2a10 10 0 0 0-7.8 16.2l3.4-3.4A5.5 5.5 0 0 1 12 6.5a5.5 5.5 0 0 1 5.4 4.5h4.6A10 10 0 0 0 12 2z" />
+                    <path fill="#3499CD" d="M12 22a10 10 0 0 0 7.8-16.2l-3.4 3.4A5.5 5.5 0 0 1 12 17.5a5.5 5.5 0 0 1-5.4-4.5H2a10 10 0 0 0 10 9z" />
+                    <circle cx="12" cy="12" r="2.5" fill="#141A4A" />
+                  </svg>
+                </span>
+                <div>
+                  <strong>scikit-learn</strong>
+                  <small>Classification, regression, clustering &amp; pipelines</small>
+                </div>
+              </div>
+
+              <div className="tool">
+                <span className="tl" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#2563EB" strokeWidth="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                </span>
+                <div>
+                  <strong>XGBoost</strong>
+                  <small>Extreme gradient boosted trees for tabular accuracy</small>
+                </div>
+              </div>
+
+              <div className="tool">
+                <span className="tl" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#7C3AED" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                </span>
+                <div>
+                  <strong>LightGBM</strong>
+                  <small>Fast, memory-efficient tree boosting for big datasets</small>
+                </div>
+              </div>
+
+              <div className="tool">
+                <span className="tl" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#DC2626" strokeWidth="2"><path d="M2 18c6 0 7-12 13-12s3 12 7 12"/></svg>
+                </span>
+                <div>
+                  <strong>Logistic Regression</strong>
+                  <small>Credit risk scorecards, odds ratios &amp; default modeling</small>
+                </div>
+              </div>
+
+              <div className="tool">
+                <span className="tl" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#059669" strokeWidth="2"><polygon points="12 2 2 12 6 12 2 18 9 18 9 22 15 22 15 18 22 18 18 12 22 12 12 2"/></svg>
+                </span>
+                <div>
+                  <strong>Random Forest</strong>
+                  <small>Ensemble decision trees &amp; non-linear customer modeling</small>
+                </div>
+              </div>
+
+              <div className="tool">
+                <span className="tl" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#D97706" strokeWidth="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                </span>
+                <div>
+                  <strong>Feature Engineering</strong>
+                  <small>Imputation, encodings, scaling &amp; target transformation</small>
+                </div>
+              </div>
+
+              <div className="tool">
+                <span className="tl" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#2563EB" strokeWidth="2"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/><path d="M9 14l2 2 4-4"/></svg>
+                </span>
+                <div>
+                  <strong>SHAP &amp; Model Trust</strong>
+                  <small>Explainable AI, feature importance &amp; regulatory trust</small>
+                </div>
+              </div>
+
+              <div className="tool">
+                <span className="tl" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#0D9488" strokeWidth="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+                </span>
+                <div>
+                  <strong>Time Series / ARIMA</strong>
+                  <small>Trend forecasting, seasonality &amp; financial projections</small>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Sub-section 5: Generative AI, MLOps & Production Delivery (8 tools) */}
+          <div className="tg" style={{ marginTop: '28px' }}>
+            <div className="tg-head">
+              <h3>Generative AI, MLOps &amp; Production Delivery</h3>
+              <span>Skill Group 5 · Model Serving, AI Assistants &amp; Cloud Operations</span>
+            </div>
+            <div className="tgrid">
+              <div className="tool">
+                <span className="tl" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#059669" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                </span>
+                <div>
+                  <strong>FastAPI</strong>
+                  <small>Serve predictive models through high-throughput REST APIs</small>
+                </div>
+              </div>
+
+              <div className="tool">
+                <span className="tl" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#FF4B4B" strokeWidth="2"><polygon points="12 2 2 22 22 22 12 2"/></svg>
+                </span>
+                <div>
+                  <strong>Streamlit</strong>
+                  <small>Build interactive analytical web apps for stakeholders</small>
+                </div>
+              </div>
+
+              <div className="tool">
+                <span className="tl" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#2496ED" strokeWidth="2"><rect x="2" y="2" width="20" height="20" rx="3"/><path d="M6 10h3v4H6z"/><path d="M11 10h3v4h-3z"/><path d="M16 10h3v4h-3z"/></svg>
+                </span>
+                <div>
+                  <strong>Docker</strong>
+                  <small>Package analytics services into production containers</small>
+                </div>
               </div>
 
               <div className="tool">
                 <span className="tl dk" aria-hidden="true">
                   <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" focusable="false">
-                    <path fill="#FCC624" d="M12.504 0c-.155 0-.315.008-.48.021-4.226.333-3.105 4.807-3.17 6.298-.076 1.092-.3 1.953-1.05 3.02-.885 1.051-2.127 2.75-2.716 4.521-.278.832-.41 1.684-.287 2.489a.424.424 0 00-.11.135c-.26.268-.45.6-.663.839-.199.199-.485.267-.797.4-.313.136-.658.269-.864.68-.09.189-.136.394-.132.602 0 .199.027.4.055.536.058.399.116.728.04.97-.249.68-.28 1.145-.106 1.484.174.334.535.47.94.601.81.2 1.91.135 2.774.6.926.466 1.866.67 2.616.47.526-.116.97-.464 1.208-.946.587-.003 1.23-.269 2.26-.334.699-.058 1.574.267 2.577.2.025.134.063.198.114.333l.003.003c.391.778 1.113 1.132 1.884 1.071.771-.06 1.592-.536 2.257-1.306.631-.765 1.683-1.084 2.378-1.503.348-.199.629-.469.649-.853.023-.4-.2-.811-.714-1.376v-.097l-.003-.003c-.17-.2-.25-.535-.338-.926-.085-.401-.182-.786-.492-1.046h-.003c-.059-.054-.123-.067-.188-.135a.357.357 0 00-.19-.064c.431-1.278.264-2.55-.173-3.694-.533-1.41-1.465-2.638-2.175-3.483-.796-1.005-1.576-1.957-1.56-3.368.026-2.152.236-6.133-3.544-6.139zm.529 3.405h.013c.213 0 .396.062.584.198.19.135.33.332.438.533.105.259.158.459.166.724 0-.02.006-.04.006-.06v.105a.086.086 0 01-.004-.021l-.004-.024a1.807 1.807 0 01-.15.706.953.953 0 01-.213.335.71.71 0 00-.088-.042c-.104-.045-.198-.064-.284-.133a1.312 1.312 0 00-.22-.066c.05-.06.146-.133.183-.198.053-.128.082-.264.088-.402v-.02a1.21 1.21 0 00-.061-.4c-.045-.134-.101-.2-.183-.333-.084-.066-.167-.132-.267-.132h-.016c-.093 0-.176.03-.262.132a.8.8 0 00-.205.334 1.18 1.18 0 00-.09.4v.019c.002.089.008.179.02.267-.193-.067-.438-.135-.607-.202a1.635 1.635 0 01-.018-.2v-.02a1.772 1.772 0 01.15-.768c.082-.22.232-.406.43-.533a.985.985 0 01.594-.2z" />
+                    <path fill="#7FC8FF" d="M13.796 0a6.93 6.93 0 0 0-4.91 2.019L5.451 5.455l3.273 3.27 3.432-3.432a2.284 2.284 0 0 1 3.277 0 2.28 2.28 0 0 1 0 3.275L12 12.001l3.273 3.273 3.433-3.435c2.692-2.692 2.692-7.127 0-9.82A6.92 6.92 0 0 0 13.796 0m-5.07 8.728-3.433 3.434c-2.692 2.693-2.692 7.126 0 9.819A6.92 6.92 0 0 0 10.203 24a6.93 6.93 0 0 0 4.911-2.02l3.432-3.432-3.271-3.272-3.433 3.433a2.284 2.284 0 0 1-3.277 0 2.28 2.28 0 0 1 0-3.276L12 12z" />
                   </svg>
                 </span>
-                <div><strong>Linux &amp; Bash</strong><small>Server administration and automated scripts</small></div>
+                <div>
+                  <strong>LangChain</strong>
+                  <small>Connect LLMs to enterprise SQL for natural-language reporting</small>
+                </div>
               </div>
 
               <div className="tool">
                 <span className="tl" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" focusable="false">
-                    <path fill="#F37626" d="M7.157 22.201A1.784 1.799 0 0 1 5.374 24a1.784 1.799 0 0 1-1.784-1.799 1.784 1.799 0 0 1 1.784-1.799 1.784 1.799 0 0 1 1.783 1.799zM20.582 1.427a1.415 1.427 0 0 1-1.415 1.428 1.415 1.427 0 0 1-1.416-1.428A1.415 1.427 0 0 1 19.167 0a1.415 1.427 0 0 1 1.415 1.427zM4.992 3.336A1.047 1.056 0 0 1 3.946 4.39a1.047 1.056 0 0 1-1.047-1.055A1.047 1.056 0 0 1 3.946 2.28a1.047 1.056 0 0 1 1.046 1.056zm7.336 1.517c3.769 0 7.06 1.38 8.768 3.424a9.363 9.363 0 0 0-3.393-4.547 9.238 9.238 0 0 0-5.377-1.728A9.238 9.238 0 0 0 6.95 3.73a9.363 9.363 0 0 0-3.394 4.547c1.713-2.04 5.004-3.424 8.772-3.424zm.001 13.295c-3.768 0-7.06-1.381-8.768-3.425a9.363 9.363 0 0 0 3.394 4.547A9.238 9.238 0 0 0 12.33 21a9.238 9.238 0 0 0 5.377-1.729 9.363 9.363 0 0 0 3.393-4.547c-1.712 2.044-5.003 3.425-8.772 3.425Z" />
-                  </svg>
+                  <b>AI</b>
                 </span>
-                <div><strong>JupyterLab</strong><small>Exploratory data analysis &amp; visualization</small></div>
-              </div>
-            </div>
-          </div>
-
-          {/* Group 2: Business Intelligence & Dashboards */}
-          <div className="tg">
-            <div className="tg-head">
-              <h3>Build BI dashboards</h3>
-              <span>Skill 2 · Business Intelligence &amp; Executive Reporting</span>
-            </div>
-            <div className="tgrid">
-              <div className="tool">
-                <span className="tl" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" focusable="false">
-                    <path fill="#F2C811" d="M12 2a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1h4zm6 6a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1h4zM6 13a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1v-7a1 1 0 0 1 1-1h4zm18 3a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1v-4a1 1 0 0 1 1-1h4z" />
-                  </svg>
-                </span>
-                <div><strong>Microsoft Power BI</strong><small>DAX formulas, Power Query &amp; scorecards</small></div>
+                <div>
+                  <strong>OpenAI &amp; Claude LLMs</strong>
+                  <small>Executive summaries, prompt engineering &amp; report bots</small>
+                </div>
               </div>
 
               <div className="tool">
                 <span className="tl" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" focusable="false">
-                    <path fill="#E97627" d="M11.39 0v2.75h1.22V0h-1.22zm0 21.25V24h1.22v-2.75h-1.22zM21.25 11.39v1.22H24v-1.22h-2.75zM0 11.39v1.22h2.75v-1.22H0zm11.08 4.62v3.08h1.84v-3.08h-1.84zm0-10.78v3.08h1.84V5.23h-1.84zm-5.85 5.85v1.84h3.08v-1.84H5.23zm10.78 0v1.84h3.08v-1.84h-3.08zm-5.08-1.54v4.92h2.16v-4.92h-2.16zm-5.08 7.39v1.54h1.54v-1.54H5.85zm12.3 0v1.54h1.54v-1.54h-1.54zm0-12.3v1.54h1.54V6.46h-1.54zm-12.3 0v1.54h1.54V6.46H5.85z" />
+                  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" focusable="false">
+                    <ellipse cx="12" cy="5" rx="8" ry="3" stroke="#0D9488" strokeWidth="1.8" />
+                    <path d="M4 5v6c0 1.66 3.58 3 8 3s8-1.34 8-3V5" stroke="#0D9488" strokeWidth="1.8" />
+                    <path d="M4 11v6c0 1.66 3.58 3 8 3 1.2 0 2.33-.1 3.34-.28" stroke="#0D9488" strokeWidth="1.8" />
+                    <circle cx="17.5" cy="17.5" r="3.5" stroke="#14B8A6" strokeWidth="1.8" fill="#F0FDFA" />
+                    <path d="M20 20l2.5 2.5" stroke="#14B8A6" strokeWidth="1.8" strokeLinecap="round" />
+                    <path d="M16 17.5h3" stroke="#0D9488" strokeWidth="1.5" strokeLinecap="round" />
                   </svg>
                 </span>
-                <div><strong>Tableau Desktop</strong><small>LOD calculations and dynamic visual actions</small></div>
+                <div>
+                  <strong>Enterprise RAG</strong>
+                  <small>Vector retrieval over financial filings &amp; policy documents</small>
+                </div>
               </div>
 
               <div className="tool">
                 <span className="tl" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" focusable="false">
-                    <path fill="#21A366" d="M21.5 2h-13A1.5 1.5 0 0 0 7 3.5V6H3.5A1.5 1.5 0 0 0 2 7.5v9A1.5 1.5 0 0 0 3.5 18H7v2.5A1.5 1.5 0 0 0 8.5 22h13a1.5 1.5 0 0 0 1.5-1.5v-17A1.5 1.5 0 0 0 21.5 2zM7 16H3.5a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5H7v10zm14 4.5a.5.5 0 0 1-.5.5h-12a.5.5 0 0 1-.5-.5V18h3.5a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 11.5 6H8V3.5a.5.5 0 0 1 .5-.5h12a.5.5 0 0 1 .5.5v17zM4.7 9.8l1.6 2.4-1.6 2.4h1.4l.9-1.5.9 1.5h1.4l-1.6-2.4 1.6-2.4H9.3l-.9 1.5-.9-1.5H4.7z" />
+                  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" focusable="false">
+                    <path d="M12 2L14.4 8.6L21 11L14.4 13.4L12 20L9.6 13.4L3 11L9.6 8.6L12 2Z" fill="url(#genai-spark-grad-apida)" />
+                    <circle cx="19" cy="5" r="2" fill="#8B5CF6" />
+                    <circle cx="5" cy="18" r="1.5" fill="#EC4899" />
+                    <defs>
+                      <linearGradient id="genai-spark-grad-apida" x1="3" y1="2" x2="21" y2="20" gradientUnits="userSpaceOnUse">
+                        <stop stopColor="#8B5CF6" />
+                        <stop offset="1" stopColor="#EC4899" />
+                      </linearGradient>
+                    </defs>
                   </svg>
                 </span>
-                <div><strong>Advanced Excel &amp; VBA</strong><small>Power Pivot, index-match &amp; data modeling</small></div>
-              </div>
-
-              <div className="tool">
-                <span className="tl" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" focusable="false">
-                    <path fill="#4285F4" d="M19.5 3h-15A1.5 1.5 0 0 0 3 4.5v15A1.5 1.5 0 0 0 4.5 21h15a1.5 1.5 0 0 0 1.5-1.5v-15A1.5 1.5 0 0 0 19.5 3zm-9 14H7v-4h3.5v4zm4.5 0h-3.5V7h3.5v10zm4.5 0h-3.5v-7H19.5v7z" />
-                  </svg>
-                </span>
-                <div><strong>Looker Studio</strong><small>Fast corporate reporting and cloud dashboards</small></div>
-              </div>
-
-              <div className="tool">
-                <span className="tl" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" focusable="false">
-                    <path fill="#FF4B4B" d="M16.673 11.32l6.862-3.618c.233-.136.554.12.442.387L20.463 17.1zm-8.556-.229l3.473-5.187c.203-.328.578-.316.793-.028l7.886 11.75zm-3.375 7.25c-.28 0-.835-.284-.993-.716l-3.72-9.46c-.118-.331.139-.614.48-.464l19.474 10.306c-.149.147-.453.337-.72.334z" />
-                  </svg>
-                </span>
-                <div><strong>Streamlit</strong><small>Rapid web apps for interactive simulation</small></div>
+                <div>
+                  <strong>Copilot for Analytics</strong>
+                  <small>AI-assisted DAX measures, SQL queries &amp; Excel formulas</small>
+                </div>
               </div>
 
               <div className="tool">
                 <span className="tl dk" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" focusable="false">
-                    <path fill="#61DAFB" d="M14.23 12.004a2.236 2.236 0 0 1-2.235 2.236 2.236 2.236 0 0 1-2.236-2.236 2.236 2.236 0 0 1 2.235-2.236 2.236 2.236 0 0 1 2.236 2.236zm2.648-10.69c-1.346 0-3.107.96-4.888 2.622-1.78-1.653-3.542-2.602-4.887-2.602-.41 0-.783.093-1.106.278-1.375.793-1.683 3.264-.973 6.365C1.98 8.917 0 10.42 0 12.004c0 1.59 1.99 3.097 5.043 4.03-.704 3.113-.39 5.588.988 6.38.32.187.69.275 1.102.275 1.345 0 3.107-.96 4.888-2.624 1.78 1.654 3.542 2.603 4.887 2.603.41 0 .783-.09 1.106-.275 1.374-.792 1.683-3.263.973-6.365C22.02 15.096 24 13.59 24 12.004c0-1.59-1.99-3.097-5.043-4.032.704-3.11.39-5.587-.988-6.38-.318-.184-.688-.277-1.092-.278z" />
-                  </svg>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#FCC624" strokeWidth="2"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
                 </span>
-                <div><strong>Web Embeds &amp; React</strong><small>Embed live reports into internal portals</small></div>
+                <div>
+                  <strong>Linux &amp; Bash</strong>
+                  <small>Server automation, automated cron jobs &amp; shell scripts</small>
+                </div>
               </div>
             </div>
           </div>
 
-          {/* Group 3: Statistical Modeling & Predictive Analytics */}
-          <div className="tg">
-            <div className="tg-head">
-              <h3>Analyze &amp; predict</h3>
-              <span>Skill 3 · Statistical Analysis &amp; Predictive Analytics</span>
-            </div>
-            <div className="tgrid">
-              <div className="tool">
-                <span className="tl dk" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" focusable="false">
-                    <path fill="#F7931E" d="M15.601 5.53c-1.91.035-3.981.91-5.63 2.56-2.93 2.93-2.083 8.53-1.088 9.525.805.804 6.595 1.843 9.526-1.088a9.74 9.74 0 0 0 .584-.643c.043-.292.205-.66.489-1.106a1.848 1.848 0 0 1-.537.176c-.144.265-.37.55-.676.855-.354.335-.607.554-.76.656a.795.795 0 0 1-.437.152c-.35 0-.514-.308-.494-.924-.22.316-.425.549-.612.7a.914.914 0 0 1-.578.224c-.194 0-.36-.09-.496-.273a1.03 1.03 0 0 1-.193-.507 4.016 4.016 0 0 1-.726.583c-.224.132-.47.197-.74.197-.3 0-.543-.096-.727-.288a.978.978 0 0 1-.257-.524v.004c-.3.276-.564.48-.79.611a1.295 1.295 0 0 1-.649.197.693.693 0 0 1-.571-.275c-.145-.183-.218-.43-.218-.739 0-.464.101-1.02.302-1.67.201-.65.445-1.25.733-1.797l.842-.312" />
-                  </svg>
-                </span>
-                <div><strong>scikit-learn</strong><small>Predictive machine learning &amp; clustering</small></div>
-              </div>
-
-              <div className="tool">
-                <span className="tl" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" focusable="false">
-                    <path fill="#4169E1" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
-                  </svg>
-                </span>
-                <div><strong>Statsmodels &amp; ARIMA</strong><small>Time-series forecasting and hypothesis tests</small></div>
-              </div>
-
-              <div className="tool">
-                <span className="tl" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" focusable="false">
-                    <path fill="#0194E2" d="M11.883.002a12.044 12.044 0 0 0-9.326 19.463l3.668-2.694A7.573 7.573 0 0 1 12.043 4.45v2.867l6.908-5.14A12.012 12.012 0 0 0 11.883.002zm9.562 4.533L17.777 7.23a7.573 7.573 0 0 1-5.818 12.322v-2.867l-6.908 5.14a12.046 12.046 0 0 0 16.394-17.29z" />
-                  </svg>
-                </span>
-                <div><strong>NumPy &amp; SciPy</strong><small>Numerical computing and matrix operations</small></div>
-              </div>
-
-              <div className="tool">
-                <span className="tl" aria-hidden="true"><b>AI</b></span>
-                <div><strong>OpenAI for Analytics</strong><small>Automate executive summaries with GenAI</small></div>
-              </div>
-            </div>
-          </div>
-
-          {/* Group 4: Industrial Pipelines & Cloud */}
-          <div className="tg">
-            <div className="tg-head">
-              <h3>Automate &amp; deploy</h3>
-              <span>Skill 4 · Industrial Pipelines &amp; Cloud Telemetry</span>
-            </div>
-            <div className="tgrid">
-              <div className="tool">
-                <span className="tl" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" focusable="false">
-                    <path fill="#FF694B" d="M11.96 0L1.75 6.01v11.98l10.21 6.01 10.29-6.01V6.01L11.96 0zm-1.12 3.14l7.65 4.5-3.32 1.95-7.65-4.5 3.32-1.95zm-6.72 4.41l7.65 4.5v3.91l-7.65-4.5V7.55zm8.96 13.31v-3.91l7.65-4.5v3.91l-7.65 4.5z" />
-                  </svg>
-                </span>
-                <div><strong>dbt (Data Build Tool)</strong><small>Transform and test SQL models in warehouse</small></div>
-              </div>
-
-              <div className="tool">
-                <span className="tl" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" focusable="false">
-                    <path fill="#017CEE" d="M17.195 16.822l4.002-4.102C23.55 10.308 23.934 5.154 24 .43a.396.396 0 0 0-.246-.373.392.392 0 0 0-.437.09l-6.495 6.658-4.102-4.003C10.309.45 5.154.066.43 0H.423a.397.397 0 0 0-.277.683l6.658 6.494-4.003 4.103C.45 13.692.065 18.846 0 23.57a.398.398 0 0 0 .683.282l6.494-6.657 3.934 3.837.17.165c2.41 2.353 7.565 2.737 12.288 2.803h.006a.397.397 0 0 0 .277-.683l-6.657-6.495z" />
-                  </svg>
-                </span>
-                <div><strong>Apache Airflow</strong><small>Orchestrate daily automated ETL batch pipelines</small></div>
-              </div>
-
-              <div className="tool">
-                <span className="tl" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" focusable="false">
-                    <path fill="#2496ED" d="M13.983 11.078h2.119a.186.186 0 00.186-.185V9.006a.186.186 0 00-.186-.186h-2.119a.185.185 0 00-.185.185v1.888c0 .102.083.185.185.185m-2.954-5.43h2.118a.186.186 0 00.186-.186V3.574a.186.186 0 00-.186-.185h-2.118a.185.185 0 00-.185.185v1.888c0 .102.082.185.185.185m0 2.716h2.118a.187.187 0 00.186-.186V6.29a.186.186 0 00-.186-.185h-2.118a.185.185 0 00-.185.185v1.887c0 .102.082.185.185.186" />
-                  </svg>
-                </span>
-                <div><strong>Docker</strong><small>Containerize analytics &amp; reporting environments</small></div>
-              </div>
-
-              <div className="tool">
-                <span className="tl dk" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" focusable="false">
-                    <path fill="#FF9900" d="M12.91 16.482c-2.316 0-4.062-.832-5.184-2.476-.23-.338-.077-.732.32-.732.185 0 .346.092.461.246.907 1.23 2.37 1.83 4.403 1.83 2.032 0 3.325-.523 3.325-1.508 0-.892-.846-1.292-2.832-1.63-2.617-.462-4.757-1.14-4.757-3.418 0-2.062 1.955-3.325 4.71-3.325 2.016 0 3.633.677 4.603 2.016.2.277.062.647-.277.647-.17 0-.308-.077-.416-.216-.83-1.03-2.155-1.523-3.91-1.523-2.047 0-3.233.862-3.233 1.77 0 .862.908 1.246 2.94 1.6 2.663.477 4.65 1.154 4.65 3.448 0 2.217-1.924 3.367-4.8 3.367z" />
-                  </svg>
-                </span>
-                <div><strong>AWS Cloud Analytics</strong><small>Connect S3 storage, Redshift &amp; IAM roles</small></div>
-              </div>
-
-              <div className="tool">
-                <span className="tl" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" focusable="false">
-                    <path fill="#F46800" d="M23.02 10.59a8.578 8.578 0 0 0-.862-3.034 8.911 8.911 0 0 0-1.789-2.445c.337-1.342-.413-2.505-.413-2.505-1.292-.08-2.113.4-2.416.62-.052-.02-.102-.044-.154-.064-.22-.089-.446-.172-.677-.247-.231-.073-.47-.14-.711-.197a9.867 9.867 0 0 0-.875-.161C14.557.753 12.94 0 12.94 0c-1.804 1.145-2.147 2.744-2.147 2.744l-.018.093c-.098.029-.2.057-.298.088-.138.042-.275.094-.413.143-.138.055-.275.107-.41.166a8.869 8.869 0 0 0-1.557.87l-.063-.029c-2.497-.955-4.716.195-4.716.195-.203 2.658.996 4.33 1.235 4.636a11.608 11.608 0 0 0-.607 2.635C1.636 12.677.953 15.014.953 15.014c1.926 2.214 4.171 2.351 4.171 2.351.003-.002.006-.002.006-.005.285.509.615.994.986 1.446.156.19.32.371.488.548-.704 2.009.099 3.68.099 3.68 2.144.08 3.553-.937 3.849-1.173a9.784 9.784 0 0 0 3.164.501h.08l.055-.003.107-.002.103-.005.003.002c1.01 1.44 2.788 1.646 2.788 1.646 1.264-1.332 1.337-2.653 1.337-2.94v-.058c0-.02-.003-.039-.003-.06.265-.187.52-.387.758-.6a7.875 7.875 0 0 0 1.415-1.7c1.43.083 2.437-.885 2.437-.885-.236-1.49-1.085-2.216-1.264-2.354l-.018-.013-.016-.013a.217.217 0 0 1-.031-.02c.008-.092.016-.18.02-.27.011-.162.016-.323.016-.48v-.253l-.005-.098-.008-.135a1.891 1.891 0 0 0-.01-.13c-.003-.042-.008-.083-.013-.125l-.016-.124-.018-.122a6.215 6.215 0 0 0-2.032-3.73 6.015 6.015 0 0 0-3.222-1.46 6.292 6.292 0 0 0-.85-.048l-.107.002h-.063l-.044.003-.104.008a4.777 4.777 0 0 0-3.335 1.695c-.332.4-.592.84-.768 1.297a4.594 4.594 0 0 0-.312 1.817l.003.091c.005.055.007.11.013.164a3.615 3.615 0 0 0 .698 1.82 3.53 3.53 0 0 0 1.827 1.282c.33.098.66.14.971.137.039 0 .078 0 .114-.002l.063-.003c.02 0 .041-.003.062-.003.034-.002.065-.007.099-.01.007 0 .018-.003.028-.003l.031-.005.06-.008a1.18 1.18 0 0 0 .112-.02c.036-.008.072-.013.109-.024a2.634 2.634 0 0 0 .914-.415c.028-.02.056-.041.085-.065a.248.248 0 0 0 .039-.35.244.244 0 0 0-.309-.06l-.078.042c-.09.044-.184.083-.283.116a2.476 2.476 0 0 1-.475.096c-.028.003-.054.006-.083.006l-.083.002c-.026 0-.054 0-.08-.002l-.102-.006h-.012l-.024.006c-.016-.003-.031-.003-.044-.006-.031-.002-.06-.007-.091-.01a2.59 2.59 0 0 1-.724-.213 2.557 2.557 0 0 1-.667-.438 2.52 2.52 0 0 1-.805-1.475 2.306 2.306 0 0 1-.029-.444l.006-.122v-.023l.002-.031c.003-.021.003-.04.005-.06a3.163 3.163 0 0 1 1.352-2.29 3.12 3.12 0 0 1 .937-.43 2.946 2.946 0 0 1 .776-.101h.06l.07.002.045.003h.026l.07.005a4.041 4.041 0 0 1 1.635.49 3.94 3.94 0 0 1 1.602 1.662 3.77 3.77 0 0 1 .397 1.414l.005.076.003.075c.002.026.002.05.002.075 0 .024.003.052 0 .07v.065l-.002.073-.008.174a6.195 6.195 0 0 1-.08.639 5.1 5.1 0 0 1-.267.927 5.31 5.31 0 0 1-.624 1.13 5.052 5.052 0 0 1-3.237 2.014 4.82 4.82 0 0 1-.649.066l-.039.003h-.287a6.607 6.607 0 0 1-1.716-.265 6.776 6.776 0 0 1-3.4-2.274 6.75 6.75 0 0 1-.746-1.15 6.616 6.616 0 0 1-.714-2.596l-.005-.083-.002-.02v-.056l-.003-.073v-.096l-.003-.104v-.07l.003-.163c.008-.22.026-.45.054-.678a8.707 8.707 0 0 1 .28-1.355c.128-.444.286-.872.473-1.277a7.04 7.04 0 0 1 1.456-2.1 5.925 5.925 0 0 1 .953-.763c.169-.111.343-.213.524-.306.089-.05.182-.091.273-.135.047-.02.093-.042.138-.062a7.177 7.177 0 0 1 .714-.267l.145-.045c.049-.015.098-.026.148-.041.098-.029.197-.052.296-.076.049-.013.1-.02.15-.033l.15-.032.151-.028.076-.013.075-.01.153-.024c.057-.01.114-.013.171-.023l.169-.021c.036-.003.073-.008.106-.01l.073-.008.036-.003.042-.002c.057-.003.114-.008.171-.01l.086-.006h.023l.037-.003.145-.007a7.999 7.999 0 0 1 1.708.125 7.917 7.917 0 0 1 2.048.68 8.253 8.253 0 0 1 1.672 1.09l.09.077.089.078c.06.052.114.107.171.159.057.052.112.106.166.16.052.055.107.107.159.164a8.671 8.671 0 0 1 1.41 1.978c.012.026.028.052.04.078l.04.078.075.156c.023.051.05.1.07.153l.065.15a8.848 8.848 0 0 1 .45 1.34.19.19 0 0 0 .201.142.186.186 0 0 0 .172-.184c.01-.246.002-.532-.024-.856z" />
-                  </svg>
-                </span>
-                <div><strong>Grafana</strong><small>Real-time factory telemetry &amp; sensor alert boards</small></div>
-              </div>
-            </div>
-          </div>
-
-          {/* Group 5: Consulting & Storytelling */}
-          <div className="tg">
-            <div className="tg-head">
-              <h3>Deliver to leadership</h3>
-              <span>Skill 5 · Business Consulting &amp; Decision Storytelling</span>
-            </div>
-            <div className="tgrid">
-              <div className="tool">
-                <span className="tl" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" focusable="false">
-                    <path fill="#0052CC" d="M11.571 11.513H0a5.218 5.218 0 0 0 5.232 5.215h2.13v2.057A5.215 5.215 0 0 0 12.575 24V12.518a1.005 1.005 0 0 0-1.005-1.005zm5.723-5.756H5.736a5.215 5.215 0 0 0 5.215 5.214h2.129v2.058a5.218 5.218 0 0 0 5.215 5.214V6.758a1.001 1.001 0 0 0-1.001-1.001zM23.013 0H11.455a5.215 5.215 0 0 0 5.215 5.215h2.129v2.057A5.215 5.215 0 0 0 24 12.483V1.005A1.001 1.001 0 0 0 23.013 0Z" />
-                  </svg>
-                </span>
-                <div><strong>Jira</strong><small>Agile sprint tracking and analytics tickets</small></div>
-              </div>
-
-              <div className="tool">
-                <span className="tl" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" focusable="false">
-                    <path fill="#000000" d="M4.459 4.208c.746.606 1.026.56 2.428.466l13.215-.793c.28 0 .047-.28-.046-.326L17.86 1.968c-.42-.326-.981-.7-2.055-.607L3.01 2.295c-.466.046-.56.28-.374.466zm.793 3.08v13.904c0 .747.373 1.027 1.214.98l14.523-.84c.841-.046.935-.56.935-1.167V6.354c0-.606-.233-.933-.748-.887l-15.177.887c-.56.047-.747.327-.747.933zm14.337.745c.093.42 0 .84-.42.888l-.7.14v10.264c-.608.327-1.168.514-1.635.514-.748 0-.935-.234-1.495-.933l-4.577-7.186v6.952L12.21 19s0 .84-1.168.84l-3.222.186c-.093-.186 0-.653.327-.746l.84-.233V9.854L7.822 9.76c-.094-.42.14-1.026.793-1.073l3.456-.233 4.764 7.279v-6.44l-1.215-.139c-.093-.514.28-.887.747-.933zM1.936 1.035l13.31-.98c1.634-.14 2.055-.047 3.082.7l4.249 2.986c.7.513.934.653.934 1.213v16.378c0 1.026-.373 1.634-1.68 1.726l-15.458.934c-.98.047-1.448-.093-1.962-.747l-3.129-4.06c-.56-.747-.793-1.306-.793-1.96V2.667c0-.839.374-1.54 1.447-1.632z" />
-                  </svg>
-                </span>
-                <div><strong>Notion</strong><small>Data catalog, KPI runbooks &amp; definitions</small></div>
-              </div>
-
-              <div className="tool">
-                <span className="tl" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" focusable="false">
-                    <path fill="#F24E1E" d="M15.852 8.981h-4.588V0h4.588c2.476 0 4.49 2.014 4.49 4.49s-2.014 4.491-4.49 4.491zM12.735 7.51h3.117c1.665 0 3.019-1.355 3.019-3.019s-1.355-3.019-3.019-3.019h-3.117V7.51zm0 1.471H8.148c-2.476 0-4.49-2.014-4.49-4.49S5.672 0 8.148 0h4.588v8.981zm-4.587-7.51c-1.665 0-3.019 1.355-3.019 3.019s1.354 3.02 3.019 3.02h3.117V1.471H8.148zm4.587 15.019H8.148c-2.476 0-4.49-2.014-4.49-4.49s2.014-4.49 4.49-4.49h4.588v8.98zM8.148 8.981c-1.665 0-3.019 1.355-3.019 3.019s1.355 3.019 3.019 3.019h3.117V8.981H8.148zM8.172 24c-2.489 0-4.515-2.014-4.515-4.49s2.014-4.49 4.49-4.49h4.588v4.441c0 2.503-2.047 4.539-4.563 4.539zm-.024-7.51a3.023 3.023 0 0 0-3.019 3.019c0 1.665 1.365 3.019 3.044 3.019 1.705 0 3.093-1.376 3.093-3.068v-2.97H8.148zm7.704 0h-.098c-2.476 0-4.49-2.014-4.49-4.49s2.014-4.49 4.49-4.49h.098c2.476 0 4.49 2.014 4.49 4.49s-2.014 4.49-4.49 4.49zm-.097-7.509c-1.665 0-3.019 1.355-3.019 3.019s1.355 3.019 3.019 3.019h.098c1.665 0 3.019-1.355 3.019-3.019s-1.355-3.019-3.019-3.019h-.098z" />
-                  </svg>
-                </span>
-                <div><strong>Figma</strong><small>Executive dashboard wireframes and mockups</small></div>
-              </div>
-            </div>
-          </div>
-
-          <p className="tnote">Tool names and logos belong to their owners and are shown only to say what you will learn. The exact list can change as tools change.</p>
         </div>
       </section>
 
       {/* -------------------------------------------------------------------------
-          SECTION 8: SALARY BENCHMARKS
+          SECTION 9: REAL-TIME INDUSTRY PROJECTS
           ------------------------------------------------------------------------- */}
-      <section className="pay" id="salary">
+      <section className="industry-projects-section" id="projects" style={{ padding: '60px 0', borderBottom: '1px solid var(--line)' }}>
         <div className="wrap">
           <div className="sec-head">
-            <span className="eyebrow">Salary</span>
-            <h2>What Industrial Data Analytics Specialists earn</h2>
-            <p className="lead">Industrial analytics and BI expertise is rewarded with premium packages because it connects technical database engineering with measurable executive cost-savings.</p>
+            <h2>Real-Time Industry Capstone Projects</h2>
+            <p className="lead">
+              Apply your end-to-end data skills to realistic business scenarios across Banking, Telecom, E-Commerce, and Healthcare. Document your work, explain trade-offs, and showcase live portfolio builds.
+            </p>
           </div>
 
-          <div className="big">
-            <div>
-              <small>India · Entry Level</small>
-              <b>₹6.5–10 LPA</b>
-              <span>Reported range for freshers &amp; junior data/BI analysts across IT and industrial firms.</span>
+          <div className="industry-projects-grid">
+            <div className="proj-card">
+              <span className="proj-badge">Banking &amp; Finance</span>
+              <h3>Credit Risk Scorecard Development</h3>
+              <div className="proj-section">
+                <span className="proj-section-label">Business Application</span>
+                <p className="proj-section-text">Develop application and behavioral risk scorecards to estimate default probability using historical lending and credit bureau data.</p>
+              </div>
+              <div className="proj-deploy-box">
+                <span className="proj-section-label">Industrial Deliverable</span>
+                <p className="proj-section-text">SQL Feature Extraction → SAS WoE/IV Calculation → Logistic Regression Scorecard → Underwriter Scoring Table.</p>
+              </div>
             </div>
-            <div>
-              <small>India · Mid-Level</small>
-              <b>₹12–18 LPA</b>
-              <span>Reported range for experienced BI engineers, supply chain analysts &amp; data consultants.</span>
+
+            <div className="proj-card">
+              <span className="proj-badge">Regulatory Finance</span>
+              <h3>IFRS 9 Expected Credit Loss (ECL) Modeling</h3>
+              <div className="proj-section">
+                <span className="proj-section-label">Business Application</span>
+                <p className="proj-section-text">Construct Probability of Default (PD), Loss Given Default (LGD), and Exposure at Default (EAD) models for regulatory provision reporting.</p>
+              </div>
+              <div className="proj-deploy-box">
+                <span className="proj-section-label">Industrial Deliverable</span>
+                <p className="proj-section-text">DPD Bucketing in SAS → Macro-Economic Staging → Power BI Provisioning Dashboard.</p>
+              </div>
             </div>
-            <div>
-              <small>United States · Median</small>
-              <b>$115,000</b>
-              <span>Median total pay for Industrial BI &amp; Analytics Engineers (Levels.fyi).</span>
+
+            <div className="proj-card">
+              <span className="proj-badge">Banking Security</span>
+              <h3>Financial Fraud Detection &amp; Anomaly Monitoring</h3>
+              <div className="proj-section">
+                <span className="proj-section-label">Business Application</span>
+                <p className="proj-section-text">Identify suspicious transactional behavior and prevent money laundering using machine learning classification and anomaly detection.</p>
+              </div>
+              <div className="proj-deploy-box">
+                <span className="proj-section-label">Industrial Deliverable</span>
+                <p className="proj-section-text">Imbalanced Data Handling (SMOTE) → XGBoost Anomaly Classifier → Live FastAPI Alert Microservice.</p>
+              </div>
+            </div>
+
+            <div className="proj-card">
+              <span className="proj-badge">Telecom Analytics</span>
+              <h3>Customer Churn Prediction &amp; Retention Strategy</h3>
+              <div className="proj-section">
+                <span className="proj-section-label">Business Application</span>
+                <p className="proj-section-text">Predict subscribers likely to discontinue services using recharge patterns, complaint tickets, and data usage trends before lapse occurs.</p>
+              </div>
+              <div className="proj-deploy-box">
+                <span className="proj-section-label">Industrial Deliverable</span>
+                <p className="proj-section-text">Random Forest Classifier → Customer Lifetime Risk Scoring → Power BI Churn Intervention Dashboard.</p>
+              </div>
+            </div>
+
+            <div className="proj-card">
+              <span className="proj-badge">Telecom Business Intelligence</span>
+              <h3>Executive Revenue &amp; ARPU Analytics Dashboard</h3>
+              <div className="proj-section">
+                <span className="proj-section-label">Business Application</span>
+                <p className="proj-section-text">Analyze Average Revenue Per User (ARPU), regional subscriber growth, recharge plan profitability, and network service quality metrics.</p>
+              </div>
+              <div className="proj-deploy-box">
+                <span className="proj-section-label">Industrial Deliverable</span>
+                <p className="proj-section-text">Power BI Star Schema → Advanced DAX Time-Intelligence → Executive C-Suite Storytelling Report.</p>
+              </div>
+            </div>
+
+            <div className="proj-card">
+              <span className="proj-badge">Retail &amp; Supply Chain</span>
+              <h3>Store-Level Demand Forecasting &amp; Inventory Planning</h3>
+              <div className="proj-section">
+                <span className="proj-section-label">Business Application</span>
+                <p className="proj-section-text">Forecast weekly SKU sales across retail locations to optimize warehouse stock levels and minimize costly stockout losses.</p>
+              </div>
+              <div className="proj-deploy-box">
+                <span className="proj-section-label">Industrial Deliverable</span>
+                <p className="proj-section-text">Time Series Decomposition → Lag Feature Engineering → Tableau Visual Inventory Reorder Board.</p>
+              </div>
+            </div>
+
+            <div className="proj-card">
+              <span className="proj-badge">E-Commerce Intelligence</span>
+              <h3>Customer Lifetime Value (CLV) &amp; Recommendation Engine</h3>
+              <div className="proj-section">
+                <span className="proj-section-label">Business Application</span>
+                <p className="proj-section-text">Estimate high-value customer segments using RFM clustering and build personalized product recommendations based on shopping history.</p>
+              </div>
+              <div className="proj-deploy-box">
+                <span className="proj-section-label">Industrial Deliverable</span>
+                <p className="proj-section-text">K-Means Customer Segmentation → Collaborative Filtering Engine → Streamlit Recommendation Demo.</p>
+              </div>
+            </div>
+
+            <div className="proj-card">
+              <span className="proj-badge">Healthcare Operations</span>
+              <h3>Hospital Patient Flow &amp; Bed Occupancy Analytics</h3>
+              <div className="proj-section">
+                <span className="proj-section-label">Business Application</span>
+                <p className="proj-section-text">Forecast patient admission rates, emergency triage bottlenecks, and bed occupancy to optimize hospital staffing and clinical resources.</p>
+              </div>
+              <div className="proj-deploy-box">
+                <span className="proj-section-label">Industrial Deliverable</span>
+                <p className="proj-section-text">Regression Modeling → Statistical Confidence Intervals → Interactive Hospital Operational Dashboard.</p>
+              </div>
             </div>
           </div>
 
-          <table className="ptab">
-            <thead>
-              <tr>
-                <th>Where</th>
-                <th>Level</th>
-                <th>Reported Pay</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Manufacturing &amp; Automotive MNCs</td>
-                <td>Entry · Mid · Lead</td>
-                <td className="n">₹6.5–9 · ₹12–17 · ₹20–32 LPA</td>
-              </tr>
-              <tr>
-                <td>Supply Chain, Logistics &amp; E-Commerce</td>
-                <td>Entry · Mid · Senior</td>
-                <td className="n">₹7–10 · ₹13–19 · ₹24–36 LPA</td>
-              </tr>
-              <tr>
-                <td>Global Management Consulting &amp; IT</td>
-                <td>Analyst · Senior Consultant · Manager</td>
-                <td className="n">₹8–12 · ₹15–22 · ₹26–40+ LPA</td>
-              </tr>
-              <tr>
-                <td>United States, all companies</td>
-                <td>25th · median · 75th percentile</td>
-                <td className="n">$85K · $115K · $155K a year</td>
-              </tr>
-            </tbody>
-          </table>
-
-          <p className="pnote">
-            Sources: Salary benchmarks compiled from AmbitionBox, Glassdoor, Michael Page India Salary Report, and active enterprise recruitment postings for Business Intelligence Analysts, Industrial Data Analysts, and Analytics Consultants.
+          <p className="pnote" style={{ marginTop: '22px' }}>
+            *These are proposed project options. The selected projects, mentoring arrangements and deployment depth should be specified for each batch.
           </p>
         </div>
       </section>
 
       {/* -------------------------------------------------------------------------
-          SECTION 9: CAREER PATHWAYS
+          SECTION 10: SUCCESS @ DV ANALYTICS (6-STEP CAREER ENGINE)
           ------------------------------------------------------------------------- */}
-      <section id="careers">
+      <section className="career-engine-section" id="career-engine" style={{ padding: '60px 0', borderBottom: '1px solid var(--line)' }}>
         <div className="wrap">
           <div className="sec-head">
-            <span className="eyebrow">After this</span>
-            <h2>Career options after learning APIDA</h2>
-            <p className="lead">The high-demand synergy of advanced SQL, Power BI, Python, and operational domain knowledge qualifies you for multiple high-growth analytical tracks.</p>
-          </div>
-
-          <div className="careers">
-            <article>
-              <span className="tag">Start here</span>
-              <h3>Industrial Data Analyst</h3>
-              <p>Analyze factory sensors, production runs, and yield metrics to optimize operational plant throughput.</p>
-            </article>
-            <article>
-              <span className="tag">High Demand</span>
-              <h3>Business Intelligence (BI) Engineer</h3>
-              <p>Architect scalable Power BI &amp; Tableau data models, write complex DAX, and manage corporate portals.</p>
-            </article>
-            <article>
-              <span className="tag">Operations</span>
-              <h3>Supply Chain &amp; Logistics Analyst</h3>
-              <p>Model safety stock levels, optimize distribution routes, and forecast supplier fulfillment lead times.</p>
-            </article>
-            <article>
-              <span className="tag">Consulting</span>
-              <h3>Data Analytics Consultant</h3>
-              <p>Advise corporate clients on analytics adoption, dashboard architectures, and operational ROI.</p>
-            </article>
-            <article>
-              <span className="tag">Commercial</span>
-              <h3>Commercial &amp; Financial Analyst</h3>
-              <p>Analyze margin contributions, track budget variances, and model pricing structures for executive leadership.</p>
-            </article>
-            <article>
-              <span className="tag">Data Core</span>
-              <h3>Analytics Engineer (dbt &amp; SQL)</h3>
-              <p>Transform raw enterprise data into clean, curated dimensional warehouse tables for business teams.</p>
-            </article>
-            <article>
-              <span className="tag">Leadership</span>
-              <h3>Manager of Business Intelligence</h3>
-              <p>Lead BI teams, govern company-wide data definitions, and direct executive reporting strategy.</p>
-            </article>
-            <article>
-              <span className="tag">Strategic Track</span>
-              <h3>Head of Decision Intelligence</h3>
-              <p>Guide enterprise digital transformation, automated alerting systems, and data-backed boardroom governance.</p>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      {/* -------------------------------------------------------------------------
-          SECTION 10: WHO CAN BECOME AN APIDA SPECIALIST
-          ------------------------------------------------------------------------- */}
-      <section className="who">
-        <div className="wrap">
-          <div className="sec-head">
-            <span className="eyebrow">Who can become an APIDA Specialist</span>
-            <h2>Designed for diverse starting points</h2>
+            <h2>
+              Success @ DV Analytics:{' '}
+              <span className="career-engine-highlight">The 6-Step Career Engine</span>
+            </h2>
             <p className="lead">
-              What matters is the willingness to learn the missing parts. If you are from mechanical or commerce, we teach SQL and Power BI. If you code but have never analyzed operations, we teach supply chain analytics.
+              A disciplined, mentor-led pathway ensuring you build skills step by step and present your work with executive confidence.
             </p>
           </div>
-          <div className="who-grid">
-            <div>
-              <b>Engineering &amp; Science Graduates</b>
-              <span>Mechanical, Electrical, Civil, BCA, and B.Tech graduates who want to launch high-paying analytical careers without software bug fixing.</span>
+
+          <div className="career-engine-grid">
+            <div className="engine-card">
+              <span className="engine-step">Step 01</span>
+              <h3>Regular Classes</h3>
+              <p>Attend consistently, participate actively and review difficult topics. Build deep data and statistical understanding step by step with mentors.</p>
             </div>
-            <div>
-              <b>MIS &amp; Excel Reporting Professionals</b>
-              <span>Executives tired of repetitive copy-pasting who want to upgrade to automated SQL, Power BI, and Python analytics.</span>
+
+            <div className="engine-card">
+              <span className="engine-step">Step 02</span>
+              <h3>Hands-on Assignments</h3>
+              <p>Practise coding after each module. Use mentor code feedback to correct mistakes and develop independent problem-solving capabilities.</p>
             </div>
-            <div>
-              <b>Operations &amp; Plant Supervisors</b>
-              <span>Professionals working in manufacturing, supply chain, or oil &amp; gas who want to pivot into digital analytics consulting.</span>
+
+            <div className="engine-card">
+              <span className="engine-step">Step 03</span>
+              <h3>Industry Projects</h3>
+              <p>Apply learning to realistic business scenarios. Demonstrate data preparation, modeling, evaluation and cloud deployment through documented work.</p>
             </div>
-            <div>
-              <b>Commerce, BBA &amp; MBA Graduates</b>
-              <span>Business graduates who want to master data visualization, financial modeling, and predictive business intelligence.</span>
+
+            <div className="engine-card">
+              <span className="engine-step">Step 04</span>
+              <h3>Profile Building</h3>
+              <p>Develop a focused resume, LinkedIn profile and public GitHub portfolio. Learn to explain your projects and connect your past domain experience.</p>
             </div>
+
+            <div className="engine-card">
+              <span className="engine-step">Step 05</span>
+              <h3>AI Enabled Tests &amp; Mock Interviews</h3>
+              <p>Use practical assessments to identify skill gaps and mock interviews to improve technical explanations, business reasoning and executive communication.</p>
+            </div>
+
+            <div className="engine-card">
+              <span className="engine-step">Step 06</span>
+              <h3>100% Placement Support</h3>
+              <p>Receive the placement services included in DV’s written programme terms: profile preparation, interview practice, application guidance and opportunity coordination.</p>
+            </div>
+          </div>
+
+          <div className="who-note-box" style={{ marginTop: '28px', textAlign: 'center' }}>
+            <strong style={{ fontSize: '1.05rem', display: 'block', marginBottom: '6px' }}>
+              Learn consistently. Build independently. Explain confidently. Deploy practically.
+            </strong>
+            <span style={{ color: 'var(--muted)', fontSize: '0.88rem' }}>
+              Placement support does not guarantee employment or a particular salary. Student preparation, eligibility and employer selection determine individual outcomes.
+            </span>
           </div>
         </div>
       </section>
 
       {/* -------------------------------------------------------------------------
-          SECTION 11: PLAIN-ENGLISH GLOSSARY
+          SECTION 11: STUDENT SUCCESS STORIES
           ------------------------------------------------------------------------- */}
-      <section className="gloss" id="words">
+      <section className="lp-stories-section" id="stories" aria-label="Student Success Stories">
         <div className="wrap">
-          <div className="sec-head">
-            <span className="eyebrow">Plain-English glossary</span>
-            <h2>Words you may hear, explained simply</h2>
+          <div className="sec-head" style={{ textAlign: 'center', margin: '0 auto 36px', alignItems: 'center' }}>
+            <h2>Student Success Stories</h2>
+            <p className="lead" style={{ textAlign: 'center' }}>
+              Real career transformations from our classroom to industry leaders. Verified placements across premier global tech, banking, and analytics enterprises.
+            </p>
           </div>
-          <dl className="gl">
-            <div>
-              <dt>APIDA</dt>
-              <dd>Advanced Program in Industrial Data Analytics with Business Intelligence. Turning raw operational data into boardroom decisions.</dd>
+        </div>
+
+        <div className="lp-stories-marquee-wrapper" title="Scroll or hover to inspect student placement details">
+          <div className="lp-stories-track">
+            {/* First Set */}
+            <div className="lp-stories-group">
+              {successStoryPosters.map((poster, pIdx) => (
+                <div
+                  key={`story-set1-${pIdx}-${poster}`}
+                  className="lp-story-card"
+                  onClick={scrollToForm}
+                  role="button"
+                  tabIndex={0}
+                  title="Click to register for APIDA batch"
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') scrollToForm();
+                  }}
+                >
+                  <img
+                    src={`/Success Stories/${poster}`}
+                    alt={`DV Analytics Student Placement Story ${pIdx + 1}`}
+                    className="lp-story-img"
+                    loading={pIdx < 4 ? 'eager' : 'lazy'}
+                  />
+                </div>
+              ))}
             </div>
-            <div>
-              <dt>Business Intelligence (BI)</dt>
-              <dd>The technologies and practices that transform raw corporate data into actionable interactive dashboards and strategic insights.</dd>
+
+            {/* Second Duplicate Set for Infinite Loop */}
+            <div className="lp-stories-group" aria-hidden="true">
+              {successStoryPosters.map((poster, pIdx) => (
+                <div
+                  key={`story-set2-${pIdx}-${poster}`}
+                  className="lp-story-card"
+                  onClick={scrollToForm}
+                  role="button"
+                  tabIndex={-1}
+                >
+                  <img
+                    src={`/Success Stories/${poster}`}
+                    alt=""
+                    className="lp-story-img"
+                    loading="lazy"
+                  />
+                </div>
+              ))}
             </div>
-            <div>
-              <dt>DAX (Data Analysis Expressions)</dt>
-              <dd>The formula language used in Microsoft Power BI to create custom measures, time intelligence, and dynamic aggregations.</dd>
-            </div>
-            <div>
-              <dt>OEE (Overall Equipment Effectiveness)</dt>
-              <dd>The gold-standard manufacturing metric measuring machine Availability, Performance, and Quality to pinpoint operational losses.</dd>
-            </div>
-            <div>
-              <dt>Dimensional Modeling (Star Schema)</dt>
-              <dd>Structuring data into central Fact tables (events/numbers) and surrounding Dimension tables (attributes) for lightning-fast BI reporting.</dd>
-            </div>
-            <div>
-              <dt>ETL (Extract, Transform, Load)</dt>
-              <dd>The automated process of extracting raw data from multiple source systems, cleaning and reshaping it, and loading it into a data warehouse.</dd>
-            </div>
-            <div>
-              <dt>Time Series Forecasting</dt>
-              <dd>Statistical techniques (ARIMA, Exponential Smoothing, Prophet) used to predict future sales, inventory requirements, or energy consumption.</dd>
-            </div>
-            <div>
-              <dt>dbt (Data Build Tool)</dt>
-              <dd>A transformation framework that lets analysts write modular SQL queries with automated testing and version control inside data warehouses.</dd>
-            </div>
-          </dl>
+          </div>
+        </div>
+
+        <div className="wrap" style={{ textAlign: 'center', marginTop: '16px' }}>
+          <span style={{ fontSize: '0.85rem', color: 'var(--muted)', fontStyle: 'italic' }}>
+            * Hover to pause banner • Click any story to reserve your seat in the upcoming batch
+          </span>
         </div>
       </section>
 
       {/* -------------------------------------------------------------------------
-          SECTION 12: FREQUENTLY ASKED QUESTIONS (FAQ)
+          SECTION 12: VERIFIED GOOGLE REVIEWS
           ------------------------------------------------------------------------- */}
-      <section id="faq">
-        <div className="wrap faq">
-          <div className="sec-head">
-            <span className="eyebrow">FAQ</span>
-            <h2>Industrial Data Analytics &amp; BI questions, answered</h2>
-          </div>
-
-          <details className="q" open>
-            <summary>What is the difference between APIDA and APIDS?</summary>
-            <p>
-              APIDA focuses heavily on Industrial Data Analytics, Business Intelligence (Power BI &amp; Tableau), Advanced SQL, and operational business metrics for supply chain, manufacturing, and retail decision making. APIDS is oriented towards Data Science, deep machine learning algorithms, GenAI LLM engineering, and cloud AI microservice deployment.
-            </p>
-          </details>
-
-          <details className="q">
-            <summary>Can a non-technical or non-programmer learn APIDA?</summary>
-            <p>
-              Yes, absolutely. APIDA is ideal for non-coders and professionals from commerce, management, mechanical, and general science backgrounds. The curriculum starts with SQL and visual BI tools (Power BI, Tableau) before introducing clean, practical Python scripts for analytics.
-            </p>
-          </details>
-
-          <details className="q">
-            <summary>Which tools will I master in the APIDA program?</summary>
-            <p>
-              You will master Microsoft Power BI (DAX, Power Query, Modeling), Tableau Desktop, Advanced SQL (PostgreSQL &amp; Snowflake), Python for Data Analysis (Pandas, NumPy, Seaborn), Advanced Excel, and statistical modeling tools.
-            </p>
-          </details>
-
-          <details className="q">
-            <summary>What are the batch schedules and training modes available?</summary>
-            <p>
-              We provide both Live Interactive Online sessions and Classroom Training in Bangalore and Bhubaneswar. Flexible weekend batches and weekday evening batches are available with lifetime LMS recordings and mentor review.
-            </p>
-          </details>
-
-          <details className="q">
-            <summary>What real industrial projects will I work on?</summary>
-            <p>
-              You will build capstones including: a supply chain inventory optimization model, a manufacturing OEE plant downtime dashboard, an e-commerce customer churn &amp; LTV analysis, and a live executive financial performance portal in Power BI.
-            </p>
-          </details>
-
-          <details className="q">
-            <summary>How does DV Analytics assist with placements?</summary>
-            <p>
-              Learners receive full placement assistance: 1-on-1 resume transformation, LinkedIn profile enhancement, Power BI portfolio hosting, mock technical interviews, and direct interviews with our network of 400+ hiring partner companies.
-            </p>
-          </details>
-        </div>
-      </section>
-
-      {/* -------------------------------------------------------------------------
-          SECTION 13: JOIN / REGISTRATION FORM (WHITE EDITORIAL THEME)
-          ------------------------------------------------------------------------- */}
-      <section className="join" id="join">
-        <div className="wrap join-grid">
-          <div>
-            <span className="eyebrow">Admissions Open</span>
-            <h2>Start your journey in Industrial Data Analytics &amp; BI</h2>
-            <p className="lead" style={{ marginTop: '14px' }}>
-              Transform from manual spreadsheets to high-impact Business Intelligence and predictive industrial analytics. Learn with seasoned corporate practitioners and build an industry-ready portfolio.
-            </p>
-
-            <ul className="build">
-              <li>Master complex SQL queries, window functions, and dimensional star-schema data modeling</li>
-              <li>Design executive Power BI &amp; Tableau dashboards that guide multimillion-dollar decisions</li>
-              <li>Automate analytics workflows with Python, Pandas, and predictive statistical algorithms</li>
-              <li>Present end-to-end industrial capstones with clear operational ROI narratives</li>
-            </ul>
-
-            <div className="stack">
-              <span>Power BI</span>
-              <span>Tableau</span>
-              <span>SQL</span>
-              <span>Snowflake</span>
-              <span>Python</span>
-              <span>Advanced Excel</span>
-              <span>dbt</span>
-              <span>Statistics</span>
+      <section className="lp-reviews-section" id="reviews" aria-label="Student Testimonials">
+        <div className="wrap">
+          <div className="lp-reviews-header-row">
+            <div className="sec-head" style={{ margin: 0, maxWidth: '620px' }}>
+              <h2>Verified Google Reviews</h2>
+              <p className="lead" style={{ margin: 0 }}>
+                Authentic, unedited feedback from our learners. See what students say about our curriculum, mentoring, hands-on projects, and placement support.
+              </p>
             </div>
 
-            <div className="join-direct-contact">
-              <p className="join-direct-label">Prefer to speak with an admissions counselor directly?</p>
-              <div className="join-contact-links">
-                <a href="tel:+918095881188" className="join-contact-pill">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+            <div className="lp-reviews-controls">
+              <a
+                href={GOOGLE_REVIEWS_LINK}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="lp-reviews-trust-pill"
+                title="View all verified reviews on Google"
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
+                  <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
+                  <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
+                  <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" />
+                  <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" />
+                </svg>
+                <div className="lp-trust-text">
+                  <strong>4.9 ★★★★★</strong>
+                  <span>1,200+ Reviews</span>
+                </div>
+              </a>
+
+              <div className="lp-nav-buttons-group">
+                <button
+                  type="button"
+                  className="lp-review-nav-btn"
+                  onClick={prevReview}
+                  aria-label="Previous Review"
+                  title="Previous Review"
+                >
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <path d="M15 18l-6-6 6-6" />
                   </svg>
-                  <span>+91 80958 81188</span>
-                </a>
-                <a href="mailto:info@dvanalyticsmds.com" className="join-contact-pill">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                    <rect width="20" height="16" x="2" y="4" rx="2"/>
-                    <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+                </button>
+                <button
+                  type="button"
+                  className="lp-review-nav-btn"
+                  onClick={nextReview}
+                  aria-label="Next Review"
+                  title="Next Review"
+                >
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <path d="M9 18l6-6-6-6" />
                   </svg>
-                  <span>info@dvanalyticsmds.com</span>
-                </a>
+                </button>
               </div>
             </div>
           </div>
 
-          {/* High-Converting Lead Capture Form Card */}
-          <div className="join-form-wrapper" id="apida-lead-form">
-            <div className="lp-form-card">
-              {isSubmitted ? (
-                <div className="lp-form-success-banner">
-                  <h3 style={{ fontSize: '1.4rem', fontWeight: 800, marginBottom: '8px', color: '#065f46' }}>
-                    Registration Submitted Successfully!
-                  </h3>
-                  <p style={{ color: '#047857', fontSize: '0.95rem', lineHeight: 1.5, marginBottom: '14px' }}>
-                    Thank you, <strong>{formData.name}</strong>. An admissions counselor from DV Analytics will reach out within 2 hours with the syllabus and upcoming batch schedule.
-                  </p>
-                  <button
-                    type="button"
-                    onClick={() => setIsSubmitted(false)}
-                    className="lp-orange-submit-btn"
-                    style={{ marginTop: '10px' }}
-                  >
-                    Submit Another Registration
-                  </button>
+          <div
+            className="lp-reviews-grid"
+            onMouseEnter={() => setIsReviewPaused(true)}
+            onMouseLeave={() => setIsReviewPaused(false)}
+            onFocus={() => setIsReviewPaused(true)}
+            onBlur={() => setIsReviewPaused(false)}
+          >
+            {[0, 1, 2].map((offset) => {
+              const review = googleReviewsData[(reviewIndex + offset) % totalReviews];
+              return (
+                <div
+                  key={`${review.id}-${offset}`}
+                  className="lp-review-card"
+                  onClick={() => window.open(GOOGLE_REVIEWS_LINK, '_blank', 'noopener,noreferrer')}
+                  title="Click to view verified review on Google"
+                  role="button"
+                  tabIndex={0}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') window.open(GOOGLE_REVIEWS_LINK, '_blank', 'noopener,noreferrer');
+                  }}
+                >
+                  <div>
+                    <div className="lp-review-card-top">
+                      <div className="lp-review-user">
+                        <div
+                          className="lp-review-avatar"
+                          style={{ backgroundColor: review.avatarBg }}
+                          aria-hidden="true"
+                        >
+                          {review.name.charAt(0).toUpperCase()}
+                        </div>
+                        <div className="lp-review-user-info">
+                          <div className="lp-review-name-row">
+                            <h4 className="lp-review-name">{review.name}</h4>
+                            {review.isLocalGuide && (
+                              <span className="lp-review-guide-badge">Local Guide</span>
+                            )}
+                          </div>
+                          {review.details && (
+                            <span className="lp-review-meta">{review.details}</span>
+                          )}
+                        </div>
+                      </div>
+
+                      <div className="lp-review-google-logo" title="Verified Google Review">
+                        <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
+                          <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
+                          <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
+                          <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" />
+                          <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" />
+                        </svg>
+                      </div>
+                    </div>
+
+                    <div className="lp-review-stars-row">
+                      <div className="lp-review-stars">{renderReviewStars(review.rating)}</div>
+                      <span className="lp-review-date">{review.date}</span>
+                    </div>
+
+                    <div className="lp-review-body">
+                      {review.text.split('\n').filter(Boolean).map((para, pIdx) => (
+                        <p key={pIdx} style={{ margin: '0 0 6px 0' }}>{para}</p>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="lp-review-link">
+                    <span>Read on Google</span>
+                    <span aria-hidden="true">→</span>
+                  </div>
                 </div>
-              ) : (
-                <form onSubmit={handleSubmit} className="lp-lead-form">
-                  <div className="lp-form-header">
-                    <h3>Register for APIDA</h3>
-                    <p>Reserve your seat for the Industrial Data Analytics &amp; BI batch.</p>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* -------------------------------------------------------------------------
+          SECTION 13: FREQUENTLY ASKED QUESTIONS (FAQS)
+          ------------------------------------------------------------------------- */}
+      <section id="faq" style={{ padding: '60px 0', borderBottom: '1px solid var(--line)' }}>
+        <div className="wrap faq">
+          <div className="sec-head">
+            <h2>Industrial Data Analytics &amp; AI (APIDA) FAQs</h2>
+            <p className="lead">
+              Clear, transparent answers directly addressing curriculum, prerequisites, SAS industry relevance, tools, and career support.
+            </p>
+          </div>
+
+          <details className="q" open>
+            <summary>1. What is APIDA and how is it tailored for industrial analytics roles?</summary>
+            <div style={{ marginTop: '12px' }}>
+              <p>
+                The <strong>Advanced Program in Industrial Data Analytics &amp; AI (APIDA)</strong> is specifically engineered to prepare graduates and working professionals for commercial analytics roles in Banking, Financial Services, Insurance (BFSI), Healthcare, and Telecom. It combines enterprise database querying (SQL, SAS), executive reporting (Power BI, Tableau, Excel AI), and predictive modeling (Python, Machine Learning, MLOps) into one cohesive, practical program.
+              </p>
+            </div>
+          </details>
+
+          <details className="q">
+            <summary>2. Why does APIDA teach SAS alongside Python and SQL?</summary>
+            <div style={{ marginTop: '12px' }}>
+              <p>
+                While Python is popular for general machine learning, <strong>SAS</strong> remains the gold standard in global banking (Wells Fargo, HDFC, Citi, HSBC, Barclays) and clinical research for regulatory compliance (IFRS 9, Basel III, FDA trials). Candidates who know both SAS and Python have a distinct hiring advantage over those who only know open-source tools.
+              </p>
+            </div>
+          </details>
+
+          <details className="q">
+            <summary>3. What is the difference between APIDA and APIDS?</summary>
+            <div style={{ marginTop: '12px' }}>
+              <p>
+                <strong>APIDA</strong> focuses heavily on industrial data management, executive business intelligence, statistical risk analytics, and predictive modeling for commercial sectors (BFSI, Telecom, Healthcare). <strong>APIDS</strong> extends deeper into advanced computer vision, deep learning neural networks, Generative AI agent architectures, and cloud deployment engineering. Both programs share core data management and machine learning foundations.
+              </p>
+            </div>
+          </details>
+
+          <details className="q">
+            <summary>4. Can non-programmers or commerce/finance graduates succeed in APIDA?</summary>
+            <div style={{ marginTop: '12px' }}>
+              <p>
+                Yes, absolutely. Over 60% of our APIDA learners come from commerce (B.Com, BBA, MBA), mathematics, economics, and non-coding backgrounds. The program begins from zero with SQL fundamentals and Excel AI before transitioning into SAS, Power BI, and Python programming, with personalized mentoring throughout.
+              </p>
+            </div>
+          </details>
+
+          <details className="q">
+            <summary>5. What roles and salary benchmarks do APIDA graduates target?</summary>
+            <div style={{ marginTop: '12px' }}>
+              <p>
+                Graduates transition into roles such as <strong>Industrial Data Analyst</strong>, <strong>Credit Risk Analyst</strong>, <strong>Business Intelligence Developer</strong>, <strong>SAS Programmer</strong>, and <strong>Analytics Consultant</strong>. Average starting packages for freshers range from ₹6–10 LPA, while experienced professionals transitioning into senior analyst roles benchmark between <strong>₹25+ to 35+ LPA</strong>.
+              </p>
+            </div>
+          </details>
+
+          <details className="q">
+            <summary>6. What placement support is provided by DV Analytics?</summary>
+            <div style={{ marginTop: '12px' }}>
+              <p>
+                DV Analytics provides 100% placement support through the 6-Step Career Engine: 1-on-1 resume optimization, public BI and analytics portfolio creation, practical test assessments, domain-specific mock interviews with industry leaders, and direct application coordination across our enterprise hiring partner network.
+              </p>
+            </div>
+          </details>
+        </div>
+      </section>
+
+      {/* -------------------------------------------------------------------------
+          SECTION 14: VISIT OUR OFFICES
+          ------------------------------------------------------------------------- */}
+      <section className="lp-offices-section" id="offices">
+        <div className="wrap">
+          <div className="sec-head" style={{ textAlign: 'center', margin: '0 auto 48px', alignItems: 'center' }}>
+            <h2>Visit Our Offices</h2>
+            <p className="lead" style={{ textAlign: 'center' }}>
+              Connect with our academic counselors and mentors across our global delivery centers.
+            </p>
+          </div>
+
+          <div className="center-cards-grid">
+            {/* Bangalore Center */}
+            <div className="center-card bangalore">
+              <div className="center-card-footer-panel">
+                <div className="footer-flex-row">
+                  <div className="footer-col company-col">
+                    <div className="center-header-row">
+                      <span className="center-badge teal">Bangalore, India</span>
+                      <div className="center-icon-wrapper teal">
+                        <svg className="center-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                          <circle cx="12" cy="10" r="3"></circle>
+                        </svg>
+                      </div>
+                    </div>
+                    <h3 className="center-company">
+                      <a href="https://www.dvanalyticsmds.com/" target="_blank" rel="noreferrer" className="center-link">
+                        DV Data &amp; Analytics Private Limited
+                      </a>
+                    </h3>
                   </div>
 
-                  {formError && <div className="lp-form-error-banner">{formError}</div>}
-
-                  <div className="lp-form-field">
-                    <label className="lp-form-label">Full Name *</label>
-                    <input
-                      type="text"
-                      className="lp-form-input"
-                      placeholder="e.g. Priyadarshini Das"
-                      value={formData.name}
-                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      required
-                    />
+                  <div className="footer-col address-col">
+                    <div className="info-icon">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+                      </svg>
+                    </div>
+                    <p className="info-text">
+                      #52, 3rd Floor:<br />
+                      Malleshpalya Maruthinagar Bengaluru.<br />
+                      Bangalore 560075<br />
+                      India
+                    </p>
                   </div>
 
-                  <div className="lp-form-row-2">
-                    <div className="lp-form-field">
-                      <label className="lp-form-label">Email Address *</label>
-                      <input
-                        type="email"
-                        className="lp-form-input"
-                        placeholder="e.g. priya@example.com"
-                        value={formData.email}
-                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        required
-                      />
+                  <div className="footer-col phone-col">
+                    <div className="info-icon">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                      </svg>
                     </div>
-
-                    <div className="lp-form-field">
-                      <label className="lp-form-label">Mobile Number *</label>
-                      <input
-                        type="tel"
-                        className="lp-form-input"
-                        placeholder="10-digit mobile number"
-                        value={formData.phone}
-                        maxLength={10}
-                        onChange={(e) =>
-                          setFormData({
-                            ...formData,
-                            phone: e.target.value.replace(/\D/g, '').slice(0, 10),
-                          })
-                        }
-                        required
-                      />
-                    </div>
+                    <p className="info-text">
+                      <a href="tel:+918095881188" className="center-link center-link-phone">(+91) 8095 881 188</a>
+                      <a href="tel:+917483596228" className="center-link center-link-phone">(+91) 7483 596 228</a>
+                    </p>
                   </div>
 
-                  <div className="lp-form-row-2">
-                    <div className="lp-form-field">
-                      <label className="lp-form-label">Highest Qualification *</label>
-                      <LpCustomSelect
-                        options={qualificationOptions}
-                        value={formData.qualification}
-                        placeholder="Select degree"
-                        required
-                        onChange={(val) => setFormData({ ...formData, qualification: val })}
-                      />
+                  <div className="footer-col email-col">
+                    <div className="info-icon">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                        <polyline points="22,6 12,13 2,6"></polyline>
+                      </svg>
                     </div>
+                    <p className="info-text">
+                      <a href="mailto:info@dvanalyticsmds.com" className="center-link">info@dvanalyticsmds.com</a>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
 
-                    <div className="lp-form-field">
-                      <label className="lp-form-label">Current Experience *</label>
-                      <LpCustomSelect
-                        options={experienceOptions}
-                        value={formData.experience}
-                        placeholder="Select experience"
-                        required
-                        onChange={(val) => setFormData({ ...formData, experience: val })}
-                      />
+            {/* Bhubaneswar Center */}
+            <div className="center-card bhubaneswar">
+              <div className="center-card-footer-panel">
+                <div className="footer-flex-row">
+                  <div className="footer-col company-col">
+                    <div className="center-header-row">
+                      <span className="center-badge teal">Bhubaneswar, India</span>
+                      <div className="center-icon-wrapper teal">
+                        <svg className="center-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                          <circle cx="12" cy="10" r="3"></circle>
+                        </svg>
+                      </div>
                     </div>
+                    <h3 className="center-company">
+                      <a href="https://www.dvanalyticsmds.com/" target="_blank" rel="noreferrer" className="center-link">
+                        DV Data &amp; Analytics Private Limited
+                      </a>
+                    </h3>
                   </div>
 
-                  <div className="lp-form-row-2">
-                    <div className="lp-form-field">
-                      <label className="lp-form-label">Current Location / State *</label>
-                      <LpCustomSelect
-                        options={locationOptions}
-                        value={formData.state}
-                        placeholder="Select state"
-                        required
-                        onChange={(val) => setFormData({ ...formData, state: val })}
-                      />
+                  <div className="footer-col address-col">
+                    <div className="info-icon">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+                      </svg>
                     </div>
-
-                    <div className="lp-form-field">
-                      <label className="lp-form-label">Course *</label>
-                      <input
-                        type="text"
-                        className="lp-form-input"
-                        value="APIDA (Industrial Data Analytics & BI)"
-                        readOnly
-                        tabIndex={-1}
-                        style={{
-                          backgroundColor: '#f1f5f9',
-                          color: '#0f172a',
-                          fontWeight: 700,
-                          cursor: 'not-allowed',
-                          borderColor: '#cbd5e1',
-                        }}
-                      />
-                    </div>
+                    <p className="info-text">
+                      Plot No A/7<br />
+                      Adjacent to Maharaja Cine Complex, Bhoinagar, Acharya Vihar<br />
+                      Bhubaneswar 751022<br />
+                      India
+                    </p>
                   </div>
 
-                  <button type="submit" className="lp-orange-submit-btn" disabled={isSubmitting}>
-                    {isSubmitting ? 'Submitting Registration...' : 'REGISTER NOW →'}
-                  </button>
+                  <div className="footer-col phone-col">
+                    <div className="info-icon">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                      </svg>
+                    </div>
+                    <p className="info-text">
+                      <a href="tel:+918095881188" className="center-link center-link-phone">+91 8095 881 188</a>
+                      <a href="tel:+917483596228" className="center-link center-link-phone">+91 7483 596 228</a>
+                    </p>
+                  </div>
 
-                  <p className="lp-form-privacy-note">Your information is strictly confidential. No spam.</p>
-                </form>
-              )}
+                  <div className="footer-col email-col">
+                    <div className="info-icon">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                        <polyline points="22,6 12,13 2,6"></polyline>
+                      </svg>
+                    </div>
+                    <p className="info-text">
+                      <a href="mailto:info@dvanalyticsmds.com" className="center-link">info@dvanalyticsmds.com</a>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Dubai Center */}
+            <div className="center-card dubai">
+              <div className="center-card-footer-panel">
+                <div className="footer-flex-row">
+                  <div className="footer-col company-col">
+                    <div className="center-header-row">
+                      <span className="center-badge teal">Dubai, UAE</span>
+                      <div className="center-icon-wrapper teal">
+                        <svg className="center-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                          <circle cx="12" cy="10" r="3"></circle>
+                        </svg>
+                      </div>
+                    </div>
+                    <h3 className="center-company">
+                      <a href="https://www.agentifyaiglobal.com/" target="_blank" rel="noreferrer" className="center-link">
+                        <span className="center-company-stack">
+                          <span>Agentify AI</span>
+                          <span>Global</span>
+                        </span>
+                      </a>
+                    </h3>
+                  </div>
+
+                  <div className="footer-col address-col">
+                    <div className="info-icon">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+                      </svg>
+                    </div>
+                    <p className="info-text">
+                      Villa 335<br />
+                      Murooj al Furzan East 1<br />
+                      Near Gate 3 Jabel Ali First<br />
+                      Al Furjan, Dubai, UAE
+                    </p>
+                  </div>
+
+                  <div className="footer-col phone-col">
+                    <div className="info-icon">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                      </svg>
+                    </div>
+                    <p className="info-text">
+                      <a href="tel:+971525533211" className="center-link center-link-phone">+971 52 553 3211</a>
+                    </p>
+                  </div>
+
+                  <div className="footer-col email-col">
+                    <div className="info-icon">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                        <polyline points="22,6 12,13 2,6"></polyline>
+                      </svg>
+                    </div>
+                    <p className="info-text">
+                      <a href="mailto:Sales@agentifyaiglobal.com" className="center-link">Sales@agentifyaiglobal.com</a>
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
       {/* -------------------------------------------------------------------------
-          FOOTER (CENTERED COPYRIGHT TEXT ONLY - NO LOGO)
+          FOOTER
           ------------------------------------------------------------------------- */}
       <footer className="lp-footer">
         <div className="wrap">
           <div className="footer-copyright">
-            © {new Date().getFullYear()} DV Analytics. All rights reserved. Advanced Program in Industrial Data Analytics with Business Intelligence (APIDA).
+            © {new Date().getFullYear()} DV Analytics. All rights reserved. Advanced Program in Industrial Data Analytics &amp; AI (APIDA).
           </div>
         </div>
       </footer>
