@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { googleReviewsData, GOOGLE_REVIEWS_LINK } from '../../data/googleReviewsData';
 import './ApidsStoryLandingPage.css';
 
 interface SelectOption {
@@ -106,6 +107,94 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [formError, setFormError] = useState('');
   const [selectedModule, setSelectedModule] = useState<number | null>(null);
+  const [showDeepDive, setShowDeepDive] = useState(false);
+
+  // Verified Google Reviews Carousel State
+  const [reviewIndex, setReviewIndex] = useState(0);
+  const [isReviewPaused, setIsReviewPaused] = useState(false);
+
+  const totalReviews = googleReviewsData.length;
+
+  const nextReview = useCallback(() => {
+    setReviewIndex((prev) => (prev + 1) % totalReviews);
+  }, [totalReviews]);
+
+  const prevReview = useCallback(() => {
+    setReviewIndex((prev) => (prev - 1 + totalReviews) % totalReviews);
+  }, [totalReviews]);
+
+  useEffect(() => {
+    if (isReviewPaused) return;
+    const interval = setInterval(() => {
+      nextReview();
+    }, 4200);
+    return () => clearInterval(interval);
+  }, [isReviewPaused, nextReview]);
+
+  const renderReviewStars = (rating: number) => {
+    return Array.from({ length: 5 }, (_, i) => (
+      <svg
+        key={i}
+        viewBox="0 0 24 24"
+        width="15"
+        height="15"
+        fill={i < rating ? '#f59e0b' : '#e2e8f0'}
+        stroke={i < rating ? '#d97706' : '#cbd5e1'}
+        strokeWidth="1"
+        aria-hidden="true"
+      >
+        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+      </svg>
+    ));
+  };
+
+  // Exact stories from homepage of dvanalytics (DV Analytics branding & red duration badges)
+  const homepageStoryGroups = [
+    [
+      'WhatsApp Image 2026-07-01 at 11.19.49 AM.jpeg',
+      'WhatsApp Image 2026-07-01 at 11.19.50 AM (1).jpeg',
+      'WhatsApp Image 2026-07-01 at 11.19.50 AM (2).jpeg',
+      'WhatsApp Image 2026-07-01 at 11.19.50 AM.jpeg',
+      'WhatsApp Image 2026-07-01 at 11.19.51 AM.jpeg',
+    ],
+    [
+      'WhatsApp Image 2026-06-29 at 11.28.19 AM.jpeg',
+      'WhatsApp Image 2026-06-29 at 11.28.20 AM (1).jpeg',
+      'WhatsApp Image 2026-06-29 at 11.28.20 AM (2).jpeg',
+      'WhatsApp Image 2026-06-29 at 11.28.20 AM.jpeg',
+    ],
+    [
+      'WhatsApp Image 2026-06-29 at 11.28.08 AM (1).jpeg',
+      'WhatsApp Image 2026-06-29 at 11.28.08 AM (2).jpeg',
+      'WhatsApp Image 2026-06-29 at 11.28.08 AM.jpeg',
+      'WhatsApp Image 2026-06-29 at 11.28.09 AM (1).jpeg',
+      'WhatsApp Image 2026-06-29 at 11.28.09 AM.jpeg',
+    ],
+    [
+      'WhatsApp Image 2026-06-29 at 11.28.55 AM.jpeg',
+      'WhatsApp Image 2026-06-29 at 11.28.56 AM (1).jpeg',
+      'WhatsApp Image 2026-06-29 at 11.28.56 AM (2).jpeg',
+      'WhatsApp Image 2026-06-29 at 11.28.56 AM (3).jpeg',
+      'WhatsApp Image 2026-06-29 at 11.28.56 AM.jpeg',
+    ],
+    [
+      'WhatsApp Image 2026-06-29 at 11.28.44 AM (1).jpeg',
+      'WhatsApp Image 2026-06-29 at 11.28.44 AM (2).jpeg',
+      'WhatsApp Image 2026-06-29 at 11.28.44 AM.jpeg',
+      'WhatsApp Image 2026-06-29 at 11.28.45 AM (1).jpeg',
+      'WhatsApp Image 2026-06-29 at 11.28.45 AM.jpeg',
+    ],
+  ];
+
+  const buildHomepageStories = (): string[] => {
+    const completeRounds = Math.min(...homepageStoryGroups.map((group) => group.length));
+    return Array.from({ length: completeRounds }, (_, index) =>
+      homepageStoryGroups.map((group) => group[index]),
+    ).flat();
+  };
+
+  const successStoryPosters = buildHomepageStories();
+
 
   const qualificationOptions: SelectOption[] = [
     { value: 'B.E. / B.Tech / M.Tech', label: 'B.E. / B.Tech / M.Tech' },
@@ -135,9 +224,14 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
   ];
 
   const scrollToForm = () => {
-    const el = document.getElementById('apids-lead-form');
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    const heroForm = document.getElementById('apids-hero-lead-form');
+    const bottomForm = document.getElementById('apids-lead-form');
+    if (window.scrollY > 1200 && bottomForm) {
+      bottomForm.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    } else if (heroForm) {
+      heroForm.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    } else if (bottomForm) {
+      bottomForm.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
   };
 
@@ -177,18 +271,152 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
     }, 900);
   };
 
+  const renderLeadForm = (title = 'Register for APIDS', subtitle = 'Reserve your seat for the Data Science & AI Deployment batch.') => (
+    <div className="lp-form-card">
+      {isSubmitted ? (
+        <div className="lp-form-success-banner">
+          <h3 style={{ fontSize: '1.4rem', fontWeight: 800, marginBottom: '8px', color: '#065f46' }}>
+            Registration Submitted Successfully!
+          </h3>
+          <p style={{ color: '#047857', fontSize: '0.95rem', lineHeight: 1.5, marginBottom: '14px' }}>
+            Thank you, <strong>{formData.name}</strong>. An admissions counselor from DV Analytics will reach out within 2 hours with the syllabus and October 24 batch details.
+          </p>
+          <button
+            type="button"
+            onClick={() => setIsSubmitted(false)}
+            className="lp-orange-submit-btn"
+            style={{ marginTop: '10px' }}
+          >
+            Submit Another Registration
+          </button>
+        </div>
+      ) : (
+        <form onSubmit={handleSubmit} className="lp-lead-form">
+          <div className="lp-form-header">
+            <h3>{title}</h3>
+            <p>{subtitle}</p>
+          </div>
+
+          {formError && <div className="lp-form-error-banner">{formError}</div>}
+
+          <div className="lp-form-field">
+            <label className="lp-form-label">Full Name *</label>
+            <input
+              type="text"
+              className="lp-form-input"
+              placeholder="Enter your full name"
+              value={formData.name}
+              required
+              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+            />
+          </div>
+
+          <div className="lp-form-row-2">
+            <div className="lp-form-field">
+              <label className="lp-form-label">Email Address *</label>
+              <input
+                type="email"
+                className="lp-form-input"
+                placeholder="name@example.com"
+                value={formData.email}
+                required
+                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+              />
+            </div>
+
+            <div className="lp-form-field">
+              <label className="lp-form-label">Phone Number *</label>
+              <input
+                type="tel"
+                className="lp-form-input"
+                placeholder="10-digit mobile number"
+                value={formData.phone}
+                required
+                pattern="[0-9]{10}"
+                title="Please enter a valid 10-digit mobile number"
+                onChange={(e) => setFormData({ ...formData, phone: e.target.value.replace(/\D/g, '').slice(0, 10) })}
+              />
+            </div>
+          </div>
+
+          <div className="lp-form-row-2">
+            <div className="lp-form-field">
+              <label className="lp-form-label">Highest Qualification *</label>
+              <LpCustomSelect
+                options={qualificationOptions}
+                value={formData.qualification}
+                placeholder="Select qualification"
+                required
+                onChange={(val) => setFormData({ ...formData, qualification: val })}
+              />
+            </div>
+
+            <div className="lp-form-field">
+              <label className="lp-form-label">Experience *</label>
+              <LpCustomSelect
+                options={experienceOptions}
+                value={formData.experience}
+                placeholder="Select experience"
+                required
+                onChange={(val) => setFormData({ ...formData, experience: val })}
+              />
+            </div>
+          </div>
+
+          <div className="lp-form-row-2">
+            <div className="lp-form-field">
+              <label className="lp-form-label">State / Location *</label>
+              <LpCustomSelect
+                options={locationOptions}
+                value={formData.state}
+                placeholder="Select state"
+                required
+                onChange={(val) => setFormData({ ...formData, state: val })}
+              />
+            </div>
+
+            <div className="lp-form-field">
+              <label className="lp-form-label">Course *</label>
+              <input
+                type="text"
+                className="lp-form-input"
+                value="APIDS (Data Science & AI)"
+                readOnly
+                tabIndex={-1}
+                style={{
+                  backgroundColor: '#f1f5f9',
+                  color: '#0f172a',
+                  fontWeight: 700,
+                  cursor: 'not-allowed',
+                  borderColor: '#cbd5e1',
+                }}
+              />
+            </div>
+          </div>
+
+          <button type="submit" className="lp-orange-submit-btn" disabled={isSubmitting}>
+            {isSubmitting ? 'Submitting Registration...' : 'REGISTER NOW →'}
+          </button>
+
+          <p className="lp-form-privacy-note">Your information is strictly confidential. No spam.</p>
+        </form>
+      )}
+    </div>
+  );
+
   const learningPathModules = [
     {
       id: 1,
-      title: 'Data and Programming',
-      summary: 'Learn to write clean Python code, design high-throughput SQL databases, and build reliable data pipelines. Everything else is built on this foundation.',
-      techChips: ['Python 3.12', 'PostgreSQL', 'DuckDB', 'Pandas & Polars', 'Git & GitHub'],
+      title: 'Data Management',
+      summary: 'Master SQL, Python, and SAS to extract, clean, validate, and transform data from diverse databases into analysis-ready enterprise datasets.',
+      techChips: ['SQL', 'Python 3.12', 'SAS Programming', 'PostgreSQL', 'NumPy & pandas'],
       topics: [
-        'Advanced Python: Object-oriented programming, typing, decorators, generators',
-        'Relational Databases & SQL: Complex joins, CTEs, window functions, indexing & query plans',
-        'High-performance data manipulation with Polars, Pandas, and DuckDB',
-        'Data cleaning, transformation pipelines, and validation with Pydantic',
-        'Version control hygiene: Git branching, pull requests, and reproducible repositories',
+        'SQL Programming: Tables, keys, constraints, filtering, sorting, date/character functions, joins, subqueries, and CTEs',
+        'Advanced SQL: Aggregations, window functions, views, stored procedures, data validation, and query performance fundamentals',
+        'Python Programming: Variables, conditions, loops, functions, lists, dicts, file handling, and exception handling',
+        'Data Manipulation with NumPy & pandas: Missing values, duplicate checks, merging, reshaping, aggregation, and automated cleaning',
+        'SAS Programming: DATA steps, PROC SQL, data import/export, conditional logic, summarisation, and reporting fundamentals',
+        'Practical Deliverable: Extract, clean, and prepare an analysis-ready dataset from multiple heterogeneous enterprise sources',
       ],
       icon: (
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -199,15 +427,16 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
     },
     {
       id: 2,
-      title: 'Software Engineering',
-      summary: 'Turn your algorithms into real web applications and production-grade APIs that other engineers and clients can immediately use.',
-      techChips: ['FastAPI', 'React', 'REST APIs', 'Postman', 'System Architecture'],
+      title: 'Data Analysis & Visualisation',
+      summary: 'Explore data, calculate KPIs, build interactive executive reports, and uncover actionable business insights using Excel AI, Power BI, and Tableau.',
+      techChips: ['Excel with AI', 'Power BI', 'Tableau', 'DAX', 'Power Query'],
       topics: [
-        'Building high-throughput, asynchronous RESTful APIs with FastAPI & Pydantic',
-        'Frontend fundamentals for engineers: Responsive layouts, modern JavaScript & React',
-        'Interactive dashboards and rapid client demo interfaces with Streamlit & React',
-        'API authentication, JWT security, rate-limiting, and error handling',
-        'Writing unit tests, integration testing with Pytest, and automated test suites',
+        'Excel with AI-Assisted Workflows: Business calculations, lookup & conditional aggregations, pivot tables, and Power Query transformations',
+        'AI-Assisted Formula Generation: Natural-language analysis, formula explanations, and result validation protocols',
+        'Power BI Data Modelling: Power Query ETL, table relationships, calculated measures with DAX, and dynamic KPI dashboards',
+        'Tableau Visual Analytics: Data connections, calculated fields, filters, parameters, visual drilldowns, and business storytelling',
+        'Enterprise Reporting Governance: Row-level security (RLS), scheduled cloud refresh, and gateway concepts',
+        'Practical Deliverable: Build an interactive business dashboard and present actionable findings to decision-makers',
       ],
       icon: (
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -219,16 +448,39 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
     },
     {
       id: 3,
-      title: 'AI and Analytics',
-      summary: 'Harness predictive machine learning, deep learning, GenAI LLMs, RAG, and agentic workflows to solve real client bottlenecks.',
-      techChips: ['LangChain', 'LangGraph', 'Scikit-Learn', 'PyTorch', 'Vector Databases'],
+      title: 'Statistics for Data Science',
+      summary: 'Master descriptive statistics, probability distributions, hypothesis testing, regression diagnostics, and A/B testing to evaluate business questions using evidence.',
+      techChips: ['Descriptive Statistics', 'Probability', 'Hypothesis Testing', 'A/B Testing', 'Confidence Intervals'],
       topics: [
-        'Applied Machine Learning: Supervised regression, gradient boosting (XGBoost, LightGBM)',
-        'Deep Learning foundations with PyTorch and pretrained transformers',
-        'Generative AI & LLM orchestration: Prompt engineering, function calling, structured outputs',
-        'Retrieval-Augmented Generation (RAG): Document chunking, hybrid search, ChromaDB & PGVector',
-        'Autonomous Agentic AI: Multi-agent workflows with LangChain, LangGraph, and tool calling',
-        'Model evaluation: Hallucination detection, RAGAS metrics, and latency benchmarking',
+        'Descriptive statistics, empirical distributions, variance, standard errors, and outlier detection',
+        'Probability foundations, sampling distributions, and confidence interval estimation',
+        'Parametric & Non-Parametric Hypothesis Testing: p-values, t-tests, ANOVA, and Chi-Square tests',
+        'Correlation analysis, regression diagnostic interpretation, and collinearity detection',
+        'A/B Testing Fundamentals: Sample size determination, statistical significance, power, and uncertainty evaluation',
+        'Practical Deliverable: Evaluate a business question using quantitative statistical evidence and explain uncertainty',
+      ],
+      icon: (
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <path d="M3 3v18h18" />
+          <path d="M18 17V9" />
+          <path d="M13 17V5" />
+          <path d="M8 17v-3" />
+        </svg>
+      ),
+    },
+    {
+      id: 4,
+      title: 'Machine Learning',
+      summary: 'Design, train, tune, and evaluate machine learning models across prediction, classification, clustering, and forecasting problems.',
+      techChips: ['scikit-learn', 'XGBoost', 'Feature Engineering', 'Cross-Validation', 'SHAP Explainability'],
+      topics: [
+        'Problem definition, business target selection, and feature engineering & preprocessing pipelines',
+        'Training, validation, and holdout test splitting; preventing data leakage and target contamination',
+        'Supervised Learning: Linear/logistic regression, decision trees, random forests, and gradient boosting (XGBoost/LightGBM)',
+        'Unsupervised Learning: K-Means clustering, customer segmentation, and forecasting fundamentals',
+        'Handling imbalanced datasets: SMOTE, class weighting, precision-recall thresholds, and cost-sensitive evaluation',
+        'Cross-validation, hyperparameter tuning, model explainability with SHAP, and feature importance analysis',
+        'Practical Deliverable: Build and evaluate a predictive ML model validated against a meaningful business baseline',
       ],
       icon: (
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -238,17 +490,89 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
       ),
     },
     {
-      id: 4,
-      title: 'Deployment Engineering',
-      summary: 'Put models live and keep them running stably with Docker containerization, cloud infrastructure, CI/CD, and 24/7 observability.',
-      techChips: ['Docker', 'AWS Cloud', 'CI/CD Pipelines', 'MLflow', 'Grafana & Prometheus'],
+      id: 5,
+      title: 'Deep Learning & NLP',
+      summary: 'Harness neural network architectures, text preprocessing, embeddings, and transformers for sentiment analysis and document classification.',
+      techChips: ['PyTorch', 'TensorFlow', 'Transformers', 'NLP Tokenization', 'Embeddings'],
       topics: [
-        'Containerization: Multi-stage Dockerfiles, image optimization, and microservice orchestration',
-        'Continuous Integration & Continuous Delivery (CI/CD) with GitHub Actions',
-        'Cloud infrastructure on AWS: EC2, ECS, S3 storage, IAM security, and VPC networking',
-        'Model experiment tracking and registry at scale with MLflow',
-        'Production observability: Prometheus metrics, Grafana dashboards, and data drift detection',
-        'Zero-downtime releases, canary deployments, and automated rollback strategies',
+        'Neural network fundamentals: Perceptrons, activation functions, loss optimizers, and backpropagation',
+        'Training dynamics: Overfitting prevention, dropout, batch normalization, and regularisation strategies',
+        'Natural Language Processing (NLP): Text cleaning, tokenization, lemmatization, and TF-IDF representations',
+        'Word & sentence embeddings: Vector representations and introduction to transformer architecture concepts',
+        'Practical applications: Sentiment analysis, customer intent recognition, and document classification',
+        'Practical Deliverable: Develop a text or deep learning application and explain its technical and business limitations',
+      ],
+      icon: (
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <circle cx="12" cy="12" r="3" />
+          <circle cx="4" cy="6" r="2" />
+          <circle cx="20" cy="6" r="2" />
+          <circle cx="4" cy="18" r="2" />
+          <circle cx="20" cy="18" r="2" />
+          <line x1="6" y1="7" x2="10" y2="10" />
+          <line x1="18" y1="7" x2="14" y2="10" />
+          <line x1="6" y1="17" x2="10" y2="14" />
+          <line x1="18" y1="17" x2="14" y2="14" />
+        </svg>
+      ),
+    },
+    {
+      id: 6,
+      title: 'Generative AI & Agentic AI',
+      summary: 'Build intelligent applications with LLMs, prompt engineering, vector databases, Retrieval-Augmented Generation (RAG), and agentic tool-calling workflows.',
+      techChips: ['LangChain', 'LangGraph', 'Vector DBs (FAISS)', 'RAG', 'Agentic Workflows', 'MCP'],
+      topics: [
+        'Large language model (LLM) fundamentals: Tokens, context windows, prompt design, and structured JSON outputs',
+        'Model API integration, embeddings generation, and vector databases (FAISS, ChromaDB)',
+        'Retrieval-Augmented Generation (RAG): Document parsing, semantic chunking, and contextual question answering',
+        'Tool calling & workflow orchestration: Connecting LLMs to external APIs, databases, and calculators',
+        'Agentic AI workflows: Multi-agent coordination, iterative planning, and human-in-the-loop review steps',
+        'Introduction to Model Context Protocol (MCP): Open standards for AI assistants connecting to enterprise tools',
+        'Quality evaluation, hallucination detection, data privacy, and inference cost governance',
+        'Practical Deliverable: Build an AI assistant with defined evaluation criteria, safety guardrails, and controlled tool access',
+      ],
+      icon: (
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
+        </svg>
+      ),
+    },
+    {
+      id: 7,
+      title: 'Data Engineering',
+      summary: 'Engineer automated, scalable ETL/ELT pipelines and distributed data processing systems using PySpark and Databricks.',
+      techChips: ['PySpark', 'Databricks', 'ETL / ELT', 'Delta Lake', 'Apache Airflow'],
+      topics: [
+        'Data pipeline architecture, ETL vs ELT concepts, and lakehouse storage principles',
+        'Batch and streaming data fundamentals; data storage file formats (Parquet, Delta Lake)',
+        'Distributed processing concepts with PySpark: DataFrames, transformations, actions, and cluster compute',
+        'Databricks platform fundamentals: Managed compute clusters, collaborative notebooks, and optimization',
+        'Pipeline scheduling and orchestration with Apache Airflow: DAG authoring, task dependencies, and alerting',
+        'Data-quality checks, schema drift handling, processing optimisation, and automated failure recovery',
+        'Practical Deliverable: Build an automated, repeatable data pipeline for preparing AI training and production data',
+      ],
+      icon: (
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <ellipse cx="12" cy="5" rx="9" ry="3" />
+          <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3" />
+          <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5" />
+        </svg>
+      ),
+    },
+    {
+      id: 8,
+      title: 'Deployment Engineering',
+      summary: 'Bridge the gap from code to live production using Git, FastAPI, Docker containerization, cloud deployment, and MLOps/LLMOps monitoring.',
+      techChips: ['FastAPI', 'Docker', 'AWS Cloud', 'GitHub Actions CI/CD', 'MLOps & MLflow'],
+      topics: [
+        'Git & version control hygiene: Branching models, pull requests, and reproducible project repositories',
+        'Production API development: High-throughput async REST endpoints with FastAPI, Pydantic validation, and auth',
+        'Docker & container fundamentals: Multi-stage Dockerfiles, image optimization, and microservice packaging',
+        'Cloud deployment using a selected cloud platform (AWS/Azure/GCP): Virtual instances, container services, and networking',
+        'CI/CD fundamentals with GitHub Actions: Automated testing, image building, and continuous release pipelines',
+        'Kubernetes container orchestration fundamentals, logging, configuration, and secrets management',
+        'MLOps & LLMOps: Experiment tracking with MLflow, model versioning, latency monitoring, and model drift retraining',
+        'Practical Deliverable: Deploy a selected project live to the cloud and demonstrate how it is tested and monitored',
       ],
       icon: (
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -260,17 +584,18 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
       ),
     },
     {
-      id: 5,
-      title: 'Client Delivery and Business Consulting',
-      summary: 'Understand people, business objectives, and organizational workflows. This critical bridge is what separates an elite AI Deployment Engineer from a developer.',
-      techChips: ['Client Discovery', 'Problem Framing', 'Executive Demos', 'Operational Runbooks', 'ROI Analysis'],
+      id: 9,
+      title: 'Consulting & Business Communication',
+      summary: 'Master stakeholder requirement gathering, analytical problem framing, feasibility analysis, executive presentations, and project handover.',
+      techChips: ['Business Requirements', 'Problem Framing', 'Success Metrics', 'Executive Decks', 'Project Handover'],
       topics: [
-        'Client discovery: Asking the right questions to uncover true operational bottlenecks',
-        'Problem framing: Translating vague business problems into measurable, high-ROI metrics',
-        'Explaining complex AI simply to non-technical executive leaders and department heads',
-        'Live client demonstrations: Presenting working prototypes and defending design trade-offs',
-        'Creating comprehensive operational runbooks, user handover documentation, and team training',
-        'Portfolio auditing and 1-on-1 interview preparation with industry leaders',
+        'Business requirement gathering: Discovering the real operational bottleneck through stakeholder interviews',
+        'Converting vague business problems into measurable analytical tasks and baseline performance KPIs',
+        'Assessing feasibility, technical assumptions, risk trade-offs, and calculating ROI projections',
+        'Solution documentation: Architecture blueprints, data dictionaries, and implementation runbooks',
+        'Stakeholder presentations: Explaining recommendations, technical trade-offs, and limitations in plain business language',
+        'Project handover: Writing operational runbooks, user handover documentation, and team training',
+        'Practical Deliverable: Present a complete solution with its business purpose, technical approach, and operating considerations',
       ],
       icon: (
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -345,74 +670,126 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
           ------------------------------------------------------------------------- */}
       <section className="hero" id="hero-section">
         <div className="wrap">
-          <span className="eyebrow">Data Science &amp; AI Deployment Engineering · APIDS</span>
-          <h1>
-            What is a Data Science &amp; AI Deployment Engineer? The tech career <em>AI cannot replace.</em>
-          </h1>
-          <p className="lead">
-            An Applied Data Scientist &amp; AI Deployment Engineer (APIDS) works side by side with a company, understands its real problem, then builds the models, connects the APIs, and puts it live. AI can write code, but it cannot sit with a client, check its own work, or take responsibility for the result. That is why this career is in peak demand.
-          </p>
+          <div className="hero-content-grid">
+            <div className="hero-left-content">
+              <span className="eyebrow">Data Science with AI Deployment Engineering · APIDS</span>
+              <div style={{ font: '700 0.85rem/1 var(--mono)', color: 'var(--navy)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '8px' }}>
+                DV Analytics | Transforming You
+              </div>
+              <h1>
+                Data Science with AI Deployment Engineering
+                <span style={{ display: 'block', fontSize: '1.25rem', fontWeight: 600, color: 'var(--accent)', marginTop: '8px' }}>
+                  (ANY GRADUATE CAN BE A DATA SCIENTIST)
+                </span>
+              </h1>
+              <p className="lead">
+                Build the skills to manage data, discover insights, develop intelligent models and deploy AI solutions that solve business problems. Move from theoretical notebook code to high-impact production engineering.
+              </p>
 
-          <div className="cta">
-            <button type="button" onClick={scrollToForm} className="btn">
-              Join DV Analytics to Learn APIDS
-            </button>
-            <a className="btn ghost" href="#skills">
-              See the 5 Skills
-            </a>
-          </div>
+              {/* 6 Clean Inline Program Badges */}
+              <div className="hero-stats-row">
+                <div className="hero-stat-pill">
+                  <span className="h-stat-dot"></span>
+                  <span><b>Duration:</b> 6-9 Months</span>
+                </div>
+                <div className="hero-stat-pill">
+                  <span className="h-stat-dot"></span>
+                  <span><b>Platform:</b> Online/Offline</span>
+                </div>
+                <div className="hero-stat-pill">
+                  <span className="h-stat-dot"></span>
+                  <span><b>Projects:</b> Industry Real Time</span>
+                </div>
+                <div className="hero-stat-pill">
+                  <span className="h-stat-dot"></span>
+                  <span><b>Profile:</b> Resume &amp; Profile Building</span>
+                </div>
+                <div className="hero-stat-pill">
+                  <span className="h-stat-dot"></span>
+                  <span><b>Placement:</b> 100% Placement Support</span>
+                </div>
+                <div className="hero-stat-pill">
+                  <span className="h-stat-dot"></span>
+                  <span><b>Average Salary:</b> 40+ LPA</span>
+                </div>
+              </div>
+            </div>
 
-          {/* 4 Clean Inline Program Badges */}
-          <div className="hero-stats-row">
-            <div className="hero-stat-pill">
-              <span className="h-stat-dot"></span>
-              <span><b>6–8 Months</b> (Weekday / Weekend)</span>
-            </div>
-            <div className="hero-stat-pill">
-              <span className="h-stat-dot"></span>
-              <span><b>100% Live</b> Interactive Mentor-Led Training</span>
-            </div>
-            <div className="hero-stat-pill">
-              <span className="h-stat-dot"></span>
-              <span><b>₹8.5 LPA</b> Average Salary Package</span>
-            </div>
-            <div className="hero-stat-pill">
-              <span className="h-stat-dot"></span>
-              <span><b>LMS Access</b> 24/7 Recordings &amp; Resources</span>
+            {/* Registration Box on Right Side of Hero */}
+            <div className="hero-right-form" id="apids-hero-lead-form">
+              {renderLeadForm('Register for APIDS', 'Reserve your seat for the Data Science & AI Deployment batch.')}
             </div>
           </div>
 
           {/* Full-Width 5-Step Path Card */}
-          <div className="path-card" aria-label="One AI Deployment Engineer owns the whole path">
+          <div className="path-card" aria-label="End-to-End Solution Lifecycle">
             <div className="path-top">
-              <span>One project, start to finish</span>
-              <span>Business Request → Live Deployed AI</span>
+              <span>APIDS: End-to-End Project Lifecycle</span>
+              <span>Business Problem → Deployed &amp; Monitored AI Solution</span>
             </div>
             <ol className="path">
               <li>
-                <b>1. Scope</b>
-                <span>Find the real problem. Agree what "done" means.</span>
+                <b>1. Data Management</b>
+                <span>SQL, Python &amp; SAS Base and Advance Programming.</span>
               </li>
               <li>
-                <b>2. Data</b>
-                <span>Collect, clean and shape the messy client data.</span>
+                <b>2. Analysis &amp; Viz</b>
+                <span>Excel AI, Power BI &amp; Tableau.</span>
               </li>
               <li>
-                <b>3. AI &amp; ML</b>
-                <span>Train predictive algorithms, GenAI &amp; RAG.</span>
+                <b>3. Data Mining &amp; AI</b>
+                <span>Machine Learning, Deep Learning, Gen AI &amp; Agentic AI.</span>
               </li>
               <li>
-                <b>4. API &amp; App</b>
-                <span>Build FastAPI microservices &amp; dashboards.</span>
+                <b>4. Data Engineering</b>
+                <span>ETL pipelines, PySpark &amp; Databricks.</span>
               </li>
               <li>
-                <b>5. Cloud Live</b>
-                <span>Containerize with Docker, deploy &amp; monitor.</span>
+                <b>5. Cloud Deployment</b>
+                <span>FastAPI, Docker, MLOps, LLMOps and Monitoring.</span>
               </li>
             </ol>
             <div className="path-bracket">
-              <strong>The AI Deployment Engineer owns every stage.</strong>
-              <span>Earlier this took five separate specialists and many handoffs.</span>
+              <strong>The Data Scientist with AI Deployment Engineering covers the complete lifecycle.</strong>
+              <span>From raw business data to verified model to deployed operational service.</span>
+            </div>
+          </div>
+
+          {/* Program Details Component Grid (From Document) */}
+          <div style={{ marginTop: '36px' }}>
+            <span className="eyebrow">Program Architecture</span>
+            <h2 style={{ fontSize: '1.45rem', marginTop: '6px' }}>Program Details &amp; Learning Specifications</h2>
+            <div className="pdetails-grid">
+              <div className="pdetail-card">
+                <span className="pdetail-label">Duration</span>
+                <span className="pdetail-val">6-9 Months</span>
+                <p className="pdetail-desc">Structured learning, supported by regular assignments and project practice.</p>
+              </div>
+              <div className="pdetail-card">
+                <span className="pdetail-label">Platform</span>
+                <span className="pdetail-val">Online / Offline</span>
+                <p className="pdetail-desc">Live interactive online batches &amp; classroom centers at Bangalore and Bhubaneswar.</p>
+              </div>
+              <div className="pdetail-card">
+                <span className="pdetail-label">Projects</span>
+                <span className="pdetail-val">Industry Real Time</span>
+                <p className="pdetail-desc">Industry-focused capstones covering data preparation, modelling, deployment and monitoring.</p>
+              </div>
+              <div className="pdetail-card">
+                <span className="pdetail-label">Profile</span>
+                <span className="pdetail-val">Resume &amp; Profile Building</span>
+                <p className="pdetail-desc">Resume preparation, LinkedIn optimisation, GitHub portfolio, and project presentations.</p>
+              </div>
+              <div className="pdetail-card">
+                <span className="pdetail-label">Placement</span>
+                <span className="pdetail-val">100% Placement Support</span>
+                <p className="pdetail-desc">Delivered under the programme’s stated eligibility and written support terms.</p>
+              </div>
+              <div className="pdetail-card" style={{ gridColumn: 'span 2' }}>
+                <span className="pdetail-label">Average Salary</span>
+                <span className="pdetail-val">40+ LPA</span>
+                <p className="pdetail-desc">Individual offers vary based on individual competence, technical mastery, and employer evaluation criteria.</p>
+              </div>
             </div>
           </div>
         </div>
@@ -428,21 +805,21 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
               <span className="eyebrow">In one minute</span>
               <h3>What is it?</h3>
               <p>
-                A high-impact technical career combining data analysis, machine learning algorithms, modern GenAI agents, and production cloud deployment to solve real business bottlenecks.
+                Data Science with AI Deployment Engineering combines data understanding with deployment engineering to make AI solutions usable in daily business operations.
               </p>
             </article>
             <article>
-              <span className="eyebrow">&nbsp;</span>
+              <span className="eyebrow">Peak Industry Demand</span>
               <h3>Why is it in demand?</h3>
               <p>
-                AI products and models rarely work the day a company buys them. The customer&#39;s data is messy, incomplete, and isolated. Deployment engineers make them actually work in production.
+                Organisations need professionals who connect data and AI capabilities with practical business outcomes across banking, retail, healthcare, telecom, and e-commerce.
               </p>
             </article>
             <article>
-              <span className="eyebrow">&nbsp;</span>
+              <span className="eyebrow">Getting Started</span>
               <h3>How do I start?</h3>
               <p>
-                Learn the 6 core full-stack skills, build end-to-end industry projects from raw data to a live AWS container, and learn with mentor review.{' '}
+                Build foundational skills step-by-step from Python and SQL to machine learning, APIs, and cloud deployment with mentor review.{' '}
                 <a href="#apids-lead-form" onClick={(e) => { e.preventDefault(); scrollToForm(); }}>
                   Join DV Analytics
                 </a>.
@@ -453,37 +830,127 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
       </section>
 
       {/* -------------------------------------------------------------------------
-          SECTION 3: WHAT IS AN APIDS / AI DEPLOYMENT ENGINEER
+          SECTION 3: WHAT IS DATA SCIENCE WITH AI DEPLOYMENT ENGINEERING
           ------------------------------------------------------------------------- */}
       <section className="what" id="what-is-apids">
         <div className="wrap">
           <div className="sec-head">
-            <span className="eyebrow">What is an AI Deployment Engineer</span>
-            <h2>A Data Science &amp; AI Deployment Engineer goes to the problem, then ships the fix</h2>
+            <span className="eyebrow">Program Definition</span>
+            <h2>What is Data Science with AI Deployment Engineering?</h2>
           </div>
           <div className="what-text">
             <p className="def">
-              A Data Science &amp; AI Deployment Engineer works directly with business stakeholders. They identify what the company really needs, develop working machine learning and generative models on the company&#39;s own data, and deploy the solution live.
+              Data Science with AI Deployment Engineering combines the ability to understand data with the engineering skills needed to make AI solutions usable.
             </p>
             <p>
-              &quot;Forward deployed&quot; means sitting close to the problem—in meetings, on calls, and inside live operational workflows—rather than being stuck far away writing theoretical notebook code that never reaches production.
+              A Data Scientist investigates business problems, prepares data, identifies patterns and builds models. AI Deployment Engineering extends this work by integrating models into applications, making predictions available through APIs and monitoring the solution after deployment.
             </p>
             <p>
-              Think of a ready-made shirt and a bespoke tailor. A generic AI tool is the shirt: made once, for everyone. The Data Science &amp; AI Deployment Engineer is the tailor who measures the client&#39;s exact data, fits the models, connects the APIs, and makes it work reliably in daily operations.
+              The learning objective is to move from analysing a dataset to building a working, reliable business solution that operational teams can use every day.
             </p>
           </div>
 
+          {/* Highlighted Spotlight Example from Document */}
           <div className="example">
-            <span className="eyebrow">An illustrative example, step by step</span>
-            <h3>A food delivery app where evening orders keep arriving late</h3>
+            <div className="example-badge-row">
+              <span className="example-badge">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                </svg>
+                Real-World Project Scenario
+              </span>
+              <span className="example-tag">Example: Banking Loan Assessment</span>
+            </div>
+            <h3>End-to-End Default Risk Evaluation &amp; Operational AI Assistant</h3>
             <p>
-              The client thinks they need &quot;more AI&quot;. The Deployment Engineer sits with the dispatch team, looks at real logs, and discovers the issue isn&#39;t route planning—it is kitchen prep delays during peak dinner hours that throw off the entire delivery fleet.
+              A complete Data Science &amp; AI Deployment solution connects every phase into a live business workflow:
+            </p>
+            <ol style={{ margin: '14px 0 0 20px', padding: 0, color: '#334155', lineHeight: 1.6, fontSize: '0.98rem' }}>
+              <li><strong>Collecting</strong> customer, loan and credit-history data.</li>
+              <li><strong>Cleaning and transforming</strong> the incoming messy data.</li>
+              <li><strong>Analysing</strong> repayment patterns and financial risk factors.</li>
+              <li><strong>Building a model</strong> to estimate loan default risk.</li>
+              <li><strong>Deploying the model</strong> through an asynchronous REST API.</li>
+              <li><strong>Creating an AI assistant</strong> to explain credit decisions and risk factors.</li>
+              <li><strong>Monitoring</strong> live predictions, application errors, and model drift over time.</li>
+            </ol>
+            <div className="example-footer">
+              <span className="example-footer-lead">The learning objective: Move from analysing a dataset to building a working business solution.</span>
+              <span className="example-footer-arrow">↓</span>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      {/* -------------------------------------------------------------------------
+          SECTION 4: WHY IS IT IN DEMAND? (INDUSTRY DOMAINS)
+          ------------------------------------------------------------------------- */}
+      <section className="why-demand" style={{ padding: '60px 0', borderBottom: '1px solid var(--line)' }}>
+        <div className="wrap">
+          <div className="sec-head">
+            <span className="eyebrow">Industry Relevance</span>
+            <h2>Why is it in Demand?</h2>
+            <p className="lead">
+              Organisations need professionals who can connect data and AI capabilities with practical business outcomes. Building an isolated model is only one part of the solution.
+            </p>
+          </div>
+
+          <div className="why-grid" style={{ marginTop: '28px' }}>
+            <article className="why-card">
+              <span className="who-badge">Banking</span>
+              <h3>Credit-Risk &amp; Collections</h3>
+              <p>Credit-risk assessment, real-time default risk scoring, and intelligent collections prioritisation.</p>
+            </article>
+            <article className="why-card">
+              <span className="who-badge">Insurance</span>
+              <h3>Claims &amp; Fraud Risk</h3>
+              <p>Automated claims triage, payout estimation, and fraud-risk pattern identification.</p>
+            </article>
+            <article className="why-card">
+              <span className="who-badge">Retail</span>
+              <h3>Demand &amp; Inventory</h3>
+              <p>Store-level demand forecasting, dynamic replenishment, and supply chain inventory planning.</p>
+            </article>
+            <article className="why-card">
+              <span className="who-badge">E-Commerce</span>
+              <h3>Retention &amp; Recommendations</h3>
+              <p>Personalized product recommendation engines, search intelligence, and churn intervention.</p>
+            </article>
+            <article className="why-card">
+              <span className="who-badge">Telecom</span>
+              <h3>Churn &amp; Service Quality</h3>
+              <p>Subscriber churn prediction, network fault detection, and service-quality diagnostic analysis.</p>
+            </article>
+            <article className="why-card">
+              <span className="who-badge">Healthcare</span>
+              <h3>Operations &amp; Resources</h3>
+              <p>Hospital patient admission forecasting, resource utilisation, and clinical workflow optimisation.</p>
+            </article>
+          </div>
+
+          <div className="who-note-box" style={{ marginTop: '28px' }}>
+            <strong>The Complete Lifecycle:</strong> Building a model is one part of the work. Organisations also need robust data pipelines, application integration, rigorous evaluation, production deployment and ongoing monitoring. Learning across these areas prepares you to contribute across the entire solution lifecycle.
+          </div>
+        </div>
+      </section>
+
+      {/* -------------------------------------------------------------------------
+          SECTION 5: HOW TO BECOME A DATA SCIENTIST (7-STAGE JOURNEY)
+          ------------------------------------------------------------------------- */}
+      <section className="learning-journey-stages" style={{ padding: '60px 0', borderBottom: '1px solid var(--line)' }}>
+        <div className="wrap">
+          <div className="sec-head">
+            <span className="eyebrow">The 7-Step Roadmap</span>
+            <h2>How to Become a Data Scientist with AI Deployment Engineering</h2>
+            <p className="lead">
+              Progress depends on consistent practice. Attending classes should be followed by independent coding, assignments and practical project work.
             </p>
           </div>
 
           <div className="stages">
             <div className="stages-head">
-              <span className="steps-title">The 7 stages of an AI deployment project</span>
+              <span className="steps-title">The 7 stages of your learning journey</span>
               <span className="hint">Tap a stage to open details</span>
             </div>
 
@@ -491,28 +958,30 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
               <summary>
                 <span className="sn">1</span>
                 <span className="st">
-                  <b>Discover &amp; Scope</b>
-                  <small>Sit with the client and find the real bottleneck.</small>
+                  <b>Step 1 · Build Programming &amp; Data Foundations</b>
+                  <small>Learn SQL and Python. Practise extracting, cleaning, joining and transforming data.</small>
                 </span>
                 <span className="sx" aria-hidden="true" />
               </summary>
               <div className="sb">
                 <div>
-                  <h4>What the Engineer does</h4>
+                  <h4>What the learner does</h4>
                   <ul className="do">
-                    <li>Meets the dispatch manager, rides along with delivery couriers, and reads customer complaints.</li>
-                    <li>Discovers the real problem: late food is caused by 40 slow restaurants, not courier navigation.</li>
-                    <li>Agrees on one clear metric: cut the number of orders late by more than 15 minutes by half.</li>
-                    <li>Writes a one-page project scope document in plain business language that everyone signs.</li>
+                    <li>Masters database querying: schema design, constraints, filtering, joins, subqueries, and window functions.</li>
+                    <li>Writes clean Python code: loops, functions, data structures, and file handling for automated data tasks.</li>
+                    <li>Resolves dirty data extracts: handles missing values, duplicates, type mismatches, and automated transformations.</li>
+                    <li>Establishes version control hygiene with Git branching and reproducible GitHub repositories.</li>
                   </ul>
                 </div>
                 <div>
-                  <h4>What the client gets</h4>
-                  <p>A clear definition of the problem and an agreed success metric.</p>
+                  <h4>What you achieve</h4>
+                  <p>Ability to extract, clean, and deliver an analysis-ready dataset from complex raw sources.</p>
                   <h4 className="h2b">Skills used</h4>
                   <div className="tags">
-                    <span>Business Consulting</span>
-                    <span>Problem Framing</span>
+                    <span>SQL Programming</span>
+                    <span>Python 3.12</span>
+                    <span>PostgreSQL</span>
+                    <span>Git</span>
                   </div>
                 </div>
               </div>
@@ -522,28 +991,30 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
               <summary>
                 <span className="sn">2</span>
                 <span className="st">
-                  <b>Data Audit</b>
-                  <small>Inspect the customer&#39;s real, messy data.</small>
+                  <b>Step 2 · Learn Analysis &amp; Business Interpretation</b>
+                  <small>Explore datasets, calculate KPIs and build dashboards. Explain what results mean for business decisions.</small>
                 </span>
                 <span className="sx" aria-hidden="true" />
               </summary>
               <div className="sb">
                 <div>
-                  <h4>What the Engineer does</h4>
+                  <h4>What the learner does</h4>
                   <ul className="do">
-                    <li>Connects to the client&#39;s order database, GPS feeds, and restaurant tablets.</li>
-                    <li>Finds timestamps are missing on 12% of orders and kitchen prep logs are entered after delivery.</li>
-                    <li>Builds data validation rules to flag corrupted records automatically.</li>
-                    <li>Confirms the historical dataset contains enough clean records to train accurate models.</li>
+                    <li>Explores business datasets to identify operational anomalies, revenue leaks, and seasonal trends.</li>
+                    <li>Builds interactive executive reports in Power BI &amp; Tableau with DAX measures and drilldown filters.</li>
+                    <li>Leverages Excel with AI-assisted workflows for rapid business calculations and pivot modeling.</li>
+                    <li>Translates complex statistical outputs into plain business terms and actionable recommendations.</li>
                   </ul>
                 </div>
                 <div>
-                  <h4>What the client gets</h4>
-                  <p>A reliable inventory of their data quality and a cleaned dataset.</p>
+                  <h4>What you achieve</h4>
+                  <p>Interactive executive dashboards answering core business performance questions.</p>
                   <h4 className="h2b">Skills used</h4>
                   <div className="tags">
-                    <span>SQL &amp; Data Warehousing</span>
-                    <span>Python &amp; Polars</span>
+                    <span>Power BI</span>
+                    <span>Tableau</span>
+                    <span>Excel AI</span>
+                    <span>Business KPIs</span>
                   </div>
                 </div>
               </div>
@@ -553,28 +1024,30 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
               <summary>
                 <span className="sn">3</span>
                 <span className="st">
-                  <b>Design Architecture</b>
-                  <small>Plan the simplest system that will actually work.</small>
+                  <b>Step 3 · Develop Statistical Understanding</b>
+                  <small>Learn probability, sampling, hypothesis testing, relationships between variables and uncertainty.</small>
                 </span>
                 <span className="sx" aria-hidden="true" />
               </summary>
               <div className="sb">
                 <div>
-                  <h4>What the Engineer does</h4>
+                  <h4>What the learner does</h4>
                   <ul className="do">
-                    <li>Lists required data: live order details, historical restaurant prep times, courier locations, and weather.</li>
-                    <li>Plans the path: live stream comes in, gets cleaned, feeds a predictive model, and sends alerts to dispatch.</li>
-                    <li>Chooses the simplest method that works: gradient boosting first, neural models only if clearly better.</li>
-                    <li>Checks security &amp; privacy: courier GPS coords are masked so only authorized dispatch staff see them.</li>
+                    <li>Understands empirical distributions, variance, standard errors, and confidence intervals.</li>
+                    <li>Formulates and tests business hypotheses using parametric and non-parametric tests (t-tests, ANOVA, Chi-Square).</li>
+                    <li>Interprets correlation vs causation and diagnoses regression multicollinearity.</li>
+                    <li>Designs controlled A/B testing protocols, statistical significance, and guardrail metrics.</li>
                   </ul>
                 </div>
                 <div>
-                  <h4>What the client gets</h4>
-                  <p>A clean architecture blueprint showing how data flows into real-time decisions.</p>
+                  <h4>What you achieve</h4>
+                  <p>Rigorous, evidence-backed decision frameworks that quantify risk and uncertainty.</p>
                   <h4 className="h2b">Skills used</h4>
                   <div className="tags">
-                    <span>System Architecture</span>
-                    <span>Data Engineering</span>
+                    <span>Hypothesis Testing</span>
+                    <span>Probability</span>
+                    <span>A/B Testing</span>
+                    <span>Regression Stats</span>
                   </div>
                 </div>
               </div>
@@ -584,29 +1057,30 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
               <summary>
                 <span className="sn">4</span>
                 <span className="st">
-                  <b>Build &amp; Prototype</b>
-                  <small>Build a quick working version and test with users.</small>
+                  <b>Step 4 · Build &amp; Evaluate Machine Learning Models</b>
+                  <small>Work on prediction, classification, clustering and recommendation problems. Understand performance and failure points.</small>
                 </span>
                 <span className="sx" aria-hidden="true" />
               </summary>
               <div className="sb">
                 <div>
-                  <h4>What the Engineer does</h4>
+                  <h4>What the learner does</h4>
                   <ul className="do">
-                    <li>Trains a delay prediction model on historical orders and evaluates accuracy against holdout data.</li>
-                    <li>Builds an interactive dispatch screen: &quot;Order 4821 may be 14 min late; restaurant kitchen is backed up.&quot;</li>
-                    <li>Shows it to dispatchers. They ask for an alert explaining the reason and a button to reassign couriers.</li>
-                    <li>Refines the model and dashboard based on real dispatcher feedback.</li>
+                    <li>Frames operational challenges into target variables: regression, classification, clustering, or forecasting.</li>
+                    <li>Engineers domain features, prevents target leakage, and balances skewed classes with SMOTE.</li>
+                    <li>Trains and benchmarks ensemble models including Random Forests, XGBoost, and LightGBM.</li>
+                    <li>Evaluates models on holdout test data and explains individual predictions using SHAP values.</li>
                   </ul>
                 </div>
                 <div>
-                  <h4>What the client gets</h4>
-                  <p>A working prototype tested with the operations team and incorporating their honest feedback.</p>
+                  <h4>What you achieve</h4>
+                  <p>High-accuracy predictive models evaluated and proven against meaningful business baselines.</p>
                   <h4 className="h2b">Skills used</h4>
                   <div className="tags">
-                    <span>Machine Learning</span>
-                    <span>Streamlit UI</span>
-                    <span>FastAPI</span>
+                    <span>scikit-learn</span>
+                    <span>XGBoost</span>
+                    <span>Feature Engineering</span>
+                    <span>Explainable AI</span>
                   </div>
                 </div>
               </div>
@@ -616,29 +1090,31 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
               <summary>
                 <span className="sn">5</span>
                 <span className="st">
-                  <b>Deploy to Production</b>
-                  <small>Containerize and release live on cloud infrastructure.</small>
+                  <b>Step 5 · Develop AI Applications</b>
+                  <small>Learn deep learning, NLP, Generative AI, retrieval-augmented generation and agentic workflows.</small>
                 </span>
                 <span className="sx" aria-hidden="true" />
               </summary>
               <div className="sb">
                 <div>
-                  <h4>What the Engineer does</h4>
+                  <h4>What the learner does</h4>
                   <ul className="do">
-                    <li>Packages the application and model inference into multi-stage Docker containers.</li>
-                    <li>Connects to live transactional order streams with automated auth and SSL encryption.</li>
-                    <li>Sets up automated unit and integration tests via GitHub Actions CI/CD.</li>
-                    <li>Releases in one pilot city first with instant rollback capabilities if issues arise.</li>
+                    <li>Trains deep neural networks with PyTorch for complex pattern recognition.</li>
+                    <li>Applies NLP text tokenization, embeddings, and pretrained transformers for sentiment analysis.</li>
+                    <li>Builds Retrieval-Augmented Generation (RAG) applications over enterprise documents using vector databases.</li>
+                    <li>Implements autonomous agentic workflows with LangChain, LangGraph, tool calling, and MCP concepts.</li>
                   </ul>
                 </div>
                 <div>
-                  <h4>What the client gets</h4>
-                  <p>A live, containerized production service running stably in their cloud environment.</p>
+                  <h4>What you achieve</h4>
+                  <p>A production-ready AI assistant with document RAG, custom tool access, and safety guardrails.</p>
                   <h4 className="h2b">Skills used</h4>
                   <div className="tags">
-                    <span>Docker</span>
-                    <span>CI/CD</span>
-                    <span>AWS Cloud</span>
+                    <span>PyTorch</span>
+                    <span>GenAI &amp; LLMs</span>
+                    <span>RAG (FAISS)</span>
+                    <span>LangChain</span>
+                    <span>MCP</span>
                   </div>
                 </div>
               </div>
@@ -648,29 +1124,31 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
               <summary>
                 <span className="sn">6</span>
                 <span className="st">
-                  <b>Monitor &amp; Operate</b>
-                  <small>Track performance, data drift, and uptime.</small>
+                  <b>Step 6 · Learn Data &amp; Deployment Engineering</b>
+                  <small>Build pipelines, create APIs, package applications and deploy selected solutions to cloud environments.</small>
                 </span>
                 <span className="sx" aria-hidden="true" />
               </summary>
               <div className="sb">
                 <div>
-                  <h4>What the Engineer does</h4>
+                  <h4>What the learner does</h4>
                   <ul className="do">
-                    <li>Sets up Prometheus &amp; Grafana dashboards to monitor latency, memory, and model prediction drift.</li>
-                    <li>Receives automatic Slack/Pager alerts if restaurant data feeds drop or error rates spike.</li>
-                    <li>Retrains and updates model weights when external conditions change (monsoon rain, festival spikes).</li>
-                    <li>Tracks the core business KPIs: late orders, driver wait times, and customer satisfaction ratings.</li>
+                    <li>Engineers scalable data pipelines using PySpark and Databricks clusters.</li>
+                    <li>Builds high-throughput, asynchronous REST APIs with FastAPI, Pydantic validation, and JWT security.</li>
+                    <li>Packages applications into portable, multi-stage Docker containers.</li>
+                    <li>Deploys to AWS Cloud, sets up CI/CD with GitHub Actions, and monitors experiment drift with MLflow.</li>
                   </ul>
                 </div>
                 <div>
-                  <h4>What the client gets</h4>
-                  <p>High reliability, zero surprise downtime, and transparent observability into business impact.</p>
+                  <h4>What you achieve</h4>
+                  <p>A live, containerized, cloud-hosted microservice with automated testing and continuous monitoring.</p>
                   <h4 className="h2b">Skills used</h4>
                   <div className="tags">
+                    <span>FastAPI</span>
+                    <span>Docker</span>
+                    <span>AWS Cloud</span>
+                    <span>PySpark</span>
                     <span>MLOps</span>
-                    <span>Observability</span>
-                    <span>Grafana</span>
                   </div>
                 </div>
               </div>
@@ -680,28 +1158,30 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
               <summary>
                 <span className="sn">7</span>
                 <span className="st">
-                  <b>Handover &amp; Deliver</b>
-                  <small>Train the team and report business ROI to leadership.</small>
+                  <b>Step 7 · Complete Projects &amp; Build Your Profile</b>
+                  <small>Document your work, explain your contribution and prepare for practical assessments and interviews.</small>
                 </span>
                 <span className="sx" aria-hidden="true" />
               </summary>
               <div className="sb">
                 <div>
-                  <h4>What the Engineer does</h4>
+                  <h4>What the learner does</h4>
                   <ul className="do">
-                    <li>Conducts hands-on training sessions with the client&#39;s dispatchers and internal engineers.</li>
-                    <li>Writes an operational runbook: troubleshooting guide, rollback steps, and support contacts.</li>
-                    <li>Prepares an executive dashboard showing late orders dropped by 48% across the pilot city.</li>
-                    <li>Helps the client&#39;s engineering team roll out the solution to the remaining 14 metropolitan cities.</li>
+                    <li>Documents 7 end-to-end industry capstones with clean code, READMEs, and live interactive demos.</li>
+                    <li>Builds an optimized technical resume, enhanced LinkedIn profile, and public GitHub portfolio.</li>
+                    <li>Undergoes AI-integrated practical tests and technical mock interviews with personalized feedback.</li>
+                    <li>Practices presenting solution ROI, defending technical trade-offs, and explaining failure modes.</li>
                   </ul>
                 </div>
                 <div>
-                  <h4>What the client gets</h4>
-                  <p>A self-sufficient internal team, comprehensive documentation, and proven business ROI.</p>
+                  <h4>What you achieve</h4>
+                  <p>A compelling technical portfolio and interview readiness backed by 100% placement support.</p>
                   <h4 className="h2b">Skills used</h4>
                   <div className="tags">
-                    <span>Executive Presentation</span>
-                    <span>Knowledge Transfer</span>
+                    <span>Profile Building</span>
+                    <span>GitHub Portfolio</span>
+                    <span>Mock Interviews</span>
+                    <span>Placement Support</span>
                   </div>
                 </div>
               </div>
@@ -711,287 +1191,329 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
       </section>
 
       {/* -------------------------------------------------------------------------
-          SECTION 4: WHY COMPANIES ARE HIRING APIDS
+          INTERACTIVE "KNOW MORE" DEEP-DIVE TRIGGER FOR SECTIONS 4 & 5
           ------------------------------------------------------------------------- */}
-      <section id="why-fde">
+      <div className="know-more-section">
+        <div className="wrap">
+          <div className="know-more-bar">
+            <div className="know-more-info">
+              <span className="eyebrow">Industry Market Context</span>
+              <h3>Want to understand why companies hire APIDS &amp; why AI cannot replace it?</h3>
+              <p>Explore our deep-dive analysis on 2026 hiring demand, the 5-specialist breakdown, and the Barbell Theory of tech careers.</p>
+            </div>
+            <button
+              type="button"
+              className={`know-more-toggle-btn ${showDeepDive ? 'open' : ''}`}
+              onClick={() => setShowDeepDive(!showDeepDive)}
+              aria-expanded={showDeepDive}
+            >
+              <span>{showDeepDive ? 'Hide Market Analysis' : 'Know More (Market & AI Analysis)'}</span>
+              <span className="know-more-icon">{showDeepDive ? '↑' : '↓'}</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Collapsible Deep-Dive: Section 4 & Section 5 */}
+      {showDeepDive && (
+        <div className="deep-dive-content-wrapper">
+          {/* -------------------------------------------------------------------------
+              SECTION 4: WHY COMPANIES ARE HIRING APIDS
+              ------------------------------------------------------------------------- */}
+          <section id="why-fde">
+            <div className="wrap">
+              <div className="sec-head">
+                <span className="eyebrow">Why APIDS in 2026</span>
+                <h2>Why companies are hiring Data Science &amp; AI Deployment Engineers</h2>
+                <p className="lead">
+                  AI products rarely work the day a customer buys them. Someone has to make them work in the customer&#39;s real world.
+                </p>
+              </div>
+              <div className="why-grid">
+                <article className="why-card">
+                  <h3>The customer&#39;s data is different</h3>
+                  <p>It is messy, incomplete, and isolated across legacy databases. A generic AI tool cannot use it until an engineer cleans and pipelines it.</p>
+                </article>
+                <article className="why-card">
+                  <h3>Projects stall without a bridge</h3>
+                  <p>If nobody connects the trained model to the business workflow and live APIs, the project dies in a notebook and the company abandons it.</p>
+                </article>
+                <article className="why-card">
+                  <h3>Handoffs lose time and context</h3>
+                  <p>Every time work passes between separate analysts, data engineers, and DevOps specialists, time is lost and requirements get misunderstood.</p>
+                </article>
+              </div>
+
+              <div className="vs">
+                <div className="vs-box then">
+                  <span className="eyebrow">Earlier</span>
+                  <h3>Five specialists for one product</h3>
+                  <ul>
+                    <li>A business analyst to frame the question</li>
+                    <li>A data engineer to extract and organize the data</li>
+                    <li>A data scientist to train the offline model</li>
+                    <li>A backend engineer to wrap it in an API</li>
+                    <li>A DevOps engineer to deploy to the cloud</li>
+                  </ul>
+                </div>
+                <div className="vs-box now">
+                  <span className="eyebrow">Now</span>
+                  <h3>One person who covers the full path</h3>
+                  <ul>
+                    <li>Uses AI copilots as a force multiplier to code faster</li>
+                    <li>Knows data, modeling, APIs, and cloud well enough to guide the pipeline end-to-end</li>
+                    <li>Eliminates organizational handoffs and miscommunications</li>
+                    <li>Owns the business outcome from initial call to live cloud deployment</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* -------------------------------------------------------------------------
+              SECTION 5: WHY AI CANNOT REPLACE (BARBELL THEORY)
+              ------------------------------------------------------------------------- */}
+          <section className="ai" id="ai-cannot-replace">
+            <div className="wrap">
+              <div className="sec-head">
+                <span className="eyebrow">AI and the Deployment Engineer</span>
+                <h2>Why AI cannot replace a Data Science &amp; AI Deployment Engineer</h2>
+                <p className="lead">
+                  AI is exceptional at isolated tasks. A role that is only one task gets automated quickly. The AI Deployment Engineer job is multiple connected disciplines plus the human element: framing real client needs, judging edge cases, and taking responsibility for live production.
+                </p>
+              </div>
+
+              <div className="tbl-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>If your job is only…</th>
+                      <th>What AI can already do</th>
+                      <th>What is still missing</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Writing code from clear specs</td>
+                      <td>Writes working functions and scripts in seconds</td>
+                      <td>Someone must decide what to build and verify it solves the true bottleneck</td>
+                    </tr>
+                    <tr>
+                      <td>Cleaning and filtering data</td>
+                      <td>Generates SQL and Pandas transformations instantly</td>
+                      <td>Someone must know which data is truthful and handle messy real-world anomalies</td>
+                    </tr>
+                    <tr>
+                      <td>Training a standard ML model</td>
+                      <td>Picks algorithms and runs AutoML runs</td>
+                      <td>Someone must align loss functions with business profit and detect data leakage</td>
+                    </tr>
+                    <tr>
+                      <td>Building application interfaces</td>
+                      <td>Generates frontend mockups rapidly</td>
+                      <td>Someone must observe where real operational users get confused or frustrated</td>
+                    </tr>
+                    <tr>
+                      <td>Deploying server containers</td>
+                      <td>Suggests Dockerfiles and Kubernetes manifests</td>
+                      <td>Someone must configure secure VPC networking, IAM permissions, and monitoring</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div className="four">
+                <h3>The Barbell Theory of Tech Careers</h3>
+                <p className="sub">
+                  AI automates the repetitive middle. Career resilience exists at the two outer ends: business context on the left, live deployment ownership on the right.
+                </p>
+                <div className="parts">
+                  <div className="part">
+                    <b>Pure Coder</b>
+                    <span className="d">Writes functions from Jira tickets without seeing the client or infrastructure.</span>
+                    <div className="meter s1">
+                      <i />
+                      <i />
+                      <i />
+                    </div>
+                    <span className="tag w">High Risk</span>
+                  </div>
+
+                  <div className="part">
+                    <b>Academic Analyst</b>
+                    <span className="d">Explores models in isolated notebooks. Solutions rarely reach production.</span>
+                    <div className="meter s2">
+                      <i />
+                      <i />
+                      <i />
+                    </div>
+                    <span className="tag m">Medium Risk</span>
+                  </div>
+
+                  <div className="part">
+                    <b>Specialist Engineer</b>
+                    <span className="d">Deep in one silo, but completely reliant on 4 other handoffs to ship anything.</span>
+                    <div className="meter s2">
+                      <i />
+                      <i />
+                      <i />
+                    </div>
+                    <span className="tag m">Medium Risk</span>
+                  </div>
+
+                  <div className="part">
+                    <b>AI Deployment Engineer</b>
+                    <span className="d">Bridges client pain points to predictive models to live deployed APIs.</span>
+                    <div className="meter s3">
+                      <i />
+                      <i />
+                      <i />
+                    </div>
+                    <span className="tag s">Most Resilient</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="pull">
+                &quot;AI can write the code. It cannot sit with a client, judge its own output, and <span>take responsibility for going live.</span>&quot;
+              </div>
+              <div className="note">
+                The safest career strategy in tech is building a multi-disciplinary mix of skills that is hard to copy. That is exactly what this program teaches.
+              </div>
+            </div>
+          </section>
+
+          <div className="deep-dive-collapse-bottom">
+            <button
+              type="button"
+              className="know-more-toggle-btn secondary"
+              onClick={() => {
+                setShowDeepDive(false);
+                const el = document.getElementById('skills');
+                if (el) el.scrollIntoView({ behavior: 'smooth' });
+              }}
+            >
+              <span>Collapse Analysis &amp; Continue to Skills ↑</span>
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* -------------------------------------------------------------------------
+          SECTION 6: WHO CAN START THIS CAREER? (ANY GRADUATE CAN BE A DATA SCIENTIST)
+          ------------------------------------------------------------------------- */}
+      <section className="who-can" id="who-can-start" style={{ padding: '60px 0', borderBottom: '1px solid var(--line)' }}>
         <div className="wrap">
           <div className="sec-head">
-            <span className="eyebrow">Why APIDS in 2026</span>
-            <h2>Why companies are hiring Data Science &amp; AI Deployment Engineers</h2>
+            <span className="eyebrow">Audience &amp; Eligibility</span>
+            <h2>Who Can Start This Career?</h2>
             <p className="lead">
-              AI products rarely work the day a customer buys them. Someone has to make them work in the customer&#39;s real world.
+              <strong>(ANY GRADUATE CAN BE A DATA SCIENTIST)</strong> · The programme is designed for learners from technical and non-technical backgrounds, fresh graduates, and experienced professionals transitioning into high-impact AI careers.
             </p>
           </div>
-          <div className="why-grid">
-            <article className="why-card">
-              <h3>The customer&#39;s data is different</h3>
-              <p>It is messy, incomplete, and isolated across legacy databases. A generic AI tool cannot use it until an engineer cleans and pipelines it.</p>
-            </article>
-            <article className="why-card">
-              <h3>Projects stall without a bridge</h3>
-              <p>If nobody connects the trained model to the business workflow and live APIs, the project dies in a notebook and the company abandons it.</p>
-            </article>
-            <article className="why-card">
-              <h3>Handoffs lose time and context</h3>
-              <p>Every time work passes between separate analysts, data engineers, and DevOps specialists, time is lost and requirements get misunderstood.</p>
-            </article>
+
+          <div className="who-can-grid">
+            <div className="who-can-card">
+              <span className="who-badge">All Degrees Welcome</span>
+              <h3>Technical &amp; Non-Technical Graduates</h3>
+              <p>Graduates from commerce, management, arts, science, and engineering backgrounds can begin learning these skills from the ground up.</p>
+            </div>
+            <div className="who-can-card">
+              <span className="who-badge">Campus to Career</span>
+              <h3>Final-Year Students</h3>
+              <p>College final-year students preparing for high-paying roles in analytics, data science, machine learning, and AI engineering.</p>
+            </div>
+            <div className="who-can-card">
+              <span className="who-badge">High-Growth Transition</span>
+              <h3>Working Professionals</h3>
+              <p>Experienced professionals from non-tech, operations, or legacy IT sectors seeking a structured, high-ROI career transition.</p>
+            </div>
+            <div className="who-can-card">
+              <span className="who-badge">Next-Gen Upskilling</span>
+              <h3>Data &amp; BI Analysts</h3>
+              <p>Analysts looking to advance beyond static reports into advanced machine learning algorithms, deep learning, GenAI, and cloud deployment.</p>
+            </div>
+            <div className="who-can-card">
+              <span className="who-badge">AI Integration</span>
+              <h3>Software Developers</h3>
+              <p>Backend and frontend engineers moving towards data engineering, AI application development, RAG systems, and MLOps.</p>
+            </div>
+            <div className="who-can-card">
+              <span className="who-badge">Confident Relaunch</span>
+              <h3>Professionals with a Career Gap</h3>
+              <p>Individuals returning to the workforce after a personal or professional break, building demonstrable proof-of-work project portfolios.</p>
+            </div>
           </div>
 
-          <div className="vs">
-            <div className="vs-box then">
-              <span className="eyebrow">Earlier</span>
-              <h3>Five specialists for one product</h3>
-              <ul>
-                <li>A business analyst to frame the question</li>
-                <li>A data engineer to extract and organize the data</li>
-                <li>A data scientist to train the offline model</li>
-                <li>A backend engineer to wrap it in an API</li>
-                <li>A DevOps engineer to deploy to the cloud</li>
-              </ul>
+          <div style={{ marginTop: '24px' }}>
+            <span style={{ font: '700 0.78rem/1 var(--mono)', textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--muted)' }}>
+              Eligible Degree Backgrounds Include:
+            </span>
+            <div className="degree-pills-wrap">
+              <span className="degree-pill">B.Com</span>
+              <span className="degree-pill">BBA</span>
+              <span className="degree-pill">BA</span>
+              <span className="degree-pill">B.Sc (All Streams)</span>
+              <span className="degree-pill">BCA</span>
+              <span className="degree-pill">B.Tech / B.E.</span>
+              <span className="degree-pill">MBA</span>
+              <span className="degree-pill">MCA</span>
+              <span className="degree-pill">M.Tech / M.Sc</span>
             </div>
-            <div className="vs-box now">
-              <span className="eyebrow">Now</span>
-              <h3>One person who covers the full path</h3>
-              <ul>
-                <li>Uses AI copilots as a force multiplier to code faster</li>
-                <li>Knows data, modeling, APIs, and cloud well enough to guide the pipeline end-to-end</li>
-                <li>Eliminates organizational handoffs and miscommunications</li>
-                <li>Owns the business outcome from initial call to live cloud deployment</li>
-              </ul>
-            </div>
+          </div>
+
+          <div className="who-note-box">
+            <strong>Foundation-First Pedagogy:</strong> Previous coding experience is helpful but is not essential for starting from the foundations. Learners must be willing to develop programming, numerical reasoning and problem-solving skills. “Any graduate can be a Data Scientist” expresses an inclusive learning opportunity. Employers may apply their own qualification, experience and assessment requirements.
           </div>
         </div>
       </section>
 
       {/* -------------------------------------------------------------------------
-          SECTION 5: WHY AI CANNOT REPLACE (BARBELL THEORY)
+          SECTION 7: DETAILED CURRICULUM (THE 9 PILLARS)
           ------------------------------------------------------------------------- */}
-      <section className="ai" id="ai-cannot-replace">
+      <section id="skills" style={{ padding: '60px 0', borderBottom: '1px solid var(--line)' }}>
         <div className="wrap">
           <div className="sec-head">
-            <span className="eyebrow">AI and the Deployment Engineer</span>
-            <h2>Why AI cannot replace a Data Science &amp; AI Deployment Engineer</h2>
+            <span className="eyebrow">Comprehensive Syllabus</span>
+            <h2>The 9 Pillars of Data Science with AI Deployment Engineering</h2>
             <p className="lead">
-              AI is exceptional at isolated tasks. A role that is only one task gets automated quickly. The AI Deployment Engineer job is multiple connected disciplines plus the human element: framing real client needs, judging edge cases, and taking responsibility for live production.
-            </p>
-          </div>
-
-          <div className="tbl-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>If your job is only…</th>
-                  <th>What AI can already do</th>
-                  <th>What is still missing</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>Writing code from clear specs</td>
-                  <td>Writes working functions and scripts in seconds</td>
-                  <td>Someone must decide what to build and verify it solves the true bottleneck</td>
-                </tr>
-                <tr>
-                  <td>Cleaning and filtering data</td>
-                  <td>Generates SQL and Pandas transformations instantly</td>
-                  <td>Someone must know which data is truthful and handle messy real-world anomalies</td>
-                </tr>
-                <tr>
-                  <td>Training a standard ML model</td>
-                  <td>Picks algorithms and runs AutoML runs</td>
-                  <td>Someone must align loss functions with business profit and detect data leakage</td>
-                </tr>
-                <tr>
-                  <td>Building application interfaces</td>
-                  <td>Generates frontend mockups rapidly</td>
-                  <td>Someone must observe where real operational users get confused or frustrated</td>
-                </tr>
-                <tr>
-                  <td>Deploying server containers</td>
-                  <td>Suggests Dockerfiles and Kubernetes manifests</td>
-                  <td>Someone must configure secure VPC networking, IAM permissions, and monitoring</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-          <div className="four">
-            <h3>The Barbell Theory of Tech Careers</h3>
-            <p className="sub">
-              AI automates the repetitive middle. Career resilience exists at the two outer ends: business context on the left, live deployment ownership on the right.
-            </p>
-            <div className="parts">
-              <div className="part">
-                <b>Pure Coder</b>
-                <span className="d">Writes functions from Jira tickets without seeing the client or infrastructure.</span>
-                <div className="meter s1">
-                  <i />
-                  <i />
-                  <i />
-                </div>
-                <span className="tag w">High Risk</span>
-              </div>
-
-              <div className="part">
-                <b>Academic Analyst</b>
-                <span className="d">Explores models in isolated notebooks. Solutions rarely reach production.</span>
-                <div className="meter s2">
-                  <i />
-                  <i />
-                  <i />
-                </div>
-                <span className="tag m">Medium Risk</span>
-              </div>
-
-              <div className="part">
-                <b>Specialist Engineer</b>
-                <span className="d">Deep in one silo, but completely reliant on 4 other handoffs to ship anything.</span>
-                <div className="meter s2">
-                  <i />
-                  <i />
-                  <i />
-                </div>
-                <span className="tag m">Medium Risk</span>
-              </div>
-
-              <div className="part">
-                <b>AI Deployment Engineer</b>
-                <span className="d">Bridges client pain points to predictive models to live deployed APIs.</span>
-                <div className="meter s3">
-                  <i />
-                  <i />
-                  <i />
-                </div>
-                <span className="tag s">Most Resilient</span>
-              </div>
-            </div>
-          </div>
-
-          <div className="pull">
-            &quot;AI can write the code. It cannot sit with a client, judge its own output, and <span>take responsibility for going live.</span>&quot;
-          </div>
-          <div className="note">
-            The safest career strategy in tech is building a multi-disciplinary mix of skills that is hard to copy. That is exactly what this program teaches.
-          </div>
-        </div>
-      </section>
-
-      {/* -------------------------------------------------------------------------
-          SECTION 6: THE 5 SKILLS (EXACTLY MATCHING IMAGE 1)
-          ------------------------------------------------------------------------- */}
-      <section id="skills">
-        <div className="wrap">
-          <div className="sec-head">
-            <span className="eyebrow">Skills</span>
-            <h2>The 5 skills that make up a Data Science &amp; AI Deployment Engineer</h2>
-            <p className="lead">
-              You do not need to master everything first. You learn the skills one by one, then use them together on a single project.
+              You do not need to master everything at once. You learn the skills module by module, then deploy them together on real-world projects. <strong>Tap any pillar below to inspect the complete syllabus and practical deliverables.</strong>
             </p>
           </div>
 
           <div className="pillars">
-            <article
-              className="pillar"
-              onClick={() => setSelectedModule(1)}
-              role="button"
-              tabIndex={0}
-              title="Click to view detailed syllabus"
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') setSelectedModule(1);
-              }}
-            >
-              <span className="n">1 · START HERE</span>
-              <h3>Data and Programming</h3>
-              <p>Learn to write code and handle data. Everything else is built on this.</p>
-              <ul className="can">
-                <li>Write simple programs</li>
-                <li>Collect, clean and store data</li>
-                <li>Ask questions of a database</li>
-              </ul>
-            </article>
-
-            <article
-              className="pillar"
-              onClick={() => setSelectedModule(2)}
-              role="button"
-              tabIndex={0}
-              title="Click to view detailed syllabus"
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') setSelectedModule(2);
-              }}
-            >
-              <span className="n">2</span>
-              <h3>Software Engineering</h3>
-              <p>Turn your code into an app that other people can use.</p>
-              <ul className="can">
-                <li>Build the back end</li>
-                <li>Build the screens</li>
-                <li>Test that it works</li>
-              </ul>
-            </article>
-
-            <article
-              className="pillar"
-              onClick={() => setSelectedModule(3)}
-              role="button"
-              tabIndex={0}
-              title="Click to view detailed syllabus"
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') setSelectedModule(3);
-              }}
-            >
-              <span className="n">3</span>
-              <h3>AI and Analytics</h3>
-              <p>Use AI to solve the client&apos;s problem.</p>
-              <ul className="can">
-                <li>Build a chatbot that reads your documents</li>
-                <li>Build AI helpers that use tools</li>
-                <li>Check that the AI is right</li>
-              </ul>
-            </article>
-
-            <article
-              className="pillar"
-              onClick={() => setSelectedModule(4)}
-              role="button"
-              tabIndex={0}
-              title="Click to view detailed syllabus"
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') setSelectedModule(4);
-              }}
-            >
-              <span className="n">4</span>
-              <h3>Deployment Engineering</h3>
-              <p>Put the product live and keep it running.</p>
-              <ul className="can">
-                <li>Package the app to run anywhere</li>
-                <li>Release updates safely</li>
-                <li>Watch it and fix problems</li>
-              </ul>
-            </article>
-
-            <article
-              className="pillar key"
-              onClick={() => setSelectedModule(5)}
-              role="button"
-              tabIndex={0}
-              title="Click to view detailed syllabus"
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') setSelectedModule(5);
-              }}
-            >
-              <span className="n">5 · FROM DAY ONE</span>
-              <h3>Client Delivery and Business Consulting</h3>
-              <p>Understand people and business. This is what separates an FDE from a developer.</p>
-              <ul className="can">
-                <li>Ask the right questions</li>
-                <li>Explain things simply</li>
-                <li>Demo and hand over</li>
-              </ul>
-            </article>
+            {learningPathModules.map((m) => (
+              <article
+                key={m.id}
+                className={`pillar ${m.id === 1 ? 'key' : ''}`}
+                onClick={() => setSelectedModule(m.id)}
+                role="button"
+                tabIndex={0}
+                title="Click to view detailed syllabus"
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') setSelectedModule(m.id);
+                }}
+              >
+                <span className="n">{m.id} · PILLAR {m.id === 1 ? '· START HERE' : ''}</span>
+                <h3>{m.title}</h3>
+                <p>{m.summary}</p>
+                <div style={{ marginTop: 'auto', paddingTop: '12px', display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+                  {m.techChips.slice(0, 3).map((chip, cIdx) => (
+                    <span key={cIdx} style={{ font: '600 0.72rem/1 var(--mono)', background: 'var(--navy-soft)', color: 'var(--navy)', padding: '3px 8px', borderRadius: '4px' }}>
+                      {chip}
+                    </span>
+                  ))}
+                  {m.techChips.length > 3 && (
+                    <span style={{ font: '600 0.72rem/1 var(--mono)', color: 'var(--accent)', padding: '3px 4px' }}>
+                      +{m.techChips.length - 3} more
+                    </span>
+                  )}
+                </div>
+              </article>
+            ))}
           </div>
 
-          <div className="split">
+          <div className="split" style={{ marginTop: '40px' }}>
             <div>
               <span className="eyebrow">Work Breakdown</span>
               <h3>How much of the job is code?</h3>
@@ -1001,30 +1523,42 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
                 <div className="b3">20%<span className="bar-tag"> Client</span></div>
               </div>
               <div className="legend">
-                <div><b>60% Code &amp; Data:</b> Python, SQL, statistical modeling, machine learning algorithms, and GenAI.</div>
-                <div><b>20% Cloud &amp; Systems:</b> Docker containerization, REST APIs, AWS deployment, and CI/CD pipelines.</div>
-                <div><b>20% Client &amp; Strategy:</b> Understanding business pain points, framing KPIs, and executive demos.</div>
+                <div><b>60% Code &amp; Data:</b> Python, SQL, SAS, statistical modelling, machine learning algorithms, deep learning and GenAI.</div>
+                <div><b>20% Cloud &amp; Systems:</b> Docker containerization, REST APIs, cloud deployment, and MLOps/LLMOps pipelines.</div>
+                <div><b>20% Client &amp; Strategy:</b> Understanding business pain points, framing KPIs, executive demos and project handover.</div>
               </div>
             </div>
 
             <div>
               <span className="eyebrow">Learning Sequence</span>
-              <h3>In what order should you learn?</h3>
+              <h3>In what order do you learn?</h3>
               <ol className="order">
                 <li data-n="1">
-                  <div><b>Data and Programming:</b> Master Python, SQL, and data handling. Everything else is built on this.</div>
+                  <div><b>Data Management:</b> Master SQL, Python, and SAS to extract, clean, and validate data.</div>
                 </li>
                 <li data-n="2">
-                  <div><b>Software Engineering:</b> Build the backend APIs and web interfaces that real clients can use.</div>
+                  <div><b>Analysis &amp; Visualisation:</b> Build interactive dashboards and calculate KPIs in Power BI &amp; Tableau.</div>
                 </li>
                 <li data-n="3">
-                  <div><b>AI and Analytics:</b> Train predictive models, GenAI LLMs, and build vector RAG systems.</div>
+                  <div><b>Statistics for Data Science:</b> Learn probability distributions, hypothesis testing, and A/B experiments.</div>
                 </li>
                 <li data-n="4">
-                  <div><b>Deployment Engineering:</b> Package with Docker, automate CI/CD, and deploy to live cloud.</div>
+                  <div><b>Machine Learning:</b> Train regression, classification, clustering, and tree ensembles with explainability.</div>
                 </li>
                 <li data-n="5">
-                  <div><b>Client Delivery from Day One:</b> Frame business problems, communicate clearly, and hand over solutions.</div>
+                  <div><b>Deep Learning &amp; NLP:</b> Build neural networks and transformer text classification models in PyTorch.</div>
+                </li>
+                <li data-n="6">
+                  <div><b>Generative AI &amp; Agents:</b> Build RAG applications, vector search, tool calling, and multi-agent workflows.</div>
+                </li>
+                <li data-n="7">
+                  <div><b>Data Engineering:</b> Orchestrate scalable ETL/ELT pipelines with PySpark, Databricks, and Airflow.</div>
+                </li>
+                <li data-n="8">
+                  <div><b>Deployment Engineering:</b> Package in Docker, build FastAPI endpoints, and deploy to Cloud with CI/CD.</div>
+                </li>
+                <li data-n="9">
+                  <div><b>Consulting &amp; Communication:</b> Frame business problems, calculate ROI, and present executive handovers.</div>
                 </li>
               </ol>
             </div>
@@ -1049,214 +1583,523 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
 </section>
 
       {/* -------------------------------------------------------------------------
-          SECTION 8: WHAT DATA SCIENCE & AI ENGINEERS EARN
+          SECTION 9: INDUSTRY PROJECTS WITH AI DEPLOYMENT
           ------------------------------------------------------------------------- */}
-      <section className="pay" id="salary">
+      <section className="industry-projects-section" id="projects" style={{ padding: '60px 0', borderBottom: '1px solid var(--line)' }}>
         <div className="wrap">
           <div className="sec-head">
-            <span className="eyebrow">Compensation &amp; Career ROI</span>
-            <h2>What Data Science &amp; AI Deployment Engineers earn</h2>
+            <span className="eyebrow">Real-World Capstones</span>
+            <h2>Industry Projects with AI Deployment</h2>
             <p className="lead">
-              AI Deployment Engineering is one of the highest-paid specializations in modern tech because it bridges data science with production software and client revenue.
+              Industry-focused projects covering data preparation, analysis, modelling, deployment and monitoring. Move beyond toy datasets to build verifiable business assets.
             </p>
           </div>
 
-          <div className="big">
-            <div>
-              <small>India · Entry Level</small>
-              <b>₹8.5–18 LPA</b>
-              <span>Junior &amp; Associate AI Deployment Engineers</span>
+          <div className="industry-projects-grid">
+            <div className="proj-card">
+              <span className="proj-badge">Banking &amp; Lending</span>
+              <h3>Banking Credit Risk</h3>
+              <div className="proj-section">
+                <span className="proj-section-label">Business Application</span>
+                <p className="proj-section-text">Estimate loan-default risk and prioritize collections outreach.</p>
+              </div>
+              <div className="proj-deploy-box">
+                <span className="proj-section-label">Deployment Component</span>
+                <p className="proj-section-text">Prediction API &amp; live model performance monitoring.</p>
+              </div>
             </div>
-            <div>
-              <small>India · Experienced</small>
-              <b>₹22–45 LPA</b>
-              <span>Mid to Senior Engineers shipping production pipelines</span>
+
+            <div className="proj-card">
+              <span className="proj-badge">InsurTech</span>
+              <h3>Insurance Claims</h3>
+              <div className="proj-section">
+                <span className="proj-section-label">Business Application</span>
+                <p className="proj-section-text">Prioritise insurance claims for investigation and identify fraud indicators.</p>
+              </div>
+              <div className="proj-deploy-box">
+                <span className="proj-section-label">Deployment Component</span>
+                <p className="proj-section-text">Scoring application &amp; automated review workflow.</p>
+              </div>
             </div>
-            <div>
-              <small>US / Global Remote</small>
-              <b>$140k–240k</b>
-              <span>Remote engineers delivering enterprise AI products</span>
+
+            <div className="proj-card">
+              <span className="proj-badge">Retail &amp; CPG</span>
+              <h3>Retail Demand Forecasting</h3>
+              <div className="proj-section">
+                <span className="proj-section-label">Business Application</span>
+                <p className="proj-section-text">Support dynamic stock allocation, seasonal planning, and sales targets.</p>
+              </div>
+              <div className="proj-deploy-box">
+                <span className="proj-section-label">Deployment Component</span>
+                <p className="proj-section-text">Automated forecast pipeline &amp; executive dashboard.</p>
+              </div>
+            </div>
+
+            <div className="proj-card">
+              <span className="proj-badge">E-Commerce</span>
+              <h3>E-commerce Analytics</h3>
+              <div className="proj-section">
+                <span className="proj-section-label">Business Application</span>
+                <p className="proj-section-text">Understand customer browsing patterns, lifetime value, and recommendations.</p>
+              </div>
+              <div className="proj-deploy-box">
+                <span className="proj-section-label">Deployment Component</span>
+                <p className="proj-section-text">Production recommendation service microservice.</p>
+              </div>
+            </div>
+
+            <div className="proj-card">
+              <span className="proj-badge">Telecommunications</span>
+              <h3>Telecom Churn Prediction</h3>
+              <div className="proj-section">
+                <span className="proj-section-label">Business Application</span>
+                <p className="proj-section-text">Identify telecom subscribers at risk of leaving to trigger retention incentives.</p>
+              </div>
+              <div className="proj-deploy-box">
+                <span className="proj-section-label">Deployment Component</span>
+                <p className="proj-section-text">Scheduled batch churn-scoring pipeline.</p>
+              </div>
+            </div>
+
+            <div className="proj-card">
+              <span className="proj-badge">Healthcare</span>
+              <h3>Healthcare Operations</h3>
+              <div className="proj-section">
+                <span className="proj-section-label">Business Application</span>
+                <p className="proj-section-text">Analyse clinical demand, admission rates, and hospital resource utilisation.</p>
+              </div>
+              <div className="proj-deploy-box">
+                <span className="proj-section-label">Deployment Component</span>
+                <p className="proj-section-text">Interactive dashboard or prediction application.</p>
+              </div>
+            </div>
+
+            <div className="proj-card">
+              <span className="proj-badge">Generative AI</span>
+              <h3>GenAI Knowledge Assistant</h3>
+              <div className="proj-section">
+                <span className="proj-section-label">Business Application</span>
+                <p className="proj-section-text">Retrieve verified company information from authorised internal PDF/text documents.</p>
+              </div>
+              <div className="proj-deploy-box">
+                <span className="proj-section-label">Deployment Component</span>
+                <p className="proj-section-text">RAG application with evaluation benchmarks &amp; tool access controls.</p>
+              </div>
             </div>
           </div>
 
-          <table className="ptab">
-            <thead>
-              <tr>
-                <th>Career Stage</th>
-                <th>India Compensation</th>
-                <th>US / Remote Benchmark</th>
-                <th>Primary Ownership</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Fresher / Junior Deployment Engineer</td>
-                <td className="n">₹8.5 – 14 LPA</td>
-                <td>$90,000 – $130,000</td>
-                <td>Data pipelines, model training, FastAPI endpoints, Dockerization</td>
-              </tr>
-              <tr>
-                <td>Mid-Level AI Deployment Engineer</td>
-                <td className="n">₹16 – 28 LPA</td>
-                <td>$140,000 – $190,000</td>
-                <td>End-to-end system design, RAG pipelines, cloud hosting, client demos</td>
-              </tr>
-              <tr>
-                <td>Lead / Staff AI Deployment Engineer</td>
-                <td className="n">₹32 – 55+ LPA</td>
-                <td>$200,000 – $260,000+</td>
-                <td>Enterprise architectures, multi-agent frameworks, team leadership</td>
-              </tr>
-              <tr>
-                <td>High-Value AI Freelancer / Consultant</td>
-                <td className="n">₹1.5L – 4L / month</td>
-                <td>$80 – $150 / hour</td>
-                <td>Bespoke client integrations, workflow automation, audit consulting</td>
-              </tr>
-            </tbody>
-          </table>
-
-          <p className="pnote">
-            Figures compiled from published compensation benchmarks (Levels.fyi, AmbitionBox), DV Analytics alumni career transitions, and current 2026 tech hiring listings.
+          <p className="pnote" style={{ marginTop: '22px' }}>
+            *These are proposed project options. The selected projects, mentoring arrangements and deployment depth should be specified for each batch.
           </p>
         </div>
       </section>
 
       {/* -------------------------------------------------------------------------
-          SECTION 9: WHO CAN BECOME AN AI DEPLOYMENT ENGINEER
+          SECTION 10: SUCCESS @ DV ANALYTICS (6-STEP CAREER ENGINE)
           ------------------------------------------------------------------------- */}
-      <section className="who">
+      <section className="career-engine-section" style={{ padding: '60px 0', borderBottom: '1px solid var(--line)' }}>
         <div className="wrap">
           <div className="sec-head">
-            <span className="eyebrow">Who can become an AI Deployment Engineer</span>
-            <h2>You can come from many starting points</h2>
+            <span className="eyebrow">Proven Methodology</span>
+            <h2>Success @ DV Analytics: The 6-Step Career Engine</h2>
             <p className="lead">
-              What matters is the willingness to learn the missing parts. If you code but have never talked to a client, practise consulting. If you analyse data but have never deployed anything, learn how to put an app live.
+              A disciplined, mentor-led pathway ensuring you build skills step by step and present your work with executive confidence.
             </p>
           </div>
-          <div className="who-grid">
-            <div>
-              <b>Software and Data Engineers</b>
-              <span>who enjoy talking to users and want to own the business outcome end-to-end.</span>
+
+          <div className="career-engine-grid">
+            <div className="engine-card">
+              <span className="engine-step">Step 01</span>
+              <h3>Regular Classes</h3>
+              <p>Attend consistently, participate actively and review difficult topics. Build deep quantitative understanding step by step with mentors.</p>
             </div>
-            <div>
-              <b>Data &amp; BI Analysts</b>
-              <span>who want to build, deploy, and ship live applications, not only static reports.</span>
+
+            <div className="engine-card">
+              <span className="engine-step">Step 02</span>
+              <h3>Hands-on Assignments</h3>
+              <p>Practise coding after each module. Use mentor code feedback to correct mistakes and develop independent problem-solving capabilities.</p>
             </div>
-            <div>
-              <b>Consultants &amp; Domain Experts</b>
-              <span>who want to become technical and build the exact AI solutions they recommend.</span>
+
+            <div className="engine-card">
+              <span className="engine-step">Step 03</span>
+              <h3>Industry Projects</h3>
+              <p>Apply learning to realistic business scenarios. Demonstrate data preparation, modelling, evaluation and cloud deployment through documented work.</p>
             </div>
-            <div>
-              <b>Students &amp; Freshers</b>
-              <span>who want to build full-stack proof-of-work portfolios that stand out in interviews.</span>
+
+            <div className="engine-card">
+              <span className="engine-step">Step 04</span>
+              <h3>Profile Building</h3>
+              <p>Develop a focused resume, LinkedIn profile and public GitHub portfolio. Learn to explain your projects and connect your past domain experience.</p>
             </div>
+
+            <div className="engine-card">
+              <span className="engine-step">Step 05</span>
+              <h3>AI Integrated Tests &amp; Mock Interviews</h3>
+              <p>Use practical assessments to identify skill gaps and mock interviews to improve technical explanations, business reasoning and executive communication.</p>
+            </div>
+
+            <div className="engine-card">
+              <span className="engine-step">Step 06</span>
+              <h3>100% Placement Support</h3>
+              <p>Receive the placement services included in DV’s written programme terms: profile preparation, interview practice, application guidance and opportunity coordination.</p>
+            </div>
+          </div>
+
+          <div className="who-note-box" style={{ marginTop: '28px', textAlign: 'center' }}>
+            <strong style={{ fontSize: '1.05rem', display: 'block', marginBottom: '6px' }}>
+              Learn consistently. Build independently. Explain confidently. Deploy practically.
+            </strong>
+            <span style={{ color: 'var(--muted)', fontSize: '0.88rem' }}>
+              Placement support does not guarantee employment or a particular salary. Student preparation, eligibility and employer selection determine individual outcomes.
+            </span>
           </div>
         </div>
       </section>
 
       {/* -------------------------------------------------------------------------
-          SECTION 10: PLAIN-ENGLISH GLOSSARY
+          SECTION 11: STUDENT SUCCESS STORIES (PROVEN RESULTS)
           ------------------------------------------------------------------------- */}
-      <section className="gloss" id="words">
+      <section className="lp-stories-section" id="stories" aria-label="Student Success Stories">
         <div className="wrap">
-          <div className="sec-head">
-            <span className="eyebrow">Plain-English glossary</span>
-            <h2>Words you may hear, explained simply</h2>
+          <div className="sec-head" style={{ textAlign: 'center', margin: '0 auto 36px', alignItems: 'center' }}>
+            <span className="eyebrow">Proven Results</span>
+            <h2>Student Success Stories</h2>
+            <p className="lead" style={{ textAlign: 'center' }}>
+              Real career transformations from our classroom to industry leaders. Verified placements across premier global tech, banking, and analytics enterprises.
+            </p>
           </div>
-          <dl className="gl">
-            <div>
-              <dt>APIDS</dt>
-              <dd>Applied Data Science &amp; AI Deployment Engineering. A role that builds data models and launches them live for real companies.</dd>
+        </div>
+
+        {/* Seamless Infinite Continuous Marquee Track */}
+        <div className="lp-stories-marquee-wrapper" title="Scroll or hover to inspect student placement details">
+          <div className="lp-stories-track">
+            {/* First Set */}
+            <div className="lp-stories-group">
+              {successStoryPosters.map((poster, pIdx) => (
+                <div
+                  key={`story-set1-${pIdx}-${poster}`}
+                  className="lp-story-card"
+                  onClick={scrollToForm}
+                  role="button"
+                  tabIndex={0}
+                  title="Click to register for Data Science & AI batch"
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') scrollToForm();
+                  }}
+                >
+                  <img
+                    src={`/Success Stories/${poster}`}
+                    alt={`DV Analytics Student Placement Story ${pIdx + 1}`}
+                    className="lp-story-img"
+                    loading={pIdx < 4 ? 'eager' : 'lazy'}
+                  />
+                </div>
+              ))}
             </div>
-            <div>
-              <dt>AI Agent</dt>
-              <dd>An AI helper that can execute sequential steps independently, such as querying a database and notifying a team, instead of just chatting.</dd>
+
+            {/* Second Duplicate Set for Infinite Loop */}
+            <div className="lp-stories-group" aria-hidden="true">
+              {successStoryPosters.map((poster, pIdx) => (
+                <div
+                  key={`story-set2-${pIdx}-${poster}`}
+                  className="lp-story-card"
+                  onClick={scrollToForm}
+                  role="button"
+                  tabIndex={-1}
+                >
+                  <img
+                    src={`/Success Stories/${poster}`}
+                    alt=""
+                    className="lp-story-img"
+                    loading="lazy"
+                  />
+                </div>
+              ))}
             </div>
-            <div>
-              <dt>Data Pipeline</dt>
-              <dd>An automated conveyor belt that transports raw data from where it is created, cleans it, and feeds it into models and apps.</dd>
-            </div>
-            <div>
-              <dt>Deployment</dt>
-              <dd>Packaging a finished machine learning model and publishing it onto cloud servers so everyday users can access it reliably.</dd>
-            </div>
-            <div>
-              <dt>RAG (Retrieval-Augmented Generation)</dt>
-              <dd>Letting an AI search private company documents before answering, grounding responses in verified facts and eliminating hallucinations.</dd>
-            </div>
-            <div>
-              <dt>API (Application Programming Interface)</dt>
-              <dd>A secure doorway that allows user-facing web screens or mobile applications to communicate directly with backend AI models.</dd>
-            </div>
-            <div>
-              <dt>Docker Container</dt>
-              <dd>A lightweight, self-contained box with all code, libraries, and dependencies bundled together so software runs identically everywhere.</dd>
-            </div>
-            <div>
-              <dt>CI/CD</dt>
-              <dd>Automated safety checks that test, build, and deploy new model updates automatically without manual downtime or configuration errors.</dd>
-            </div>
-          </dl>
+          </div>
+        </div>
+
+        <div className="wrap" style={{ textAlign: 'center', marginTop: '16px' }}>
+          <span style={{ fontSize: '0.85rem', color: 'var(--muted)', fontStyle: 'italic' }}>
+            * Hover to pause banner • Click any story to reserve your seat in the upcoming batch
+          </span>
         </div>
       </section>
 
       {/* -------------------------------------------------------------------------
-          SECTION 11: FREQUENTLY ASKED QUESTIONS (FAQ)
+          SECTION 12: VERIFIED GOOGLE REVIEWS (STUDENT TESTIMONIALS)
           ------------------------------------------------------------------------- */}
-      <section id="faq">
-        <div className="wrap faq">
-          <div className="sec-head">
-            <span className="eyebrow">FAQ</span>
-            <h2>Data Science &amp; AI Deployment Engineering questions, answered</h2>
+      <section className="lp-reviews-section" id="reviews" aria-label="Student Testimonials">
+        <div className="wrap">
+          <div className="lp-reviews-header-row">
+            <div className="sec-head" style={{ margin: 0, maxWidth: '620px' }}>
+              <span className="eyebrow">Student Testimonials</span>
+              <h2>Verified Google Reviews</h2>
+              <p className="lead" style={{ margin: 0 }}>
+                Authentic, unedited feedback from our learners. See what students say about our curriculum, mentoring, hands-on projects, and placement support.
+              </p>
+            </div>
+
+            {/* Rating trust pill and navigation controls */}
+            <div className="lp-reviews-controls">
+              <a
+                href={GOOGLE_REVIEWS_LINK}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="lp-reviews-trust-pill"
+                title="View all verified reviews on Google"
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
+                  <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
+                  <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
+                  <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" />
+                  <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" />
+                </svg>
+                <div className="lp-trust-text">
+                  <strong>4.9 ★★★★★</strong>
+                  <span>1,200+ Reviews</span>
+                </div>
+              </a>
+
+              <div className="lp-nav-buttons-group">
+                <button
+                  type="button"
+                  className="lp-review-nav-btn"
+                  onClick={prevReview}
+                  aria-label="Previous Review"
+                  title="Previous Review"
+                >
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <path d="M15 18l-6-6 6-6" />
+                  </svg>
+                </button>
+                <button
+                  type="button"
+                  className="lp-review-nav-btn"
+                  onClick={nextReview}
+                  aria-label="Next Review"
+                  title="Next Review"
+                >
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <path d="M9 18l6-6-6-6" />
+                  </svg>
+                </button>
+              </div>
+            </div>
           </div>
 
+          {/* Interactive Responsive Grid of 3 Active Review Cards */}
+          <div
+            className="lp-reviews-grid"
+            onMouseEnter={() => setIsReviewPaused(true)}
+            onMouseLeave={() => setIsReviewPaused(false)}
+            onFocus={() => setIsReviewPaused(true)}
+            onBlur={() => setIsReviewPaused(false)}
+          >
+            {[0, 1, 2].map((offset) => {
+              const review = googleReviewsData[(reviewIndex + offset) % totalReviews];
+              return (
+                <div
+                  key={`${review.id}-${offset}`}
+                  className="lp-review-card"
+                  onClick={() => window.open(GOOGLE_REVIEWS_LINK, '_blank', 'noopener,noreferrer')}
+                  title="Click to view verified review on Google"
+                  role="button"
+                  tabIndex={0}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') window.open(GOOGLE_REVIEWS_LINK, '_blank', 'noopener,noreferrer');
+                  }}
+                >
+                  <div>
+                    <div className="lp-review-card-top">
+                      <div className="lp-review-user">
+                        <div
+                          className="lp-review-avatar"
+                          style={{ backgroundColor: review.avatarBg }}
+                          aria-hidden="true"
+                        >
+                          {review.name.charAt(0).toUpperCase()}
+                        </div>
+                        <div className="lp-review-user-info">
+                          <div className="lp-review-name-row">
+                            <h4 className="lp-review-name">{review.name}</h4>
+                            {review.isLocalGuide && (
+                              <span className="lp-review-guide-badge">Local Guide</span>
+                            )}
+                          </div>
+                          {review.details && (
+                            <span className="lp-review-meta">{review.details}</span>
+                          )}
+                        </div>
+                      </div>
+
+                      <div className="lp-review-google-logo" title="Verified Google Review">
+                        <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
+                          <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
+                          <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
+                          <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" />
+                          <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" />
+                        </svg>
+                      </div>
+                    </div>
+
+                    <div className="lp-review-stars-row">
+                      <div className="lp-review-stars">{renderReviewStars(review.rating)}</div>
+                      <span className="lp-review-date">{review.date}</span>
+                    </div>
+
+                    <div className="lp-review-body">
+                      {review.text.split('\n').filter(Boolean).map((para, pIdx) => (
+                        <p key={pIdx} style={{ margin: '0 0 6px 0' }}>{para}</p>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="lp-review-link">
+                    <span>Read on Google</span>
+                    <span aria-hidden="true">→</span>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* -------------------------------------------------------------------------
+          SECTION 13: FREQUENTLY ASKED QUESTIONS (FAQS DIRECT FROM DOCUMENT)
+          ------------------------------------------------------------------------- */}
+      <section id="faq" style={{ padding: '60px 0', borderBottom: '1px solid var(--line)' }}>
+        <div className="wrap faq">
+
+          <div className="sec-head">
+            <span className="eyebrow">Frequently Asked Questions</span>
+            <h2>Data Science with AI Deployment Engineering FAQs</h2>
+            <p className="lead">
+              Clear, transparent answers directly addressing curriculum, prerequisites, faculty, placement support, and salary benchmarks.
+            </p>
+          </div>
+
+          {/* FAQ 1: Data Science vs Analytics Comparison Table */}
           <details className="q" open>
-            <summary>What is a Data Science &amp; AI Deployment Engineer (APIDS)?</summary>
+            <summary>1. Data Science vs Data Analytics: Which career is better, and why?</summary>
+            <div style={{ marginTop: '12px' }}>
+              <p>
+                Both are valuable careers. The better choice depends on the work you enjoy, your current skills and your willingness to learn programming and mathematics.
+              </p>
+              <div className="tbl-wrap" style={{ marginTop: '14px', marginBottom: '14px' }}>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Area</th>
+                      <th>Data Analytics</th>
+                      <th>Data Science &amp; AI Deployment Engineering</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong>Main focus</strong></td>
+                      <td>Analyse data and explain business performance</td>
+                      <td>Build predictive models and deploy AI solutions</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Typical work</strong></td>
+                      <td>Reports, dashboards, KPI tracking and business insights</td>
+                      <td>Prediction, recommendation, AI applications, deployment and monitoring</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Core skills</strong></td>
+                      <td>SQL, Excel, Power BI/Tableau and statistics; Python is useful</td>
+                      <td>Python, SQL, statistics, ML, AI, data engineering and deployment</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Example</strong></td>
+                      <td>Explain why loan defaults increased</td>
+                      <td>Build and deploy a model to identify high-risk loan applications</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Learning commitment</strong></td>
+                      <td>Usually a more accessible starting point</td>
+                      <td>Requires broader technical preparation</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <p>
+                Data analytics can suit learners who enjoy business questions, reporting and visualisation. Data science and deployment engineering can suit those who enjoy coding, experimentation and building applications. These fields overlap, and professionals can move between them as their skills develop.
+              </p>
+            </div>
+          </details>
+
+          {/* FAQ 2 */}
+          <details className="q">
+            <summary>2. Can I learn Data Science &amp; AI Deployment Engineering as a non-technical graduate?</summary>
             <p>
-              An Applied Data Scientist &amp; AI Deployment Engineer works directly with a company, understands their real business problem, trains predictive and generative models on the company&#39;s proprietary data, and deploys the finished solution live into daily operations.
+              Yes. Graduates from commerce, management, arts, science and other backgrounds can learn these skills. A suitable learning sequence is: Computer fundamentals → SQL → Python → Data analysis → Statistics → Machine learning → AI applications → Deployment. You do not need to arrive as a programmer. You do need to practise programming, strengthen numerical reasoning and complete projects independently.
             </p>
           </details>
 
+          {/* FAQ 3 */}
           <details className="q">
-            <summary>Why are companies hiring Deployment Engineers over pure analysts?</summary>
+            <summary>3. How much coding is required?</summary>
             <p>
-              Off-the-shelf AI and offline Jupyter notebooks fail to deliver business value on their own. Customer data is messy, incomplete, and isolated across legacy systems. Deployment engineers bridge model training with live software engineering so companies actually realize ROI.
+              Coding is a core part of this programme. You should become comfortable with SQL queries for extracting data, Python for data cleaning and modelling, API development for making models available to applications, and Git and configuration files for deployment workflows. AI coding assistants can help explain errors, but you must understand, test and explain the code you submit.
             </p>
           </details>
 
+          {/* FAQ 4 */}
           <details className="q">
-            <summary>Will AI replace Data Science &amp; AI Deployment Engineers?</summary>
+            <summary>4. Is advanced mathematics required?</summary>
             <p>
-              AI speeds up syntax and boilerplate coding. But AI cannot sit with human stakeholders, uncover unstated operational bottlenecks, judge whether its own output is factually accurate, or take legal and operational responsibility for going live. That human ownership is the core of this profession.
+              You can begin without advanced mathematics, but you must develop the foundations. These include percentages, algebra, probability, descriptive statistics, hypothesis testing and basic linear algebra. The goal is to understand what a method does, when to use it and how to interpret its results.
             </p>
           </details>
 
+          {/* FAQ 5 */}
           <details className="q">
-            <summary>What skills do I need to learn?</summary>
+            <summary>5. How soon can I learn this?</summary>
             <p>
-              Six core pillars: Python &amp; Industrial SQL, Applied Machine Learning, Deep Learning &amp; Transformers, GenAI &amp; RAG Agentic systems, Docker &amp; Cloud Deployment, and Executive Client Delivery.
+              DV’s proposed Data Science &amp; AI Deployment Engineering programme runs for six months of structured learning. Your readiness for employment depends on your practice, project quality and interview preparation. A recommended personal study target is 10–15 hours per week outside regular classes.
             </p>
           </details>
 
+          {/* FAQ 6 */}
           <details className="q">
-            <summary>Can any graduate or non-tech professional learn this?</summary>
+            <summary>6. Do you guarantee placement?</summary>
             <p>
-              Yes. The APIDS curriculum begins with fundamental programming, logic decomposition, and SQL before progressing into advanced algorithms and deployment architectures. Consistent practice and mentor reviews bridge the gap regardless of prior degree.
+              Placement support and a guaranteed job are different commitments. DV’s stated offering is 100% placement support under written enrolment terms (profile reviews, mock interviews, assessment practice, and opportunity coordination); it does not mean that every learner is guaranteed an offer. Hiring decisions depend on employers, eligibility, and individual interview performance.
             </p>
           </details>
 
+          {/* FAQ 7 */}
           <details className="q">
-            <summary>What kind of projects will I build?</summary>
+            <summary>7. What salary can I expect?</summary>
             <p>
-              You build complete, production-grade applications: predictive customer churn microservices, real-time demand forecasting APIs, multi-document RAG search engines, and full-stack executive dashboards hosted on AWS with Docker.
+              Salary packages up to ₹40 LPA can be achieved depending on individual technical mastery, problem-solving ability, prior domain experience, and employer evaluation criteria. Packages vary based on location, employer, and demonstrated practical competence.
             </p>
           </details>
 
+          {/* FAQ 8 */}
           <details className="q">
-            <summary>What is the duration and schedule?</summary>
+            <summary>8. Who are the faculty members?</summary>
             <p>
-              The program runs across 6 to 8 months with dedicated weekday and weekend batch options. All sessions are 100% live with recorded LMS access, interactive lab code walkthroughs, and weekly 1-on-1 mentor code reviews.
+              Faculty identified for DV programmes include Dr. Debendra Das (industry experience across organisations including IBM, HP and HSBC) and Dr. Suresh Reddy (ex-Google, associated with GenAI and Agentic AI teaching). Specific faculty assignments and batch teaching schedules are confirmed at enrolment.
+            </p>
+          </details>
+
+          {/* FAQ 9 */}
+          <details className="q">
+            <summary>9. What exactly is AI Deployment Engineering?</summary>
+            <p>
+              AI Deployment Engineering involves making a model or AI application usable in an operational business environment. This involves packaging models into Docker containers, exposing them via high-throughput FastAPI endpoints, releasing to Cloud infrastructure (AWS/Azure/GCP), and establishing 24/7 logging, error tracking, and model drift observability.
+            </p>
+          </details>
+
+          {/* FAQ 10 */}
+          <details className="q">
+            <summary>10. What laptop and additional tools will I need?</summary>
+            <p>
+              A practical starting recommendation is a laptop with 16 GB RAM and SSD storage (Windows, macOS, or Linux), although initial foundational coding exercises can run on lower specifications. Cloud services, IDEs, and browser-based coding environments are supported during training.
             </p>
           </details>
         </div>
@@ -1314,136 +2157,7 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
 
           {/* High-Converting Lead Capture Form Card */}
           <div className="join-form-wrapper" id="apids-lead-form">
-            <div className="lp-form-card">
-              {isSubmitted ? (
-                <div className="lp-form-success-banner">
-                  <h3 style={{ fontSize: '1.4rem', fontWeight: 800, marginBottom: '8px', color: '#065f46' }}>
-                    Registration Submitted Successfully!
-                  </h3>
-                  <p style={{ color: '#047857', fontSize: '0.95rem', lineHeight: 1.5, marginBottom: '14px' }}>
-                    Thank you, <strong>{formData.name}</strong>. An admissions counselor from DV Analytics will reach out within 2 hours with the syllabus and October 24 batch details.
-                  </p>
-                  <button
-                    type="button"
-                    onClick={() => setIsSubmitted(false)}
-                    className="lp-orange-submit-btn"
-                    style={{ marginTop: '10px' }}
-                  >
-                    Submit Another Registration
-                  </button>
-                </div>
-              ) : (
-                <form onSubmit={handleSubmit} className="lp-lead-form">
-                  <div className="lp-form-header">
-                    <h3>Register for APIDS</h3>
-                    <p>Reserve your seat for the Data Science &amp; AI Deployment batch.</p>
-                  </div>
-
-                  {formError && <div className="lp-form-error-banner">{formError}</div>}
-
-                  <div className="lp-form-field">
-                    <label className="lp-form-label">Full Name *</label>
-                    <input
-                      type="text"
-                      className="lp-form-input"
-                      placeholder="Enter your full name"
-                      value={formData.name}
-                      required
-                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    />
-                  </div>
-
-                  <div className="lp-form-row-2">
-                    <div className="lp-form-field">
-                      <label className="lp-form-label">Email Address *</label>
-                      <input
-                        type="email"
-                        className="lp-form-input"
-                        placeholder="name@example.com"
-                        value={formData.email}
-                        required
-                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      />
-                    </div>
-
-                    <div className="lp-form-field">
-                      <label className="lp-form-label">Phone Number *</label>
-                      <input
-                        type="tel"
-                        className="lp-form-input"
-                        placeholder="10-digit mobile number"
-                        value={formData.phone}
-                        required
-                        pattern="[0-9]{10}"
-                        title="Please enter a valid 10-digit mobile number"
-                        onChange={(e) => setFormData({ ...formData, phone: e.target.value.replace(/\D/g, '').slice(0, 10) })}
-                      />
-                    </div>
-                  </div>
-
-                  <div className="lp-form-row-2">
-                    <div className="lp-form-field">
-                      <label className="lp-form-label">Highest Qualification *</label>
-                      <LpCustomSelect
-                        options={qualificationOptions}
-                        value={formData.qualification}
-                        placeholder="Select qualification"
-                        required
-                        onChange={(val) => setFormData({ ...formData, qualification: val })}
-                      />
-                    </div>
-
-                    <div className="lp-form-field">
-                      <label className="lp-form-label">Experience *</label>
-                      <LpCustomSelect
-                        options={experienceOptions}
-                        value={formData.experience}
-                        placeholder="Select experience"
-                        required
-                        onChange={(val) => setFormData({ ...formData, experience: val })}
-                      />
-                    </div>
-                  </div>
-
-                  <div className="lp-form-row-2">
-                    <div className="lp-form-field">
-                      <label className="lp-form-label">State / Location *</label>
-                      <LpCustomSelect
-                        options={locationOptions}
-                        value={formData.state}
-                        placeholder="Select state"
-                        required
-                        onChange={(val) => setFormData({ ...formData, state: val })}
-                      />
-                    </div>
-
-                    <div className="lp-form-field">
-                      <label className="lp-form-label">Course *</label>
-                      <input
-                        type="text"
-                        className="lp-form-input"
-                        value="APIDS (Data Science & AI)"
-                        readOnly
-                        tabIndex={-1}
-                        style={{
-                          backgroundColor: '#f1f5f9',
-                          color: '#0f172a',
-                          fontWeight: 700,
-                          cursor: 'not-allowed',
-                          borderColor: '#cbd5e1',
-                        }}
-                      />
-                    </div>
-                  </div>
-
-                  <button type="submit" className="lp-orange-submit-btn" disabled={isSubmitting}>
-                    {isSubmitting ? 'Submitting Registration...' : 'REGISTER NOW →'}
-                  </button>
-
-                  <p className="lp-form-privacy-note">Your information is strictly confidential. No spam.</p>
-                </form>
-              )}
-            </div>
+            {renderLeadForm('Register for APIDS', 'Reserve your seat for the Data Science & AI Deployment batch.')}
           </div>
         </div>
       </section>
