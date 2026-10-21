@@ -19,7 +19,8 @@ const trackingParamNames = [
 ];
 
 const attributionStorageKey = 'dv_attribution';
-const gaMeasurementId = (import.meta.env.VITE_GA_MEASUREMENT_ID as string | undefined) || 'G-827GCWFLV6';
+const gtmContainerId = (import.meta.env.VITE_GTM_ID as string | undefined) || 'GTM-NFB3LVLT';
+const gaMeasurementId = import.meta.env.VITE_GA_MEASUREMENT_ID as string | undefined;
 let lastTrackedPageLocation = '';
 
 export const getAttribution = () => {
@@ -59,9 +60,8 @@ export const appendAttributionToPayload = (payload: URLSearchParams) => {
 };
 
 export const initAnalytics = () => {
-  const gtmId = import.meta.env.VITE_GTM_ID as string | undefined;
-
   window.dataLayer = window.dataLayer || [];
+
   if (!window.gtag) {
     window.gtag = function () {
       // eslint-disable-next-line prefer-rest-params
@@ -69,12 +69,13 @@ export const initAnalytics = () => {
     };
   }
 
-  if (gtmId && !document.querySelector(`script[data-gtm-id="${gtmId}"]`)) {
+  // Fallback dynamic injection if GTM script was not present statically in HTML
+  if (gtmContainerId && !document.querySelector('script[src*="googletagmanager.com/gtm.js"]')) {
     window.dataLayer.push({ 'gtm.start': Date.now(), event: 'gtm.js' });
     const script = document.createElement('script');
     script.async = true;
-    script.dataset.gtmId = gtmId;
-    script.src = `https://www.googletagmanager.com/gtm.js?id=${encodeURIComponent(gtmId)}`;
+    script.dataset.gtmId = gtmContainerId;
+    script.src = `https://www.googletagmanager.com/gtm.js?id=${encodeURIComponent(gtmContainerId)}`;
     document.head.appendChild(script);
   }
 };
@@ -86,23 +87,41 @@ export const trackEvent = (eventName: string, params: AnalyticsParams = {}) => {
     ...params,
   };
 
+  // Push standard GTM Data Layer event object
+  window.dataLayer = window.dataLayer || [];
+  window.dataLayer.push({
+    event: eventName,
+    ...eventPayload,
+  });
+
+  // Backward compatibility for gtag
   window.gtag?.('event', eventName, eventPayload);
 
-  // Automatically dispatch standard GA4 Key Events (conversions) for lead forms
+  // Automatically dispatch standard conversion Key Events for lead forms & contact clicks
   if (['submit_get_a_call_form', 'submit_enroll_form', 'submit_brochure_form'].includes(eventName)) {
     const leadType = eventName.replace('submit_', '').replace('_form', '');
-    window.gtag?.('event', 'generate_lead', {
+    const leadPayload = {
       ...eventPayload,
       lead_type: leadType,
       value: 1,
       currency: 'INR',
+    };
+    window.dataLayer.push({
+      event: 'generate_lead',
+      ...leadPayload,
     });
+    window.gtag?.('event', 'generate_lead', leadPayload);
   } else if (['click_phone', 'click_whatsapp', 'click_email'].includes(eventName)) {
     const contactMethod = eventName.replace('click_', '');
-    window.gtag?.('event', 'contact', {
+    const contactPayload = {
       ...eventPayload,
       contact_method: contactMethod,
+    };
+    window.dataLayer.push({
+      event: 'contact',
+      ...contactPayload,
     });
+    window.gtag?.('event', 'contact', contactPayload);
   }
 };
 
@@ -120,10 +139,19 @@ export const trackPageView = (pageId: string) => {
     page_title: document.title,
   };
 
-  window.gtag?.('event', 'page_view', payload);
-  window.gtag?.('config', gaMeasurementId, {
-    page_path: window.location.pathname,
-    page_location: window.location.href,
-    page_title: document.title,
+  // Push virtual page_view event to GTM Data Layer on SPA client navigation
+  window.dataLayer = window.dataLayer || [];
+  window.dataLayer.push({
+    event: 'page_view',
+    ...payload,
   });
+
+  window.gtag?.('event', 'page_view', payload);
+  if (gaMeasurementId) {
+    window.gtag?.('config', gaMeasurementId, {
+      page_path: window.location.pathname,
+      page_location: window.location.href,
+      page_title: document.title,
+    });
+  }
 };

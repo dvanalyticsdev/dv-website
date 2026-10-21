@@ -12,11 +12,11 @@ export interface DemoSlot {
 }
 
 export const LATEST_DEMO_SLOT: DemoSlot = {
-  id: '2026-10-14-7pm',
-  dateStr: '14th October 2026',
-  day: 'Wednesday',
+  id: '2026-10-22-7pm',
+  dateStr: '22nd October 2026',
+  day: 'Thursday',
   timeStr: '7:00 PM - 8:00 PM IST',
-  fullLabel: 'Wed, 14th Oct 2026 (7:00 PM - 8:00 PM IST)',
+  fullLabel: 'Thu, 22nd Oct 2026 (7:00 PM - 8:00 PM IST)',
 };
 
 const WHATSAPP_GROUP_LINK = 'https://chat.whatsapp.com/BoI03qzI1WU0nbtgYlvqi5';
