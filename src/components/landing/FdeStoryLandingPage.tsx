@@ -739,9 +739,6 @@ export const FdeStoryLandingPage: React.FC<FdeStoryLandingPageProps> = ({
               </div>
               <h1>
                 AI Forward Deployment Engineer (FDE)
-                <span style={{ display: 'block', fontSize: '1.25rem', fontWeight: 600, color: 'var(--accent)', marginTop: '8px' }}>
-                  (20% AI EXPERT · 30% ENGINEER · 50% PROBLEM-SOLVER &amp; SHIPPER)
-                </span>
               </h1>
               <p className="lead">
                 Bridge the gap between cutting-edge AI and real-world enterprise operations. Work directly with clients to translate messy business pain points into production-grade AI solutions using modern LLM orchestration, full-stack APIs, and cloud-native deployment.

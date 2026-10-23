@@ -820,9 +820,6 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({
               </div>
               <h1>
                 Data Science with AI Deployment Engineering
-                <span style={{ display: 'block', fontSize: '1.25rem', fontWeight: 600, color: 'var(--accent)', marginTop: '8px' }}>
-                  (ANY GRADUATE CAN BE A DATA SCIENTIST)
-                </span>
               </h1>
               <p className="lead">
                 Build the skills to manage data, discover insights, develop intelligent models and deploy AI solutions that solve business problems. Move from theoretical notebook code to high-impact production engineering.

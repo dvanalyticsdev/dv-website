@@ -724,9 +724,6 @@ export const ApidaStoryLandingPage: React.FC<ApidaStoryLandingPageProps> = ({
               </div>
               <h1>
                 Advanced Program in Industrial Data Analytics &amp; AI (APIDA)
-                <span style={{ display: 'block', fontSize: '1.25rem', fontWeight: 600, color: 'var(--accent)', marginTop: '8px' }}>
-                  (DATA MANAGEMENT · BUSINESS INTELLIGENCE · MACHINE LEARNING · GEN AI)
-                </span>
               </h1>
               <p className="lead">
                 A comprehensive industry-focused program combining Data Management, Business Intelligence, Statistical Modeling, and MLOps. Master SQL, SAS, Python, Power BI, Tableau, and Machine Learning to convert industrial enterprise data into actionable business intelligence.
