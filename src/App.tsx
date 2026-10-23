@@ -523,25 +523,55 @@ function App() {
 
   if (activePage === 'lp-apids') {
     return (
-      <Suspense fallback={<div className="route-loading" aria-label="Loading page content" />}>
-        <ApidsStoryLandingPage onNavigateHome={() => navigateToPage('home')} />
-      </Suspense>
+      <>
+        <Suspense fallback={<div className="route-loading" aria-label="Loading page content" />}>
+          <ApidsStoryLandingPage
+            onNavigateHome={() => navigateToPage('home')}
+            onDownloadBrochure={() => handleOpenBrochure('apids')}
+          />
+        </Suspense>
+        <BrochureLeadModal
+          isOpen={Boolean(brochureCourseId)}
+          courseId={brochureCourseId}
+          onClose={() => setBrochureCourseId(null)}
+        />
+      </>
     );
   }
 
   if (activePage === 'lp-apida') {
     return (
-      <Suspense fallback={<div className="route-loading" aria-label="Loading page content" />}>
-        <ApidaStoryLandingPage onNavigateHome={() => navigateToPage('home')} />
-      </Suspense>
+      <>
+        <Suspense fallback={<div className="route-loading" aria-label="Loading page content" />}>
+          <ApidaStoryLandingPage
+            onNavigateHome={() => navigateToPage('home')}
+            onDownloadBrochure={() => handleOpenBrochure('apida')}
+          />
+        </Suspense>
+        <BrochureLeadModal
+          isOpen={Boolean(brochureCourseId)}
+          courseId={brochureCourseId}
+          onClose={() => setBrochureCourseId(null)}
+        />
+      </>
     );
   }
 
   if (activePage === 'lp-fde') {
     return (
-      <Suspense fallback={<div className="route-loading" aria-label="Loading page content" />}>
-        <FdeStoryLandingPage onNavigateHome={() => navigateToPage('home')} />
-      </Suspense>
+      <>
+        <Suspense fallback={<div className="route-loading" aria-label="Loading page content" />}>
+          <FdeStoryLandingPage
+            onNavigateHome={() => navigateToPage('home')}
+            onDownloadBrochure={() => handleOpenBrochure('fde')}
+          />
+        </Suspense>
+        <BrochureLeadModal
+          isOpen={Boolean(brochureCourseId)}
+          courseId={brochureCourseId}
+          onClose={() => setBrochureCourseId(null)}
+        />
+      </>
     );
   }
 

@@ -27,9 +27,18 @@ const initialFormState: FormState = {
   course: COURSE_OPTIONS[0],
 };
 
-export const GetACallButton: React.FC = () => {
+export interface GetACallButtonProps {
+  defaultCourse?: string;
+}
+
+export const GetACallButton: React.FC<GetACallButtonProps> = ({ defaultCourse }) => {
+  const resolvedDefaultCourse =
+    defaultCourse && COURSE_OPTIONS.includes(defaultCourse) ? defaultCourse : COURSE_OPTIONS[0];
   const [isOpen, setIsOpen] = useState(false);
-  const [formData, setFormData] = useState<FormState>(initialFormState);
+  const [formData, setFormData] = useState<FormState>({
+    ...initialFormState,
+    course: resolvedDefaultCourse,
+  });
   const [errors, setErrors] = useState<{ name?: string; phone?: string; course?: string }>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -37,13 +46,16 @@ export const GetACallButton: React.FC = () => {
 
   useEffect(() => {
     if (!isOpen) {
-      setFormData(initialFormState);
+      setFormData({
+        ...initialFormState,
+        course: resolvedDefaultCourse,
+      });
       setErrors({});
       setIsSubmitting(false);
       setIsSubmitted(false);
       setSubmitError('');
     }
-  }, [isOpen]);
+  }, [isOpen, resolvedDefaultCourse]);
 
   const validate = (): boolean => {
     const newErrors: { name?: string; phone?: string; course?: string } = {};

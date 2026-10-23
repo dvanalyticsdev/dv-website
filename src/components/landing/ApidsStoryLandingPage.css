@@ -524,6 +524,71 @@ section[id] {
   flex-shrink: 0;
 }
 
+/* Hero In-Content Download Brochure CTA Button */
+.lp-hero-brochure-row {
+  display: flex;
+  align-items: center;
+  margin-top: 6px;
+}
+
+.lp-download-brochure-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 15px 32px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #ff6333 0%, #ef5323 55%, #d93f11 100%);
+  color: #ffffff;
+  font-family: var(--body);
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+  border: none;
+  cursor: pointer;
+  box-shadow:
+    0 10px 26px rgba(239, 83, 35, 0.36),
+    0 3px 10px rgba(239, 83, 35, 0.22);
+  transition:
+    transform 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+    background 0.22s ease;
+}
+
+.lp-download-brochure-btn:hover {
+  transform: translateY(-2px);
+  background: linear-gradient(135deg, #ff7043 0%, #ef5323 50%, #c8370b 100%);
+  box-shadow:
+    0 14px 32px rgba(239, 83, 35, 0.46),
+    0 5px 14px rgba(239, 83, 35, 0.28);
+}
+
+.lp-download-brochure-btn:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.lp-download-brochure-btn svg {
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.lp-download-brochure-btn:hover svg {
+  transform: translateY(2px);
+}
+
+@media (max-width: 600px) {
+  .lp-hero-brochure-row {
+    width: 100%;
+  }
+
+  .lp-download-brochure-btn {
+    width: 100%;
+    padding: 14px 24px;
+    font-size: 1rem;
+    border-radius: 14px;
+  }
+}
+
 /* 5-Step Path Card (Navy Blue with White Text) */
 .path-card {
   margin-top: 24px;
@@ -3520,5 +3585,75 @@ footer.lp-footer .wrap {
 .lp-offices-section .info-icon {
   color: #ef5323 !important;
 }
+
+/* ==========================================================================
+   CAREER PLACEMENTS - COMPANIES THAT HIRES YOU SECTION
+   ========================================================================== */
+.lp-page-wrapper .companies-section.reveal-on-scroll {
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+.lp-page-wrapper .companies-title {
+  color: #051f40;
+  text-align: center;
+}
+
+/* ==========================================================================
+   JOIN FREE DEMO CLASS - REGISTRATION FORM MODAL POPUP
+   ========================================================================== */
+.lp-demo-form-modal-wrap {
+  position: relative;
+  width: 100%;
+  max-width: 480px;
+  max-height: 92vh;
+  overflow-y: auto;
+  border-radius: 20px;
+  animation: modalSlideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.lp-demo-form-modal-wrap .lp-form-card {
+  padding: 28px 26px;
+  border-radius: 20px;
+  box-shadow: 0 24px 60px rgba(10, 16, 48, 0.28);
+}
+
+.lp-demo-form-modal-wrap .lp-form-header {
+  padding-right: 32px;
+}
+
+.lp-demo-form-modal-close {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid #e2e8f0;
+  background: #f8fafc;
+  color: #475569;
+  font-size: 0.95rem;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  transition: all 0.18s ease;
+}
+
+.lp-demo-form-modal-close:hover {
+  background: #ef5323;
+  border-color: #ef5323;
+  color: #ffffff;
+}
+
+@media (max-width: 560px) {
+  .lp-demo-form-modal-wrap .lp-form-card {
+    padding: 22px 18px;
+  }
+}
+
+
 
 

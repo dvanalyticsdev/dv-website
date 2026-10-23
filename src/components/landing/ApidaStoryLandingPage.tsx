@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { googleReviewsData, GOOGLE_REVIEWS_LINK } from '../../data/googleReviewsData';
+import { CompaniesSection } from '../CompaniesSection';
 import './ApidsStoryLandingPage.css';
 
 interface SelectOption {
@@ -91,9 +92,13 @@ const LpCustomSelect: React.FC<LpCustomSelectProps> = ({
 
 export interface ApidaStoryLandingPageProps {
   onNavigateHome?: () => void;
+  onDownloadBrochure?: () => void;
 }
 
-export const ApidaStoryLandingPage: React.FC<ApidaStoryLandingPageProps> = ({ onNavigateHome }) => {
+export const ApidaStoryLandingPage: React.FC<ApidaStoryLandingPageProps> = ({
+  onNavigateHome,
+  onDownloadBrochure,
+}) => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -109,15 +114,19 @@ export const ApidaStoryLandingPage: React.FC<ApidaStoryLandingPageProps> = ({ on
   const [selectedModule, setSelectedModule] = useState<number | null>(null);
   const [showDeepDive, setShowDeepDive] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isDemoFormOpen, setIsDemoFormOpen] = useState(false);
 
   useEffect(() => {
-    if (!mobileMenuOpen) return;
+    if (!mobileMenuOpen && !isDemoFormOpen) return;
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setMobileMenuOpen(false);
+      if (e.key === 'Escape') {
+        setMobileMenuOpen(false);
+        setIsDemoFormOpen(false);
+      }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [mobileMenuOpen]);
+  }, [mobileMenuOpen, isDemoFormOpen]);
 
   // Verified Google Reviews Carousel State
   const [reviewIndex, setReviewIndex] = useState(0);
@@ -749,6 +758,37 @@ export const ApidaStoryLandingPage: React.FC<ApidaStoryLandingPageProps> = ({ on
                   <span className="h-stat-dot"></span>
                   <span><b>Average Salary:</b> ₹25+ to 35+ LPA Benchmark</span>
                 </div>
+              </div>
+
+              <div className="lp-hero-brochure-row">
+                <button
+                  type="button"
+                  className="lp-download-brochure-btn"
+                  onClick={() => {
+                    if (onDownloadBrochure) {
+                      onDownloadBrochure();
+                    } else {
+                      scrollToForm();
+                    }
+                  }}
+                >
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.4"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                    <polyline points="7 10 12 15 17 10" />
+                    <line x1="12" y1="15" x2="12" y2="3" />
+                  </svg>
+                  <span>Download Brochure</span>
+                </button>
               </div>
             </div>
 
@@ -2222,6 +2262,11 @@ export const ApidaStoryLandingPage: React.FC<ApidaStoryLandingPageProps> = ({ on
       </section>
 
       {/* -------------------------------------------------------------------------
+          COMPANIES THAT HIRES YOU (CAREER PLACEMENTS)
+          ------------------------------------------------------------------------- */}
+      <CompaniesSection />
+
+      {/* -------------------------------------------------------------------------
           SECTION 11: STUDENT SUCCESS STORIES
           ------------------------------------------------------------------------- */}
       <section className="lp-stories-section" id="stories" aria-label="Student Success Stories">
@@ -2791,6 +2836,48 @@ export const ApidaStoryLandingPage: React.FC<ApidaStoryLandingPageProps> = ({ on
                 <span>→</span>
               </button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Floating 'Join Free Demo Class' Button on Right Edge */}
+      <button
+        type="button"
+        className="demo-btn-trigger"
+        onClick={() => setIsDemoFormOpen(true)}
+        aria-label="Join Free Demo Class"
+      >
+        <span className="demo-btn-icon" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+            <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
+          </svg>
+        </span>
+        <span className="demo-btn-text">Join Free Demo Class</span>
+      </button>
+
+      {/* Registration Form Popup Modal for 'Join Free Demo Class' */}
+      {isDemoFormOpen && (
+        <div
+          className="lp-modal-backdrop"
+          onClick={() => setIsDemoFormOpen(false)}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Register for APIDA"
+        >
+          <div
+            className="lp-demo-form-modal-wrap"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              type="button"
+              className="lp-demo-form-modal-close"
+              onClick={() => setIsDemoFormOpen(false)}
+              aria-label="Close registration form"
+            >
+              ✕
+            </button>
+            {renderLeadForm('Register for APIDA', 'Reserve your seat for the Industrial Data Analytics & AI batch.')}
           </div>
         </div>
       )}
