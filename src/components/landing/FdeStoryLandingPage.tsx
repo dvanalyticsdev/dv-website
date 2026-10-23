@@ -92,12 +92,10 @@ const LpCustomSelect: React.FC<LpCustomSelectProps> = ({
 
 export interface FdeStoryLandingPageProps {
   onNavigateHome?: () => void;
-  onDownloadBrochure?: () => void;
 }
 
 export const FdeStoryLandingPage: React.FC<FdeStoryLandingPageProps> = ({
   onNavigateHome,
-  onDownloadBrochure,
 }) => {
   const [formData, setFormData] = useState({
     name: '',
@@ -776,13 +774,7 @@ export const FdeStoryLandingPage: React.FC<FdeStoryLandingPageProps> = ({
                 <button
                   type="button"
                   className="lp-download-brochure-btn"
-                  onClick={() => {
-                    if (onDownloadBrochure) {
-                      onDownloadBrochure();
-                    } else {
-                      scrollToForm();
-                    }
-                  }}
+                  onClick={() => setIsDemoFormOpen(true)}
                 >
                   <svg
                     width="20"
@@ -2760,9 +2752,6 @@ export const FdeStoryLandingPage: React.FC<FdeStoryLandingPageProps> = ({
           ------------------------------------------------------------------------- */}
       <div className="mobile-sticky-bar">
         <div className="mobile-actions-grid">
-          <a href="tel:+918095881188" className="mobile-btn mobile-call">
-            📞 Call Now
-          </a>
           <button type="button" onClick={scrollToForm} className="mobile-btn mobile-apply">
             Register Now →
           </button>

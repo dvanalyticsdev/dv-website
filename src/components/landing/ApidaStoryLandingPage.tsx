@@ -92,12 +92,10 @@ const LpCustomSelect: React.FC<LpCustomSelectProps> = ({
 
 export interface ApidaStoryLandingPageProps {
   onNavigateHome?: () => void;
-  onDownloadBrochure?: () => void;
 }
 
 export const ApidaStoryLandingPage: React.FC<ApidaStoryLandingPageProps> = ({
   onNavigateHome,
-  onDownloadBrochure,
 }) => {
   const [formData, setFormData] = useState({
     name: '',
@@ -761,13 +759,7 @@ export const ApidaStoryLandingPage: React.FC<ApidaStoryLandingPageProps> = ({
                 <button
                   type="button"
                   className="lp-download-brochure-btn"
-                  onClick={() => {
-                    if (onDownloadBrochure) {
-                      onDownloadBrochure();
-                    } else {
-                      scrollToForm();
-                    }
-                  }}
+                  onClick={() => setIsDemoFormOpen(true)}
                 >
                   <svg
                     width="20"
@@ -2756,9 +2748,6 @@ export const ApidaStoryLandingPage: React.FC<ApidaStoryLandingPageProps> = ({
           ------------------------------------------------------------------------- */}
       <div className="mobile-sticky-bar">
         <div className="mobile-actions-grid">
-          <a href="tel:+918095881188" className="mobile-btn mobile-call">
-            📞 Call Now
-          </a>
           <button type="button" onClick={scrollToForm} className="mobile-btn mobile-apply">
             Register Now →
           </button>

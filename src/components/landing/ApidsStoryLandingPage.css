@@ -2668,7 +2668,7 @@ footer.lp-footer .wrap {
 
 .mobile-actions-grid {
   display: grid;
-  grid-template-columns: 1fr 1.3fr;
+  grid-template-columns: 1fr;
   gap: 10px;
 }
 
@@ -2677,23 +2677,23 @@ footer.lp-footer .wrap {
   align-items: center;
   justify-content: center;
   gap: 6px;
-  font: 700 0.92rem/1 var(--body);
-  height: 44px;
-  border-radius: 8px;
+  font: 700 0.96rem/1 var(--body);
+  height: 46px;
+  border-radius: 10px;
   text-decoration: none;
   cursor: pointer;
   border: none;
+  width: 100%;
 }
 
 .mobile-call {
-  background: #FFFFFF;
-  border: 1.5px solid var(--line);
-  color: var(--ink);
+  display: none;
 }
 
 .mobile-apply {
-  background: var(--accent);
+  background: linear-gradient(135deg, #ff6333 0%, #ef5323 100%);
   color: #fff;
+  box-shadow: 0 6px 18px rgba(239, 83, 35, 0.32);
 }
 
 @media (max-width: 768px) {
@@ -2701,7 +2701,7 @@ footer.lp-footer .wrap {
     display: block;
   }
   .lp-page-wrapper {
-    padding-bottom: 64px;
+    padding-bottom: 68px;
   }
 }
 
@@ -2711,9 +2711,9 @@ footer.lp-footer .wrap {
 .lp-modal-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(10, 15, 46, 0.7);
+  background: rgba(10, 15, 46, 0.72);
   backdrop-filter: blur(4px);
-  z-index: 1000;
+  z-index: 3000;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -3653,6 +3653,60 @@ footer.lp-footer .wrap {
     padding: 22px 18px;
   }
 }
+
+/* ==========================================================================
+   MOBILE & RESPONSIVE PERFORMANCE OPTIMIZATIONS
+   ========================================================================== */
+.lp-page-wrapper .demo-btn-trigger {
+  top: 50%;
+}
+
+@media (max-width: 768px) {
+  .lp-page-wrapper .demo-btn-trigger {
+    padding: 11px 7px;
+    font-size: 0.8rem;
+    border-radius: 10px 0 0 10px;
+  }
+
+  .lp-page-wrapper .hero {
+    padding-block: 24px 20px;
+  }
+
+  .lp-page-wrapper h1 {
+    font-size: clamp(1.75rem, 6.5vw, 2.3rem);
+    line-height: 1.12;
+  }
+
+  .lp-page-wrapper .lead {
+    font-size: 1rem;
+    line-height: 1.55;
+  }
+
+  .lp-page-wrapper .hero-stat-pill {
+    padding: 7px 11px;
+    font-size: 0.84rem;
+    flex: 1 1 calc(50% - 8px);
+  }
+
+  .lp-page-wrapper .companies-section {
+    padding: 3rem 1.25rem;
+  }
+
+  .lp-page-wrapper .companies-header {
+    margin-bottom: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .lp-page-wrapper .hero-stat-pill {
+    flex: 1 1 100%;
+  }
+
+  .lp-page-wrapper .lp-modal-backdrop {
+    padding: 12px;
+  }
+}
+
 
 
 

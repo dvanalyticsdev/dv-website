@@ -92,12 +92,10 @@ const LpCustomSelect: React.FC<LpCustomSelectProps> = ({
 
 export interface ApidsStoryLandingPageProps {
   onNavigateHome?: () => void;
-  onDownloadBrochure?: () => void;
 }
 
 export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({
   onNavigateHome,
-  onDownloadBrochure,
 }) => {
   const [formData, setFormData] = useState({
     name: '',
@@ -857,13 +855,7 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({
                 <button
                   type="button"
                   className="lp-download-brochure-btn"
-                  onClick={() => {
-                    if (onDownloadBrochure) {
-                      onDownloadBrochure();
-                    } else {
-                      scrollToForm();
-                    }
-                  }}
+                  onClick={() => setIsDemoFormOpen(true)}
                 >
                   <svg
                     width="20"
@@ -2896,9 +2888,6 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({
           ------------------------------------------------------------------------- */}
       <div className="mobile-sticky-bar">
         <div className="mobile-actions-grid">
-          <a href="tel:+918095881188" className="mobile-btn mobile-call">
-            📞 Call Now
-          </a>
           <button type="button" onClick={scrollToForm} className="mobile-btn mobile-apply">
             Register Now →
           </button>
