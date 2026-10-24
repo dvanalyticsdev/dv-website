@@ -153,6 +153,7 @@ section[id] {
   align-items: center;
   text-decoration: none;
   flex-shrink: 0;
+  cursor: default;
 }
 
 .logo {

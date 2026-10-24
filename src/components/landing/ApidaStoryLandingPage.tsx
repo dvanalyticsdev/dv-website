@@ -94,9 +94,7 @@ export interface ApidaStoryLandingPageProps {
   onNavigateHome?: () => void;
 }
 
-export const ApidaStoryLandingPage: React.FC<ApidaStoryLandingPageProps> = ({
-  onNavigateHome,
-}) => {
+export const ApidaStoryLandingPage: React.FC<ApidaStoryLandingPageProps> = () => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -572,19 +570,9 @@ export const ApidaStoryLandingPage: React.FC<ApidaStoryLandingPageProps> = ({
           ------------------------------------------------------------------------- */}
       <header className="top">
         <div className="wrap">
-          <a
-            href="/"
-            onClick={(e) => {
-              if (onNavigateHome) {
-                e.preventDefault();
-                onNavigateHome();
-              }
-            }}
-            className="logo-link"
-            aria-label="DV Analytics Home"
-          >
+          <div className="logo-link" aria-label="DV Analytics">
             <img src="/logo.png" alt="DV Analytics" className="logo" />
-          </a>
+          </div>
 
           {/* Desktop Navigation */}
           <nav className="lp-nav" aria-label="Main Navigation">
