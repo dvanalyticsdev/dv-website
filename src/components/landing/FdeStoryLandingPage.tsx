@@ -925,31 +925,79 @@ export const FdeStoryLandingPage: React.FC<FdeStoryLandingPageProps> = () => {
 
           <div className="why-grid" style={{ marginTop: '28px' }}>
             <article className="why-card">
+              <div className="why-card-poster-wrap">
+                <img
+                  src="/industry-posters/banking-photo.jpg"
+                  alt="Banking & Fintech - Fraud Triage & Underwriting"
+                  className="why-card-poster-img"
+                  loading="lazy"
+                />
+              </div>
               <span className="who-badge">Banking &amp; Fintech</span>
               <h3>Fraud Triage &amp; Underwriting</h3>
               <p>Build real-time fraud alert triage agents and automated loan eligibility copilots that connect directly to core banking databases.</p>
             </article>
             <article className="why-card">
+              <div className="why-card-poster-wrap">
+                <img
+                  src="/industry-posters/healthcare-photo.jpg"
+                  alt="Healthcare & Pharma - Clinical Workflow Automation"
+                  className="why-card-poster-img"
+                  loading="lazy"
+                />
+              </div>
               <span className="who-badge">Healthcare &amp; Pharma</span>
               <h3>Clinical Workflow Automation</h3>
               <p>Deploy HIPAA-compliant clinical document analyzers, doctor-facing discharge copilots, and medical trial search engines.</p>
             </article>
             <article className="why-card">
+              <div className="why-card-poster-wrap">
+                <img
+                  src="/industry-posters/insurance-photo.jpg"
+                  alt="Insurance - Claims Processing Agents"
+                  className="why-card-poster-img"
+                  loading="lazy"
+                />
+              </div>
               <span className="who-badge">Insurance</span>
               <h3>Claims Processing Agents</h3>
               <p>Automate multi-page damage claim extraction, policy validation, and automated damage assessment with human review checkpoints.</p>
             </article>
             <article className="why-card">
+              <div className="why-card-poster-wrap">
+                <img
+                  src="/industry-posters/ecommerce-photo.jpg"
+                  alt="SaaS & Technology - Support & Developer Copilots"
+                  className="why-card-poster-img"
+                  loading="lazy"
+                />
+              </div>
               <span className="who-badge">SaaS &amp; Technology</span>
               <h3>Support &amp; Developer Copilots</h3>
               <p>Embed context-aware support copilots that ingest Jira tickets, codebase docs, and customer chats to draft verified responses.</p>
             </article>
             <article className="why-card">
+              <div className="why-card-poster-wrap">
+                <img
+                  src="/industry-posters/retail-photo.jpg"
+                  alt="Logistics & Supply Chain - Multi-Agent Dispatch Platforms"
+                  className="why-card-poster-img"
+                  loading="lazy"
+                />
+              </div>
               <span className="who-badge">Logistics &amp; Supply Chain</span>
               <h3>Multi-Agent Dispatch Platforms</h3>
               <p>Coordinate autonomous LangGraph agent swarms to track supplier purchase orders, reconcile invoices, and optimize warehouse routing.</p>
             </article>
             <article className="why-card">
+              <div className="why-card-poster-wrap">
+                <img
+                  src="/industry-posters/telecom-photo.jpg"
+                  alt="Legal & Compliance - Contract Analysis & EU AI Act"
+                  className="why-card-poster-img"
+                  loading="lazy"
+                />
+              </div>
               <span className="who-badge">Legal &amp; Compliance</span>
               <h3>Contract Analysis &amp; EU AI Act</h3>
               <p>Deploy regulatory risk audit systems that parse 500-page master service agreements for non-compliant clauses in seconds.</p>

@@ -910,31 +910,79 @@ export const ApidaStoryLandingPage: React.FC<ApidaStoryLandingPageProps> = () =>
 
           <div className="why-grid" style={{ marginTop: '28px' }}>
             <article className="why-card">
+              <div className="why-card-poster-wrap">
+                <img
+                  src="/industry-posters/banking-photo.jpg"
+                  alt="Banking & Finance - Credit Risk & ECL Modeling"
+                  className="why-card-poster-img"
+                  loading="lazy"
+                />
+              </div>
               <span className="who-badge">Banking &amp; Finance</span>
               <h3>Credit Risk &amp; ECL Modeling</h3>
               <p>Develop application and behavioral scorecards, IFRS 9 Expected Credit Loss (ECL) frameworks, and real-time fraud detection systems.</p>
             </article>
             <article className="why-card">
+              <div className="why-card-poster-wrap">
+                <img
+                  src="/industry-posters/insurance-photo.jpg"
+                  alt="Insurance - Claims Fraud & Underwriting"
+                  className="why-card-poster-img"
+                  loading="lazy"
+                />
+              </div>
               <span className="who-badge">Insurance</span>
               <h3>Claims Fraud &amp; Underwriting</h3>
               <p>Detect suspicious insurance claims using anomaly detection, automate claims triage, and calculate actuarial risk reserves.</p>
             </article>
             <article className="why-card">
+              <div className="why-card-poster-wrap">
+                <img
+                  src="/industry-posters/retail-photo.jpg"
+                  alt="Retail & E-Commerce - Demand Forecasting & CLV"
+                  className="why-card-poster-img"
+                  loading="lazy"
+                />
+              </div>
               <span className="who-badge">Retail &amp; E-Commerce</span>
               <h3>Demand Forecasting &amp; CLV</h3>
               <p>Forecast store-level inventory demand, estimate Customer Lifetime Value (CLV), and design dynamic product recommendation engines.</p>
             </article>
             <article className="why-card">
+              <div className="why-card-poster-wrap">
+                <img
+                  src="/industry-posters/telecom-photo.jpg"
+                  alt="Telecom - Subscriber Churn & ARPU"
+                  className="why-card-poster-img"
+                  loading="lazy"
+                />
+              </div>
               <span className="who-badge">Telecom</span>
               <h3>Subscriber Churn &amp; ARPU</h3>
               <p>Predict subscriber churn before recharge lapses, analyze Average Revenue Per User (ARPU), and monitor network uptime metrics.</p>
             </article>
             <article className="why-card">
+              <div className="why-card-poster-wrap">
+                <img
+                  src="/industry-posters/healthcare-photo.jpg"
+                  alt="Healthcare - Hospital Operations & KPIs"
+                  className="why-card-poster-img"
+                  loading="lazy"
+                />
+              </div>
               <span className="who-badge">Healthcare</span>
               <h3>Hospital Operations &amp; KPIs</h3>
               <p>Forecast patient admissions, bed occupancy rates, analyze clinical outcomes, and detect fraudulent healthcare billing claims.</p>
             </article>
             <article className="why-card">
+              <div className="why-card-poster-wrap">
+                <img
+                  src="/industry-posters/ecommerce-photo.jpg"
+                  alt="Manufacturing & Supply Chain - Predictive Maintenance"
+                  className="why-card-poster-img"
+                  loading="lazy"
+                />
+              </div>
               <span className="who-badge">Manufacturing</span>
               <h3>Predictive Maintenance</h3>
               <p>Analyze IoT sensor telemetry, forecast machinery breakdown probabilities, and optimize supply chain delivery bottlenecks.</p>

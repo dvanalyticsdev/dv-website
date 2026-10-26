@@ -1006,31 +1006,79 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = () =>
 
           <div className="why-grid" style={{ marginTop: '28px' }}>
             <article className="why-card">
+              <div className="why-card-poster-wrap">
+                <img
+                  src="/industry-posters/banking-photo.jpg"
+                  alt="Banking - Credit-Risk & Collections"
+                  className="why-card-poster-img"
+                  loading="lazy"
+                />
+              </div>
               <span className="who-badge">Banking</span>
               <h3>Credit-Risk &amp; Collections</h3>
               <p>Credit-risk assessment, real-time default risk scoring, and intelligent collections prioritisation.</p>
             </article>
             <article className="why-card">
+              <div className="why-card-poster-wrap">
+                <img
+                  src="/industry-posters/insurance-photo.jpg"
+                  alt="Insurance - Claims & Fraud Risk"
+                  className="why-card-poster-img"
+                  loading="lazy"
+                />
+              </div>
               <span className="who-badge">Insurance</span>
               <h3>Claims &amp; Fraud Risk</h3>
               <p>Automated claims triage, payout estimation, and fraud-risk pattern identification.</p>
             </article>
             <article className="why-card">
+              <div className="why-card-poster-wrap">
+                <img
+                  src="/industry-posters/retail-photo.jpg"
+                  alt="Retail - Demand & Inventory"
+                  className="why-card-poster-img"
+                  loading="lazy"
+                />
+              </div>
               <span className="who-badge">Retail</span>
               <h3>Demand &amp; Inventory</h3>
               <p>Store-level demand forecasting, dynamic replenishment, and supply chain inventory planning.</p>
             </article>
             <article className="why-card">
+              <div className="why-card-poster-wrap">
+                <img
+                  src="/industry-posters/ecommerce-photo.jpg"
+                  alt="E-Commerce - Retention & Recommendations"
+                  className="why-card-poster-img"
+                  loading="lazy"
+                />
+              </div>
               <span className="who-badge">E-Commerce</span>
               <h3>Retention &amp; Recommendations</h3>
               <p>Personalized product recommendation engines, search intelligence, and churn intervention.</p>
             </article>
             <article className="why-card">
+              <div className="why-card-poster-wrap">
+                <img
+                  src="/industry-posters/telecom-photo.jpg"
+                  alt="Telecom - Churn & Service Quality"
+                  className="why-card-poster-img"
+                  loading="lazy"
+                />
+              </div>
               <span className="who-badge">Telecom</span>
               <h3>Churn &amp; Service Quality</h3>
               <p>Subscriber churn prediction, network fault detection, and service-quality diagnostic analysis.</p>
             </article>
             <article className="why-card">
+              <div className="why-card-poster-wrap">
+                <img
+                  src="/industry-posters/healthcare-photo.jpg"
+                  alt="Healthcare - Operations & Resources"
+                  className="why-card-poster-img"
+                  loading="lazy"
+                />
+              </div>
               <span className="who-badge">Healthcare</span>
               <h3>Operations &amp; Resources</h3>
               <p>Hospital patient admission forecasting, resource utilisation, and clinical workflow optimisation.</p>
