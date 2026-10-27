@@ -2,6 +2,9 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { googleReviewsData, GOOGLE_REVIEWS_LINK } from '../../data/googleReviewsData';
 import { CompaniesSection } from '../CompaniesSection';
 import './ApidsStoryLandingPage.css';
+import { BrochureLeadModal } from '../BrochureLeadModal';
+import { recordLeadSubmission } from '../../services/leadTrackingService';
+import { appendAttributionToPayload } from '../../utils/analytics';
 
 interface SelectOption {
   value: string;
@@ -110,19 +113,19 @@ export const FdeStoryLandingPage: React.FC<FdeStoryLandingPageProps> = () => {
   const [selectedModule, setSelectedModule] = useState<number | null>(null);
   const [showDeepDive, setShowDeepDive] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [isDemoFormOpen, setIsDemoFormOpen] = useState(false);
+  const [isBrochureModalOpen, setIsBrochureModalOpen] = useState(false);
 
   useEffect(() => {
-    if (!mobileMenuOpen && !isDemoFormOpen) return;
+    if (!mobileMenuOpen) return;
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         setMobileMenuOpen(false);
-        setIsDemoFormOpen(false);
+        
       }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [mobileMenuOpen, isDemoFormOpen]);
+  }, [mobileMenuOpen]);
 
   // Verified Google Reviews Carousel State
   const [reviewIndex, setReviewIndex] = useState(0);
@@ -271,6 +274,10 @@ export const FdeStoryLandingPage: React.FC<FdeStoryLandingPageProps> = () => {
     const heroForm = document.getElementById('fde-hero-lead-form');
     if (heroForm) {
       heroForm.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      const firstInput = heroForm.querySelector('input') as HTMLInputElement | null;
+      if (firstInput) {
+        setTimeout(() => firstInput.focus(), 400);
+      }
     }
   };
 
@@ -283,7 +290,7 @@ export const FdeStoryLandingPage: React.FC<FdeStoryLandingPageProps> = () => {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setFormError('');
 
@@ -313,6 +320,47 @@ export const FdeStoryLandingPage: React.FC<FdeStoryLandingPageProps> = () => {
     }
 
     setIsSubmitting(true);
+    const payload = new URLSearchParams();
+    payload.set('form_id', 'dv_website_lp_fde_registration');
+    payload.set('form_name', 'DV Website FDE Landing Page Registration');
+    payload.set('lead_type', 'admission');
+    payload.set('intent', 'registration');
+    payload.set('source_type', 'website');
+    payload.set('pipeline', 'main-admission');
+    payload.set('name', formData.name.trim());
+    payload.set('email', formData.email.trim());
+    payload.set('phone', formData.phone.trim());
+    payload.set('course', 'AI Forward Deployment Engineer (FDE)');
+    payload.set('highest_qualification', formData.qualification);
+    payload.set('experience', formData.experience);
+    payload.set('state', formData.state);
+    payload.set('page_url', window.location.href);
+    appendAttributionToPayload(payload);
+
+    try {
+      const response = await fetch('https://crm.dvanalyticsmds.in/api/webhook/elementor-lead', {
+        method: 'POST',
+        body: payload,
+      });
+      if (!response.ok) throw new Error('CRM submission failed');
+    } catch (error) {
+      console.warn('CRM submission failed:', error);
+      setIsSubmitting(false);
+      setFormError('Unable to submit your registration right now. Please try again.');
+      return;
+    }
+
+    recordLeadSubmission({
+      name: formData.name,
+      email: formData.email,
+      phone: formData.phone,
+      qualification: formData.qualification,
+      experience: formData.experience,
+      state: formData.state,
+      course: 'AI Forward Deployment Engineer (FDE)',
+      formType: 'hero-registration',
+      formLabel: 'Landing Page Lead Registration',
+    });
     setTimeout(() => {
       setIsSubmitting(false);
       setIsSubmitted(true);
@@ -758,30 +806,7 @@ export const FdeStoryLandingPage: React.FC<FdeStoryLandingPageProps> = () => {
                 </div>
               </div>
 
-              <div className="lp-hero-brochure-row">
-                <button
-                  type="button"
-                  className="lp-download-brochure-btn"
-                  onClick={() => setIsDemoFormOpen(true)}
-                >
-                  <svg
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2.4"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    aria-hidden="true"
-                  >
-                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                    <polyline points="7 10 12 15 17 10" />
-                    <line x1="12" y1="15" x2="12" y2="3" />
-                  </svg>
-                  <span>Download Brochure</span>
-                </button>
-              </div>
+              
             </div>
 
             {/* Registration Box on Right Side of Hero */}
@@ -2866,47 +2891,50 @@ export const FdeStoryLandingPage: React.FC<FdeStoryLandingPageProps> = () => {
         </div>
       )}
 
-      {/* Floating 'Join Free Demo Class' Button on Right Edge */}
+            {/* Floating Side Action Buttons on Right Edge */}
+      <div className="lp-side-actions-dock">
+  {/* Floating 'Book Free Counselling' Button on Right Edge */}
       <button
         type="button"
-        className="demo-btn-trigger"
-        onClick={() => setIsDemoFormOpen(true)}
-        aria-label="Join Free Demo Class"
+        className="get-call-btn-trigger lp-side-counsel-trigger"
+        onClick={scrollToForm}
+        aria-label="Book Free Counselling"
       >
-        <span className="demo-btn-icon" aria-hidden="true">
+        <span className="get-call-btn-icon" aria-hidden="true">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
-            <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+            <line x1="16" y1="2" x2="16" y2="6"></line>
+            <line x1="8" y1="2" x2="8" y2="6"></line>
+            <line x1="3" y1="10" x2="21" y2="10"></line>
           </svg>
         </span>
-        <span className="demo-btn-text">Join Free Demo Class</span>
+        <span className="get-call-btn-text">Book Free Counselling</span>
       </button>
 
-      {/* Registration Form Popup Modal for 'Join Free Demo Class' */}
-      {isDemoFormOpen && (
-        <div
-          className="lp-modal-backdrop"
-          onClick={() => setIsDemoFormOpen(false)}
-          role="dialog"
-          aria-modal="true"
-          aria-label="Register for AI Forward Deployment Engineer"
-        >
-          <div
-            className="lp-demo-form-modal-wrap"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <button
-              type="button"
-              className="lp-demo-form-modal-close"
-              onClick={() => setIsDemoFormOpen(false)}
-              aria-label="Close registration form"
-            >
-              ✕
-            </button>
-            {renderLeadForm('Register for AI Forward Deployment Engineer', 'Reserve your seat for the upcoming FDE batch.')}
-          </div>
-        </div>
-      )}
+      {/* Floating 'Download Brochure' Button on Right Edge */}
+      <button
+        type="button"
+        className="get-call-btn-trigger lp-side-brochure-trigger"
+        onClick={() => setIsBrochureModalOpen(true)}
+        aria-label="Download Brochure"
+      >
+        <span className="get-call-btn-icon" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+            <polyline points="7 10 12 15 17 10" />
+            <line x1="12" y1="15" x2="12" y2="3" />
+          </svg>
+        </span>
+        <span className="get-call-btn-text">Download Brochure</span>
+      </button>
+      </div>
+
+      {/* Brochure Lead Registration Modal */}
+      <BrochureLeadModal
+        isOpen={isBrochureModalOpen}
+        courseId="fde"
+        onClose={() => setIsBrochureModalOpen(false)}
+      />
     </div>
   );
 };

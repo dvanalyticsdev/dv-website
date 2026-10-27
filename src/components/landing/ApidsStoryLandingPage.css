@@ -1,3 +1,4 @@
+@import '../GetACallButton.css';
 /* ==========================================================================
    DV ANALYTICS - DATA SCIENCE & AI DEPLOYMENT ENGINEERING (APIDS)
    CLEAN EDITORIAL DESIGN SYSTEM
@@ -3682,15 +3683,46 @@ footer.lp-footer .wrap {
 /* ==========================================================================
    MOBILE & RESPONSIVE PERFORMANCE OPTIMIZATIONS
    ========================================================================== */
-.lp-page-wrapper .demo-btn-trigger {
+/* Fixed Dock for Persistent Side Action Buttons on Landing Pages */
+.lp-side-actions-dock {
+  position: fixed;
+  right: 0;
   top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 12px;
+  z-index: 2400;
+  pointer-events: none;
+}
+
+.lp-side-actions-dock .get-call-btn-trigger {
+  position: static !important;
+  top: auto !important;
+  right: auto !important;
+  transform: none !important;
+  pointer-events: auto;
+}
+
+.lp-side-actions-dock .get-call-btn-trigger:hover {
+  transform: none !important;
+  padding-left: 14px;
+}
+
+.lp-side-actions-dock .get-call-btn-trigger:active {
+  transform: scale(0.97) !important;
 }
 
 @media (max-width: 768px) {
-  .lp-page-wrapper .demo-btn-trigger {
-    padding: 11px 7px;
-    font-size: 0.8rem;
-    border-radius: 10px 0 0 10px;
+  .lp-side-actions-dock {
+    gap: 8px;
+  }
+
+  .lp-side-actions-dock .get-call-btn-trigger {
+    padding: 11px 7px !important;
+    font-size: 0.8rem !important;
+    border-radius: 10px 0 0 10px !important;
   }
 
   .lp-page-wrapper .hero {

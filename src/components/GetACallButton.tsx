@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import './GetACallButton.css';
-import { getAttribution, trackEvent } from '../utils/analytics';
+import { appendAttributionToPayload, getAttribution, trackEvent } from '../utils/analytics';
+import { recordLeadSubmission } from '../services/leadTrackingService';
 
 const COURSE_OPTIONS = [
   'Advanced Program in Industrial Data Science with AI Deployment (APIDS)',
@@ -14,6 +15,7 @@ const COURSE_OPTIONS = [
 
 const DEFAULT_GOOGLE_SHEET_WEBHOOK =
   'https://script.google.com/macros/s/AKfycbwXqmtKC4zYtmWUJT71D0Z7ZzBKp7qPLLDeOTGkbH5P1FVLN6f_VZ4Y7y6lhBuqvBc/exec';
+const CRM_ELEMENTOR_WEBHOOK_URL = 'https://crm.dvanalyticsmds.in/api/webhook/elementor-lead';
 
 interface FormState {
   name: string;
@@ -117,6 +119,32 @@ export const GetACallButton: React.FC<GetACallButtonProps> = ({ defaultCourse })
 
     let postSuccess = false;
 
+    const crmPayload = new URLSearchParams();
+    crmPayload.set('form_id', 'dv_website_get_a_call');
+    crmPayload.set('form_name', 'DV Website Get a Call Form');
+    crmPayload.set('lead_type', 'admission');
+    crmPayload.set('intent', 'counselling');
+    crmPayload.set('source_type', 'website');
+    crmPayload.set('pipeline', 'main-admission');
+    crmPayload.set('name', formData.name.trim());
+    crmPayload.set('phone', formData.phone.trim());
+    crmPayload.set('course', formData.course);
+    crmPayload.set('page_url', window.location.href);
+    appendAttributionToPayload(crmPayload);
+
+    try {
+      const crmResponse = await fetch(CRM_ELEMENTOR_WEBHOOK_URL, {
+        method: 'POST',
+        body: crmPayload,
+      });
+      if (!crmResponse.ok) {
+        throw new Error('CRM submission failed');
+      }
+      postSuccess = true;
+    } catch (err) {
+      console.warn('CRM submission failed:', err);
+    }
+
     // Send to Google Sheet Webhook if configured
     if (DEFAULT_GOOGLE_SHEET_WEBHOOK) {
       try {
@@ -128,7 +156,7 @@ export const GetACallButton: React.FC<GetACallButtonProps> = ({ defaultCourse })
           },
           body: JSON.stringify(payload),
         });
-        postSuccess = true;
+        // The CRM submission above remains the source of truth for lead routing.
       } catch (err) {
         console.warn('Google Sheet submission failed:', err);
       }
@@ -136,8 +164,15 @@ export const GetACallButton: React.FC<GetACallButtonProps> = ({ defaultCourse })
 
     setIsSubmitting(false);
 
-    if (postSuccess || !DEFAULT_GOOGLE_SHEET_WEBHOOK) {
+    if (postSuccess) {
       setIsSubmitted(true);
+      recordLeadSubmission({
+        name: formData.name,
+        phone: formData.phone,
+        course: formData.course,
+        formType: 'free-counselling',
+        formLabel: 'Book Free Counselling',
+      });
       trackEvent('submit_get_a_call_form', {
         course_name: formData.course,
       });

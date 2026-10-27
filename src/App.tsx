@@ -6,7 +6,6 @@ import { useScrollReveal } from './hooks/useScrollReveal';
 import { AauModal } from './components/AauModal';
 import { BrochureLeadModal } from './components/BrochureLeadModal';
 import { GetACallButton } from './components/GetACallButton';
-import { DemoClassModal } from './components/DemoClassModal';
 import { SkillPackageExplorer } from './components/SkillPackageExplorer';
 import { getPageFromPath, seoLandingPageRedirects } from './utils/routes';
 import { applySeoForPage, routePathByPageId } from './utils/seo';
@@ -34,6 +33,7 @@ const FdeWorkshopPage = lazy(() => import('./components/FdeWorkshopPage').then((
 const ApidsStoryLandingPage = lazy(() => import('./components/landing/ApidsStoryLandingPage').then((module) => ({ default: module.ApidsStoryLandingPage })));
 const ApidaStoryLandingPage = lazy(() => import('./components/landing/ApidaStoryLandingPage').then((module) => ({ default: module.ApidaStoryLandingPage })));
 const FdeStoryLandingPage = lazy(() => import('./components/landing/FdeStoryLandingPage').then((module) => ({ default: module.FdeStoryLandingPage })));
+const TrackingDashboard = lazy(() => import('./components/dashboard/TrackingDashboard').then((module) => ({ default: module.TrackingDashboard })));
 
 const heroPosterImages = [
   '/hero-stories/fde-student.jpg',
@@ -85,7 +85,6 @@ function App() {
   const scrollRevealRef = useScrollReveal(activePage);
   const [isAauModalOpen, setIsAauModalOpen] = useState(false);
   const [brochureCourseId, setBrochureCourseId] = useState<string | null>(null);
-  const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);
 
   useEffect(() => {
     initAnalytics();
@@ -545,6 +544,14 @@ function App() {
     );
   }
 
+  if (activePage === 'dashboard') {
+    return (
+      <Suspense fallback={<div className="route-loading" aria-label="Loading dashboard" />}>
+        <TrackingDashboard onNavigateHome={() => navigateToPage('home')} />
+      </Suspense>
+    );
+  }
+
   return (
     <div ref={scrollRevealRef}>
       <div className="page-progress-bar" key={activePage}></div>
@@ -576,10 +583,6 @@ function App() {
         onClose={() => setBrochureCourseId(null)}
       />
       <GetACallButton />
-      <DemoClassModal
-        isOpen={isDemoModalOpen}
-        onClose={() => setIsDemoModalOpen(false)}
-      />
     </div>
   );
 }

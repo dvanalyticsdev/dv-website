@@ -19,6 +19,7 @@ const trackingParamNames = [
 ];
 
 const attributionStorageKey = 'dv_attribution';
+const leadOriginStorageKey = 'dv_lead_origin';
 const gtmContainerId = (import.meta.env.VITE_GTM_ID as string | undefined) || 'GTM-NFB3LVLT';
 const gaMeasurementId = import.meta.env.VITE_GA_MEASUREMENT_ID as string | undefined;
 let lastTrackedPageLocation = '';
@@ -49,11 +50,25 @@ export const getAttribution = () => {
   }
 };
 
+export const getWebsiteLeadSource = () => {
+  const path = window.location.pathname.toLowerCase();
+  if (path === '/lp' || path.startsWith('/lp/')) {
+    window.sessionStorage.setItem(leadOriginStorageKey, 'Google Paid');
+    return 'Google Paid';
+  }
+
+  return window.sessionStorage.getItem(leadOriginStorageKey) || 'Google Organic';
+};
+
 export const appendAttributionToPayload = (payload: URLSearchParams) => {
   const attribution = getAttribution();
   Object.entries(attribution).forEach(([key, value]) => {
     payload.set(key, value);
   });
+  const leadSource = getWebsiteLeadSource();
+  payload.set('lead_source', leadSource);
+  payload.set('traffic_source', 'Google');
+  payload.set('traffic_medium', leadSource === 'Google Paid' ? 'Paid' : 'Organic');
   payload.set('landing_page_url', window.location.origin + window.location.pathname);
   payload.set('current_page_url', window.location.href);
   payload.set('referrer', document.referrer);

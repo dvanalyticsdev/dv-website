@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom';
 import { getCrmCourseMapping } from '../data/crmCourseMapping';
 import { getCourseMeta } from '../data/courseMeta';
 import { appendAttributionToPayload, trackEvent } from '../utils/analytics';
+import { recordLeadSubmission } from '../services/leadTrackingService';
 
 interface BrochureLeadModalProps {
   courseId?: string | null;
@@ -108,7 +109,7 @@ export const BrochureLeadModal: React.FC<BrochureLeadModalProps> = ({ courseId, 
     payload.set('lead_type', 'admission');
     payload.set('intent', 'brochure');
     payload.set('source_type', 'website');
-    payload.set('pipeline', 'admission');
+    payload.set('pipeline', 'main-admission');
     payload.set('name', formData.name.trim());
     payload.set('email', formData.email.trim());
     payload.set('phone', formData.phone.trim());
@@ -180,6 +181,15 @@ export const BrochureLeadModal: React.FC<BrochureLeadModalProps> = ({ courseId, 
       }
 
       setIsSubmitted(true);
+      recordLeadSubmission({
+        name: formData.name,
+        phone: formData.phone,
+        email: formData.email,
+        course: course.label,
+        formType: 'download-brochure',
+        formLabel: 'Course Brochure Download',
+        brochurePath: course.brochurePath,
+      });
       trackEvent('submit_brochure_form', {
         course_id: course.id,
         course_name: course.label,

@@ -195,6 +195,12 @@ const basePages: Record<string, { title: string; description: string; image?: st
     image: '/fde-training-banner.png',
     noindex: true,
   },
+  dashboard: {
+    title: 'Form Submission Tracking Dashboard | DV Analytics',
+    description: 'Internal real-time form submission tracking and lead analytics dashboard.',
+    image: '/logo-crop.png',
+    noindex: true,
+  },
   'not-found': {
     title: 'Page Not Found | DV Analytics',
     description: 'The DV Analytics page you requested could not be found.',

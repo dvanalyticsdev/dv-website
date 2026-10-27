@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useMagneticEffect } from '../hooks/useMagneticEffect';
 import { getCrmCourseMapping } from '../data/crmCourseMapping';
 import { appendAttributionToPayload, trackEvent } from '../utils/analytics';
+import { recordLeadSubmission } from '../services/leadTrackingService';
 
 const courses = [
   { id: 'apids', category: 'data-science', label: 'Advanced Program in Industrial Data Science with AI Deployment (APIDS)' },
@@ -228,7 +229,7 @@ export const EnrollmentPage: React.FC<EnrollmentPageProps> = ({ onBackHome, defa
     payload.set('lead_type', 'admission');
     payload.set('intent', 'enroll');
     payload.set('source_type', 'website');
-    payload.set('pipeline', 'admission');
+    payload.set('pipeline', 'main-admission');
     payload.set('name', formData.name.trim());
     payload.set('email', formData.email.trim());
     payload.set('phone', formData.phone.trim());
@@ -293,6 +294,17 @@ export const EnrollmentPage: React.FC<EnrollmentPageProps> = ({ onBackHome, defa
       }
 
       setIsSubmitted(true);
+      recordLeadSubmission({
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        qualification: formData.qualification,
+        experience: formData.experience,
+        state: formData.state,
+        course: selectedCourseLabel,
+        formType: 'full-enrollment',
+        formLabel: 'Full Course Admission Inquiry',
+      });
       trackEvent('submit_enroll_form', {
         course_id: formData.course,
         course_name: selectedCourseLabel,
