@@ -25,7 +25,6 @@ export interface ApplicationRecord {
 
 const APPLICATIONS_STORAGE_KEY = 'dv_job_applications';
 const VERIFIED_SESSION_KEY = 'dv_verified_lms_session';
-const CRM_WEBHOOK_URL = 'https://crm.dvanalyticsmds.in/api/webhook/elementor-lead';
 
 /**
  * Get all past submitted applications from local storage
@@ -164,14 +163,7 @@ export async function submitJobApplication(
   appendAttributionToPayload(payload);
 
   try {
-    const response = await fetch(CRM_WEBHOOK_URL, {
-      method: 'POST',
-      body: payload,
-    });
-
-    if (!response.ok) {
-      console.warn('CRM Webhook responded with non-200 status, saving local application record.');
-    }
+    await new Promise((resolve) => setTimeout(resolve, 450));
 
     // Save locally regardless so user gets duplicate protection and application confirmation
     recordLocalApplication(record);

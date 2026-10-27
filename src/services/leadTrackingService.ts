@@ -5,7 +5,6 @@ export type FormType =
   | 'download-brochure'
   | 'free-counselling'
   | 'full-enrollment'
-  | 'job-application';
 
 export interface LeadSubmission {
   id: string;

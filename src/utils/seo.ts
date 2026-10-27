@@ -196,7 +196,7 @@ const basePages: Record<string, { title: string; description: string; image?: st
     noindex: true,
   },
   dashboard: {
-    title: 'Form Submission Tracking Dashboard | DV Analytics',
+    title: 'Submission tracking | DV Analytics',
     description: 'Internal real-time form submission tracking and lead analytics dashboard.',
     image: '/logo-crop.png',
     noindex: true,
