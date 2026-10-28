@@ -195,6 +195,30 @@ const basePages: Record<string, { title: string; description: string; image?: st
     image: '/fde-training-banner.png',
     noindex: true,
   },
+  'lp-apida-thank-you': {
+    title: 'Thank You for Registering - APIDA | DV Analytics',
+    description: "You're all set! Your registration for the Advanced Program in Industrial Data Analytics & AI (APIDA) has been received. Our career advisor will reach out shortly.",
+    image: '/apida-training-banner.png',
+    noindex: true,
+  },
+  'lp-apids-thank-you': {
+    title: 'Thank You for Registering - APIDS | DV Analytics',
+    description: "You're all set! Your registration for the Advanced Program in Industrial Data Science with AI Deployment (APIDS) has been received.",
+    image: '/courses-poster/APIDS.png',
+    noindex: true,
+  },
+  'lp-fde-thank-you': {
+    title: 'Thank You for Registering - FDE | DV Analytics',
+    description: "You're all set! Your registration for the Master Program in AI Forward Deployment Engineer (FDE) has been received.",
+    image: '/fde-training-banner.png',
+    noindex: true,
+  },
+  'lp-thank-you': {
+    title: 'Thank You for Registering | DV Analytics',
+    description: "You're all set! Your registration request has been received. Our career advisor will reach out shortly.",
+    image: '/apida-training-banner.png',
+    noindex: true,
+  },
   dashboard: {
     title: 'Submission tracking | DV Analytics',
     description: 'Internal real-time form submission tracking and lead analytics dashboard.',

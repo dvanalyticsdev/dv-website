@@ -33,6 +33,7 @@ const FdeWorkshopPage = lazy(() => import('./components/FdeWorkshopPage').then((
 const ApidsStoryLandingPage = lazy(() => import('./components/landing/ApidsStoryLandingPage').then((module) => ({ default: module.ApidsStoryLandingPage })));
 const ApidaStoryLandingPage = lazy(() => import('./components/landing/ApidaStoryLandingPage').then((module) => ({ default: module.ApidaStoryLandingPage })));
 const FdeStoryLandingPage = lazy(() => import('./components/landing/FdeStoryLandingPage').then((module) => ({ default: module.FdeStoryLandingPage })));
+import { LandingThankYouPage } from './components/landing/LandingThankYouPage';
 const TrackingDashboard = lazy(() => import('./components/dashboard/TrackingDashboard').then((module) => ({ default: module.TrackingDashboard })));
 
 const heroPosterImages = [
@@ -523,7 +524,10 @@ function App() {
   if (activePage === 'lp-apids') {
     return (
       <Suspense fallback={<div className="route-loading" aria-label="Loading page content" />}>
-        <ApidsStoryLandingPage onNavigateHome={() => navigateToPage('home')} />
+        <ApidsStoryLandingPage
+          onNavigateHome={() => navigateToPage('home')}
+          onRegistrationSuccess={() => navigateToPage('lp-apids-thank-you')}
+        />
       </Suspense>
     );
   }
@@ -531,7 +535,10 @@ function App() {
   if (activePage === 'lp-apida') {
     return (
       <Suspense fallback={<div className="route-loading" aria-label="Loading page content" />}>
-        <ApidaStoryLandingPage onNavigateHome={() => navigateToPage('home')} />
+        <ApidaStoryLandingPage
+          onNavigateHome={() => navigateToPage('home')}
+          onRegistrationSuccess={() => navigateToPage('lp-apida-thank-you')}
+        />
       </Suspense>
     );
   }
@@ -539,7 +546,31 @@ function App() {
   if (activePage === 'lp-fde') {
     return (
       <Suspense fallback={<div className="route-loading" aria-label="Loading page content" />}>
-        <FdeStoryLandingPage onNavigateHome={() => navigateToPage('home')} />
+        <FdeStoryLandingPage
+          onNavigateHome={() => navigateToPage('home')}
+          onRegistrationSuccess={() => navigateToPage('lp-fde-thank-you')}
+        />
+      </Suspense>
+    );
+  }
+
+  if (
+    activePage === 'lp-apida-thank-you' ||
+    activePage === 'lp-apids-thank-you' ||
+    activePage === 'lp-fde-thank-you' ||
+    activePage === 'lp-thank-you'
+  ) {
+    const tyCourseId =
+      activePage === 'lp-apids-thank-you'
+        ? 'apids'
+        : activePage === 'lp-fde-thank-you'
+        ? 'fde'
+        : activePage === 'lp-apida-thank-you'
+        ? 'apida'
+        : undefined;
+    return (
+      <Suspense fallback={<div className="route-loading" aria-label="Loading page content" />}>
+        <LandingThankYouPage courseId={tyCourseId} onNavigate={navigateToPage} />
       </Suspense>
     );
   }

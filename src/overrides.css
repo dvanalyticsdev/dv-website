@@ -4717,3 +4717,108 @@ button {
 
 
 
+/* ==========================================================================
+   Header & Navigation Stability Across All Pages (Including Course Detail)
+   Prevents nav items ("All Courses", "Who We Are", "Meet Our Alumni", etc.)
+   from wrapping onto multiple lines or deforming when course actions appear.
+   ========================================================================== */
+.site-header .logo-link,
+.site-header .nav-item,
+.site-header .header-course-actions,
+.site-header .header-contact-actions,
+.site-header .chevron-icon {
+  flex-shrink: 0;
+}
+
+.site-header .desktop-header-row {
+  gap: clamp(0.5rem, 1vw, 1.1rem);
+  flex-wrap: nowrap;
+}
+
+.site-header .desktop-nav-panel {
+  padding: 0.3rem clamp(0.25rem, 0.6vw, 0.75rem);
+  min-width: 0;
+}
+
+.site-header .desktop-nav-panel .nav-list {
+  gap: clamp(0.3rem, 0.65vw, 0.75rem);
+  flex-wrap: nowrap;
+}
+
+.site-header .desktop-nav-panel .nav-item > a,
+.site-header .desktop-nav-panel .dropdown-trigger {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  gap: 0.32rem;
+  white-space: nowrap !important;
+  line-height: 1.2;
+  font-size: clamp(0.8rem, 0.85vw, 0.88rem);
+  padding: 0.45rem clamp(0.55rem, 0.65vw, 0.8rem);
+  border-radius: 100px;
+}
+
+.site-header .nav-item > a.nav-upcoming-btn {
+  padding: 0.48rem clamp(0.78rem, 0.95vw, 1.05rem) !important;
+  font-size: clamp(0.8rem, 0.85vw, 0.86rem) !important;
+  line-height: 1.2 !important;
+  white-space: nowrap !important;
+}
+
+.site-header .header-course-actions {
+  gap: clamp(0.4rem, 0.6vw, 0.65rem);
+  margin-left: 0;
+}
+
+.site-header .desktop-header-row .btn-enroll-header,
+.site-header .desktop-header-row .btn-header-brochure {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 100px !important;
+  padding: 0.5rem clamp(0.85rem, 1.05vw, 1.2rem);
+  font-size: clamp(0.8rem, 0.85vw, 0.86rem);
+  font-weight: 600;
+  line-height: 1.2;
+  white-space: nowrap !important;
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(239, 83, 35, 0.25);
+}
+
+@media (min-width: 901px) and (max-width: 1380px) {
+  .site-header .header-container {
+    padding: 0 1rem;
+  }
+
+  .site-header .logo-image {
+    height: clamp(36px, 3.2vw, 44px);
+  }
+
+  .site-header .desktop-nav-panel {
+    padding: 0.25rem 0.2rem;
+  }
+
+  .site-header .desktop-nav-panel .nav-list {
+    gap: clamp(0.15rem, 0.4vw, 0.45rem);
+  }
+
+  .site-header .desktop-nav-panel .nav-item > a,
+  .site-header .desktop-nav-panel .dropdown-trigger {
+    font-size: clamp(0.75rem, 0.8vw, 0.84rem);
+    padding: 0.4rem clamp(0.4rem, 0.55vw, 0.65rem);
+  }
+
+  .site-header .nav-item > a.nav-upcoming-btn {
+    padding: 0.42rem clamp(0.6rem, 0.8vw, 0.9rem) !important;
+    font-size: clamp(0.75rem, 0.8vw, 0.84rem) !important;
+  }
+
+  .site-header .desktop-header-row .btn-enroll-header {
+    padding: 0.45rem clamp(0.75rem, 0.95vw, 1.05rem);
+    font-size: clamp(0.76rem, 0.8vw, 0.84rem);
+  }
+
+  .site-header .desktop-header-row .btn-header-brochure {
+    display: none;
+  }
+}

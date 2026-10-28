@@ -1,0 +1,916 @@
+/* ==========================================================================
+   DV ANALYTICS — LANDING PAGE THANK YOU / CONFIRMATION PAGE
+   Visual & Content Reference: https://d.dvanalyticsmds.com/thanks-you/
+   Aligned with DV Analytics Landing Page Editorial Branding
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800;12..96,900&family=IBM+Plex+Mono:wght@500;600;700&family=Public+Sans:wght@400;500;600;700;800&display=swap');
+
+.lp-ty-page {
+  --ty-bg: #f8fafc;
+  --ty-surface: #ffffff;
+  --ty-ink: #141a4a;
+  --ty-navy: #001d4a;
+  --ty-navy-mid: #1f2a6e;
+  --ty-navy-soft: #e7eaf9;
+  --ty-muted: #4a527f;
+  --ty-line: #dce0f1;
+  --ty-accent: #ef5323;
+  --ty-accent-hover: #d9480f;
+  --ty-accent-soft: #fce8df;
+  --ty-green: #10b981;
+  --ty-display: 'Bricolage Grotesque', 'Segoe UI', system-ui, sans-serif;
+  --ty-body: 'Public Sans', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --ty-mono: 'IBM Plex Mono', ui-monospace, Menlo, Consolas, monospace;
+
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--ty-bg);
+  color: var(--ty-ink);
+  font-family: var(--ty-body);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
+}
+
+.lp-ty-page *,
+.lp-ty-page *::before,
+.lp-ty-page *::after {
+  box-sizing: border-box;
+}
+
+.lp-ty-wrap {
+  width: 100%;
+  max-width: 1320px;
+  margin: 0 auto;
+  padding-inline: clamp(18px, 3.5vw, 48px);
+}
+
+/* --------------------------------------------------------------------------
+   1. TOP HEADER BAR (Matches Landing Page & Reference Top Logo Section)
+   -------------------------------------------------------------------------- */
+.lp-ty-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: #ffffff;
+  border-bottom: 1px solid var(--ty-line);
+  box-shadow: 0 2px 14px rgba(20, 26, 74, 0.06);
+}
+
+.lp-ty-header-inner {
+  width: 100%;
+  max-width: 100%;
+  padding-inline: clamp(20px, 3vw, 44px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 66px;
+}
+
+.lp-ty-logo-link {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  text-decoration: none;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.lp-ty-logo {
+  height: 40px;
+  width: auto;
+  display: block;
+}
+
+.lp-ty-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.lp-ty-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border-radius: 9px;
+  background: #ffffff;
+  color: var(--ty-ink);
+  font: 700 0.9rem/1 var(--ty-body);
+  border: 1.5px solid var(--ty-line);
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.lp-ty-back-btn:hover {
+  border-color: var(--ty-ink);
+  background: var(--ty-navy-soft);
+}
+
+/* --------------------------------------------------------------------------
+   2. MAIN HERO & CONFIRMATION SECTION (Deep Navy Gradient + Editorial Card)
+   -------------------------------------------------------------------------- */
+.lp-ty-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.lp-ty-main-band {
+  flex: 1;
+  position: relative;
+  background: linear-gradient(145deg, #001d4a 0%, #141a4a 58%, #1f2a6e 100%);
+  color: #ffffff;
+  padding-block: clamp(44px, 6vw, 76px) clamp(32px, 4.5vw, 56px);
+  overflow: hidden;
+}
+
+.lp-ty-main-band::before {
+  content: '';
+  position: absolute;
+  top: -140px;
+  right: -120px;
+  width: 520px;
+  height: 520px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(239, 83, 35, 0.22) 0%, rgba(239, 83, 35, 0) 70%);
+  pointer-events: none;
+}
+
+.lp-ty-main-band::after {
+  content: '';
+  position: absolute;
+  bottom: -160px;
+  left: -120px;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.14) 0%, rgba(56, 189, 248, 0) 70%);
+  pointer-events: none;
+}
+
+.lp-ty-hero-head {
+  position: relative;
+  z-index: 1;
+  max-width: 960px;
+  margin: 0 auto;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.lp-ty-check-badge-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 18px 7px 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  backdrop-filter: blur(8px);
+}
+
+.lp-ty-check-circle {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--ty-green);
+  color: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 14px rgba(16, 185, 129, 0.55);
+  flex-shrink: 0;
+}
+
+.lp-ty-status-kicker {
+  font: 700 0.78rem/1.2 var(--ty-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #f8fafc;
+}
+
+.lp-ty-title {
+  font-family: var(--ty-display);
+  font-size: clamp(2rem, 4.5vw, 3.45rem);
+  font-weight: 800;
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  margin: 0;
+  color: #ffffff;
+  text-wrap: balance;
+}
+
+.lp-ty-title-accent {
+  color: var(--ty-accent);
+}
+
+.lp-ty-confirm-subhead {
+  font-family: var(--ty-display);
+  font-size: clamp(1.18rem, 2.2vw, 1.5rem);
+  font-weight: 700;
+  color: #fde68a;
+  margin: 0;
+}
+
+.lp-ty-lead {
+  font-size: clamp(1.02rem, 1.6vw, 1.2rem);
+  line-height: 1.65;
+  color: rgba(255, 255, 255, 0.9);
+  max-width: 820px;
+  margin: 0;
+}
+
+.lp-ty-lead strong {
+  color: #ffffff;
+  font-weight: 700;
+}
+
+/* Registration Details Pill Bar (Shown when user submits registration form) */
+.lp-ty-user-summary {
+  margin-top: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px 14px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 14px;
+  padding: 12px 20px;
+  max-width: 900px;
+}
+
+.lp-ty-user-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.88rem;
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.lp-ty-user-chip span {
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  font-family: var(--ty-mono);
+  letter-spacing: 0.05em;
+}
+
+.lp-ty-user-chip b {
+  color: #ffffff;
+  font-weight: 700;
+}
+
+/* --------------------------------------------------------------------------
+   3. TWO-COLUMN HIGHLIGHTS & CLASSROOM IMAGE (Reference Page Core Layout)
+   -------------------------------------------------------------------------- */
+.lp-ty-showcase-grid {
+  position: relative;
+  z-index: 1;
+  margin-top: clamp(32px, 4.5vw, 52px);
+  display: grid;
+  grid-template-columns: 1.25fr 0.95fr;
+  gap: clamp(28px, 4vw, 52px);
+  align-items: center;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 24px;
+  padding: clamp(24px, 3.8vw, 44px);
+  backdrop-filter: blur(10px);
+}
+
+.lp-ty-highlights-col {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.lp-ty-highlights-eyebrow {
+  font: 700 0.78rem/1 var(--ty-mono);
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: #ff8a65;
+}
+
+.lp-ty-highlights-heading {
+  font-family: var(--ty-display);
+  font-size: clamp(1.35rem, 2.4vw, 1.85rem);
+  font-weight: 800;
+  color: #ffffff;
+  margin: 0;
+  line-height: 1.22;
+}
+
+.lp-ty-highlights-list {
+  list-style: none;
+  margin: 4px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 14px;
+}
+
+.lp-ty-highlights-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 14px;
+  padding: 14px 18px;
+  transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.lp-ty-highlights-item:hover {
+  transform: translateX(4px);
+  background: rgba(255, 255, 255, 0.11);
+  border-color: rgba(239, 83, 35, 0.55);
+}
+
+.lp-ty-highlight-dot {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: rgba(239, 83, 35, 0.2);
+  border: 1px solid rgba(239, 83, 35, 0.45);
+  color: #ff8a65;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.lp-ty-highlight-text {
+  font-size: 1.02rem;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.lp-ty-highlight-text strong {
+  color: #ffffff;
+  font-weight: 800;
+  margin-right: 6px;
+}
+
+/* Classroom Photo Frame (Matches Reference Page border-radius: 100px 0px 100px 0px) */
+.lp-ty-image-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.lp-ty-image-frame {
+  position: relative;
+  width: 100%;
+  max-width: 520px;
+  border-radius: 90px 0px 90px 0px;
+  overflow: hidden;
+  border: 3px solid rgba(255, 255, 255, 0.22);
+  box-shadow:
+    0 18px 45px rgba(0, 0, 0, 0.38),
+    0 0 24px rgba(239, 83, 35, 0.35);
+}
+
+.lp-ty-classroom-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+  aspect-ratio: 4 / 3;
+}
+
+.lp-ty-image-caption {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.85);
+  background: rgba(0, 29, 74, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  padding: 7px 16px;
+  border-radius: 999px;
+}
+
+/* --------------------------------------------------------------------------
+   4. PROMINENT GRADIENT BROCHURE DOWNLOAD BANNER (Reference CTA Block)
+   -------------------------------------------------------------------------- */
+.lp-ty-brochure-cta-wrap {
+  position: relative;
+  z-index: 1;
+  max-width: 860px;
+  margin: clamp(32px, 4.5vw, 48px) auto 0;
+  text-align: center;
+}
+
+.lp-ty-brochure-banner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: clamp(22px, 3vw, 32px) clamp(24px, 4vw, 44px);
+  border-radius: 16px;
+  background: linear-gradient(150deg, #ec4e20 9%, #f2295b 85%);
+  color: #ffffff;
+  text-decoration: none;
+  border: 2px solid rgba(255, 255, 255, 0.26);
+  box-shadow:
+    0 16px 38px rgba(236, 78, 32, 0.42),
+    0 4px 14px rgba(0, 0, 0, 0.35);
+  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.22s ease, background 0.22s ease;
+  cursor: pointer;
+}
+
+.lp-ty-brochure-banner:hover {
+  transform: translateY(-3px) scale(1.01);
+  background: linear-gradient(150deg, #f2295b 10%, #ec4e20 95%);
+  box-shadow:
+    0 22px 48px rgba(242, 41, 91, 0.48),
+    0 6px 18px rgba(0, 0, 0, 0.4);
+}
+
+.lp-ty-brochure-banner-title {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  font-family: var(--ty-display);
+  font-size: clamp(1.45rem, 3vw, 2.25rem);
+  font-weight: 800;
+  color: #ffffff;
+  line-height: 1.2;
+}
+
+.lp-ty-brochure-banner-sub {
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.92);
+  font-weight: 500;
+}
+
+.lp-ty-rep-note {
+  margin-top: 20px;
+  font-size: clamp(1.08rem, 1.8vw, 1.3rem);
+  font-weight: 600;
+  color: #ffffff;
+  letter-spacing: 0.01em;
+}
+
+/* --------------------------------------------------------------------------
+   5. WHAT HAPPENS NEXT (3-STEP FOLLOW-UP ROADMAP SECTION)
+   -------------------------------------------------------------------------- */
+.lp-ty-next-section {
+  padding-block: clamp(48px, 6vw, 80px);
+  background: #ffffff;
+  border-bottom: 1px solid var(--ty-line);
+}
+
+.lp-ty-sec-head {
+  text-align: center;
+  max-width: 780px;
+  margin: 0 auto 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.lp-ty-sec-kicker {
+  font: 700 0.8rem/1 var(--ty-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ty-accent);
+}
+
+.lp-ty-sec-title {
+  font-family: var(--ty-display);
+  font-size: clamp(1.65rem, 3vw, 2.35rem);
+  font-weight: 800;
+  color: var(--ty-ink);
+  margin: 0;
+}
+
+.lp-ty-sec-desc {
+  font-size: 1.05rem;
+  color: var(--ty-muted);
+  margin: 0;
+}
+
+.lp-ty-steps-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.lp-ty-step-card {
+  background: var(--ty-bg);
+  border: 1.5px solid var(--ty-line);
+  border-top: 4px solid var(--ty-accent);
+  border-radius: 16px;
+  padding: 26px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  box-shadow: 0 8px 24px rgba(20, 26, 74, 0.05);
+}
+
+.lp-ty-step-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.lp-ty-step-num {
+  font: 700 0.8rem/1 var(--ty-mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 6px 12px;
+  border-radius: 8px;
+  background: var(--ty-accent-soft);
+  color: var(--ty-accent);
+}
+
+.lp-ty-step-time {
+  font: 600 0.78rem/1 var(--ty-mono);
+  color: var(--ty-muted);
+}
+
+.lp-ty-step-card h3 {
+  font-family: var(--ty-display);
+  font-size: 1.22rem;
+  font-weight: 800;
+  color: var(--ty-ink);
+  margin: 0;
+}
+
+.lp-ty-step-card p {
+  font-size: 0.95rem;
+  color: var(--ty-muted);
+  margin: 0;
+  line-height: 1.58;
+}
+
+/* --------------------------------------------------------------------------
+   5. 3-COLUMN CONTACT & SOCIAL ROW (Matches Reference Bottom Contact Section)
+   -------------------------------------------------------------------------- */
+.lp-ty-contact-row {
+  position: relative;
+  z-index: 1;
+  margin-top: clamp(36px, 5vw, 56px);
+  padding-top: clamp(24px, 3vw, 32px);
+  border-top: 1px solid rgba(255, 255, 255, 0.16);
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+  align-items: end;
+}
+
+.lp-ty-contact-col {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.lp-ty-contact-col-center {
+  align-items: center;
+  text-align: center;
+}
+
+.lp-ty-phone-block {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.lp-ty-phone-icon {
+  color: #f97316;
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  margin-top: 4px;
+}
+
+.lp-ty-phone-icon svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.lp-ty-phone-numbers {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.lp-ty-phone-link {
+  font-family: var(--ty-display);
+  font-size: 1.22rem;
+  font-weight: 700;
+  color: #e2e8f0;
+  text-decoration: none;
+  line-height: 1.4;
+  white-space: nowrap;
+  transition: color 0.18s ease;
+}
+
+.lp-ty-phone-link:hover {
+  color: var(--ty-accent);
+}
+
+.lp-ty-website-heading {
+  margin: 0;
+  font-family: var(--ty-display);
+  font-size: 1.06rem;
+  font-weight: 600;
+}
+
+.lp-ty-website-heading a {
+  color: #f9f9f9;
+  text-decoration: none;
+  transition: color 0.18s ease;
+}
+
+.lp-ty-website-heading a:hover {
+  color: var(--ty-accent);
+}
+
+.lp-ty-contact-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+  align-items: stretch;
+}
+
+.lp-ty-contact-card {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 18px;
+  padding: 26px 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.lp-ty-contact-label {
+  font: 700 0.76rem/1 var(--ty-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.68);
+}
+
+.lp-ty-contact-heading {
+  font-family: var(--ty-display);
+  font-size: 1.22rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0;
+  line-height: 1.45;
+}
+
+.lp-ty-contact-link-highlight {
+  color: var(--ty-accent);
+  text-decoration: none;
+  font-weight: 800;
+  transition: color 0.18s ease;
+  word-break: break-word;
+}
+
+.lp-ty-contact-link-highlight:hover {
+  color: #ff8a65;
+  text-decoration: underline;
+}
+
+.lp-ty-phone-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.lp-ty-phone-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+  font-size: 1.02rem;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.lp-ty-quick-btns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.lp-ty-quick-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-radius: 10px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.18s ease;
+}
+
+.lp-ty-quick-btn.call {
+  background: var(--ty-accent);
+  color: #ffffff;
+}
+
+.lp-ty-quick-btn.call:hover {
+  background: var(--ty-accent-hover);
+}
+
+.lp-ty-quick-btn.whatsapp {
+  background: #25d366;
+  color: #ffffff;
+}
+
+.lp-ty-quick-btn.whatsapp:hover {
+  background: #1ebe5d;
+}
+
+/* Social Icons Row (Matches Reference Page Orange Circle Social Icons) */
+.lp-ty-social-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.lp-ty-social-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: #ec4e20;
+  color: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  transition: transform 0.18s ease, background 0.18s ease;
+  box-shadow: 0 4px 12px rgba(236, 78, 32, 0.35);
+}
+
+.lp-ty-social-icon:hover {
+  transform: translateY(-2px) scale(1.06);
+  background: #ff6333;
+}
+
+.lp-ty-website-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--ty-display);
+  font-size: 1.08rem;
+  font-weight: 700;
+  color: #f9f9f9;
+  text-decoration: none;
+}
+
+.lp-ty-website-link:hover {
+  color: var(--ty-accent);
+}
+
+/* --------------------------------------------------------------------------
+   7. FOOTER (Matches Reference Page & Landing Page Footer)
+   -------------------------------------------------------------------------- */
+.lp-ty-footer {
+  margin-top: auto;
+  background: #090e24;
+  color: rgba(255, 255, 255, 0.75);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-block: 26px;
+}
+
+.lp-ty-footer-inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px 24px;
+}
+
+.lp-ty-footer-tagline {
+  font: 700 0.82rem/1.4 var(--ty-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #ffffff;
+}
+
+.lp-ty-footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 18px;
+}
+
+.lp-ty-footer-links a,
+.lp-ty-footer-links button {
+  background: none;
+  border: none;
+  padding: 0;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 0.88rem;
+  font-family: var(--ty-body);
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.18s ease;
+}
+
+.lp-ty-footer-links a:hover,
+.lp-ty-footer-links button:hover {
+  color: var(--ty-accent);
+}
+
+.lp-ty-footer-copy {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* --------------------------------------------------------------------------
+   RESPONSIVE BREAKPOINTS (TABLET & MOBILE)
+   -------------------------------------------------------------------------- */
+@media (max-width: 992px) {
+  .lp-ty-showcase-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .lp-ty-steps-grid,
+  .lp-ty-contact-grid,
+  .lp-ty-contact-row {
+    grid-template-columns: 1fr;
+  }
+
+  .lp-ty-contact-col-center {
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .lp-ty-image-frame {
+    max-width: 560px;
+    border-radius: 56px 0px 56px 0px;
+  }
+}
+
+@media (max-width: 600px) {
+  .lp-ty-header-inner {
+    min-height: 62px;
+  }
+
+  .lp-ty-logo {
+    height: 34px;
+  }
+
+  .lp-ty-helpline-pill span {
+    display: none;
+  }
+
+  .lp-ty-back-btn {
+    padding: 8px 12px;
+    font-size: 0.82rem;
+  }
+
+  .lp-ty-showcase-grid {
+    padding: 20px 16px;
+    border-radius: 18px;
+  }
+
+  .lp-ty-highlights-item {
+    padding: 12px 14px;
+  }
+
+  .lp-ty-image-frame {
+    border-radius: 40px 0px 40px 0px;
+  }
+
+  .lp-ty-brochure-banner {
+    padding: 18px 16px;
+  }
+
+  .lp-ty-footer-inner {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .lp-ty-footer-links {
+    justify-content: center;
+  }
+}

@@ -116,6 +116,10 @@ export const getPageFromPath = (pathname: string): string => {
   if (normalizedPath === '/lp/apids' || normalizedPath === '/lp/apids/') return 'lp-apids';
   if (normalizedPath === '/lp/apida' || normalizedPath === '/lp/apida/') return 'lp-apida';
   if (normalizedPath === '/lp/fde' || normalizedPath === '/lp/fde/') return 'lp-fde';
+  if (normalizedPath === '/lp/apida/thank-you' || normalizedPath === '/lp/apida/thanks-you') return 'lp-apida-thank-you';
+  if (normalizedPath === '/lp/apids/thank-you' || normalizedPath === '/lp/apids/thanks-you') return 'lp-apids-thank-you';
+  if (normalizedPath === '/lp/fde/thank-you' || normalizedPath === '/lp/fde/thanks-you') return 'lp-fde-thank-you';
+  if (normalizedPath === '/lp/thank-you' || normalizedPath === '/lp/thanks-you' || normalizedPath === '/thank-you' || normalizedPath === '/thanks-you') return 'lp-thank-you';
   if (normalizedPath === '/dashboard' || normalizedPath === '/tracking' || normalizedPath === '/tracking-dashboard' || normalizedPath === '/admin/dashboard') return 'dashboard';
   if (parts[0] && seoLandingPageRedirects[parts[0]]) return getPageFromPath(seoLandingPageRedirects[parts[0]]);
   if (parts[0] && seoLandingPageIdBySlug[parts[0]]) return seoLandingPageIdBySlug[parts[0]];
@@ -139,6 +143,10 @@ export const getPathFromPage = (pageId: string) => {
   if (pageId === 'lp-apids') return '/lp/apids/';
   if (pageId === 'lp-apida') return '/lp/apida/';
   if (pageId === 'lp-fde') return '/lp/fde/';
+  if (pageId === 'lp-apida-thank-you') return '/lp/apida/thank-you/';
+  if (pageId === 'lp-apids-thank-you') return '/lp/apids/thank-you/';
+  if (pageId === 'lp-fde-thank-you') return '/lp/fde/thank-you/';
+  if (pageId === 'lp-thank-you') return '/lp/thank-you/';
   if (pageId === 'dashboard') return '/dashboard';
   if (pageId === 'not-found') return '/404';
 

@@ -4,7 +4,8 @@ import { CompaniesSection } from '../CompaniesSection';
 import './ApidsStoryLandingPage.css';
 import { BrochureLeadModal } from '../BrochureLeadModal';
 import { recordLeadSubmission } from '../../services/leadTrackingService';
-import { appendAttributionToPayload } from '../../utils/analytics';
+import { appendAttributionToPayload, trackEvent } from '../../utils/analytics';
+import { saveLandingRegistration } from '../../utils/landingRegistrationStorage';
 
 interface SelectOption {
   value: string;
@@ -95,9 +96,10 @@ const LpCustomSelect: React.FC<LpCustomSelectProps> = ({
 
 export interface ApidaStoryLandingPageProps {
   onNavigateHome?: () => void;
+  onRegistrationSuccess?: () => void;
 }
 
-export const ApidaStoryLandingPage: React.FC<ApidaStoryLandingPageProps> = () => {
+export const ApidaStoryLandingPage: React.FC<ApidaStoryLandingPageProps> = ({ onRegistrationSuccess }) => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -361,10 +363,28 @@ export const ApidaStoryLandingPage: React.FC<ApidaStoryLandingPageProps> = () =>
       formType: 'hero-registration',
       formLabel: 'Landing Page Lead Registration',
     });
-    setTimeout(() => {
-      setIsSubmitting(false);
-      setIsSubmitted(true);
-    }, 900);
+    saveLandingRegistration({
+      name: formData.name.trim(),
+      email: formData.email.trim(),
+      phone: formData.phone.trim(),
+      qualification: formData.qualification,
+      experience: formData.experience,
+      state: formData.state,
+      course: 'Advanced Program in Industrial Data Analytics & AI (APIDA)',
+      courseId: 'apida',
+      submittedAt: new Date().toISOString(),
+    });
+    trackEvent('submit_enroll_form', {
+      course_id: 'apida',
+      course_name: 'Advanced Program in Industrial Data Analytics & AI (APIDA)',
+      form_id: 'dv_website_lp_apida_registration',
+    });
+    setIsSubmitting(false);
+    setIsSubmitted(true);
+    if (onRegistrationSuccess) {
+      onRegistrationSuccess();
+    }
+    window.location.assign('/lp/apida/thank-you/');
   };
 
   const renderLeadForm = (
@@ -375,18 +395,18 @@ export const ApidaStoryLandingPage: React.FC<ApidaStoryLandingPageProps> = () =>
       {isSubmitted ? (
         <div className="lp-form-success-banner">
           <h3 style={{ fontSize: '1.4rem', fontWeight: 800, marginBottom: '8px', color: '#065f46' }}>
-            Registration Submitted Successfully!
+            Redirecting to Thank You Page...
           </h3>
           <p style={{ color: '#047857', fontSize: '0.95rem', lineHeight: 1.5, marginBottom: '14px' }}>
-            Thank you, <strong>{formData.name}</strong>. An admissions counselor from DV Analytics will reach out within 2 hours with the complete APIDA syllabus, industry projects, and batch schedule.
+            Thank you, <strong>{formData.name}</strong>. Taking you to your registration confirmation and brochure download page...
           </p>
           <button
             type="button"
-            onClick={() => setIsSubmitted(false)}
+            onClick={() => window.location.assign('/lp/apida/thank-you/')}
             className="lp-orange-submit-btn"
             style={{ marginTop: '10px' }}
           >
-            Submit Another Registration
+            Continue to Thank You Page →
           </button>
         </div>
       ) : (
@@ -396,7 +416,7 @@ export const ApidaStoryLandingPage: React.FC<ApidaStoryLandingPageProps> = () =>
             <p>{subtitle}</p>
           </div>
 
-          {formError && <div className="lp-form-error-banner">{formError}</div>}
+          {formError && <div className="lp-form-error-banner" role="alert">{formError}</div>}
 
           <div className="lp-form-field">
             <label className="lp-form-label">Full Name</label>
