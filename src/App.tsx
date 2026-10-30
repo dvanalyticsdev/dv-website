@@ -9,7 +9,7 @@ import { GetACallButton } from './components/GetACallButton';
 import { SkillPackageExplorer } from './components/SkillPackageExplorer';
 import { getPageFromPath, seoLandingPageRedirects } from './utils/routes';
 import { applySeoForPage, routePathByPageId } from './utils/seo';
-import { initAnalytics, trackEvent, trackPageView } from './utils/analytics';
+import { initAnalytics, trackEvent, trackPageView, ensureGoogleTagLoaded } from './utils/analytics';
 
 const ProgramsSection = lazy(() => import('./components/ProgramsSection').then((module) => ({ default: module.ProgramsSection })));
 const BenefitsSection = lazy(() => import('./components/BenefitsSection').then((module) => ({ default: module.BenefitsSection })));
@@ -122,6 +122,14 @@ function App() {
   useEffect(() => {
     applySeoForPage(activePage);
     trackPageView(activePage);
+    if (
+      activePage.startsWith('lp-apida') ||
+      activePage.startsWith('lp-apids') ||
+      activePage.startsWith('lp-fde') ||
+      activePage === 'lp-thank-you'
+    ) {
+      ensureGoogleTagLoaded();
+    }
   }, [activePage]);
 
   useEffect(() => {

@@ -16,32 +16,48 @@ export const UpcomingBatchesPage: React.FC<UpcomingBatchesPageProps> = ({
   const [apidaSeats] = useState(() => Math.floor(Math.random() * 6) + 5);
   const [fdeSeats] = useState(() => Math.floor(Math.random() * 6) + 5);
 
-  // Countdown to October 24, 2026
-  const [timeLeft, setTimeLeft] = useState({
-    days: 3,
-    hours: 14,
-    minutes: 32,
-    seconds: 45,
+  // Countdown for APIDS & APIDA - November 7, 2026
+  const [dataProgramsTimeLeft, setDataProgramsTimeLeft] = useState({
+    days: 8,
+    hours: 10,
+    minutes: 0,
+    seconds: 0,
+  });
+
+  // Countdown for FDE - November 17, 2026
+  const [fdeTimeLeft, setFdeTimeLeft] = useState({
+    days: 18,
+    hours: 10,
+    minutes: 0,
+    seconds: 0,
   });
 
   useEffect(() => {
-    const targetDate = new Date('2026-10-24T10:00:00+05:30').getTime();
+    const dataProgramsTarget = new Date('2026-11-07T10:00:00+05:30').getTime();
+    const fdeTarget = new Date('2026-11-17T10:00:00+05:30').getTime();
 
-    const interval = setInterval(() => {
+    const calculateTime = (targetTime: number) => {
       const now = new Date().getTime();
-      const difference = targetDate - now;
+      const difference = targetTime - now;
 
       if (difference > 0) {
-        setTimeLeft({
+        return {
           days: Math.floor(difference / (1000 * 60 * 60 * 24)),
           hours: Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
           minutes: Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60)),
           seconds: Math.floor((difference % (1000 * 60)) / 1000),
-        });
-      } else {
-        setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+        };
       }
-    }, 1000);
+      return { days: 0, hours: 0, minutes: 0, seconds: 0 };
+    };
+
+    const updateTimers = () => {
+      setDataProgramsTimeLeft(calculateTime(dataProgramsTarget));
+      setFdeTimeLeft(calculateTime(fdeTarget));
+    };
+
+    updateTimers();
+    const interval = setInterval(updateTimers, 1000);
 
     return () => clearInterval(interval);
   }, []);
@@ -75,36 +91,87 @@ export const UpcomingBatchesPage: React.FC<UpcomingBatchesPageProps> = ({
         <div className="container ub-hero-content">
           <div className="ub-urgency-badge">
             <span className="ub-pulse-dot"></span>
-            <span>NEXT BATCHES LAUNCHING OCTOBER 24TH, 2026</span>
+            <span>NOVEMBER 2026 FLAGSHIP COHORTS NOW OPEN</span>
           </div>
 
-          <h1 className="ub-hero-title">
-            Transform Your Career with <span>Flagship AI &amp; Data Batches</span>
-          </h1>
+          {/* Dual Countdown Timers */}
+          <div className="ub-dual-timers-container">
+            {/* Timer 1: APIDS & APIDA */}
+            <div className="ub-timer-wrapper">
+              <div className="ub-timer-header">
+                <div className="ub-timer-program-tags">
+                  <span className="ub-timer-tag ub-timer-tag-apids">APIDS</span>
+                  <span className="ub-timer-tag ub-timer-tag-apida">APIDA</span>
+                </div>
+                <div className="ub-timer-date-badge">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                  </svg>
+                  <span>Starts Nov 7th</span>
+                </div>
+              </div>
+              <h2 className="ub-timer-title">Data Science (APIDS) &amp; Data Analytics (APIDA)</h2>
+              <div className="ub-timer-subtitle">Next Flagship Cohort Launch • Limited Seats Remaining</div>
 
-          <p className="ub-hero-lead">
-            High-impact industrial cohorts in <strong>Data Science (APIDS)</strong>, <strong>Data Analytics (APIDA)</strong>, and <strong>AI Forward Deployment Engineering (FDE)</strong>. Gain production-grade skills, mentored capstones, and direct placement support.
-          </p>
+              <div className="ub-timer-grid">
+                <div className="ub-timer-box">
+                  <div className="ub-timer-number">{String(dataProgramsTimeLeft.days).padStart(2, '0')}</div>
+                  <div className="ub-timer-unit">Days</div>
+                </div>
+                <div className="ub-timer-box">
+                  <div className="ub-timer-number">{String(dataProgramsTimeLeft.hours).padStart(2, '0')}</div>
+                  <div className="ub-timer-unit">Hours</div>
+                </div>
+                <div className="ub-timer-box">
+                  <div className="ub-timer-number">{String(dataProgramsTimeLeft.minutes).padStart(2, '0')}</div>
+                  <div className="ub-timer-unit">Mins</div>
+                </div>
+                <div className="ub-timer-box">
+                  <div className="ub-timer-number">{String(dataProgramsTimeLeft.seconds).padStart(2, '0')}</div>
+                  <div className="ub-timer-unit">Secs</div>
+                </div>
+              </div>
+            </div>
 
-          {/* Countdown Clock */}
-          <div className="ub-timer-wrapper">
-            <div className="ub-timer-label">October 24 Batch Countdown • Limited Seats Remaining</div>
-            <div className="ub-timer-grid">
-              <div className="ub-timer-box">
-                <div className="ub-timer-number">{String(timeLeft.days).padStart(2, '0')}</div>
-                <div className="ub-timer-unit">Days</div>
+            {/* Timer 2: FDE */}
+            <div className="ub-timer-wrapper">
+              <div className="ub-timer-header">
+                <div className="ub-timer-program-tags">
+                  <span className="ub-timer-tag ub-timer-tag-fde">FDE</span>
+                </div>
+                <div className="ub-timer-date-badge">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                  </svg>
+                  <span>Starts Nov 17th</span>
+                </div>
               </div>
-              <div className="ub-timer-box">
-                <div className="ub-timer-number">{String(timeLeft.hours).padStart(2, '0')}</div>
-                <div className="ub-timer-unit">Hours</div>
-              </div>
-              <div className="ub-timer-box">
-                <div className="ub-timer-number">{String(timeLeft.minutes).padStart(2, '0')}</div>
-                <div className="ub-timer-unit">Mins</div>
-              </div>
-              <div className="ub-timer-box">
-                <div className="ub-timer-number">{String(timeLeft.seconds).padStart(2, '0')}</div>
-                <div className="ub-timer-unit">Secs</div>
+              <h2 className="ub-timer-title">AI Forward Deployment Engineer (FDE)</h2>
+              <div className="ub-timer-subtitle">Production AI &amp; Agentic Systems Cohort Launch</div>
+
+              <div className="ub-timer-grid">
+                <div className="ub-timer-box">
+                  <div className="ub-timer-number">{String(fdeTimeLeft.days).padStart(2, '0')}</div>
+                  <div className="ub-timer-unit">Days</div>
+                </div>
+                <div className="ub-timer-box">
+                  <div className="ub-timer-number">{String(fdeTimeLeft.hours).padStart(2, '0')}</div>
+                  <div className="ub-timer-unit">Hours</div>
+                </div>
+                <div className="ub-timer-box">
+                  <div className="ub-timer-number">{String(fdeTimeLeft.minutes).padStart(2, '0')}</div>
+                  <div className="ub-timer-unit">Mins</div>
+                </div>
+                <div className="ub-timer-box">
+                  <div className="ub-timer-number">{String(fdeTimeLeft.seconds).padStart(2, '0')}</div>
+                  <div className="ub-timer-unit">Secs</div>
+                </div>
               </div>
             </div>
           </div>
@@ -133,7 +200,7 @@ export const UpcomingBatchesPage: React.FC<UpcomingBatchesPageProps> = ({
       <section className="ub-trends-section container">
         <div className="ub-section-title-area">
           <span className="ub-section-tag">2026 Market Demand &amp; Career ROI</span>
-          <h2 className="ub-section-heading">Why You Should Enroll in the October 24 Batch</h2>
+          <h2 className="ub-section-heading">Why You Should Enroll in the November Batches</h2>
           <p className="ub-section-sub">
             The demand for enterprise AI, machine learning, and data analytics professionals has hit record highs across Bangalore, Bhubaneswar, and Dubai.
           </p>
@@ -187,7 +254,7 @@ export const UpcomingBatchesPage: React.FC<UpcomingBatchesPageProps> = ({
       {/* Flagship Batches Section (APIDS, APIDA, FDE) */}
       <section id="batches-schedule" className="ub-batches-section container">
         <div className="ub-section-title-area">
-          <span className="ub-section-tag">Flagship Programs • October 24 Batch</span>
+          <span className="ub-section-tag">Flagship Programs • November Batches</span>
           <h2 className="ub-section-heading">Select Your Program</h2>
           <p className="ub-section-sub">
             Interactive live online classes, hands-on labs, and expert mentorship. Click below to view full course details.
@@ -218,7 +285,7 @@ export const UpcomingBatchesPage: React.FC<UpcomingBatchesPageProps> = ({
                 className="ub-btn-callback"
                 onClick={() => handleCallModalTrigger('APIDS')}
               >
-                Request Callback for Oct 24 Batch
+                Request Callback for Nov 7 Batch
               </button>
             </div>
           </div>
@@ -246,7 +313,7 @@ export const UpcomingBatchesPage: React.FC<UpcomingBatchesPageProps> = ({
                 className="ub-btn-callback"
                 onClick={() => handleCallModalTrigger('APIDA')}
               >
-                Request Callback for Oct 24 Batch
+                Request Callback for Nov 7 Batch
               </button>
             </div>
           </div>
@@ -274,7 +341,7 @@ export const UpcomingBatchesPage: React.FC<UpcomingBatchesPageProps> = ({
                 className="ub-btn-callback"
                 onClick={() => handleCallModalTrigger('FDE')}
               >
-                Request Callback for Oct 24 Batch
+                Request Callback for Nov 17 Batch
               </button>
             </div>
           </div>
@@ -282,7 +349,7 @@ export const UpcomingBatchesPage: React.FC<UpcomingBatchesPageProps> = ({
 
         {/* Bottom CTA Banner */}
         <div className="ub-cta-banner">
-          <h2>Seats Are Filling Fast for October 24th</h2>
+          <h2>Seats Are Filling Fast for November Batches</h2>
           <p>
             Batch sizes are strictly limited to ensure personalized code reviews and 1-on-1 career guidance for every learner.
           </p>
@@ -299,7 +366,7 @@ export const UpcomingBatchesPage: React.FC<UpcomingBatchesPageProps> = ({
               boxShadow: '0 10px 20px rgba(234, 88, 12, 0.4)',
             }}
           >
-            Request Immediate Callback for Oct 24 Batch
+            Request Immediate Callback for November Batches
           </button>
         </div>
       </section>

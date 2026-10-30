@@ -22,7 +22,46 @@ const attributionStorageKey = 'dv_attribution';
 const leadOriginStorageKey = 'dv_lead_origin';
 const gtmContainerId = (import.meta.env.VITE_GTM_ID as string | undefined) || 'GTM-NFB3LVLT';
 const gaMeasurementId = import.meta.env.VITE_GA_MEASUREMENT_ID as string | undefined;
+export const GOOGLE_ADS_TAG_ID = 'G-PBJWHBZLGX';
 let lastTrackedPageLocation = '';
+
+/**
+ * Initializes Google tag (gtag.js) for Google Ads conversion tracking on landing pages & thank-you pages
+ */
+export const ensureGoogleTagLoaded = (tagId: string = GOOGLE_ADS_TAG_ID) => {
+  if (typeof window === 'undefined') return;
+
+  window.dataLayer = window.dataLayer || [];
+  if (!window.gtag) {
+    window.gtag = function () {
+      // eslint-disable-next-line prefer-rest-params
+      window.dataLayer?.push(arguments);
+    };
+  }
+
+  // Ensure config command has been dispatched for the tagId
+  const scriptSelector = `script[src*="googletagmanager.com/gtag/js?id=${tagId}"]`;
+  if (!document.querySelector(scriptSelector)) {
+    window.gtag('js', new Date());
+    window.gtag('config', tagId);
+
+    const script = document.createElement('script');
+    script.async = true;
+    script.src = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(tagId)}`;
+    document.head.appendChild(script);
+  }
+};
+
+/**
+ * Dispatches a Google Ads conversion event
+ */
+export const trackGoogleAdConversion = (sendToId: string) => {
+  if (typeof window === 'undefined') return;
+  ensureGoogleTagLoaded(GOOGLE_ADS_TAG_ID);
+  window.gtag?.('event', 'conversion', {
+    send_to: sendToId,
+  });
+};
 
 export const getAttribution = () => {
   const params = new URLSearchParams(window.location.search);
