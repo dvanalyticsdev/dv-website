@@ -82,8 +82,8 @@ export const ProgramsSection: React.FC<ProgramsSectionProps> = ({ onViewDetails 
     },
     {
       id: 'apida',
-      title: 'Advanced Program in Industrial Data Science with Gen AI (APIDA)',
-      shortTitle: 'Industrial Data Science with Gen AI',
+      title: 'Advance Program in Industrial Data Analytics with Gen AI & Agentic AI (APIDA)',
+      shortTitle: 'Industrial Data Analytics with Gen AI & Agentic AI',
       tagline: 'Master Data Analytics, Business Intelligence, and Predictive Modeling without deep code complexity.',
       theme: 'purple',
       bulletPoints: [
@@ -95,7 +95,7 @@ export const ProgramsSection: React.FC<ProgramsSectionProps> = ({ onViewDetails 
       ],
       duration: '7 Months',
       delivery: 'Live Instructor-Led Online',
-      overview: 'The Advanced Program in Industrial Data Science with Gen AI (APIDA) is a specialized industry-focused program designed for graduates and working professionals who want to build expertise in Data Analytics, Business Intelligence, Machine Learning, and AI-driven Decision Making.',
+      overview: 'The Advance Program in Industrial Data Analytics with Gen AI & Agentic AI (APIDA) is a specialized industry-focused program designed for graduates and working professionals who want to build expertise in Data Analytics, Business Intelligence, Machine Learning, and AI-driven Decision Making.',
       modules: [
         {
           title: 'Module 1: Data Management',

@@ -25,7 +25,7 @@ export const AauModal: React.FC<AauModalProps> = ({ isOpen, onClose, onSelectCou
     },
     {
       id: 'apida',
-      title: 'Advanced Program in Industrial Data Science with Gen AI (APIDA)',
+      title: 'Advance Program in Industrial Data Analytics with Gen AI & Agentic AI (APIDA)',
       tagline: 'A comprehensive industry-focused program combining Data Management, Business Intelligence, Machine Learning, and MLOps for analytics professionals.',
       poster: '/courses-poster/APIDA.png'
     },

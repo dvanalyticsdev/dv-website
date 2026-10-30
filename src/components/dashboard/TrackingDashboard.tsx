@@ -54,7 +54,7 @@ export const TrackingDashboard: React.FC<TrackingDashboardProps> = ({ onNavigate
   const [selectedLead, setSelectedLead] = useState<LeadSubmission | null>(null);
 
   // Page-wise breakdown sub-tab state ('landing' vs 'main-site')
-  const [pageSubTab, setPageSubTab] = useState<'landing' | 'main-site'>('landing');
+  const [pageSubTab, setPageSubTab] = useState<'landing' | 'seo' | 'main-site'>('landing');
 
   // Load the durable VPS records. Local storage remains a fallback for offline use.
   const reloadData = useCallback(async () => {
@@ -397,7 +397,24 @@ export const TrackingDashboard: React.FC<TrackingDashboardProps> = ({ onNavigate
       counts[p].count++;
     });
 
+    const CORE_SEO_PAGES = [
+      { path: '/data-analytics-course-bangalore/', label: 'Data Analytics Bangalore (SEO)' },
+      { path: '/data-analytics-course-bhubaneswar/', label: 'Data Analytics Bhubaneswar (SEO)' },
+      { path: '/data-science-course-bangalore/', label: 'Data Science Bangalore (SEO)' },
+      { path: '/data-science-course-bhubaneswar/', label: 'Data Science Bhubaneswar (SEO)' },
+    ];
+
     const isLanding = (path: string) => path.startsWith('/lp/');
+    const isSeo = (path: string) => {
+      const clean = (path || '').toLowerCase().replace(/^\/+|\/+$/g, '');
+      return (
+        clean === 'data-analytics-course-bangalore' ||
+        clean === 'data-analytics-course-bhubaneswar' ||
+        clean === 'data-science-course-bangalore' ||
+        clean === 'data-science-course-bhubaneswar' ||
+        (clean.startsWith('data-') && clean.includes('-course-'))
+      );
+    };
 
     if (pageSubTab === 'landing') {
       // 1. Landing pages list
@@ -425,8 +442,34 @@ export const TrackingDashboard: React.FC<TrackingDashboardProps> = ({ onNavigate
       });
 
       return list;
+    } else if (pageSubTab === 'seo') {
+      // 2. SEO landing pages list
+      const corePaths = new Set(CORE_SEO_PAGES.map((c) => c.path));
+      const list = CORE_SEO_PAGES.map((c) => {
+        const count = counts[c.path]?.count || 0;
+        return {
+          path: c.path,
+          label: c.label,
+          count,
+          pct: kpis.total > 0 ? Math.round((count / kpis.total) * 100) : 0,
+        };
+      });
+
+      // Include any other dynamic SEO pages recorded
+      Object.entries(counts).forEach(([path, data]) => {
+        if (isSeo(path) && !corePaths.has(path)) {
+          list.push({
+            path,
+            label: data.categoryLabel || 'SEO Page',
+            count: data.count,
+            pct: kpis.total > 0 ? Math.round((data.count / kpis.total) * 100) : 0,
+          });
+        }
+      });
+
+      return list;
     } else {
-      // 2. Main site pages list
+      // 3. Main site pages list (excluding landing and SEO pages)
       const corePaths = new Set(CORE_MAIN_PAGES.map((c) => c.path));
       const list = CORE_MAIN_PAGES.map((c) => {
         const count = counts[c.path]?.count || 0;
@@ -440,7 +483,7 @@ export const TrackingDashboard: React.FC<TrackingDashboardProps> = ({ onNavigate
 
       // Include any other dynamic main site pages recorded
       Object.entries(counts).forEach(([path, data]) => {
-        if (!isLanding(path) && !corePaths.has(path)) {
+        if (!isLanding(path) && !isSeo(path) && !corePaths.has(path)) {
           list.push({
             path,
             label: data.categoryLabel || 'Main Site',
@@ -966,6 +1009,13 @@ export const TrackingDashboard: React.FC<TrackingDashboardProps> = ({ onNavigate
                     </button>
                     <button
                       type="button"
+                      className={`dv-subtab-btn ${pageSubTab === 'seo' ? 'active' : ''}`}
+                      onClick={() => setPageSubTab('seo')}
+                    >
+                      SEO pages
+                    </button>
+                    <button
+                      type="button"
                       className={`dv-subtab-btn ${pageSubTab === 'main-site' ? 'active' : ''}`}
                       onClick={() => setPageSubTab('main-site')}
                     >
@@ -1139,6 +1189,7 @@ export const TrackingDashboard: React.FC<TrackingDashboardProps> = ({ onNavigate
                 >
                   <option value="all">All Page Categories</option>
                   <option value="landing-page">Story Landing Pages (/lp/*)</option>
+                  <option value="seo-landing">SEO Landing Pages</option>
                   <option value="course-detail">Course Detail Pages (/courses/*)</option>
                   <option value="main-site">Main Website Pages</option>
                   <option value="enrollment-page">Enrollment Pages</option>

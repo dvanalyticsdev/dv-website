@@ -1,4 +1,4 @@
-export type PageCategory = 'landing-page' | 'course-detail' | 'main-site' | 'enrollment-page' | 'career-page';
+export type PageCategory = 'landing-page' | 'seo-landing' | 'course-detail' | 'main-site' | 'enrollment-page' | 'career-page';
 
 export type FormType =
   | 'hero-registration'
@@ -30,10 +30,26 @@ const STORAGE_KEY = 'dv_lead_submissions_v2';
 export const DASHBOARD_TOKEN_STORAGE_KEY = 'dv_dashboard_api_token';
 const DASHBOARD_API_URL = 'https://tracking-api.dvanalyticsmds.in';
 
+const seoRouteSlugs = new Set([
+  'data-analytics-course-bangalore',
+  'data-analytics-course-bhubaneswar',
+  'data-science-course-bangalore',
+  'data-science-course-bhubaneswar',
+]);
+
+export const isSeoRoute = (path: string): boolean => {
+  const norm = path.toLowerCase().replace(/\/+$/, '') || '/';
+  const clean = norm.replace(/^\/+|\/+$/g, '');
+  return seoRouteSlugs.has(clean) || (clean.startsWith('data-') && clean.includes('-course-'));
+};
+
 export const classifyPage = (path: string): { category: PageCategory; label: string } => {
   const norm = path.toLowerCase().replace(/\/+$/, '') || '/';
   if (norm.startsWith('/lp/')) {
     return { category: 'landing-page', label: 'Story Landing Page' };
+  }
+  if (isSeoRoute(norm)) {
+    return { category: 'seo-landing', label: 'SEO Landing Page' };
   }
   if (norm.startsWith('/courses/')) {
     return { category: 'course-detail', label: 'Course Detail Page' };
@@ -86,7 +102,7 @@ const generateInitialSeedData = (): LeadSubmission[] => {
       name: 'Priyanka Mohapatra',
       email: 'priyanka.m@outlook.com',
       phone: '+91 94370 88219',
-      course: 'Advanced Program in Industrial Data Science with Gen AI (APIDA)',
+      course: 'Advance Program in Industrial Data Analytics with Gen AI & Agentic AI (APIDA)',
       formType: 'download-brochure',
       formLabel: 'Course Brochure Download',
       pageUrl: 'https://dvanalyticsmds.in/lp/apida',
@@ -138,7 +154,7 @@ const generateInitialSeedData = (): LeadSubmission[] => {
       name: 'Arindam Ghosh',
       email: 'arindam.ghosh@cognizant.com',
       phone: '+91 98310 99412',
-      course: 'Advanced Program in Industrial Data Science with Gen AI (APIDA)',
+      course: 'Advance Program in Industrial Data Analytics with Gen AI & Agentic AI (APIDA)',
       formType: 'hero-registration',
       formLabel: 'Landing Page Lead Registration',
       pageUrl: 'https://dvanalyticsmds.in/lp/apida',
@@ -218,7 +234,7 @@ const generateInitialSeedData = (): LeadSubmission[] => {
       name: 'Megha Nair',
       email: 'megha.nair@deloitte.com',
       phone: '+91 97410 88921',
-      course: 'Advanced Program in Industrial Data Science with Gen AI (APIDA)',
+      course: 'Advance Program in Industrial Data Analytics with Gen AI & Agentic AI (APIDA)',
       formType: 'download-brochure',
       formLabel: 'Course Brochure Download',
       pageUrl: 'https://dvanalyticsmds.in/courses/apida/',

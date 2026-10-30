@@ -6,7 +6,7 @@ import { recordLeadSubmission } from '../services/leadTrackingService';
 
 const COURSE_OPTIONS = [
   'Advanced Program in Industrial Data Science with AI Deployment (APIDS)',
-  'Advanced Program in Industrial Data Science with Gen AI (APIDA)',
+  'Advance Program in Industrial Data Analytics with Gen AI & Agentic AI (APIDA)',
   'Data Analytics Specialist (DAS)',
   'AI Integrated Advanced Program in Cybersecurity & Forensics (APCF)',
   'AI Forward Deployment Engineer (FDE)',

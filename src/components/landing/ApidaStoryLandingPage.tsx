@@ -107,7 +107,7 @@ export const ApidaStoryLandingPage: React.FC<ApidaStoryLandingPageProps> = ({ on
     qualification: '',
     experience: '',
     state: '',
-    course: 'APIDA (Industrial Data Analytics & AI)',
+    course: 'APIDA (Advance Program in Industrial Data Analytics with Gen AI & Agentic AI)',
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -332,7 +332,14 @@ export const ApidaStoryLandingPage: React.FC<ApidaStoryLandingPageProps> = ({ on
     payload.set('name', formData.name.trim());
     payload.set('email', formData.email.trim());
     payload.set('phone', formData.phone.trim());
-    payload.set('course', 'Advanced Program in Industrial Data Science with Gen AI (APIDA)');
+    payload.set('course', 'APIDA');
+    payload.set('course_id', 'apida');
+    payload.set('course_code', 'APIDA');
+    payload.set('course_name', 'APIDA');
+    payload.set('program', 'APIDA');
+    payload.set('crm_course_id', 'apida');
+    payload.set('crm_course_label', 'APIDA');
+    payload.set('crm_course_name', 'Advance Program in Industrial Data Analytics with Gen AI & Agentic AI');
     payload.set('highest_qualification', formData.qualification);
     payload.set('experience', formData.experience);
     payload.set('state', formData.state);
@@ -359,7 +366,7 @@ export const ApidaStoryLandingPage: React.FC<ApidaStoryLandingPageProps> = ({ on
       qualification: formData.qualification,
       experience: formData.experience,
       state: formData.state,
-      course: 'Advanced Program in Industrial Data Science with Gen AI (APIDA)',
+      course: 'Advance Program in Industrial Data Analytics with Gen AI & Agentic AI (APIDA)',
       formType: 'hero-registration',
       formLabel: 'Landing Page Lead Registration',
     });
@@ -370,13 +377,13 @@ export const ApidaStoryLandingPage: React.FC<ApidaStoryLandingPageProps> = ({ on
       qualification: formData.qualification,
       experience: formData.experience,
       state: formData.state,
-      course: 'Advanced Program in Industrial Data Analytics & AI (APIDA)',
+      course: 'Advance Program in Industrial Data Analytics with Gen AI & Agentic AI (APIDA)',
       courseId: 'apida',
       submittedAt: new Date().toISOString(),
     });
     trackEvent('submit_enroll_form', {
       course_id: 'apida',
-      course_name: 'Advanced Program in Industrial Data Analytics & AI (APIDA)',
+      course_name: 'Advance Program in Industrial Data Analytics with Gen AI & Agentic AI (APIDA)',
       form_id: 'dv_website_lp_apida_registration',
     });
     setIsSubmitting(false);
@@ -389,7 +396,7 @@ export const ApidaStoryLandingPage: React.FC<ApidaStoryLandingPageProps> = ({ on
 
   const renderLeadForm = (
     title = 'Register for APIDA',
-    subtitle = 'Reserve your seat for the Industrial Data Analytics & AI batch.'
+    subtitle = 'Reserve your seat for the Industrial Data Analytics with Gen AI & Agentic AI batch.'
   ) => (
     <div className="lp-form-card">
       {isSubmitted ? (
@@ -755,7 +762,7 @@ export const ApidaStoryLandingPage: React.FC<ApidaStoryLandingPageProps> = ({ on
           >
             <img
               src="/apida-training-banner.png"
-              alt="Advanced Program in Industrial Data Analytics &amp; AI (APIDA) Banner - DV Analytics"
+              alt="Advance Program in Industrial Data Analytics with Gen AI &amp; Agentic AI (APIDA) Banner - DV Analytics"
               className="lp-top-poster-img"
               width="2172"
               height="724"
@@ -777,7 +784,7 @@ export const ApidaStoryLandingPage: React.FC<ApidaStoryLandingPageProps> = ({ on
                 DV Analytics | Transforming You
               </div>
               <h1>
-                Advanced Program in Industrial Data Analytics &amp; AI (APIDA)
+                Advance Program in Industrial Data Analytics with Gen AI &amp; Agentic AI (APIDA)
               </h1>
               <p className="lead">
                 A comprehensive industry-focused program combining Data Management, Business Intelligence, Statistical Modeling, and MLOps. Master SQL, SAS, Python, Power BI, Tableau, and Machine Learning to convert industrial enterprise data into actionable business intelligence.
@@ -2557,7 +2564,7 @@ export const ApidaStoryLandingPage: React.FC<ApidaStoryLandingPageProps> = ({ on
             <summary>1. What is APIDA and how is it tailored for industrial analytics roles?</summary>
             <div style={{ marginTop: '12px' }}>
               <p>
-                The <strong>Advanced Program in Industrial Data Analytics &amp; AI (APIDA)</strong> is specifically engineered to prepare graduates and working professionals for commercial analytics roles in Banking, Financial Services, Insurance (BFSI), Healthcare, and Telecom. It combines enterprise database querying (SQL, SAS), executive reporting (Power BI, Tableau, Excel AI), and predictive modeling (Python, Machine Learning, MLOps) into one cohesive, practical program.
+                The <strong>Advance Program in Industrial Data Analytics with Gen AI &amp; Agentic AI (APIDA)</strong> is specifically engineered to prepare graduates and working professionals for commercial analytics roles in Banking, Financial Services, Insurance (BFSI), Healthcare, and Telecom. It combines enterprise database querying (SQL, SAS), executive reporting (Power BI, Tableau, Excel AI), and predictive modeling (Python, Machine Learning, MLOps) into one cohesive, practical program.
               </p>
             </div>
           </details>
@@ -2819,7 +2826,7 @@ export const ApidaStoryLandingPage: React.FC<ApidaStoryLandingPageProps> = ({ on
       <footer className="lp-footer">
         <div className="wrap">
           <div className="footer-copyright">
-            © {new Date().getFullYear()} DV Analytics. All rights reserved. Advanced Program in Industrial Data Analytics &amp; AI (APIDA).
+            © {new Date().getFullYear()} DV Analytics. All rights reserved. Advance Program in Industrial Data Analytics with Gen AI &amp; Agentic AI (APIDA).
           </div>
         </div>
       </footer>

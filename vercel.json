@@ -38,17 +38,31 @@
   ],
   "routes": [
     {
-      "src": "^/data-science-course-bangalore/?$",
-      "status": 302,
+      "src": "^/data-science-course-in-bangalore/?$",
+      "status": 301,
       "headers": {
-        "Location": "/courses/apids/"
+        "Location": "/data-science-course-bangalore/"
       }
     },
     {
-      "src": "^/data-science-course-bhubaneswar/?$",
-      "status": 302,
+      "src": "^/data-science-course-in-bhubaneswar/?$",
+      "status": 301,
       "headers": {
-        "Location": "/courses/apids/"
+        "Location": "/data-science-course-bhubaneswar/"
+      }
+    },
+    {
+      "src": "^/data-analytics-course-in-bangalore/?$",
+      "status": 301,
+      "headers": {
+        "Location": "/data-analytics-course-bangalore/"
+      }
+    },
+    {
+      "src": "^/data-analytics-course-in-bhubaneswar/?$",
+      "status": 301,
+      "headers": {
+        "Location": "/data-analytics-course-bhubaneswar/"
       }
     },
     {
@@ -105,20 +119,6 @@
       "status": 302,
       "headers": {
         "Location": "/courses/apids/"
-      }
-    },
-    {
-      "src": "^/data-analytics-course-bangalore/?$",
-      "status": 302,
-      "headers": {
-        "Location": "/courses/data-analytics-specialist/"
-      }
-    },
-    {
-      "src": "^/data-analytics-course-bhubaneswar/?$",
-      "status": 302,
-      "headers": {
-        "Location": "/courses/data-analytics-specialist/"
       }
     },
     {

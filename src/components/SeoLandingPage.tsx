@@ -16,6 +16,7 @@ export const SeoLandingPage: React.FC<SeoLandingPageProps> = ({ pageId, onNaviga
   }
 
   const coursePageId = `course-${page.primaryCourseId}`;
+  const enrollPageId = `enroll-${page.primaryCourseId}`;
 
   return (
     <div className="seo-landing-page">
@@ -41,14 +42,14 @@ export const SeoLandingPage: React.FC<SeoLandingPageProps> = ({ pageId, onNaviga
             </a>
             <a
               className="btn btn-outline"
-              href={getPathFromPage('enroll')}
+              href={getPathFromPage(enrollPageId)}
               onClick={(event) => {
                 event.preventDefault();
                 trackEvent('click_contact_advisor', {
                   course_id: page.primaryCourseId,
                   landing_page_id: page.id,
                 });
-                onNavigate('enroll');
+                onNavigate(enrollPageId);
               }}
             >
               Contact Advisor
@@ -81,6 +82,125 @@ export const SeoLandingPage: React.FC<SeoLandingPageProps> = ({ pageId, onNaviga
           ))}
         </div>
       </section>
+
+      {page.richSections && page.richSections.length > 0 && (
+        <section className="seo-landing-section container seo-landing-rich-container">
+          {page.richSections.map((sec, idx) => (
+            <article className="seo-landing-rich-card" key={idx}>
+              <h2 className="seo-landing-rich-heading">{sec.heading}</h2>
+              {sec.intro && <p className="seo-landing-rich-intro">{sec.intro}</p>}
+
+              {sec.image ? (
+                <div
+                  className={`seo-landing-media-row ${
+                    sec.image.align === 'left' ? 'image-left' : 'image-right'
+                  }`}
+                >
+                  <div className="seo-landing-media-content">
+                    {sec.paragraphs &&
+                      sec.paragraphs.map((p, pIdx) => <p key={pIdx}>{p}</p>)}
+                    {sec.subsections &&
+                      sec.subsections.map((sub, sIdx) => (
+                        <div className="seo-landing-subitem" key={sIdx}>
+                          {sub.title && <h3>{sub.title}</h3>}
+                          <p>{sub.body}</p>
+                        </div>
+                      ))}
+                    {sec.bullets && (
+                      <ul className="seo-landing-rich-bullets">
+                        {sec.bullets.map((b, bIdx) => (
+                          <li key={bIdx}>
+                            <span className="seo-bullet-dot" aria-hidden="true">✓</span>
+                            <span>{b}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                  <div className="seo-landing-media-thumb">
+                    <img src={sec.image.src} alt={sec.image.alt} loading="lazy" />
+                  </div>
+                </div>
+              ) : (
+                <div className="seo-landing-text-content">
+                  {sec.paragraphs &&
+                    sec.paragraphs.map((p, pIdx) => <p key={pIdx}>{p}</p>)}
+                  {sec.subsections && (
+                    <div className="seo-landing-subsections-grid">
+                      {sec.subsections.map((sub, sIdx) => (
+                        <div className="seo-landing-subitem" key={sIdx}>
+                          {sub.title && <h3>{sub.title}</h3>}
+                          <p>{sub.body}</p>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  {sec.bullets && (
+                    <ul className="seo-landing-rich-bullets">
+                      {sec.bullets.map((b, bIdx) => (
+                        <li key={bIdx}>
+                          <span className="seo-bullet-dot" aria-hidden="true">✓</span>
+                          <span>{b}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              )}
+
+              {sec.cta && (
+                <div className="seo-landing-cta-banner">
+                  <div className="seo-landing-cta-info">
+                    <h3 className="seo-landing-cta-title">{sec.cta.heading}</h3>
+                    <p className="seo-landing-cta-text">{sec.cta.text}</p>
+                  </div>
+                  <div className="seo-landing-cta-btns">
+                    <a
+                      className="btn btn-primary"
+                      href={getPathFromPage(enrollPageId)}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        trackEvent('click_landing_cta', {
+                          landing_page_id: page.id,
+                        });
+                        onNavigate(enrollPageId);
+                      }}
+                    >
+                      {sec.cta.primaryText}
+                    </a>
+                    {sec.cta.secondaryText && (
+                      <a
+                        className="btn btn-outline seo-landing-cta-alt-btn"
+                        href={getPathFromPage(coursePageId)}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          trackEvent('click_landing_secondary', {
+                            landing_page_id: page.id,
+                          });
+                          onNavigate(coursePageId);
+                        }}
+                      >
+                        {sec.cta.secondaryText}
+                      </a>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {sec.contactInfo && (
+                <div className="seo-landing-contact-box">
+                  <p>
+                    <strong>Training Centre:</strong> {sec.contactInfo.centre}
+                  </p>
+                  <p>
+                    <strong>Contact:</strong> {sec.contactInfo.phone}
+                  </p>
+                </div>
+              )}
+            </article>
+          ))}
+        </section>
+      )}
 
       <section className="seo-landing-section container">
         <div className="text-center">

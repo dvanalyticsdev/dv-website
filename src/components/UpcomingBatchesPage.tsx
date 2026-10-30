@@ -229,7 +229,7 @@ export const UpcomingBatchesPage: React.FC<UpcomingBatchesPageProps> = ({
               <span className="ub-program-code">APIDA</span>
               <span className="ub-seat-badge">{apidaSeats} Seats Remaining</span>
             </div>
-            <h3 className="ub-batch-title">Advanced Program in Industrial Data Science with Gen AI</h3>
+            <h3 className="ub-batch-title">Advance Program in Industrial Data Analytics with Gen AI & Agentic AI</h3>
             <p className="ub-batch-summary">
               Combine Data Management, Advanced SQL, Power BI, Python for Analytics, ETL pipelines, and Business Intelligence for high-demand analytics roles.
             </p>

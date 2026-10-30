@@ -551,9 +551,9 @@ export const coursesData = {
     },
     APIDA: {
         id: 'apida',
-        title: 'Advanced Program in Industrial Data Analytics & AI (APIDA)',
+        title: 'Advance Program in Industrial Data Analytics with Gen AI & Agentic AI (APIDA)',
         tagline: 'A comprehensive industry-focused program combining Data Management, Business Intelligence, Machine Learning, and MLOps for analytics professionals.',
-        overview: 'The Advanced Program in Industrial Data Analytics & AI (APIDA) is a comprehensive industry-focused training program designed to equip students, graduates, and working professionals with the most in-demand skills in Data Analytics, Business Intelligence, Artificial Intelligence, and Predictive Analytics.\n\nThe program combines Data Management, Data Analysis, Data Visualization, Statistical Analytics, Machine Learning, and MLOps to help learners transform raw data into meaningful business insights and intelligent solutions.\n\nThe program emphasizes hands-on learning, enabling participants to become job-ready Data Analytics and AI professionals.',
+        overview: 'The Advance Program in Industrial Data Analytics with Gen AI & Agentic AI (APIDA) is a comprehensive industry-focused training program designed to equip students, graduates, and working professionals with the most in-demand skills in Data Analytics, Business Intelligence, Artificial Intelligence, and Predictive Analytics.\n\nThe program combines Data Management, Data Analysis, Data Visualization, Statistical Analytics, Machine Learning, and MLOps to help learners transform raw data into meaningful business insights and intelligent solutions.\n\nThe program emphasizes hands-on learning, enabling participants to become job-ready Data Analytics and AI professionals.',
         duration: '5 Months',
         practicalExposure: [
             'Instructor-Led Training',

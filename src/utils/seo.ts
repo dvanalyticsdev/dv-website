@@ -22,7 +22,7 @@ export const routePathByPageId = (pageId: string) => {
   return getPathFromPage(pageId);
 };
 
-const truncate = (value: string, maxLength = 158) => {
+const truncate = (value: string, maxLength = 220) => {
   const normalized = value.replace(/\s+/g, ' ').trim();
   if (normalized.length <= maxLength) return normalized;
   return `${normalized.slice(0, maxLength - 3).replace(/\s+\S*$/, '')}...`;
@@ -86,7 +86,7 @@ const courseSearchFocusById: Record<string, string[]> = {
 
 const courseTitleById: Record<string, string> = {
   apids: 'Industrial Data Science with AI Deployment Course (APIDS)',
-  apida: 'Industrial Data Science with Gen AI Course (APIDA)',
+  apida: 'Advance Program in Industrial Data Analytics with Gen AI & Agentic AI (APIDA)',
   specialist: 'Data Analytics Specialist Course (DAS)',
   apcs: 'AI Integrated Cybersecurity & Forensics Course (APCF)',
   fde: 'AI Forward Deployment Engineer Course (FDE)',
@@ -182,7 +182,7 @@ const basePages: Record<string, { title: string; description: string; image?: st
     noindex: true,
   },
   'lp-apida': {
-    title: 'Advanced Program in Industrial Data Analytics & BI (APIDA) | DV Analytics',
+    title: 'Advance Program in Industrial Data Analytics with Gen AI & Agentic AI (APIDA) | DV Analytics',
     description:
       'Master Industrial Data Analytics, Power BI, SQL, Predictive Analytics & Business Intelligence with Live Mentorship and Placement Support.',
     image: '/apida-training-banner.png',
@@ -197,7 +197,7 @@ const basePages: Record<string, { title: string; description: string; image?: st
   },
   'lp-apida-thank-you': {
     title: 'Thank You for Registering - APIDA | DV Analytics',
-    description: "You're all set! Your registration for the Advanced Program in Industrial Data Analytics & AI (APIDA) has been received. Our career advisor will reach out shortly.",
+    description: "You're all set! Your registration for the Advance Program in Industrial Data Analytics with Gen AI & Agentic AI (APIDA) has been received. Our career advisor will reach out shortly.",
     image: '/apida-training-banner.png',
     noindex: true,
   },
@@ -668,6 +668,11 @@ export const applySeoForPage = (pageId: string) => {
 };
 
 export const sitemapRoutes = [
+  '/data-analytics-course-bangalore/',
+  '/data-analytics-course-bhubaneswar/',
+  '/data-science-course-bangalore/',
+  '/data-science-course-bhubaneswar/',
+
   getPathFromPage('home'),
   getPathFromPage('courses'),
   ...courseCatalog.map((course) => getPathFromPage(`course-${course.id}`)),

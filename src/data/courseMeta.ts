@@ -14,7 +14,7 @@ export const courseCatalog: CourseMeta[] = [
   },
   {
     id: 'apida',
-    label: 'Advanced Program in Industrial Data Science with Gen AI (APIDA)',
+    label: 'Advance Program in Industrial Data Analytics with Gen AI & Agentic AI (APIDA)',
     brochurePath: '/apida-brochure.pdf',
     category: 'live',
   },

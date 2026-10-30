@@ -6,7 +6,7 @@ import { recordLeadSubmission } from '../services/leadTrackingService';
 
 const courses = [
   { id: 'apids', category: 'data-science', label: 'Advanced Program in Industrial Data Science with AI Deployment (APIDS)' },
-  { id: 'apida', category: 'data-science', label: 'Advanced Program in Industrial Data Science with Gen AI (APIDA)' },
+  { id: 'apida', category: 'data-science', label: 'Advance Program in Industrial Data Analytics with Gen AI & Agentic AI (APIDA)' },
   { id: 'specialist', category: 'data-science', label: 'Data Analytics Specialist (DAS)' },
   { id: 'fde', category: 'data-science', label: 'AI Forward Deployment Engineer (FDE)' },
   { id: 'apcs', category: 'cybersecurity', label: 'AI Integrated Advanced Program in Cybersecurity & Forensics (APCF)' },
@@ -54,7 +54,7 @@ const locations = [
 
 const courseIndustryLabels: Record<string, string> = {
   apids: 'Data Science and AI',
-  apida: 'Data Science with Gen AI',
+  apida: 'Industrial Data Analytics with Gen AI & Agentic AI',
   specialist: 'Data Analytics',
   fde: 'AI solution deployment',
   apcs: 'Cybersecurity and Forensics',

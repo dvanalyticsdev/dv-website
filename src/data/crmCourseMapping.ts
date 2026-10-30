@@ -16,7 +16,7 @@ const CRM_COURSE_MAPPINGS: Record<string, CrmCourseMapping> = {
     websiteCourseId: 'apida',
     crmCourseId: 'apida',
     crmCourseLabel: 'APIDA',
-    crmCourseName: 'Advanced Program in Industrial Data Science with Gen AI',
+    crmCourseName: 'Advance Program in Industrial Data Analytics with Gen AI & Agentic AI',
   },
   specialist: {
     websiteCourseId: 'specialist',

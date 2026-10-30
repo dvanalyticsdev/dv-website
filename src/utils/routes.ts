@@ -39,9 +39,13 @@ const seoLandingPageIdBySlug = Object.fromEntries(
 );
 
 export const seoLandingPageRedirects: Record<string, string> = {
+  // 301 redirects requested by marketing (-in- location queries to target landing pages)
+  'data-science-course-in-bangalore': '/data-science-course-bangalore/',
+  'data-science-course-in-bhubaneswar': '/data-science-course-bhubaneswar/',
+  'data-analytics-course-in-bangalore': '/data-analytics-course-bangalore/',
+  'data-analytics-course-in-bhubaneswar': '/data-analytics-course-bhubaneswar/',
+
   // Data Science -> APIDS (/courses/apids/)
-  'data-science-course-bangalore': '/courses/apids/',
-  'data-science-course-bhubaneswar': '/courses/apids/',
   'data-science-course-india': '/courses/apids/',
   'data-science-course-online': '/courses/apids/',
   'data-science-course-with-placement': '/courses/apids/',
@@ -52,8 +56,6 @@ export const seoLandingPageRedirects: Record<string, string> = {
   'ai-course-for-working-professionals': '/courses/apids/',
 
   // Data Analytics -> DAS (/courses/data-analytics-specialist/)
-  'data-analytics-course-bangalore': '/courses/data-analytics-specialist/',
-  'data-analytics-course-bhubaneswar': '/courses/data-analytics-specialist/',
   'data-analytics-course-india': '/courses/data-analytics-specialist/',
   'data-analytics-course-online': '/courses/data-analytics-specialist/',
   'data-analytics-course-karnataka': '/courses/data-analytics-specialist/',

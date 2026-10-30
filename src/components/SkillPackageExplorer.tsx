@@ -152,7 +152,7 @@ const courseRecommendations: Record<CourseId, CourseRecommendation> = {
   },
   apida: {
     id: 'apida',
-    title: 'Advanced Program in Industrial Data Science with Gen AI (APIDA)',
+    title: 'Advance Program in Industrial Data Analytics with Gen AI & Agentic AI (APIDA)',
     expectedPackage: ['Fresher: 6-10 LPA', '1-5 YOE: 8-20 LPA', '5-10 YOE: 15-30 LPA', '10+ YOE: 20-50 LPA'],
     keySkills: ['SQL & Querying', 'Python Analytics', 'SAS', 'Excel + AI', 'Power BI & Tableau', 'Machine Learning', 'Gen AI Analytics', 'Banking/Fraud Analytics'],
     keyModules: ['Data Analytics & SQL', 'BI Dashboards', 'Statistical ML', 'Gen AI for Data Analytics', 'Enterprise Case Studies'],
