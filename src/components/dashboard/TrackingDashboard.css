@@ -1222,6 +1222,221 @@
   word-break: break-all;
 }
 
+/* ==========================================================================
+   KEYWORD DATA TAB STYLES
+   ========================================================================== */
+.dv-kw-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.dv-kw-kpi-card {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.dv-kw-kpi-title {
+  font-size: 0.76rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #64748b;
+}
+
+.dv-kw-kpi-val {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #051f40;
+  line-height: 1.2;
+}
+
+.dv-kw-kpi-top {
+  font-size: 1.15rem;
+  word-break: break-word;
+}
+
+.dv-kw-kpi-sub {
+  font-size: 0.78rem;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.dv-kw-rank-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 32px;
+  height: 26px;
+  padding: 0 6px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 800;
+}
+
+.dv-kw-rank-badge.rank-1 {
+  background: #fef2f2;
+  color: #ef5323;
+  border: 1px solid #fecaca;
+}
+
+.dv-kw-rank-badge.rank-2 {
+  background: #f0f9ff;
+  color: #0284c7;
+  border: 1px solid #bae6fd;
+}
+
+.dv-kw-rank-badge.rank-3 {
+  background: #eef2ff;
+  color: #6366f1;
+  border: 1px solid #c7d2fe;
+}
+
+.dv-kw-rank-badge.rank-other {
+  background: #f1f5f9;
+  color: #475569;
+  border: 1px solid #e2e8f0;
+}
+
+.dv-kw-name-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.dv-kw-text {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: #051f40;
+}
+
+.dv-kw-tag-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: #ecfdf5;
+  color: #059669;
+  border: 1px solid #a7f3d0;
+  border-radius: 6px;
+  padding: 2px 7px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  width: fit-content;
+}
+
+.dv-kw-vol-cell {
+  display: flex;
+  flex-direction: column;
+}
+
+.dv-kw-bar-track {
+  width: 100%;
+  height: 6px;
+  background: #f1f5f9;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.dv-kw-bar-fill {
+  height: 100%;
+  border-radius: 999px;
+  transition: width 0.3s ease;
+}
+
+.dv-badge-google {
+  background: #eff6ff;
+  color: #2563eb;
+  border: 1px solid #bfdbfe;
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-size: 0.74rem;
+  font-weight: 600;
+}
+
+.dv-badge-direct {
+  background: #f8fafc;
+  color: #64748b;
+  border: 1px solid #e2e8f0;
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-size: 0.74rem;
+  font-weight: 600;
+}
+
+.dv-badge-source {
+  background: #faf5ff;
+  color: #9333ea;
+  border: 1px solid #e9d5ff;
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-size: 0.74rem;
+  font-weight: 600;
+}
+
+.dv-kw-expand-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: #f8fafc;
+  border: 1px solid #cbd5e1;
+  color: #051f40;
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  font-family: inherit;
+}
+
+.dv-kw-expand-btn:hover {
+  background: #051f40;
+  color: #ffffff;
+  border-color: #051f40;
+}
+
+.dv-kw-expand-btn.active {
+  background: #ef5323;
+  color: #ffffff;
+  border-color: #ef5323;
+}
+
+.dv-kw-row-expanded td {
+  background: #f8fafc !important;
+  border-bottom: 1px dashed #cbd5e1 !important;
+}
+
+.dv-kw-drawer-row td {
+  background: #f8fafc !important;
+  border-bottom: 2px solid #e2e8f0 !important;
+}
+
+.dv-kw-drawer-box {
+  padding: 14px 20px 20px 20px;
+  border-left: 3px solid #ef5323;
+  margin: 4px 12px 14px 12px;
+  background: #ffffff;
+  border-radius: 10px;
+  border-top: 1px solid #e2e8f0;
+  border-right: 1px solid #e2e8f0;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.dv-kw-drawer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
 /* RESPONSIVENESS */
 @media (max-width: 900px) {
   .dv-dash-container {

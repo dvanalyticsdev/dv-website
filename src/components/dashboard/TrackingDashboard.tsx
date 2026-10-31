@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import './TrackingDashboard.css';
-import type { LeadSubmission } from '../../services/leadTrackingService';
+import type { LeadSubmission, KeywordExportItem } from '../../services/leadTrackingService';
 import {
   getStoredSubmissions,
   getRemoteSubmissions,
@@ -9,6 +9,7 @@ import {
   clearStoredSubmissions,
   clearRemoteSubmissions,
   exportSubmissionsExcel,
+  exportKeywordsExcel,
 } from '../../services/leadTrackingService';
 
 const AUTH_STORAGE_KEY = 'dv_dashboard_pin_authenticated';
@@ -34,8 +35,8 @@ export const TrackingDashboard: React.FC<TrackingDashboardProps> = ({ onNavigate
   const [pinError, setPinError] = useState<string>('');
   const [dataError, setDataError] = useState<string>('');
 
-  // Top Nav State: 'dashboard' | 'leads'
-  const [activeNav, setActiveNav] = useState<'dashboard' | 'leads'>('dashboard');
+  // Top Nav State: 'dashboard' | 'leads' | 'keywords'
+  const [activeNav, setActiveNav] = useState<'dashboard' | 'leads' | 'keywords'>('dashboard');
 
   // Dashboard Data State
   const [submissions, setSubmissions] = useState<LeadSubmission[]>([]);
@@ -52,6 +53,11 @@ export const TrackingDashboard: React.FC<TrackingDashboardProps> = ({ onNavigate
   const [selectedCategoryFilter, setSelectedCategoryFilter] = useState<string>('all');
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [selectedLead, setSelectedLead] = useState<LeadSubmission | null>(null);
+
+  // Keyword Data Tab State
+  const [keywordSearchQuery, setKeywordSearchQuery] = useState<string>('');
+  const [keywordSourceFilter, setKeywordSourceFilter] = useState<string>('all');
+  const [expandedKeywords, setExpandedKeywords] = useState<Set<string>>(new Set());
 
   // Page-wise breakdown sub-tab state ('landing' vs 'main-site')
   const [pageSubTab, setPageSubTab] = useState<'landing' | 'seo' | 'main-site'>('landing');
@@ -530,6 +536,217 @@ export const TrackingDashboard: React.FC<TrackingDashboardProps> = ({ onNavigate
     return filteredLeads.slice(startIndex, startIndex + PAGE_SIZE);
   }, [filteredLeads, safeCurrentPage]);
 
+  // Helper to safely parse UTM parameters from lead URL
+  const parseLeadUtm = useCallback((lead: LeadSubmission) => {
+    let rawTerm = '';
+    let source = '';
+    let medium = '';
+    let campaign = '';
+    let content = '';
+    let hasGclid = false;
+    let hasUtmTerm = false;
+
+    const rawUrl = lead.pageUrl || lead.pagePath || '';
+    if (rawUrl.includes('?') || rawUrl.includes('&')) {
+      try {
+        const queryPart = rawUrl.includes('?') ? rawUrl.slice(rawUrl.indexOf('?') + 1) : rawUrl;
+        const params = new URLSearchParams(queryPart);
+
+        const termParam = params.get('utm_term');
+        if (termParam && termParam.trim()) {
+          rawTerm = termParam.trim();
+          hasUtmTerm = true;
+        }
+
+        source = (params.get('utm_source') || '').trim();
+        medium = (params.get('utm_medium') || '').trim();
+        campaign = (params.get('utm_campaign') || params.get('gad_campaignid') || '').trim();
+        content = (params.get('utm_content') || '').trim();
+        hasGclid = Boolean(params.get('gclid') || params.get('gad_source'));
+      } catch {
+        // Fallback for non-standard query structures
+      }
+    }
+
+    let keyword = '';
+    if (hasUtmTerm && rawTerm) {
+      try {
+        keyword = decodeURIComponent(rawTerm.replace(/\+/g, ' ')).trim();
+      } catch {
+        keyword = rawTerm.trim();
+      }
+    }
+
+    const isPaidOrUtm = hasUtmTerm || Boolean(source) || Boolean(campaign) || hasGclid;
+
+    if (!keyword) {
+      if (source || campaign || hasGclid) {
+        keyword = source ? `${source} (Search term not set)` : 'Google Paid Ad (No utm_term)';
+      } else {
+        keyword = 'Direct / Organic (No UTM)';
+        source = 'direct / organic';
+      }
+    }
+
+    if (!source) {
+      source = hasGclid ? 'google (ads)' : 'direct / organic';
+    }
+
+    return {
+      keyword,
+      rawTerm,
+      source,
+      medium: medium || '—',
+      campaign: campaign || '—',
+      content: content || '—',
+      hasUtmTerm,
+      hasGclid,
+      isPaidOrUtm,
+    };
+  }, []);
+
+  // Aggregate keyword rankings from Top to Low
+  const keywordAggregates = useMemo(() => {
+    interface KeywordRowItem {
+      keyword: string;
+      count: number;
+      sources: string[];
+      campaigns: string[];
+      mediums: string[];
+      courses: Record<string, number>;
+      leads: LeadSubmission[];
+      latestTimestamp: string;
+      hasUtmTerm: boolean;
+      isPaidOrUtm: boolean;
+    }
+
+    const map = new Map<string, KeywordRowItem>();
+
+    filteredByDate.forEach((lead) => {
+      const utm = parseLeadUtm(lead);
+      const key = utm.keyword;
+
+      if (!map.has(key)) {
+        map.set(key, {
+          keyword: key,
+          count: 0,
+          sources: [],
+          campaigns: [],
+          mediums: [],
+          courses: {},
+          leads: [],
+          latestTimestamp: lead.timestamp,
+          hasUtmTerm: utm.hasUtmTerm,
+          isPaidOrUtm: utm.isPaidOrUtm,
+        });
+      }
+
+      const row = map.get(key)!;
+      row.count += 1;
+      row.leads.push(lead);
+
+      if (utm.source && !row.sources.includes(utm.source)) {
+        row.sources.push(utm.source);
+      }
+      if (utm.campaign && utm.campaign !== '—' && !row.campaigns.includes(utm.campaign)) {
+        row.campaigns.push(utm.campaign);
+      }
+      if (utm.medium && utm.medium !== '—' && !row.mediums.includes(utm.medium)) {
+        row.mediums.push(utm.medium);
+      }
+
+      const c = lead.course || 'Other / General Inquiry';
+      row.courses[c] = (row.courses[c] || 0) + 1;
+
+      if (new Date(lead.timestamp).getTime() > new Date(row.latestTimestamp).getTime()) {
+        row.latestTimestamp = lead.timestamp;
+      }
+    });
+
+    // Sort Top to Low by Lead count, then latest timestamp
+    return Array.from(map.values()).sort((a, b) => {
+      if (b.count !== a.count) return b.count - a.count;
+      return new Date(b.latestTimestamp).getTime() - new Date(a.latestTimestamp).getTime();
+    });
+  }, [filteredByDate, parseLeadUtm]);
+
+  // Filter keywords by search query & source filter
+  const filteredKeywords = useMemo(() => {
+    let list = keywordAggregates;
+
+    if (keywordSearchQuery.trim()) {
+      const q = keywordSearchQuery.trim().toLowerCase();
+      list = list.filter((row) =>
+        row.keyword.toLowerCase().includes(q) ||
+        row.sources.some((s) => s.toLowerCase().includes(q)) ||
+        row.campaigns.some((c) => c.toLowerCase().includes(q))
+      );
+    }
+
+    if (keywordSourceFilter !== 'all') {
+      list = list.filter((row) =>
+        row.sources.some((s) => s.toLowerCase() === keywordSourceFilter.toLowerCase())
+      );
+    }
+
+    return list;
+  }, [keywordAggregates, keywordSearchQuery, keywordSourceFilter]);
+
+  const availableKeywordSources = useMemo(() => {
+    const set = new Set<string>();
+    keywordAggregates.forEach((k) => {
+      k.sources.forEach((s) => set.add(s));
+    });
+    return Array.from(set).sort();
+  }, [keywordAggregates]);
+
+  const trackedKeywordsCount = useMemo(() => {
+    return keywordAggregates.filter((k) => k.hasUtmTerm).length;
+  }, [keywordAggregates]);
+
+  const totalPaidLeadsCount = useMemo(() => {
+    return filteredByDate.filter((lead) => parseLeadUtm(lead).isPaidOrUtm).length;
+  }, [filteredByDate, parseLeadUtm]);
+
+  const toggleKeywordExpand = (keyword: string) => {
+    setExpandedKeywords((prev) => {
+      const next = new Set(prev);
+      if (next.has(keyword)) {
+        next.delete(keyword);
+      } else {
+        next.add(keyword);
+      }
+      return next;
+    });
+  };
+
+  const handleExportKeywords = () => {
+    const total = filteredByDate.length || 1;
+    const exportItems: KeywordExportItem[] = filteredKeywords.map((item, idx) => {
+      const topCourseEntry = Object.entries(item.courses).sort((a, b) => b[1] - a[1])[0];
+      const topCourse = topCourseEntry ? `${topCourseEntry[0]} (${topCourseEntry[1]})` : '—';
+      const pct = `${((item.count / total) * 100).toFixed(1)}%`;
+
+      return {
+        rank: idx + 1,
+        keyword: item.keyword,
+        leadCount: item.count,
+        percentage: pct,
+        source: item.sources.join(', ') || 'direct / organic',
+        medium: item.mediums.join(', ') || '—',
+        campaign: item.campaigns.join(', ') || '—',
+        topCourse,
+        latestLeadDate: new Date(item.latestTimestamp).toLocaleDateString('en-IN', {
+          day: '2-digit',
+          month: 'short',
+          year: 'numeric',
+        }),
+      };
+    });
+
+    exportKeywordsExcel(exportItems);
+  };
+
   // Handle timeline pill clicks
   const handleRangeSelect = (range: 'today' | '7d' | '30d' | 'all' | 'custom') => {
     setDateRange(range);
@@ -719,6 +936,18 @@ export const TrackingDashboard: React.FC<TrackingDashboardProps> = ({ onNavigate
                 <line x1="3" y1="18" x2="3.01" y2="18"></line>
               </svg>
               Lead data ({filteredByDate.length})
+            </button>
+
+            <button
+              type="button"
+              className={`dv-nav-tab-btn ${activeNav === 'keywords' ? 'active' : ''}`}
+              onClick={() => setActiveNav('keywords')}
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+              Keyword data ({trackedKeywordsCount > 0 ? trackedKeywordsCount : keywordAggregates.length})
             </button>
           </div>
 
@@ -1333,6 +1562,415 @@ export const TrackingDashboard: React.FC<TrackingDashboardProps> = ({ onNavigate
                 </div>
               </div>
             )}
+          </div>
+        )}
+
+        {/* ====================================================================
+            VIEW 3: KEYWORD DATA (RANKED TOP TO LOW BY LEADS GENERATED)
+            ==================================================================== */}
+        {activeNav === 'keywords' && (
+          <div className="dv-table-panel">
+            {/* TIMELINE FILTER AT TOP OF KEYWORD DATA */}
+            <div className="dv-dash-timeline-bar" style={{ marginBottom: '18px' }}>
+              <div className="dv-time-filters">
+                {(['today', '7d', '30d', 'all', 'custom'] as const).map((range) => (
+                  <button
+                    key={range}
+                    type="button"
+                    className={`dv-time-pill ${dateRange === range ? 'active' : ''}`}
+                    onClick={() => handleRangeSelect(range)}
+                  >
+                    {range === 'today' && 'Today'}
+                    {range === '7d' && 'Last 7 Days'}
+                    {range === '30d' && 'Last 30 Days'}
+                    {range === 'all' && 'All Time'}
+                    {range === 'custom' && 'Custom Timeline'}
+                  </button>
+                ))}
+
+                {dateRange === 'custom' && (
+                  <div className="dv-custom-date-box">
+                    <span className="dv-custom-date-label">From:</span>
+                    <input
+                      type="date"
+                      className="dv-custom-date-input"
+                      value={customStartDate}
+                      onChange={(e) => setCustomStartDate(e.target.value)}
+                      aria-label="Filter start date"
+                    />
+                    <span className="dv-custom-date-sep">to</span>
+                    <input
+                      type="date"
+                      className="dv-custom-date-input"
+                      value={customEndDate}
+                      onChange={(e) => setCustomEndDate(e.target.value)}
+                      aria-label="Filter end date"
+                    />
+                  </div>
+                )}
+              </div>
+
+              <button
+                type="button"
+                className="dv-dash-btn dv-dash-btn-excel"
+                onClick={handleExportKeywords}
+                title="Export keyword rankings to Microsoft Excel (.xls)"
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.3">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                  <polyline points="14 2 14 8 20 8"></polyline>
+                  <line x1="8" y1="13" x2="16" y2="13"></line>
+                  <line x1="8" y1="17" x2="16" y2="17"></line>
+                </svg>
+                Export Keyword Report ({filteredKeywords.length})
+              </button>
+            </div>
+
+            {/* KEYWORD KPI SUMMARY CARDS */}
+            <div className="dv-kw-kpi-grid">
+              <div className="dv-kw-kpi-card">
+                <span className="dv-kw-kpi-title">Total Leads in Period</span>
+                <span className="dv-kw-kpi-val">{filteredByDate.length}</span>
+                <span className="dv-kw-kpi-sub">Across all traffic sources</span>
+              </div>
+              <div className="dv-kw-kpi-card">
+                <span className="dv-kw-kpi-title">Tracked Search Keywords</span>
+                <span className="dv-kw-kpi-val" style={{ color: '#0284c7' }}>{trackedKeywordsCount}</span>
+                <span className="dv-kw-kpi-sub">From utm_term queries</span>
+              </div>
+              <div className="dv-kw-kpi-card">
+                <span className="dv-kw-kpi-title">Paid Ad / UTM Leads</span>
+                <span className="dv-kw-kpi-val" style={{ color: '#10b981' }}>{totalPaidLeadsCount}</span>
+                <span className="dv-kw-kpi-sub">
+                  {filteredByDate.length > 0 ? `${((totalPaidLeadsCount / filteredByDate.length) * 100).toFixed(0)}% of total leads` : '0%'}
+                </span>
+              </div>
+              <div className="dv-kw-kpi-card">
+                <span className="dv-kw-kpi-title">Top Performing Keyword</span>
+                <span className="dv-kw-kpi-val dv-kw-kpi-top" style={{ color: '#ef5323' }} title={keywordAggregates[0]?.keyword || 'N/A'}>
+                  {keywordAggregates[0]?.keyword ? (keywordAggregates[0].keyword.length > 24 ? keywordAggregates[0].keyword.slice(0, 24) + '...' : keywordAggregates[0].keyword) : 'N/A'}
+                </span>
+                <span className="dv-kw-kpi-sub">
+                  {keywordAggregates[0] ? `${keywordAggregates[0].count} leads generated` : 'No leads yet'}
+                </span>
+              </div>
+            </div>
+
+            {/* KEYWORD SEARCH & SOURCE FILTER TOOLBAR */}
+            <div className="dv-table-toolbar">
+              <div className="dv-search-wrap">
+                <svg className="dv-search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.3">
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                <input
+                  type="text"
+                  placeholder="Search keywords, campaigns or sources..."
+                  value={keywordSearchQuery}
+                  onChange={(e) => setKeywordSearchQuery(e.target.value)}
+                  className="dv-search-input"
+                />
+                {keywordSearchQuery && (
+                  <button
+                    type="button"
+                    className="dv-search-clear"
+                    onClick={() => setKeywordSearchQuery('')}
+                    aria-label="Clear search"
+                  >
+                    ✕
+                  </button>
+                )}
+              </div>
+
+              <div className="dv-table-filters">
+                <select
+                  value={keywordSourceFilter}
+                  onChange={(e) => setKeywordSourceFilter(e.target.value)}
+                  className="dv-select-filter"
+                >
+                  <option value="all">All Traffic Sources ({availableKeywordSources.length})</option>
+                  {availableKeywordSources.map((src) => (
+                    <option key={src} value={src}>
+                      {src}
+                    </option>
+                  ))}
+                </select>
+
+                {(keywordSearchQuery || keywordSourceFilter !== 'all') && (
+                  <button
+                    type="button"
+                    className="dv-dash-btn dv-dash-btn-secondary"
+                    onClick={() => {
+                      setKeywordSearchQuery('');
+                      setKeywordSourceFilter('all');
+                    }}
+                    style={{ padding: '8px 12px', fontSize: '0.82rem' }}
+                  >
+                    Reset Filters
+                  </button>
+                )}
+              </div>
+            </div>
+
+            {/* KEYWORDS RANKED TABLE (TOP TO LOW) */}
+            <div className="dv-table-responsive">
+              <table className="dv-table">
+                <thead>
+                  <tr>
+                    <th style={{ width: '65px', textAlign: 'center' }}>Rank</th>
+                    <th style={{ minWidth: '220px' }}>Keyword / Search Query</th>
+                    <th style={{ minWidth: '150px' }}>Leads & Share</th>
+                    <th style={{ minWidth: '130px' }}>Traffic Source</th>
+                    <th style={{ minWidth: '150px' }}>Campaign ID / Medium</th>
+                    <th style={{ minWidth: '200px' }}>Top Courses Inquired</th>
+                    <th style={{ minWidth: '120px' }}>Latest Lead</th>
+                    <th style={{ width: '130px', textAlign: 'center' }}>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredKeywords.length === 0 ? (
+                    <tr>
+                      <td colSpan={8} style={{ textAlign: 'center', padding: '48px 20px', color: '#64748b' }}>
+                        <div style={{ fontSize: '1.8rem', marginBottom: '8px' }}>🔍</div>
+                        <strong style={{ fontSize: '1rem', color: '#051f40', display: 'block', marginBottom: '4px' }}>
+                          No matching keywords found
+                        </strong>
+                        <span>Try adjusting your timeline, search query or traffic source filter.</span>
+                      </td>
+                    </tr>
+                  ) : (
+                    filteredKeywords.map((row, idx) => {
+                      const isExpanded = expandedKeywords.has(row.keyword);
+                      const totalLeads = filteredByDate.length || 1;
+                      const sharePct = ((row.count / totalLeads) * 100).toFixed(1);
+                      const rank = idx + 1;
+
+                      const topCoursesArr = Object.entries(row.courses)
+                        .sort((a, b) => b[1] - a[1])
+                        .slice(0, 2);
+
+                      return (
+                        <React.Fragment key={row.keyword}>
+                          <tr className={isExpanded ? 'dv-kw-row-expanded' : ''}>
+                            {/* RANK */}
+                            <td style={{ textAlign: 'center' }}>
+                              <span
+                                className={`dv-kw-rank-badge ${
+                                  rank === 1 ? 'rank-1' : rank === 2 ? 'rank-2' : rank === 3 ? 'rank-3' : 'rank-other'
+                                }`}
+                              >
+                                #{rank}
+                              </span>
+                            </td>
+
+                            {/* KEYWORD */}
+                            <td>
+                              <div className="dv-kw-name-cell">
+                                <span className="dv-kw-text">{row.keyword}</span>
+                                {row.hasUtmTerm && (
+                                  <span className="dv-kw-tag-badge" title="Captured directly from Google Ads utm_term">
+                                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                                      <circle cx="11" cy="11" r="8"></circle>
+                                      <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                                    </svg>
+                                    utm_term
+                                  </span>
+                                )}
+                              </div>
+                            </td>
+
+                            {/* LEADS & SHARE */}
+                            <td>
+                              <div className="dv-kw-vol-cell">
+                                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '4px' }}>
+                                  <strong style={{ color: '#051f40', fontSize: '0.94rem' }}>{row.count} {row.count === 1 ? 'lead' : 'leads'}</strong>
+                                  <span style={{ fontSize: '0.78rem', color: '#64748b', fontWeight: 600 }}>{sharePct}%</span>
+                                </div>
+                                <div className="dv-kw-bar-track">
+                                  <div
+                                    className="dv-kw-bar-fill"
+                                    style={{
+                                      width: `${Math.min(100, Math.max(6, Number(sharePct)))}%`,
+                                      background: rank === 1 ? '#ef5323' : rank <= 3 ? '#0284c7' : '#64748b',
+                                    }}
+                                  />
+                                </div>
+                              </div>
+                            </td>
+
+                            {/* SOURCE */}
+                            <td>
+                              <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap' }}>
+                                {row.sources.map((s) => (
+                                  <span
+                                    key={s}
+                                    className={`dv-badge ${
+                                      s.toLowerCase().includes('google')
+                                        ? 'dv-badge-google'
+                                        : s.toLowerCase().includes('direct')
+                                        ? 'dv-badge-direct'
+                                        : 'dv-badge-source'
+                                    }`}
+                                  >
+                                    {s}
+                                  </span>
+                                ))}
+                              </div>
+                            </td>
+
+                            {/* CAMPAIGN / MEDIUM */}
+                            <td>
+                              <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+                                <span style={{ fontFamily: 'monospace', fontSize: '0.8rem', color: '#051f40' }}>
+                                  {row.campaigns.join(', ') || '—'}
+                                </span>
+                                {row.mediums.length > 0 && (
+                                  <span style={{ fontSize: '0.74rem', color: '#64748b' }}>
+                                    medium: {row.mediums.join(', ')}
+                                  </span>
+                                )}
+                              </div>
+                            </td>
+
+                            {/* TOP COURSES */}
+                            <td>
+                              <div style={{ display: 'flex', flexDirection: 'column', gap: '3px' }}>
+                                {topCoursesArr.map(([courseName, cCount]) => (
+                                  <span key={courseName} style={{ fontSize: '0.8rem', color: '#334155' }}>
+                                    <strong style={{ color: '#ef5323' }}>{cCount}x</strong> {courseName.length > 32 ? courseName.slice(0, 32) + '...' : courseName}
+                                  </span>
+                                ))}
+                                {Object.keys(row.courses).length > 2 && (
+                                  <span style={{ fontSize: '0.74rem', color: '#64748b' }}>
+                                    +{Object.keys(row.courses).length - 2} more programs
+                                  </span>
+                                )}
+                              </div>
+                            </td>
+
+                            {/* LATEST LEAD */}
+                            <td>
+                              <span style={{ fontSize: '0.8rem', color: '#64748b' }}>
+                                {new Date(row.latestTimestamp).toLocaleDateString('en-IN', {
+                                  month: 'short',
+                                  day: 'numeric',
+                                })}
+                              </span>
+                            </td>
+
+                            {/* ACTION: EXPAND LEADS */}
+                            <td style={{ textAlign: 'center' }}>
+                              <button
+                                type="button"
+                                className={`dv-kw-expand-btn ${isExpanded ? 'active' : ''}`}
+                                onClick={() => toggleKeywordExpand(row.keyword)}
+                                title={isExpanded ? 'Collapse leads' : 'View all leads from this keyword'}
+                              >
+                                {isExpanded ? 'Hide' : 'View Leads'} ({row.count})
+                                <svg
+                                  width="12"
+                                  height="12"
+                                  viewBox="0 0 24 24"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  strokeWidth="2.5"
+                                  style={{
+                                    transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)',
+                                    transition: 'transform 0.2s ease',
+                                  }}
+                                >
+                                  <polyline points="6 9 12 15 18 9"></polyline>
+                                </svg>
+                              </button>
+                            </td>
+                          </tr>
+
+                          {/* EXPANDED DRAWER: LIST OF LEADS FROM THIS KEYWORD */}
+                          {isExpanded && (
+                            <tr className="dv-kw-drawer-row">
+                              <td colSpan={8} style={{ padding: '0', background: '#f8fafc' }}>
+                                <div className="dv-kw-drawer-box">
+                                  <div className="dv-kw-drawer-header">
+                                    <span style={{ fontWeight: 700, color: '#051f40', fontSize: '0.86rem' }}>
+                                      Leads generated via &ldquo;{row.keyword}&rdquo; ({row.leads.length})
+                                    </span>
+                                    <span style={{ fontSize: '0.78rem', color: '#64748b' }}>
+                                      Click any lead row to view complete details
+                                    </span>
+                                  </div>
+
+                                  <div className="dv-table-responsive" style={{ border: 'none', background: '#ffffff' }}>
+                                    <table className="dv-table" style={{ fontSize: '0.84rem' }}>
+                                      <thead>
+                                        <tr style={{ background: '#f1f5f9' }}>
+                                          <th style={{ padding: '8px 12px' }}>Name</th>
+                                          <th style={{ padding: '8px 12px' }}>Phone</th>
+                                          <th style={{ padding: '8px 12px' }}>Course Selected</th>
+                                          <th style={{ padding: '8px 12px' }}>Form Filled</th>
+                                          <th style={{ padding: '8px 12px' }}>Time (IST)</th>
+                                          <th style={{ padding: '8px 12px', textAlign: 'center' }}>Details</th>
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+                                        {row.leads.map((lead) => (
+                                          <tr
+                                            key={lead.id}
+                                            style={{ cursor: 'pointer' }}
+                                            onClick={() => setSelectedLead(lead)}
+                                            title="Click to view full lead details"
+                                          >
+                                            <td style={{ padding: '10px 12px', fontWeight: 600, color: '#051f40' }}>
+                                              {lead.name}
+                                            </td>
+                                            <td style={{ padding: '10px 12px' }}>
+                                              <a
+                                                href={`tel:${lead.phone.replace(/[^0-9+]/g, '')}`}
+                                                style={{ color: '#ef5323', textDecoration: 'none', fontWeight: 600 }}
+                                                onClick={(e) => e.stopPropagation()}
+                                              >
+                                                {lead.phone}
+                                              </a>
+                                            </td>
+                                            <td style={{ padding: '10px 12px', color: '#334155' }}>
+                                              {lead.course}
+                                            </td>
+                                            <td style={{ padding: '10px 12px' }}>
+                                              <span className="dv-badge dv-badge-form">
+                                                {lead.formLabel}
+                                              </span>
+                                            </td>
+                                            <td style={{ padding: '10px 12px', color: '#64748b', fontSize: '0.8rem' }}>
+                                              {lead.displayTime}
+                                            </td>
+                                            <td style={{ padding: '10px 12px', textAlign: 'center' }}>
+                                              <button
+                                                type="button"
+                                                className="dv-dash-btn dv-dash-btn-secondary"
+                                                style={{ padding: '4px 8px', fontSize: '0.74rem' }}
+                                                onClick={(e) => {
+                                                  e.stopPropagation();
+                                                  setSelectedLead(lead);
+                                                }}
+                                              >
+                                                View
+                                              </button>
+                                            </td>
+                                          </tr>
+                                        ))}
+                                      </tbody>
+                                    </table>
+                                  </div>
+                                </div>
+                              </td>
+                            </tr>
+                          )}
+                        </React.Fragment>
+                      );
+                    })
+                  )}
+                </tbody>
+              </table>
+            </div>
           </div>
         )}
 

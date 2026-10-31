@@ -91,7 +91,7 @@ const generateInitialSeedData = (): LeadSubmission[] => {
       course: 'Advanced Program in Industrial Data Science with AI Deployment (APIDS)',
       formType: 'hero-registration',
       formLabel: 'Landing Page Lead Registration',
-      pageUrl: 'https://dvanalyticsmds.in/lp/apids',
+      pageUrl: 'https://dvanalyticsmds.in/lp/apids?utm_source=google&utm_campaign=23068450996&utm_medium=ad&utm_content=776418379829&utm_term=data%20science%20course%20with%20ai&gad_source=1',
       pagePath: '/lp/apids',
       qualification: 'B.Tech/BE (Computer Science)',
       experience: '1-3 years',
@@ -105,7 +105,7 @@ const generateInitialSeedData = (): LeadSubmission[] => {
       course: 'Advance Program in Industrial Data Analytics with Gen AI & Agentic AI (APIDA)',
       formType: 'download-brochure',
       formLabel: 'Course Brochure Download',
-      pageUrl: 'https://dvanalyticsmds.in/lp/apida',
+      pageUrl: 'https://dvanalyticsmds.in/lp/apida?utm_source=google&utm_campaign=23068450996&utm_medium=ad&utm_content=776418379829&utm_term=data%20analytics%20course%20bangalore&gad_source=1',
       pagePath: '/lp/apida',
       brochurePath: '/apida-brochure.pdf',
       state: 'Odisha (Bhubaneswar)',
@@ -118,7 +118,7 @@ const generateInitialSeedData = (): LeadSubmission[] => {
       course: 'AI Forward Deployment Engineer (FDE)',
       formType: 'hero-registration',
       formLabel: 'Landing Page Lead Registration',
-      pageUrl: 'https://dvanalyticsmds.in/lp/fde',
+      pageUrl: 'https://dvanalyticsmds.in/lp/fde?utm_source=google&utm_campaign=23068450996&utm_medium=ad&utm_content=776418379829&utm_term=ai%20deployment%20engineer%20course&gad_source=1',
       pagePath: '/lp/fde',
       qualification: 'M.Tech/MCA/MSc',
       experience: '3-5 years',
@@ -132,7 +132,7 @@ const generateInitialSeedData = (): LeadSubmission[] => {
       course: 'Advanced Program in Industrial Data Science with AI Deployment (APIDS)',
       formType: 'free-counselling',
       formLabel: 'Book Free Counselling',
-      pageUrl: 'https://dvanalyticsmds.in/',
+      pageUrl: 'https://dvanalyticsmds.in/?utm_source=google&utm_campaign=brand_search&utm_medium=cpc&utm_term=dv%20analytics',
       pagePath: '/',
       state: 'Maharashtra (Pune)',
     },
@@ -157,7 +157,7 @@ const generateInitialSeedData = (): LeadSubmission[] => {
       course: 'Advance Program in Industrial Data Analytics with Gen AI & Agentic AI (APIDA)',
       formType: 'hero-registration',
       formLabel: 'Landing Page Lead Registration',
-      pageUrl: 'https://dvanalyticsmds.in/lp/apida',
+      pageUrl: 'https://dvanalyticsmds.in/lp/apida?utm_source=google&utm_campaign=23068450996&utm_medium=ad&utm_content=776418379829&utm_term=data%20analytics%20course%20bangalore&gad_source=1',
       pagePath: '/lp/apida',
       qualification: 'Working Professional',
       experience: '5-8 years',
@@ -171,7 +171,7 @@ const generateInitialSeedData = (): LeadSubmission[] => {
       course: 'AI Forward Deployment Engineer (FDE)',
       formType: 'download-brochure',
       formLabel: 'Course Brochure Download',
-      pageUrl: 'https://dvanalyticsmds.in/courses/ai-forward-deployment-engineer/',
+      pageUrl: 'https://dvanalyticsmds.in/courses/ai-forward-deployment-engineer/?utm_source=google&utm_campaign=23068450996&utm_medium=ad&utm_term=gen%20ai%20engineering%20course',
       pagePath: '/courses/ai-forward-deployment-engineer/',
       brochurePath: '/ai-forward-deployment-engineer-brochure.pdf',
       state: 'Delhi NCR',
@@ -184,7 +184,7 @@ const generateInitialSeedData = (): LeadSubmission[] => {
       course: 'Advanced Program in Industrial Data Science with AI Deployment (APIDS)',
       formType: 'download-brochure',
       formLabel: 'Course Brochure Download',
-      pageUrl: 'https://dvanalyticsmds.in/lp/apids',
+      pageUrl: 'https://dvanalyticsmds.in/lp/apids?utm_source=google&utm_campaign=23068450996&utm_medium=ad&utm_term=data%20science%20course%20with%20ai',
       pagePath: '/lp/apids',
       brochurePath: '/APIDS-Brochure.pdf',
       state: 'Odisha (Bhubaneswar)',
@@ -565,6 +565,140 @@ export const exportSubmissionsCsv = (submissions: LeadSubmission[]): void => {
   const link = document.createElement('a');
   link.setAttribute('href', url);
   link.setAttribute('download', `DV_Analytics_Form_Leads_${new Date().toISOString().slice(0, 10)}.csv`);
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+};
+
+// ============================================================================
+// EXPORT KEYWORD PERFORMANCE TO EXCEL WORKBOOK (.xls format)
+// ============================================================================
+export interface KeywordExportItem {
+  rank: number;
+  keyword: string;
+  leadCount: number;
+  percentage: string;
+  source: string;
+  medium: string;
+  campaign: string;
+  topCourse: string;
+  latestLeadDate: string;
+}
+
+export const exportKeywordsExcel = (keywords: KeywordExportItem[]): void => {
+  if (!keywords.length) {
+    alert('No keyword data available to export.');
+    return;
+  }
+
+  const escapeXml = (unsafe: string | number | undefined | null) => {
+    if (unsafe === undefined || unsafe === null) return '';
+    return String(unsafe)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&apos;');
+  };
+
+  const headers = [
+    'Rank',
+    'Keyword / Search Query',
+    'Lead Volume',
+    'Conversion Share (%)',
+    'Traffic Source',
+    'Medium',
+    'Campaign ID / Name',
+    'Primary Course Inquired',
+    'Latest Lead Date',
+  ];
+
+  const colWidths = [60, 280, 110, 150, 130, 110, 160, 260, 160];
+  const columnsXml = colWidths.map((w) => `<Column ss:Width="${w}"/>`).join('\n      ');
+
+  const headerRowXml = headers
+    .map((h) => `<Cell ss:StyleID="HeaderStyle"><Data ss:Type="String">${escapeXml(h)}</Data></Cell>`)
+    .join('\n        ');
+
+  const dataRowsXml = keywords
+    .map((item) => {
+      const cells = [
+        `#${item.rank}`,
+        item.keyword,
+        item.leadCount,
+        item.percentage,
+        item.source,
+        item.medium,
+        item.campaign,
+        item.topCourse,
+        item.latestLeadDate,
+      ];
+
+      const cellsXml = cells
+        .map((val) => `<Cell ss:StyleID="DataStyle"><Data ss:Type="String">${escapeXml(val)}</Data></Cell>`)
+        .join('\n        ');
+
+      return `      <Row ss:Height="22">\n        ${cellsXml}\n      </Row>`;
+    })
+    .join('\n');
+
+  const excelXml = `<?xml version="1.0" encoding="UTF-8"?>
+<?mso-application progid="Excel.Sheet"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:o="urn:schemas-microsoft-com:office:office"
+ xmlns:x="urn:schemas-microsoft-com:office:excel"
+ xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:html="http://www.w3.org/TR/REC-html40">
+ <Styles>
+   <Style ss:ID="Default" ss:Name="Normal">
+     <Alignment ss:Vertical="Center"/>
+     <Borders/>
+     <Font ss:FontName="Calibri" ss:Size="11" ss:Color="#000000"/>
+     <Interior/>
+     <NumberFormat/>
+     <Protection/>
+   </Style>
+   <Style ss:ID="HeaderStyle">
+     <Alignment ss:Horizontal="Center" ss:Vertical="Center"/>
+     <Borders>
+       <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#03162C"/>
+     </Borders>
+     <Font ss:FontName="Calibri" ss:Size="11" ss:Color="#FFFFFF" ss:Bold="1"/>
+     <Interior ss:Color="#051F40" ss:Pattern="Solid"/>
+   </Style>
+   <Style ss:ID="DataStyle">
+     <Alignment ss:Vertical="Center"/>
+     <Borders>
+       <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/>
+     </Borders>
+     <Font ss:FontName="Calibri" ss:Size="10.5" ss:Color="#0F172A"/>
+   </Style>
+ </Styles>
+ <Worksheet ss:Name="Keyword Analytics">
+   <Table ss:DefaultRowHeight="20">
+     ${columnsXml}
+     <Row ss:Height="28">
+       ${headerRowXml}
+     </Row>
+${dataRowsXml}
+   </Table>
+   <WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">
+     <Selected/>
+     <FreezePanes/>
+     <FrozenNoSplit/>
+     <SplitHorizontal>1</SplitHorizontal>
+     <TopRowBottomPane>1</TopRowBottomPane>
+     <ActivePane>2</ActivePane>
+   </WorksheetOptions>
+ </Worksheet>
+</Workbook>`;
+
+  const blob = new Blob([excelXml], { type: 'application/vnd.ms-excel;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.setAttribute('href', url);
+  link.setAttribute('download', `DV_Analytics_Keyword_Data_${new Date().toISOString().slice(0, 10)}.xls`);
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
