@@ -2669,7 +2669,7 @@ export const FdeStoryLandingPage: React.FC<FdeStoryLandingPageProps> = ({ onRegi
                     </div>
                     <p className="info-text">
                       <a href="tel:+918095881188" className="center-link center-link-phone">(+91) 8095 881 188</a>
-                      <a href="tel:+917483596228" className="center-link center-link-phone">(+91) 7483 596 228</a>
+                      <a href="tel:+919108350033" className="center-link center-link-phone">(+91) 9108 350 033</a>
                     </p>
                   </div>
 
@@ -2731,7 +2731,7 @@ export const FdeStoryLandingPage: React.FC<FdeStoryLandingPageProps> = ({ onRegi
                     </div>
                     <p className="info-text">
                       <a href="tel:+918095881188" className="center-link center-link-phone">+91 8095 881 188</a>
-                      <a href="tel:+917483596228" className="center-link center-link-phone">+91 7483 596 228</a>
+                      <a href="tel:+919108350033" className="center-link center-link-phone">+91 9108 350 033</a>
                     </p>
                   </div>
 

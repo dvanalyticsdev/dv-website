@@ -274,8 +274,8 @@ export const LandingThankYouPage: React.FC<LandingThankYouPageProps> = ({ course
                     <a href="tel:+918095881188" className="lp-ty-phone-link">
                       +91 8095 881 188
                     </a>
-                    <a href="tel:+917483596228" className="lp-ty-phone-link">
-                      +91 7483 596 228
+                    <a href="tel:+919108350033" className="lp-ty-phone-link">
+                      +91 9108 350 033
                     </a>
                   </div>
                 </div>

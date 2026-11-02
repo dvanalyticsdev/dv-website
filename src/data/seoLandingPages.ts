@@ -184,7 +184,7 @@ const coreSeoLandingPages: SeoLandingPage[] = [
       {
         question: 'How can I enrol in a Data Science course at DV Analytics, Bangalore?',
         answer:
-          'You can contact DV Analytics at +91 8095 881 188 or +91 7483 596 228 to enquire about admission. Ask the team about course fees, duration, upcoming batches, online or offline learning options, and the opportunity to attend a demo or counselling session.',
+          'You can contact DV Analytics at +91 8095 881 188 or +91 9108 350 033 to enquire about admission. Ask the team about course fees, duration, upcoming batches, online or offline learning options, and the opportunity to attend a demo or counselling session.',
       },
     ],
   },
@@ -514,7 +514,7 @@ const coreSeoLandingPages: SeoLandingPage[] = [
         },
         contactInfo: {
           centre: 'Plot No. A/7, adjacent to Maharaja Cine Complex, Bhoinagar, Acharya Vihar, Bhubaneswar – 751022.',
-          phone: '+91 8095 881 188 / +91 7483 596 228',
+          phone: '+91 8095 881 188 / +91 9108 350 033',
         },
       },
     ],
@@ -542,7 +542,7 @@ const coreSeoLandingPages: SeoLandingPage[] = [
       {
         question: 'How can I enrol in the Data Analytics Course at DV Analytics in Bhubaneswar?',
         answer:
-          'You can contact DV Analytics to ask about the syllabus, fees, course duration, batch schedules, and admission process. Training centre: Plot No. A/7, adjacent to Maharaja Cine Complex, Bhoinagar, Acharya Vihar, Bhubaneswar – 751022. Contact: +91 8095 881 188 or +91 7483 596 228.',
+          'You can contact DV Analytics to ask about the syllabus, fees, course duration, batch schedules, and admission process. Training centre: Plot No. A/7, adjacent to Maharaja Cine Complex, Bhoinagar, Acharya Vihar, Bhubaneswar – 751022. Contact: +91 8095 881 188 or +91 9108 350 033.',
       },
     ],
   },
@@ -695,7 +695,7 @@ const coreSeoLandingPages: SeoLandingPage[] = [
         },
         contactInfo: {
           centre: 'Plot No. A/7, adjacent to Maharaja Cine Complex, Bhoinagar, Acharya Vihar, Bhubaneswar – 751022.',
-          phone: '+91 8095 881 188 / +91 7483 596 228',
+          phone: '+91 8095 881 188 / +91 9108 350 033',
         },
       },
     ],
