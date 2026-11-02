@@ -193,7 +193,19 @@ export const SeoLandingPage: React.FC<SeoLandingPageProps> = ({ pageId, onNaviga
                     <strong>Training Centre:</strong> {sec.contactInfo.centre}
                   </p>
                   <p>
-                    <strong>Contact:</strong> {sec.contactInfo.phone}
+                    <strong>Contact:</strong>{' '}
+                    {sec.contactInfo.phone.split('/').map((num, idx, arr) => {
+                      const trimmed = num.trim();
+                      const digits = trimmed.replace(/[^0-9+]/g, '');
+                      return (
+                        <React.Fragment key={trimmed}>
+                          <a href={`tel:${digits}`} style={{ color: 'inherit', textDecoration: 'none' }}>
+                            {trimmed}
+                          </a>
+                          {idx < arr.length - 1 ? ' / ' : ''}
+                        </React.Fragment>
+                      );
+                    })}
                   </p>
                 </div>
               )}
