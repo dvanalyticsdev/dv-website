@@ -98,6 +98,20 @@ const generateInitialSeedData = (): LeadSubmission[] => {
       state: 'Karnataka (Bangalore)',
     },
     {
+      offsetMs: 45 * minute,
+      name: 'Rakesh Ranjan Panda',
+      email: 'rakesh.panda@gmail.com',
+      phone: '+91 94391 55210',
+      course: 'Advanced Program in Industrial Data Science with AI Deployment (APIDS)',
+      formType: 'hero-registration',
+      formLabel: 'Landing Page Lead Registration',
+      pageUrl: 'https://dvanalyticsmds.in/lp/apids?utm_source=whatsapp&utm_medium=chat&utm_campaign=wa_community_share',
+      pagePath: '/lp/apids',
+      qualification: 'B.Tech/BE (Mechanical)',
+      experience: '2-4 years',
+      state: 'Odisha (Bhubaneswar)',
+    },
+    {
       offsetMs: 1.5 * hour,
       name: 'Priyanka Mohapatra',
       email: 'priyanka.m@outlook.com',
@@ -109,6 +123,19 @@ const generateInitialSeedData = (): LeadSubmission[] => {
       pagePath: '/lp/apida',
       brochurePath: '/apida-brochure.pdf',
       state: 'Odisha (Bhubaneswar)',
+    },
+    {
+      offsetMs: 2.2 * hour,
+      name: 'Swati Shrivastava',
+      email: 'swati.shrivastava@outlook.com',
+      phone: '+91 98930 22184',
+      course: 'Advance Program in Industrial Data Analytics with Gen AI & Agentic AI (APIDA)',
+      formType: 'download-brochure',
+      formLabel: 'Course Brochure Download',
+      pageUrl: 'https://dvanalyticsmds.in/lp/apida?utm_source=whatsapp&utm_medium=community&utm_campaign=insider_group',
+      pagePath: '/lp/apida',
+      brochurePath: '/apida-brochure.pdf',
+      state: 'Madhya Pradesh (Indore)',
     },
     {
       offsetMs: 3.2 * hour,
@@ -699,6 +726,143 @@ ${dataRowsXml}
   const link = document.createElement('a');
   link.setAttribute('href', url);
   link.setAttribute('download', `DV_Analytics_Keyword_Data_${new Date().toISOString().slice(0, 10)}.xls`);
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+};
+
+// ============================================================================
+// EXPORT SOURCE PERFORMANCE TO EXCEL WORKBOOK (.xls format)
+// ============================================================================
+export interface SourceExportItem {
+  rank: number;
+  source: string;
+  sourceCategory: string;
+  leadCount: number;
+  percentage: string;
+  mediums: string;
+  campaigns: string;
+  topCourse: string;
+  topPage: string;
+  latestLeadDate: string;
+}
+
+export const exportSourcesExcel = (sources: SourceExportItem[]): void => {
+  if (!sources.length) {
+    alert('No source data available to export.');
+    return;
+  }
+
+  const escapeXml = (unsafe: string | number | undefined | null) => {
+    if (unsafe === undefined || unsafe === null) return '';
+    return String(unsafe)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&apos;');
+  };
+
+  const headers = [
+    'Rank',
+    'Traffic Source',
+    'Channel Category',
+    'Lead Submissions',
+    'Conversion Share (%)',
+    'Medium',
+    'Campaigns',
+    'Primary Course Inquired',
+    'Top Landing Page',
+    'Latest Submission Date',
+  ];
+
+  const colWidths = [60, 200, 180, 120, 140, 120, 200, 260, 220, 160];
+  const columnsXml = colWidths.map((w) => `<Column ss:Width="${w}"/>`).join('\n      ');
+
+  const headerRowXml = headers
+    .map((h) => `<Cell ss:StyleID="HeaderStyle"><Data ss:Type="String">${escapeXml(h)}</Data></Cell>`)
+    .join('\n        ');
+
+  const dataRowsXml = sources
+    .map((item) => {
+      const cells = [
+        `#${item.rank}`,
+        item.source,
+        item.sourceCategory,
+        item.leadCount,
+        item.percentage,
+        item.mediums,
+        item.campaigns,
+        item.topCourse,
+        item.topPage,
+        item.latestLeadDate,
+      ];
+
+      const cellsXml = cells
+        .map((val) => `<Cell ss:StyleID="DataStyle"><Data ss:Type="String">${escapeXml(val)}</Data></Cell>`)
+        .join('\n        ');
+
+      return `      <Row ss:Height="22">\n        ${cellsXml}\n      </Row>`;
+    })
+    .join('\n');
+
+  const excelXml = `<?xml version="1.0" encoding="UTF-8"?>
+<?mso-application progid="Excel.Sheet"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:o="urn:schemas-microsoft-com:office:office"
+ xmlns:x="urn:schemas-microsoft-com:office:excel"
+ xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:html="http://www.w3.org/TR/REC-html40">
+ <Styles>
+   <Style ss:ID="Default" ss:Name="Normal">
+     <Alignment ss:Vertical="Center"/>
+     <Borders/>
+     <Font ss:FontName="Calibri" ss:Size="11" ss:Color="#000000"/>
+     <Interior/>
+     <NumberFormat/>
+     <Protection/>
+   </Style>
+   <Style ss:ID="HeaderStyle">
+     <Alignment ss:Horizontal="Center" ss:Vertical="Center"/>
+     <Borders>
+       <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#03162C"/>
+     </Borders>
+     <Font ss:FontName="Calibri" ss:Size="11" ss:Color="#FFFFFF" ss:Bold="1"/>
+     <Interior ss:Color="#051F40" ss:Pattern="Solid"/>
+   </Style>
+   <Style ss:ID="DataStyle">
+     <Alignment ss:Vertical="Center"/>
+     <Borders>
+       <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/>
+     </Borders>
+     <Font ss:FontName="Calibri" ss:Size="10.5" ss:Color="#0F172A"/>
+   </Style>
+ </Styles>
+ <Worksheet ss:Name="Source Analytics">
+   <Table ss:DefaultRowHeight="20">
+     ${columnsXml}
+     <Row ss:Height="28">
+       ${headerRowXml}
+     </Row>
+${dataRowsXml}
+   </Table>
+   <WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">
+     <Selected/>
+     <FreezePanes/>
+     <FrozenNoSplit/>
+     <SplitHorizontal>1</SplitHorizontal>
+     <TopRowBottomPane>1</TopRowBottomPane>
+     <ActivePane>2</ActivePane>
+   </WorksheetOptions>
+ </Worksheet>
+</Workbook>`;
+
+  const blob = new Blob([excelXml], { type: 'application/vnd.ms-excel;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.setAttribute('href', url);
+  link.setAttribute('download', `DV_Analytics_Source_Data_${new Date().toISOString().slice(0, 10)}.xls`);
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);

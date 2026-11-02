@@ -1437,6 +1437,137 @@
   border-bottom: 1px solid #f1f5f9;
 }
 
+/* ==========================================================================
+   SOURCE DATA TAB & BRAND BADGES
+   ========================================================================== */
+.dv-badge-whatsapp {
+  background: #ecfdf5;
+  color: #16a34a;
+  border: 1px solid #bbf7d0;
+}
+
+.dv-badge-meta,
+.dv-badge-facebook {
+  background: #eff6ff;
+  color: #1877f2;
+  border: 1px solid #bfdbfe;
+}
+
+.dv-badge-instagram {
+  background: #fdf2f8;
+  color: #db2777;
+  border: 1px solid #fbcfe8;
+}
+
+.dv-badge-linkedin {
+  background: #f0f7ff;
+  color: #0284c7;
+  border: 1px solid #bae6fd;
+}
+
+.dv-badge-youtube {
+  background: #fef2f2;
+  color: #dc2626;
+  border: 1px solid #fecaca;
+}
+
+.dv-source-icon-wrap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 9px;
+  background: #f1f5f9;
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.dv-source-icon-wrap.is-whatsapp {
+  background: #dcfce7;
+  color: #16a34a;
+}
+
+.dv-source-icon-wrap.is-google {
+  background: #eff6ff;
+  color: #2563eb;
+}
+
+.dv-source-icon-wrap.is-meta {
+  background: #eff6ff;
+  color: #1877f2;
+}
+
+.dv-source-icon-wrap.is-instagram {
+  background: #fdf2f8;
+  color: #db2777;
+}
+
+.dv-source-icon-wrap.is-linkedin {
+  background: #f0f7ff;
+  color: #0284c7;
+}
+
+.dv-source-icon-wrap.is-youtube {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.dv-source-icon-wrap.is-direct {
+  background: #f8fafc;
+  color: #64748b;
+  border: 1px solid #e2e8f0;
+}
+
+.dv-source-icon-wrap.is-other {
+  background: #faf5ff;
+  color: #9333ea;
+}
+
+.dv-channel-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 6px;
+  background: #f1f5f9;
+  color: #475569;
+  border: 1px solid #e2e8f0;
+  letter-spacing: 0.2px;
+}
+
+.dv-channel-pill.chat {
+  background: #dcfce7;
+  color: #15803d;
+  border-color: #bbf7d0;
+}
+
+.dv-channel-pill.search {
+  background: #e0f2fe;
+  color: #0369a1;
+  border-color: #bae6fd;
+}
+
+.dv-channel-pill.social {
+  background: #f3e8ff;
+  color: #7e22ce;
+  border-color: #e9d5ff;
+}
+
+.dv-channel-pill.direct {
+  background: #f8fafc;
+  color: #475569;
+  border-color: #e2e8f0;
+}
+
+.dv-channel-pill.other {
+  background: #faf5ff;
+  color: #9333ea;
+  border-color: #e9d5ff;
+}
+
 /* RESPONSIVENESS */
 @media (max-width: 900px) {
   .dv-dash-container {

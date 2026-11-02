@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import './TrackingDashboard.css';
-import type { LeadSubmission, KeywordExportItem } from '../../services/leadTrackingService';
+import type { LeadSubmission, KeywordExportItem, SourceExportItem } from '../../services/leadTrackingService';
 import {
   getStoredSubmissions,
   getRemoteSubmissions,
@@ -10,6 +10,7 @@ import {
   clearRemoteSubmissions,
   exportSubmissionsExcel,
   exportKeywordsExcel,
+  exportSourcesExcel,
 } from '../../services/leadTrackingService';
 
 const AUTH_STORAGE_KEY = 'dv_dashboard_pin_authenticated';
@@ -35,8 +36,8 @@ export const TrackingDashboard: React.FC<TrackingDashboardProps> = ({ onNavigate
   const [pinError, setPinError] = useState<string>('');
   const [dataError, setDataError] = useState<string>('');
 
-  // Top Nav State: 'dashboard' | 'leads' | 'keywords'
-  const [activeNav, setActiveNav] = useState<'dashboard' | 'leads' | 'keywords'>('dashboard');
+  // Top Nav State: 'dashboard' | 'leads' | 'keywords' | 'sources'
+  const [activeNav, setActiveNav] = useState<'dashboard' | 'leads' | 'keywords' | 'sources'>('dashboard');
 
   // Dashboard Data State
   const [submissions, setSubmissions] = useState<LeadSubmission[]>([]);
@@ -58,6 +59,11 @@ export const TrackingDashboard: React.FC<TrackingDashboardProps> = ({ onNavigate
   const [keywordSearchQuery, setKeywordSearchQuery] = useState<string>('');
   const [keywordSourceFilter, setKeywordSourceFilter] = useState<string>('all');
   const [expandedKeywords, setExpandedKeywords] = useState<Set<string>>(new Set());
+
+  // Source Data Tab State
+  const [sourceSearchQuery, setSourceSearchQuery] = useState<string>('');
+  const [sourceCategoryFilter, setSourceCategoryFilter] = useState<string>('all');
+  const [expandedSources, setExpandedSources] = useState<Set<string>>(new Set());
 
   // Page-wise breakdown sub-tab state ('landing' vs 'main-site')
   const [pageSubTab, setPageSubTab] = useState<'landing' | 'seo' | 'main-site'>('landing');
@@ -747,6 +753,297 @@ export const TrackingDashboard: React.FC<TrackingDashboardProps> = ({ onNavigate
     exportKeywordsExcel(exportItems);
   };
 
+  // Helper to safely parse traffic acquisition source
+  const parseLeadSource = useCallback((lead: LeadSubmission) => {
+    let rawSource = '';
+    let medium = '';
+    let campaign = '';
+    let hasGclid = false;
+
+    const rawUrl = lead.pageUrl || lead.pagePath || '';
+    if (rawUrl.includes('?') || rawUrl.includes('&')) {
+      try {
+        const queryPart = rawUrl.includes('?') ? rawUrl.slice(rawUrl.indexOf('?') + 1) : rawUrl;
+        const params = new URLSearchParams(queryPart);
+        rawSource = (params.get('utm_source') || '').trim();
+        medium = (params.get('utm_medium') || '').trim();
+        campaign = (params.get('utm_campaign') || params.get('gad_campaignid') || '').trim();
+        hasGclid = Boolean(params.get('gclid') || params.get('gad_source'));
+      } catch {
+        // Fallback
+      }
+    }
+
+    const sLower = rawSource.toLowerCase();
+    const mLower = medium.toLowerCase();
+    const urlLower = rawUrl.toLowerCase();
+
+    // 1. WhatsApp Attribution
+    if (
+      sLower.includes('whatsapp') ||
+      sLower === 'wa' ||
+      sLower === 'wa_me' ||
+      mLower.includes('whatsapp') ||
+      urlLower.includes('whatsapp') ||
+      urlLower.includes('wa.me')
+    ) {
+      return {
+        canonicalSource: 'WhatsApp',
+        sourceCategory: 'chat' as const,
+        sourceCategoryLabel: 'Direct Messaging / Chat',
+        sourceBadgeClass: 'dv-badge-whatsapp',
+        medium: medium || 'chat',
+        campaign: campaign || '—',
+        isPaid: false,
+      };
+    }
+
+    // 2. Google Search & Ads Attribution
+    if (
+      sLower.includes('google') ||
+      sLower === 'adwords' ||
+      hasGclid ||
+      Boolean(campaign && (campaign.startsWith('230') || campaign.includes('search') || campaign.includes('brand')))
+    ) {
+      const isPaid = hasGclid || mLower.includes('cpc') || mLower.includes('ad') || mLower.includes('paid') || Boolean(campaign);
+      return {
+        canonicalSource: isPaid ? 'Google (Ads)' : 'Google (Organic)',
+        sourceCategory: 'search' as const,
+        sourceCategoryLabel: isPaid ? 'Paid Search Ads' : 'Organic Search',
+        sourceBadgeClass: 'dv-badge-google',
+        medium: medium || (isPaid ? 'cpc' : 'organic'),
+        campaign: campaign || (hasGclid ? 'Google Ads Campaign' : '—'),
+        isPaid,
+      };
+    }
+
+    // 3. Meta / Facebook Attribution
+    if (
+      sLower.includes('facebook') ||
+      sLower === 'fb' ||
+      sLower.includes('meta') ||
+      urlLower.includes('fbclid')
+    ) {
+      const isPaid = mLower.includes('cpc') || mLower.includes('ad') || mLower.includes('paid');
+      return {
+        canonicalSource: 'Meta / Facebook',
+        sourceCategory: 'social' as const,
+        sourceCategoryLabel: isPaid ? 'Paid Social Ads' : 'Social Media',
+        sourceBadgeClass: 'dv-badge-facebook',
+        medium: medium || (isPaid ? 'cpc' : 'social'),
+        campaign: campaign || '—',
+        isPaid,
+      };
+    }
+
+    // 4. Instagram Attribution
+    if (sLower.includes('instagram') || sLower === 'ig' || sLower === 'insta') {
+      const isPaid = mLower.includes('cpc') || mLower.includes('ad') || mLower.includes('paid');
+      return {
+        canonicalSource: 'Instagram',
+        sourceCategory: 'social' as const,
+        sourceCategoryLabel: isPaid ? 'Paid Social Ads' : 'Social Media',
+        sourceBadgeClass: 'dv-badge-instagram',
+        medium: medium || (isPaid ? 'cpc' : 'social'),
+        campaign: campaign || '—',
+        isPaid,
+      };
+    }
+
+    // 5. LinkedIn Attribution
+    if (sLower.includes('linkedin') || sLower === 'li') {
+      const isPaid = mLower.includes('cpc') || mLower.includes('ad') || mLower.includes('paid');
+      return {
+        canonicalSource: 'LinkedIn',
+        sourceCategory: 'social' as const,
+        sourceCategoryLabel: isPaid ? 'Professional Social' : 'Social Media',
+        sourceBadgeClass: 'dv-badge-linkedin',
+        medium: medium || (isPaid ? 'cpc' : 'social'),
+        campaign: campaign || '—',
+        isPaid,
+      };
+    }
+
+    // 6. YouTube Attribution
+    if (sLower.includes('youtube') || sLower === 'yt') {
+      return {
+        canonicalSource: 'YouTube',
+        sourceCategory: 'social' as const,
+        sourceCategoryLabel: 'Video / Social',
+        sourceBadgeClass: 'dv-badge-youtube',
+        medium: medium || 'video',
+        campaign: campaign || '—',
+        isPaid: false,
+      };
+    }
+
+    // 7. Custom Campaign / Other Source
+    if (rawSource) {
+      const formatted = rawSource.charAt(0).toUpperCase() + rawSource.slice(1);
+      return {
+        canonicalSource: formatted,
+        sourceCategory: 'other' as const,
+        sourceCategoryLabel: 'Custom Campaign / Source',
+        sourceBadgeClass: 'dv-badge-source',
+        medium: medium || 'referral',
+        campaign: campaign || '—',
+        isPaid: mLower.includes('cpc') || mLower.includes('ad') || mLower.includes('paid'),
+      };
+    }
+
+    // 8. Direct / Organic Fallback
+    return {
+      canonicalSource: 'Direct / Organic',
+      sourceCategory: 'direct' as const,
+      sourceCategoryLabel: 'Direct Website Visit',
+      sourceBadgeClass: 'dv-badge-direct',
+      medium: 'direct',
+      campaign: '—',
+      isPaid: false,
+    };
+  }, []);
+
+  // Aggregate source performance ranked Top to Low
+  interface SourceRowItem {
+    source: string;
+    sourceCategory: 'search' | 'chat' | 'social' | 'direct' | 'other';
+    sourceCategoryLabel: string;
+    sourceBadgeClass: string;
+    count: number;
+    mediums: string[];
+    campaigns: string[];
+    courses: Record<string, number>;
+    pages: Record<string, number>;
+    formTypes: Record<string, number>;
+    leads: LeadSubmission[];
+    latestTimestamp: string;
+    isPaid: boolean;
+  }
+
+  const sourceAggregates = useMemo(() => {
+    const map = new Map<string, SourceRowItem>();
+
+    filteredByDate.forEach((lead) => {
+      const parsed = parseLeadSource(lead);
+      const key = parsed.canonicalSource;
+
+      if (!map.has(key)) {
+        map.set(key, {
+          source: key,
+          sourceCategory: parsed.sourceCategory,
+          sourceCategoryLabel: parsed.sourceCategoryLabel,
+          sourceBadgeClass: parsed.sourceBadgeClass,
+          count: 0,
+          mediums: [],
+          campaigns: [],
+          courses: {},
+          pages: {},
+          formTypes: {},
+          leads: [],
+          latestTimestamp: lead.timestamp,
+          isPaid: parsed.isPaid,
+        });
+      }
+
+      const item = map.get(key)!;
+      item.count += 1;
+      item.leads.push(lead);
+
+      if (parsed.medium && parsed.medium !== '—' && !item.mediums.includes(parsed.medium)) {
+        item.mediums.push(parsed.medium);
+      }
+      if (parsed.campaign && parsed.campaign !== '—' && !item.campaigns.includes(parsed.campaign)) {
+        item.campaigns.push(parsed.campaign);
+      }
+
+      const c = lead.course || 'Other';
+      item.courses[c] = (item.courses[c] || 0) + 1;
+
+      const p = lead.pagePath || '/';
+      item.pages[p] = (item.pages[p] || 0) + 1;
+
+      const f = lead.formLabel || 'Form Submission';
+      item.formTypes[f] = (item.formTypes[f] || 0) + 1;
+
+      if (new Date(lead.timestamp).getTime() > new Date(item.latestTimestamp).getTime()) {
+        item.latestTimestamp = lead.timestamp;
+      }
+    });
+
+    return Array.from(map.values()).sort((a, b) => {
+      if (b.count !== a.count) return b.count - a.count;
+      return new Date(b.latestTimestamp).getTime() - new Date(a.latestTimestamp).getTime();
+    });
+  }, [filteredByDate, parseLeadSource]);
+
+  // Filter sources by search query & category filter
+  const filteredSources = useMemo(() => {
+    let list = sourceAggregates;
+
+    if (sourceSearchQuery.trim()) {
+      const q = sourceSearchQuery.trim().toLowerCase();
+      list = list.filter((row) =>
+        row.source.toLowerCase().includes(q) ||
+        row.sourceCategoryLabel.toLowerCase().includes(q) ||
+        row.mediums.some((m) => m.toLowerCase().includes(q)) ||
+        row.campaigns.some((c) => c.toLowerCase().includes(q)) ||
+        Object.keys(row.courses).some((c) => c.toLowerCase().includes(q))
+      );
+    }
+
+    if (sourceCategoryFilter !== 'all') {
+      list = list.filter((row) => row.sourceCategory === sourceCategoryFilter);
+    }
+
+    return list;
+  }, [sourceAggregates, sourceSearchQuery, sourceCategoryFilter]);
+
+  const whatsappLeadsCount = useMemo(() => {
+    return filteredByDate.filter((lead) => parseLeadSource(lead).sourceCategory === 'chat').length;
+  }, [filteredByDate, parseLeadSource]);
+
+  const toggleSourceExpand = (source: string) => {
+    setExpandedSources((prev) => {
+      const next = new Set(prev);
+      if (next.has(source)) {
+        next.delete(source);
+      } else {
+        next.add(source);
+      }
+      return next;
+    });
+  };
+
+  const handleExportSources = () => {
+    const total = filteredByDate.length || 1;
+    const exportItems: SourceExportItem[] = filteredSources.map((item, idx) => {
+      const topCourseEntry = Object.entries(item.courses).sort((a, b) => b[1] - a[1])[0];
+      const topCourse = topCourseEntry ? `${topCourseEntry[0]} (${topCourseEntry[1]})` : '—';
+      const topPageEntry = Object.entries(item.pages).sort((a, b) => b[1] - a[1])[0];
+      const topPage = topPageEntry ? `${topPageEntry[0]} (${topPageEntry[1]})` : '—';
+      const pct = `${((item.count / total) * 100).toFixed(1)}%`;
+
+      return {
+        rank: idx + 1,
+        source: item.source,
+        sourceCategory: item.sourceCategoryLabel,
+        leadCount: item.count,
+        percentage: pct,
+        mediums: item.mediums.join(', ') || '—',
+        campaigns: item.campaigns.join(', ') || '—',
+        topCourse,
+        topPage,
+        latestLeadDate: new Date(item.latestTimestamp).toLocaleDateString('en-IN', {
+          day: '2-digit',
+          month: 'short',
+          year: 'numeric',
+        }),
+      };
+    });
+
+    exportSourcesExcel(exportItems);
+  };
+
   // Handle timeline pill clicks
   const handleRangeSelect = (range: 'today' | '7d' | '30d' | 'all' | 'custom') => {
     setDateRange(range);
@@ -948,6 +1245,19 @@ export const TrackingDashboard: React.FC<TrackingDashboardProps> = ({ onNavigate
                 <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
               </svg>
               Keyword data ({trackedKeywordsCount > 0 ? trackedKeywordsCount : keywordAggregates.length})
+            </button>
+
+            <button
+              type="button"
+              className={`dv-nav-tab-btn ${activeNav === 'sources' ? 'active' : ''}`}
+              onClick={() => setActiveNav('sources')}
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="2" y1="12" x2="22" y2="12"></line>
+                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+              </svg>
+              Source data ({sourceAggregates.length})
             </button>
           </div>
 
@@ -1938,6 +2248,481 @@ export const TrackingDashboard: React.FC<TrackingDashboardProps> = ({ onNavigate
                                               <span className="dv-badge dv-badge-form">
                                                 {lead.formLabel}
                                               </span>
+                                            </td>
+                                            <td style={{ padding: '10px 12px', color: '#64748b', fontSize: '0.8rem' }}>
+                                              {lead.displayTime}
+                                            </td>
+                                            <td style={{ padding: '10px 12px', textAlign: 'center' }}>
+                                              <button
+                                                type="button"
+                                                className="dv-dash-btn dv-dash-btn-secondary"
+                                                style={{ padding: '4px 8px', fontSize: '0.74rem' }}
+                                                onClick={(e) => {
+                                                  e.stopPropagation();
+                                                  setSelectedLead(lead);
+                                                }}
+                                              >
+                                                View
+                                              </button>
+                                            </td>
+                                          </tr>
+                                        ))}
+                                      </tbody>
+                                    </table>
+                                  </div>
+                                </div>
+                              </td>
+                            </tr>
+                          )}
+                        </React.Fragment>
+                      );
+                    })
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+
+        {/* ====================================================================
+            VIEW 4: SOURCE DATA (TRAFFIC SOURCE BREAKDOWN: WHATSAPP, GOOGLE, META, DIRECT, ETC.)
+            ==================================================================== */}
+        {activeNav === 'sources' && (
+          <div className="dv-table-panel">
+            {/* TIMELINE FILTER AT TOP OF SOURCE DATA */}
+            <div className="dv-dash-timeline-bar" style={{ marginBottom: '18px' }}>
+              <div className="dv-time-filters">
+                {(['today', '7d', '30d', 'all', 'custom'] as const).map((range) => (
+                  <button
+                    key={range}
+                    type="button"
+                    className={`dv-time-pill ${dateRange === range ? 'active' : ''}`}
+                    onClick={() => handleRangeSelect(range)}
+                  >
+                    {range === 'today' && 'Today'}
+                    {range === '7d' && 'Last 7 Days'}
+                    {range === '30d' && 'Last 30 Days'}
+                    {range === 'all' && 'All Time'}
+                    {range === 'custom' && 'Custom Timeline'}
+                  </button>
+                ))}
+
+                {dateRange === 'custom' && (
+                  <div className="dv-custom-date-box">
+                    <span className="dv-custom-date-label">From:</span>
+                    <input
+                      type="date"
+                      className="dv-custom-date-input"
+                      value={customStartDate}
+                      onChange={(e) => setCustomStartDate(e.target.value)}
+                      aria-label="Filter start date"
+                    />
+                    <span className="dv-custom-date-sep">to</span>
+                    <input
+                      type="date"
+                      className="dv-custom-date-input"
+                      value={customEndDate}
+                      onChange={(e) => setCustomEndDate(e.target.value)}
+                      aria-label="Filter end date"
+                    />
+                  </div>
+                )}
+              </div>
+
+              <button
+                type="button"
+                className="dv-dash-btn dv-dash-btn-excel"
+                onClick={handleExportSources}
+                title="Export source performance report to Microsoft Excel (.xls)"
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.3">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                  <polyline points="14 2 14 8 20 8"></polyline>
+                  <line x1="8" y1="13" x2="16" y2="13"></line>
+                  <line x1="8" y1="17" x2="16" y2="17"></line>
+                </svg>
+                Export Source Report ({filteredSources.length})
+              </button>
+            </div>
+
+            {/* SOURCE KPI SUMMARY CARDS */}
+            <div className="dv-kw-kpi-grid">
+              <div className="dv-kw-kpi-card">
+                <span className="dv-kw-kpi-title">Total Submissions</span>
+                <span className="dv-kw-kpi-val">{filteredByDate.length}</span>
+                <span className="dv-kw-kpi-sub">Across all traffic sources</span>
+              </div>
+              <div className="dv-kw-kpi-card">
+                <span className="dv-kw-kpi-title">Active Sources</span>
+                <span className="dv-kw-kpi-val" style={{ color: '#0284c7' }}>{sourceAggregates.length}</span>
+                <span className="dv-kw-kpi-sub">Channels driving inquiries</span>
+              </div>
+              <div className="dv-kw-kpi-card">
+                <span className="dv-kw-kpi-title">WhatsApp / Chat Inquiries</span>
+                <span className="dv-kw-kpi-val" style={{ color: '#16a34a' }}>{whatsappLeadsCount}</span>
+                <span className="dv-kw-kpi-sub">
+                  {filteredByDate.length > 0 ? `${((whatsappLeadsCount / filteredByDate.length) * 100).toFixed(0)}% of total submissions` : '0%'}
+                </span>
+              </div>
+              <div className="dv-kw-kpi-card">
+                <span className="dv-kw-kpi-title">Top Performing Source</span>
+                <span className="dv-kw-kpi-val dv-kw-kpi-top" style={{ color: '#ef5323' }} title={sourceAggregates[0]?.source || 'N/A'}>
+                  {sourceAggregates[0]?.source || 'N/A'}
+                </span>
+                <span className="dv-kw-kpi-sub">
+                  {sourceAggregates[0] ? `${sourceAggregates[0].count} leads (${((sourceAggregates[0].count / (filteredByDate.length || 1)) * 100).toFixed(0)}% share)` : 'No leads yet'}
+                </span>
+              </div>
+            </div>
+
+            {/* SOURCE SEARCH & CHANNEL FILTER TOOLBAR */}
+            <div className="dv-table-toolbar">
+              <div className="dv-search-wrap">
+                <svg className="dv-search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.3">
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                <input
+                  type="text"
+                  placeholder="Search source (e.g. WhatsApp, Google, Direct)..."
+                  value={sourceSearchQuery}
+                  onChange={(e) => setSourceSearchQuery(e.target.value)}
+                  className="dv-search-input"
+                />
+                {sourceSearchQuery && (
+                  <button
+                    type="button"
+                    className="dv-search-clear"
+                    onClick={() => setSourceSearchQuery('')}
+                    aria-label="Clear search"
+                  >
+                    ✕
+                  </button>
+                )}
+              </div>
+
+              <div className="dv-table-filters">
+                <select
+                  value={sourceCategoryFilter}
+                  onChange={(e) => setSourceCategoryFilter(e.target.value)}
+                  className="dv-select-filter"
+                >
+                  <option value="all">All Source Channels ({sourceAggregates.length})</option>
+                  <option value="chat">Direct Messaging (WhatsApp)</option>
+                  <option value="search">Search Engines & Ads (Google)</option>
+                  <option value="social">Social Media (Meta, Instagram, LinkedIn)</option>
+                  <option value="direct">Direct Website Visits</option>
+                  <option value="other">Other Campaigns & Referrals</option>
+                </select>
+
+                {(sourceSearchQuery || sourceCategoryFilter !== 'all') && (
+                  <button
+                    type="button"
+                    className="dv-dash-btn dv-dash-btn-secondary"
+                    onClick={() => {
+                      setSourceSearchQuery('');
+                      setSourceCategoryFilter('all');
+                    }}
+                    style={{ padding: '8px 12px', fontSize: '0.82rem' }}
+                  >
+                    Reset Filters
+                  </button>
+                )}
+              </div>
+            </div>
+
+            {/* SOURCES RANKED TABLE (TOP TO LOW) */}
+            <div className="dv-table-responsive">
+              <table className="dv-table">
+                <thead>
+                  <tr>
+                    <th style={{ width: '65px', textAlign: 'center' }}>Rank</th>
+                    <th style={{ minWidth: '220px' }}>Traffic Source</th>
+                    <th style={{ minWidth: '150px' }}>Channel / Medium</th>
+                    <th style={{ minWidth: '160px' }}>Submissions & Share</th>
+                    <th style={{ minWidth: '200px' }}>Top Inquired Courses</th>
+                    <th style={{ minWidth: '170px' }}>Top Landing Page</th>
+                    <th style={{ minWidth: '120px' }}>Latest Submission</th>
+                    <th style={{ width: '140px', textAlign: 'center' }}>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredSources.length === 0 ? (
+                    <tr>
+                      <td colSpan={8} style={{ textAlign: 'center', padding: '48px 20px', color: '#64748b' }}>
+                        <div style={{ fontSize: '1.8rem', marginBottom: '8px' }}>🔍</div>
+                        <strong style={{ fontSize: '1rem', color: '#051f40', display: 'block', marginBottom: '4px' }}>
+                          No matching traffic sources found
+                        </strong>
+                        <span>Try adjusting your timeline, search query or channel filter.</span>
+                      </td>
+                    </tr>
+                  ) : (
+                    filteredSources.map((row, idx) => {
+                      const isExpanded = expandedSources.has(row.source);
+                      const totalLeads = filteredByDate.length || 1;
+                      const sharePct = ((row.count / totalLeads) * 100).toFixed(1);
+                      const rank = idx + 1;
+
+                      const topCoursesArr = Object.entries(row.courses)
+                        .sort((a, b) => b[1] - a[1])
+                        .slice(0, 2);
+
+                      const topPagesArr = Object.entries(row.pages)
+                        .sort((a, b) => b[1] - a[1])
+                        .slice(0, 1);
+
+                      const isWhatsApp = row.source.toLowerCase().includes('whatsapp');
+                      const isGoogle = row.source.toLowerCase().includes('google');
+                      const isMeta = row.source.toLowerCase().includes('facebook') || row.source.toLowerCase().includes('meta');
+                      const isInsta = row.source.toLowerCase().includes('instagram');
+                      const isLinkedIn = row.source.toLowerCase().includes('linkedin');
+                      const isYouTube = row.source.toLowerCase().includes('youtube');
+                      const isDirect = row.source.toLowerCase().includes('direct');
+
+                      return (
+                        <React.Fragment key={row.source}>
+                          <tr className={isExpanded ? 'dv-kw-row-expanded' : ''}>
+                            {/* RANK */}
+                            <td style={{ textAlign: 'center' }}>
+                              <span
+                                className={`dv-kw-rank-badge ${
+                                  rank === 1 ? 'rank-1' : rank === 2 ? 'rank-2' : rank === 3 ? 'rank-3' : 'rank-other'
+                                }`}
+                              >
+                                #{rank}
+                              </span>
+                            </td>
+
+                            {/* SOURCE NAME & ICON */}
+                            <td>
+                              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                <div
+                                  className={`dv-source-icon-wrap ${
+                                    isWhatsApp
+                                      ? 'is-whatsapp'
+                                      : isGoogle
+                                      ? 'is-google'
+                                      : isMeta
+                                      ? 'is-meta'
+                                      : isInsta
+                                      ? 'is-instagram'
+                                      : isLinkedIn
+                                      ? 'is-linkedin'
+                                      : isYouTube
+                                      ? 'is-youtube'
+                                      : isDirect
+                                      ? 'is-direct'
+                                      : 'is-other'
+                                  }`}
+                                >
+                                  {isWhatsApp ? (
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                                      <path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2m.01 1.67c2.2 0 4.26.86 5.82 2.41a8.16 8.16 0 0 1 2.41 5.83c0 4.54-3.7 8.24-8.24 8.24-1.45 0-2.87-.38-4.12-1.11l-.3-.17-3.12.82.83-3.04-.19-.31a8.16 8.16 0 0 1-1.25-4.43c0-4.54 3.7-8.24 8.24-8.24m4.52 11.66c-.25-.13-1.47-.72-1.7-.81-.23-.08-.39-.13-.56.13-.17.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.13-1.06-.39-2.02-1.25-.75-.67-1.26-1.5-1.4-1.76-.15-.25-.02-.39.11-.51.11-.11.25-.29.38-.44.13-.14.17-.25.25-.42.08-.17.04-.31-.02-.44s-.56-1.34-.76-1.84c-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.44.06-.67.31-.23.25-.88.86-.88 2.1s.9 2.44 1.03 2.61c.13.17 1.77 2.7 4.29 3.79.6.26 1.07.41 1.44.53.6.19 1.15.16 1.58.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.07.15-1.18-.07-.1-.23-.17-.48-.29z"/>
+                                    </svg>
+                                  ) : isGoogle ? (
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                                      <path d="M12.48 10.92v3.28h7.84c-.24 1.84-.853 3.187-1.787 4.133-1.147 1.147-2.933 2.4-6.053 2.4-4.827 0-8.6-3.893-8.6-8.72s3.773-8.72 8.6-8.72c2.6 0 4.507 1.027 5.907 2.347l2.307-2.307C18.747 1.44 16.133 0 12.48 0 5.867 0 .307 5.387.307 12s5.56 12 12.173 12c3.573 0 6.267-1.173 8.373-3.36 2.16-2.16 2.84-5.213 2.84-7.667 0-.76-.053-1.467-.173-2.053H12.48z"/>
+                                    </svg>
+                                  ) : isMeta ? (
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                                      <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                                    </svg>
+                                  ) : isInsta ? (
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                                      <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                                    </svg>
+                                  ) : isLinkedIn ? (
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                                      <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                                    </svg>
+                                  ) : isYouTube ? (
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                                      <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                                    </svg>
+                                  ) : isDirect ? (
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
+                                      <circle cx="12" cy="12" r="10"></circle>
+                                      <line x1="2" y1="12" x2="22" y2="12"></line>
+                                      <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                                    </svg>
+                                  ) : (
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
+                                      <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                                      <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                                    </svg>
+                                  )}
+                                </div>
+                                <div className="dv-kw-name-cell">
+                                  <span className="dv-kw-text">{row.source}</span>
+                                  <span className={`dv-channel-pill ${row.sourceCategory}`}>
+                                    {row.sourceCategoryLabel}
+                                  </span>
+                                </div>
+                              </div>
+                            </td>
+
+                            {/* CHANNEL / MEDIUM */}
+                            <td>
+                              <div style={{ display: 'flex', flexDirection: 'column', gap: '3px' }}>
+                                <span style={{ fontFamily: 'monospace', fontSize: '0.82rem', color: '#051f40' }}>
+                                  {row.mediums.join(', ') || 'direct'}
+                                </span>
+                                {row.campaigns.length > 0 && row.campaigns[0] !== '—' && (
+                                  <span style={{ fontSize: '0.74rem', color: '#64748b' }}>
+                                    campaign: {row.campaigns.slice(0, 2).join(', ')}
+                                  </span>
+                                )}
+                              </div>
+                            </td>
+
+                            {/* SUBMISSIONS & SHARE */}
+                            <td>
+                              <div className="dv-kw-vol-cell">
+                                <div style={{ display: 'flex', alignItems: 'baseline', gap: '6px', marginBottom: '4px' }}>
+                                  <strong style={{ fontSize: '1.05rem', color: '#051f40' }}>{row.count}</strong>
+                                  <span style={{ fontSize: '0.78rem', color: '#64748b' }}>leads ({sharePct}%)</span>
+                                </div>
+                                <div className="dv-kw-bar-track">
+                                  <div
+                                    className="dv-kw-bar-fill"
+                                    style={{
+                                      width: `${Math.min(100, Math.max(8, Number(sharePct)))}%`,
+                                      background:
+                                        isWhatsApp
+                                          ? '#16a34a'
+                                          : rank === 1
+                                          ? '#ef5323'
+                                          : rank === 2
+                                          ? '#0284c7'
+                                          : '#6366f1',
+                                    }}
+                                  ></div>
+                                </div>
+                              </div>
+                            </td>
+
+                            {/* TOP COURSES */}
+                            <td>
+                              <div style={{ display: 'flex', flexDirection: 'column', gap: '3px' }}>
+                                {topCoursesArr.map(([courseName, cCount]) => (
+                                  <span key={courseName} style={{ fontSize: '0.8rem', color: '#334155' }}>
+                                    <strong style={{ color: '#ef5323' }}>{cCount}x</strong> {courseName.length > 32 ? courseName.slice(0, 32) + '...' : courseName}
+                                  </span>
+                                ))}
+                                {Object.keys(row.courses).length > 2 && (
+                                  <span style={{ fontSize: '0.74rem', color: '#64748b' }}>
+                                    +{Object.keys(row.courses).length - 2} more programs
+                                  </span>
+                                )}
+                              </div>
+                            </td>
+
+                            {/* TOP LANDING PAGE */}
+                            <td>
+                              <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+                                {topPagesArr.map(([pagePath, pCount]) => (
+                                  <span key={pagePath} style={{ fontSize: '0.82rem', color: '#051f40', fontFamily: 'monospace' }}>
+                                    {pagePath} <span style={{ color: '#64748b', fontSize: '0.74rem' }}>({pCount})</span>
+                                  </span>
+                                ))}
+                              </div>
+                            </td>
+
+                            {/* LATEST SUBMISSION */}
+                            <td>
+                              <span style={{ fontSize: '0.8rem', color: '#64748b' }}>
+                                {new Date(row.latestTimestamp).toLocaleDateString('en-IN', {
+                                  month: 'short',
+                                  day: 'numeric',
+                                })}
+                              </span>
+                            </td>
+
+                            {/* ACTION: EXPAND LEADS */}
+                            <td style={{ textAlign: 'center' }}>
+                              <button
+                                type="button"
+                                className={`dv-kw-expand-btn ${isExpanded ? 'active' : ''}`}
+                                onClick={() => toggleSourceExpand(row.source)}
+                                title={isExpanded ? 'Collapse submissions' : 'View all submissions from this source'}
+                              >
+                                {isExpanded ? 'Hide' : 'View Leads'} ({row.count})
+                                <svg
+                                  width="12"
+                                  height="12"
+                                  viewBox="0 0 24 24"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  strokeWidth="2.5"
+                                  style={{
+                                    transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)',
+                                    transition: 'transform 0.2s ease',
+                                  }}
+                                >
+                                  <polyline points="6 9 12 15 18 9"></polyline>
+                                </svg>
+                              </button>
+                            </td>
+                          </tr>
+
+                          {/* EXPANDED DRAWER: LIST OF SUBMISSIONS FROM THIS SOURCE */}
+                          {isExpanded && (
+                            <tr className="dv-kw-drawer-row">
+                              <td colSpan={8} style={{ padding: '0', background: '#f8fafc' }}>
+                                <div className="dv-kw-drawer-box" style={{ borderLeftColor: isWhatsApp ? '#16a34a' : '#ef5323' }}>
+                                  <div className="dv-kw-drawer-header">
+                                    <span style={{ fontWeight: 700, color: '#051f40', fontSize: '0.86rem' }}>
+                                      Submissions originating from &ldquo;{row.source}&rdquo; ({row.leads.length})
+                                    </span>
+                                    <span style={{ fontSize: '0.78rem', color: '#64748b' }}>
+                                      Click any row to view complete lead details
+                                    </span>
+                                  </div>
+
+                                  <div className="dv-table-responsive" style={{ border: 'none', background: '#ffffff' }}>
+                                    <table className="dv-table" style={{ fontSize: '0.84rem' }}>
+                                      <thead>
+                                        <tr style={{ background: '#f1f5f9' }}>
+                                          <th style={{ padding: '8px 12px' }}>Name</th>
+                                          <th style={{ padding: '8px 12px' }}>Phone</th>
+                                          <th style={{ padding: '8px 12px' }}>Course Inquired</th>
+                                          <th style={{ padding: '8px 12px' }}>Form Filled</th>
+                                          <th style={{ padding: '8px 12px' }}>Landing Page</th>
+                                          <th style={{ padding: '8px 12px' }}>Time (IST)</th>
+                                          <th style={{ padding: '8px 12px', textAlign: 'center' }}>Details</th>
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+                                        {row.leads.map((lead) => (
+                                          <tr
+                                            key={lead.id}
+                                            style={{ cursor: 'pointer' }}
+                                            onClick={() => setSelectedLead(lead)}
+                                            title="Click to view full lead details"
+                                          >
+                                            <td style={{ padding: '10px 12px', fontWeight: 600, color: '#051f40' }}>
+                                              {lead.name}
+                                            </td>
+                                            <td style={{ padding: '10px 12px' }}>
+                                              <a
+                                                href={`tel:${lead.phone.replace(/[^0-9+]/g, '')}`}
+                                                style={{ color: '#ef5323', textDecoration: 'none', fontWeight: 600 }}
+                                                onClick={(e) => e.stopPropagation()}
+                                              >
+                                                {lead.phone}
+                                              </a>
+                                            </td>
+                                            <td style={{ padding: '10px 12px', color: '#334155' }}>
+                                              {lead.course}
+                                            </td>
+                                            <td style={{ padding: '10px 12px' }}>
+                                              <span className="dv-badge dv-badge-form">
+                                                {lead.formLabel}
+                                              </span>
+                                            </td>
+                                            <td style={{ padding: '10px 12px', color: '#0284c7', fontFamily: 'monospace', fontSize: '0.8rem' }}>
+                                              {lead.pagePath}
                                             </td>
                                             <td style={{ padding: '10px 12px', color: '#64748b', fontSize: '0.8rem' }}>
                                               {lead.displayTime}
