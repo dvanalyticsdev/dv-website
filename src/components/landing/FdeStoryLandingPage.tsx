@@ -374,7 +374,7 @@ export const FdeStoryLandingPage: React.FC<FdeStoryLandingPageProps> = ({ onRegi
       courseId: 'fde',
       submittedAt: new Date().toISOString(),
     });
-    trackEvent('submit_enroll_form', {
+    trackEvent('submit_landing_registration_form', {
       course_id: 'fde',
       course_name: 'Master Program in AI Forward Deployment Engineer (FDE)',
       form_id: 'dv_website_lp_fde_registration',

@@ -381,7 +381,7 @@ export const ApidaStoryLandingPage: React.FC<ApidaStoryLandingPageProps> = ({ on
       courseId: 'apida',
       submittedAt: new Date().toISOString(),
     });
-    trackEvent('submit_enroll_form', {
+    trackEvent('submit_landing_registration_form', {
       course_id: 'apida',
       course_name: 'Advance Program in Industrial Data Analytics with Gen AI & Agentic AI (APIDA)',
       form_id: 'dv_website_lp_apida_registration',

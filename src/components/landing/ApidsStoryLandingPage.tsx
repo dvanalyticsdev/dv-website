@@ -375,7 +375,7 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
       courseId: 'apids',
       submittedAt: new Date().toISOString(),
     });
-    trackEvent('submit_enroll_form', {
+    trackEvent('submit_landing_registration_form', {
       course_id: 'apids',
       course_name: 'Advanced Program in Industrial Data Science with AI Deployment (APIDS)',
       form_id: 'dv_website_lp_apids_registration',

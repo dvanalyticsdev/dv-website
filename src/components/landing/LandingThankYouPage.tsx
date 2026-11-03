@@ -8,8 +8,17 @@ import './LandingThankYouPage.css';
 
 const GOOGLE_TAG_ID = 'G-PBJWHBZLGX';
 
-const runDirectGoogleAdsConversion = (sendToId: string) => {
+const THANK_YOU_PATHS_BY_COURSE: Record<LandingCourseId, string[]> = {
+  apida: ['/lp/apida/thank-you', '/lp/apida/thanks-you'],
+  apids: ['/lp/apids/thank-you', '/lp/apids/thanks-you'],
+  fde: ['/lp/fde/thank-you', '/lp/fde/thanks-you'],
+};
+
+const runDirectGoogleAdsConversion = (courseId: LandingCourseId, sendToId: string) => {
   if (typeof window === 'undefined') return;
+
+  const currentPath = window.location.pathname.replace(/\/+$/, '') || '/';
+  if (!THANK_YOU_PATHS_BY_COURSE[courseId].includes(currentPath)) return;
 
   window.dataLayer = window.dataLayer || [];
   window.gtag = window.gtag || function () {
@@ -101,7 +110,7 @@ export const LandingThankYouPage: React.FC<LandingThankYouPageProps> = ({ course
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
     if (trackedConversionCourseRef.current !== config.id) {
-      runDirectGoogleAdsConversion(config.conversionSendTo);
+      runDirectGoogleAdsConversion(config.id, config.conversionSendTo);
       trackedConversionCourseRef.current = config.id;
     }
     trackEvent('view_landing_thank_you', {
