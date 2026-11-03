@@ -1,5 +1,5 @@
-import React, { useEffect, useMemo } from 'react';
-import { trackEvent } from '../../utils/analytics';
+import React, { useEffect, useMemo, useRef } from 'react';
+import { trackEvent, trackGoogleAdConversion } from '../../utils/analytics';
 import {
   getSavedLandingRegistration,
   type LandingCourseId,
@@ -13,6 +13,7 @@ interface CourseThankYouConfig {
   brochurePath: string;
   landingPageId: string;
   landingPagePath: string;
+  conversionSendTo: string;
 }
 
 const COURSE_CONFIG_BY_ID: Record<LandingCourseId, CourseThankYouConfig> = {
@@ -23,6 +24,7 @@ const COURSE_CONFIG_BY_ID: Record<LandingCourseId, CourseThankYouConfig> = {
     brochurePath: '/apida-brochure.pdf',
     landingPageId: 'lp-apida',
     landingPagePath: '/lp/apida/',
+    conversionSendTo: 'AW-11191882203/9y7ICPOgja0dENuj2tgp',
   },
   apids: {
     id: 'apids',
@@ -31,6 +33,7 @@ const COURSE_CONFIG_BY_ID: Record<LandingCourseId, CourseThankYouConfig> = {
     brochurePath: '/APIDS-Brochure.pdf',
     landingPageId: 'lp-apids',
     landingPagePath: '/lp/apids/',
+    conversionSendTo: 'AW-11191882203/798-CNSjjq0dENuj2tgp',
   },
   fde: {
     id: 'fde',
@@ -39,6 +42,7 @@ const COURSE_CONFIG_BY_ID: Record<LandingCourseId, CourseThankYouConfig> = {
     brochurePath: '/ai-forward-deployment-engineer-brochure.pdf',
     landingPageId: 'lp-fde',
     landingPagePath: '/lp/fde/',
+    conversionSendTo: 'AW-11191882203/ufKuCOaGj60dENuj2tgp',
   },
 };
 
@@ -65,14 +69,19 @@ export const LandingThankYouPage: React.FC<LandingThankYouPageProps> = ({ course
   }, [courseId]);
 
   const config = COURSE_CONFIG_BY_ID[resolvedCourseId];
+  const trackedConversionCourseRef = useRef<LandingCourseId | null>(null);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
+    if (trackedConversionCourseRef.current !== config.id) {
+      trackGoogleAdConversion(config.conversionSendTo);
+      trackedConversionCourseRef.current = config.id;
+    }
     trackEvent('view_landing_thank_you', {
       course_id: config.id,
       course_name: config.title,
     });
-  }, [config.id, config.title]);
+  }, [config]);
 
   const handleBackToLanding = (e?: React.MouseEvent) => {
     if (e) e.preventDefault();
