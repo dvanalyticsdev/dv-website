@@ -1,10 +1,37 @@
 import React, { useEffect, useMemo, useRef } from 'react';
-import { trackEvent, trackGoogleAdConversion } from '../../utils/analytics';
+import { trackEvent } from '../../utils/analytics';
 import {
   getSavedLandingRegistration,
   type LandingCourseId,
 } from '../../utils/landingRegistrationStorage';
 import './LandingThankYouPage.css';
+
+const GOOGLE_TAG_ID = 'G-PBJWHBZLGX';
+
+const runDirectGoogleAdsConversion = (sendToId: string) => {
+  if (typeof window === 'undefined') return;
+
+  window.dataLayer = window.dataLayer || [];
+  window.gtag = window.gtag || function () {
+    // Keep commands queued until gtag.js finishes loading.
+    window.dataLayer?.push(arguments);
+  };
+
+  const tagScriptSelector = `script[src*="googletagmanager.com/gtag/js?id=${GOOGLE_TAG_ID}"]`;
+  if (!document.querySelector(tagScriptSelector)) {
+    window.gtag('js', new Date());
+    window.gtag('config', GOOGLE_TAG_ID);
+
+    const script = document.createElement('script');
+    script.async = true;
+    script.src = `https://www.googletagmanager.com/gtag/js?id=${GOOGLE_TAG_ID}`;
+    document.head.appendChild(script);
+  }
+
+  window.gtag('event', 'conversion', {
+    send_to: sendToId,
+  });
+};
 
 interface CourseThankYouConfig {
   id: LandingCourseId;
@@ -74,7 +101,7 @@ export const LandingThankYouPage: React.FC<LandingThankYouPageProps> = ({ course
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
     if (trackedConversionCourseRef.current !== config.id) {
-      trackGoogleAdConversion(config.conversionSendTo);
+      runDirectGoogleAdsConversion(config.conversionSendTo);
       trackedConversionCourseRef.current = config.id;
     }
     trackEvent('view_landing_thank_you', {

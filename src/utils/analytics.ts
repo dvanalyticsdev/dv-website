@@ -22,13 +22,12 @@ const attributionStorageKey = 'dv_attribution';
 const leadOriginStorageKey = 'dv_lead_origin';
 const gtmContainerId = (import.meta.env.VITE_GTM_ID as string | undefined) || 'GTM-NFB3LVLT';
 const gaMeasurementId = import.meta.env.VITE_GA_MEASUREMENT_ID as string | undefined;
-export const GOOGLE_ADS_TAG_ID = 'G-PBJWHBZLGX';
 let lastTrackedPageLocation = '';
 
 /**
  * Initializes Google tag (gtag.js) for Google Ads conversion tracking on landing pages & thank-you pages
  */
-export const ensureGoogleTagLoaded = (tagId: string = GOOGLE_ADS_TAG_ID) => {
+export const ensureGoogleTagLoaded = (tagId: string = 'G-PBJWHBZLGX') => {
   if (typeof window === 'undefined') return;
 
   window.dataLayer = window.dataLayer || [];
@@ -50,17 +49,6 @@ export const ensureGoogleTagLoaded = (tagId: string = GOOGLE_ADS_TAG_ID) => {
     script.src = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(tagId)}`;
     document.head.appendChild(script);
   }
-};
-
-/**
- * Dispatches a Google Ads conversion event
- */
-export const trackGoogleAdConversion = (sendToId: string) => {
-  if (typeof window === 'undefined') return;
-  ensureGoogleTagLoaded(GOOGLE_ADS_TAG_ID);
-  window.gtag?.('event', 'conversion', {
-    send_to: sendToId,
-  });
 };
 
 export const getAttribution = () => {
