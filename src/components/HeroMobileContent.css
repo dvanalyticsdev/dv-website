@@ -1,0 +1,186 @@
+/* Hero Mobile Live CSS & Text Banner */
+.hero-mobile-text-banner {
+  background: linear-gradient(180deg, #ffffff 0%, #f0f7ff 100%);
+  border: 1.5px solid #dbeafe;
+  border-radius: 20px;
+  padding: 1.5rem 1rem 1.25rem;
+  box-shadow: 0 4px 20px rgba(15, 23, 42, 0.06);
+  text-align: center;
+  margin-bottom: 0.5rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.mobile-hero-kicker {
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  color: #051f40;
+  text-transform: uppercase;
+  margin: 0 0 0.25rem 0;
+}
+
+.mobile-hero-main-heading {
+  font-size: 1.4rem;
+  font-weight: 900;
+  color: #051f40;
+  margin: 0 0 0.5rem 0;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+.mobile-hero-main-heading .highlight-cyan {
+  color: #0284c7;
+  display: block;
+  font-size: 1.65rem;
+}
+
+.mobile-hero-tracks {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-bottom: 0.35rem;
+}
+
+.mobile-track-badge {
+  background: #1d4ed8;
+  color: #ffffff;
+  font-size: 0.76rem;
+  font-weight: 800;
+  padding: 0.35rem 0.75rem;
+  border-radius: 6px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.mobile-track-badge.track-cyber {
+  background: #0f172a;
+}
+
+.mobile-track-and {
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: #051f40;
+  padding: 0 0.15rem;
+}
+
+.mobile-hero-pro-title {
+  font-size: 1.15rem;
+  font-weight: 900;
+  color: #051f40;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin: 0 0 1rem 0;
+}
+
+/* Trust Banner */
+.mobile-hero-trust-box {
+  background: #051f40;
+  border-radius: 14px;
+  padding: 0.85rem 0.75rem;
+  color: #ffffff;
+  margin: 0.75rem 0 0.95rem 0;
+  border: 1px solid rgba(251, 191, 36, 0.4);
+  box-shadow: 0 4px 14px rgba(5, 31, 64, 0.2);
+}
+
+.mobile-trust-stats-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 0.45rem;
+}
+
+.mobile-trust-trophy {
+  width: 24px;
+  height: 24px;
+  color: #fbbf24;
+}
+
+.mobile-trust-num {
+  font-size: 1.35rem;
+  font-weight: 900;
+  color: #fbbf24;
+  letter-spacing: 0.02em;
+}
+
+.mobile-trust-label {
+  font-size: 0.74rem;
+  font-weight: 800;
+  color: #f8fafc;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.mobile-trust-pill {
+  background: #fbbf24;
+  color: #0a1931;
+  font-size: 0.68rem;
+  font-weight: 800;
+  padding: 0.25rem 0.65rem;
+  border-radius: 999px;
+  display: inline-block;
+  letter-spacing: 0.02em;
+}
+
+/* Secondary Subtitle */
+.mobile-hero-subkicker {
+  font-size: 0.92rem;
+  font-weight: 900;
+  color: #1d4ed8;
+  margin: 0 0 1rem 0;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+/* 5 Feature Icons Row */
+.mobile-hero-feature-row {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0.35rem;
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid #e2e8f0;
+}
+
+.mobile-feature-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.mobile-feature-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #e0f2fe;
+  border: 1.5px solid #0284c7;
+  color: #0369a1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.35rem;
+}
+
+.mobile-feature-icon svg {
+  width: 18px;
+  height: 18px;
+}
+
+.mobile-feature-text {
+  font-size: 0.62rem;
+  font-weight: 700;
+  color: #0f172a;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+}
+
+@media (min-width: 769px) {
+  .hero-mobile-text-banner {
+    display: none;
+  }
+}

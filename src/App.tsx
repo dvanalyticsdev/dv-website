@@ -7,6 +7,8 @@ import { AauModal } from './components/AauModal';
 import { BrochureLeadModal } from './components/BrochureLeadModal';
 import { GetACallButton } from './components/GetACallButton';
 import { SkillPackageExplorer } from './components/SkillPackageExplorer';
+import { HeroBenefitBadges } from './components/HeroBenefitBadges';
+import { HeroMobileContent } from './components/HeroMobileContent';
 import { getPageFromPath, seoLandingPageRedirects } from './utils/routes';
 import { applySeoForPage, routePathByPageId } from './utils/seo';
 import { initAnalytics, trackEvent, trackPageView, ensureGoogleTagLoaded } from './utils/analytics';
@@ -391,16 +393,7 @@ function App() {
         <section className="content-section" data-section="hero">
           <div className="hero-split">
             <div className="hero-mobile-poster-frame">
-              <img
-                src="/mobile-industry-ready-poster.jpg"
-                alt="Become an industry-ready data scientist and cybersecurity professional"
-                className="hero-mobile-poster"
-                width="759"
-                height="1600"
-                loading="eager"
-                fetchPriority="high"
-                decoding="async"
-              />
+              <HeroMobileContent />
             </div>
 
             <div className="hero-left">
@@ -462,39 +455,7 @@ function App() {
             <h2 className="badges-title">Learners Benefit</h2>
           </div>
 
-          <div className="hero-badges-grid">
-            <div className="hero-badge-card badge-experts">
-              <img
-                src="/hero-section-logo/card-experts.png"
-                alt="Trained by Industry Experts"
-                loading="lazy"
-              />
-            </div>
-
-            <div className="hero-badge-card badge-projects">
-              <img
-                src="/hero-section-logo/card-projects.png"
-                alt="Industry Project Hands-On"
-                loading="lazy"
-              />
-            </div>
-
-            <div className="hero-badge-card badge-lms">
-              <img
-                src="/hero-section-logo/card-lms.png"
-                alt="LMS Access 24/7"
-                loading="lazy"
-              />
-            </div>
-
-            <div className="hero-badge-card badge-placement">
-              <img
-                src="/hero-section-logo/card-placement.png"
-                alt="Placement Support"
-                loading="lazy"
-              />
-            </div>
-          </div>
+          <HeroBenefitBadges />
         </section>
 
         <SampleVideoSection onEnroll={() => handleEnrollClick(undefined, 'sample_video')} />
@@ -516,6 +477,9 @@ function App() {
         </div>
         <div data-section="google-reviews">
           <GoogleReviewsSection />
+        </div>
+        <div id="faqs-section" data-section="faqs">
+          <FaqsPage onEnroll={() => handleEnrollClick(undefined, 'home_faqs')} isHomePage={true} />
         </div>
       </div>
     );

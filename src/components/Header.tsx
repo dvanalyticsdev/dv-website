@@ -373,20 +373,6 @@ export const Header: React.FC<HeaderProps> = ({
           Journal
         </a>
       </li>
-
-      <li className="nav-item">
-        <a
-          href={getPathFromPage('faqs')}
-          className={activePage === 'faqs' ? 'active' : ''}
-          onClick={(e) => {
-            e.preventDefault();
-            setMobileMenuOpen(false);
-            if (onNavClick) onNavClick('faqs');
-          }}
-        >
-          FAQs
-        </a>
-      </li>
     </ul>
   );
 
@@ -622,20 +608,6 @@ export const Header: React.FC<HeaderProps> = ({
                     }}
                   >
                     Journal
-                  </a>
-                </li>
-
-                <li className="nav-item">
-                  <a
-                    href={getPathFromPage('faqs')}
-                    className={activePage === 'faqs' ? 'active' : ''}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      setMobileMenuOpen(false);
-                      if (onNavClick) onNavClick('faqs');
-                    }}
-                  >
-                    FAQs
                   </a>
                 </li>
               </ul>

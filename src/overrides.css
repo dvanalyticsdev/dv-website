@@ -3608,43 +3608,7 @@ button {
   .hero-mobile-poster-frame {
     display: block;
     width: 100%;
-    overflow: hidden;
-    border-radius: 0 0 20px 20px;
     position: relative;
-  }
-
-  .hero-mobile-poster {
-    display: block;
-    width: 100%;
-    height: auto;
-    max-width: 100%;
-    object-fit: cover;
-    object-position: top center;
-    transform: translateY(-2px);
-  }
-
-  .hero-mobile-poster-frame::before {
-    content: '';
-    position: absolute;
-    left: 50%;
-    bottom: 17px;
-    width: 112px;
-    height: 3px;
-    border-radius: 999px;
-    background: #1868e7;
-    transform: translateX(-50%);
-    pointer-events: none;
-  }
-
-  .hero-mobile-poster-frame::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    height: 16px;
-    background: #ffffff;
-    pointer-events: none;
   }
 
   .hero-mobile-slideshow {
@@ -5029,3 +4993,19 @@ button {
     flex-wrap: wrap;
   }
 }
+
+/* Homepage FAQ Integration - Above Address */
+.faq-home-section {
+  background-color: transparent !important;
+  margin-top: 1.5rem;
+  padding-bottom: 0.5rem;
+}
+
+.faq-home-section .faq-content-section {
+  padding-bottom: 2rem;
+}
+
+.faq-home-section .faq-split-container {
+  align-items: start;
+}
+

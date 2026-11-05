@@ -13,9 +13,10 @@ interface FaqCategory {
 
 interface FaqsPageProps {
   onEnroll?: () => void;
+  isHomePage?: boolean;
 }
 
-export const FaqsPage: React.FC<FaqsPageProps> = ({ onEnroll }) => {
+export const FaqsPage: React.FC<FaqsPageProps> = ({ onEnroll, isHomePage = false }) => {
   const [activeCategory, setActiveCategory] = useState<number>(0);
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
 
@@ -296,16 +297,24 @@ export const FaqsPage: React.FC<FaqsPageProps> = ({ onEnroll }) => {
   };
 
   return (
-    <div className="faq-page-wrapper">
+    <div className={`faq-page-wrapper ${isHomePage ? 'faq-home-section' : ''}`}>
       {/* 1. FAQs Header */}
-      <section className="faq-hero container text-center">
-        <span className="faq-subtitle">Learner Support</span>
-        <h1 className="faq-title">Frequently Asked Questions</h1>
-        <div className="faq-header-line"></div>
-        <p className="faq-hero-desc">
-          Find answers to common questions about our Data Science, AI, Cybersecurity, Forensics training, LMS features, and career programs.
-        </p>
-      </section>
+      {!isHomePage ? (
+        <section className="faq-hero container text-center">
+          <span className="faq-subtitle">Learner Support</span>
+          <h1 className="faq-title">Frequently Asked Questions</h1>
+          <div className="faq-header-line"></div>
+          <p className="faq-hero-desc">
+            Find answers to common questions about our Data Science, AI, Cybersecurity, Forensics training, LMS features, and career programs.
+          </p>
+        </section>
+      ) : (
+        <div className="section-header text-center" style={{ marginBottom: '2.5rem', paddingTop: '1.5rem' }}>
+          <span className="section-subtitle">LEARNER SUPPORT</span>
+          <h2 className="section-title">Frequently Asked Questions</h2>
+          <div className="section-title-divider"></div>
+        </div>
+      )}
 
       {/* 2. FAQs Split Tabs Layout */}
       <section className="faq-content-section container">

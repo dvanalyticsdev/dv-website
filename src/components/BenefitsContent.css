@@ -1,0 +1,187 @@
+/* Benefits Section Text & CSS Enhancements */
+
+.benefits-content-grid {
+  display: grid;
+  gap: 1.25rem;
+  width: 100%;
+  margin: 1.5rem auto 0;
+  box-sizing: border-box;
+}
+
+.benefits-grid-program {
+  grid-template-columns: repeat(5, 1fr);
+}
+
+.benefits-grid-lms {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.benefit-card-interactive {
+  position: relative;
+  background: #ffffff;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 18px;
+  padding: 1.35rem 1.15rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  box-shadow: 0 4px 16px rgba(5, 31, 64, 0.04);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-sizing: border-box;
+}
+
+.benefit-card-interactive:hover {
+  transform: translateY(-5px);
+  border-color: #cbd5e1;
+  box-shadow: 0 14px 30px rgba(5, 31, 64, 0.1);
+}
+
+.benefit-card-badge {
+  background: #051f40;
+  color: #ffffff;
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  padding: 0.25rem 0.75rem;
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.85rem;
+}
+
+.benefit-card-heading {
+  font-size: 0.98rem;
+  font-weight: 800;
+  color: #051f40;
+  margin: 0 0 0.65rem 0;
+  line-height: 1.32;
+  letter-spacing: -0.01em;
+  min-height: 2.65rem;
+}
+
+.benefit-card-icon-frame {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #ffffff 0%, #f1f5f9 100%);
+  border: 2px solid #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0.25rem 0 0.85rem 0;
+  flex-shrink: 0;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06);
+}
+
+.benefit-card-interactive:hover .benefit-card-icon-frame {
+  transform: scale(1.08) rotate(1deg);
+  border-color: #93c5fd;
+  box-shadow: 0 8px 22px rgba(37, 99, 235, 0.15);
+  background: radial-gradient(circle at 35% 35%, #ffffff 0%, #eff6ff 100%);
+}
+
+.benefit-card-icon-frame svg {
+  width: 50px;
+  height: 50px;
+  display: block;
+}
+
+.benefit-card-description {
+  font-size: 0.81rem;
+  line-height: 1.5;
+  color: #475569;
+  margin: 0;
+  font-weight: 450;
+}
+
+/* Header Banner inside Benefits Display */
+.benefits-inner-banner {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.benefits-inner-title {
+  font-size: 2.2rem;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  margin: 0 0 0.5rem 0;
+  text-transform: uppercase;
+}
+
+.benefits-inner-title .title-primary {
+  color: #051f40;
+  margin-right: 0.5rem;
+}
+
+.benefits-inner-title .title-highlight {
+  color: #e52525;
+}
+
+.benefits-inner-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.benefits-inner-divider .line {
+  width: 120px;
+  height: 2px;
+  background: #051f40;
+}
+
+.benefits-inner-divider .diamond {
+  color: #e52525;
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+/* Responsive Breakpoints */
+@media (max-width: 1200px) {
+  .benefits-grid-program {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .benefits-grid-lms {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 860px) {
+  .benefits-grid-program,
+  .benefits-grid-lms {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+
+  .benefits-inner-title {
+    font-size: 1.75rem;
+  }
+}
+
+@media (max-width: 560px) {
+  .benefits-grid-program,
+  .benefits-grid-lms {
+    grid-template-columns: 1fr;
+    gap: 0.9rem;
+  }
+
+  .benefit-card-interactive {
+    padding: 1.15rem 1rem;
+  }
+
+  .benefit-card-heading {
+    min-height: auto;
+    font-size: 0.95rem;
+  }
+
+  .benefits-inner-title {
+    font-size: 1.45rem;
+  }
+
+  .benefits-inner-divider .line {
+    width: 60px;
+  }
+}
