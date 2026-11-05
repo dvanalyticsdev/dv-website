@@ -108,9 +108,9 @@ const courseSeoById: Record<string, { name: string; title: string; description: 
 
 const basePages: Record<string, { title: string; description: string; image?: string; noindex?: boolean }> = {
   home: {
-    title: 'DV Analytics | Data Science, AI, FDE & Analytics Courses',
+    title: 'Data Science, AI FDE Course with Placement - DV Analytics',
     description:
-      'DV Analytics offers Data Science, Data Analytics, AI, GenAI, FDE and Cybersecurity courses in Bangalore, Bhubaneswar and online.',
+      'DV Analytics is a leading Data Science Institute in India, offering Data Science, AI, Forward Deployment Engineering (FDE) and Gen AI courses with placement support.',
     image: '/hero-mobile-bg.png',
   },
   courses: {
