@@ -1,230 +1,141 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import './RoadmapContent.css';
 
-interface StepData {
+interface RoadmapStep {
   stepNum: string;
   stepTag: string;
   badgeTheme: 'red' | 'navy';
-  badgeIcon: React.ReactNode;
-  topics: {
-    title: string;
-    subskills?: string;
-    bullets?: string[];
-    description?: string;
-    isRedTitle?: boolean;
-  }[];
+  title: string;
+  keyTech: string;
+  description: string;
   importance: string[];
 }
 
-const dataScientistSteps: StepData[] = [
+const dataScientistRoadmapSteps: RoadmapStep[] = [
   {
     stepNum: '01',
-    stepTag: 'Foundation Step',
+    stepTag: 'Step 1: Foundation',
     badgeTheme: 'red',
-    badgeIcon: (
-      <svg viewBox="0 0 24 24" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <ellipse cx="12" cy="5" rx="9" ry="3" />
-        <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3" />
-        <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5" />
-      </svg>
-    ),
-    topics: [
-      {
-        title: 'Data Management',
-        subskills: 'SQL, Python, SAS',
-        isRedTitle: true,
-      },
-      {
-        title: 'Data Analysis & Visualization',
-        subskills: 'Excel + AI, Power BI & Tableau',
-        description: 'Learn to collect, clean, organize, analyze and visualize data to uncover meaningful insights.',
-        isRedTitle: true,
-      },
-    ],
+    title: 'Foundation – Data Management, Analysis & Visualisation',
+    keyTech: 'SQL, Python, SAS, Excel, AI, Power BI and Tableau.',
+    description:
+      'Start your Data Science journey by learning the fundamentals of data management and analysis. Understand how to collect, clean, organise and analyse data using SQL, Python, SAS and Excel. Learn to create meaningful reports and visualise data using Power BI and Tableau.',
     importance: [
-      'Strong foundation ensures accuracy and efficiency.',
-      'Essential skills for data handling and reporting.',
-      'Builds confidence to move to advanced AI topics.',
+      'Builds a strong foundation in data handling and management.',
+      'Helps improve data accuracy and efficiency.',
+      'Develops essential skills for data analysis and reporting.',
+      'Builds confidence to progress towards advanced AI and Data Science topics.',
     ],
   },
   {
     stepNum: '02',
-    stepTag: 'Base to Advance Step',
+    stepTag: 'Step 2: Base to Advanced',
     badgeTheme: 'red',
-    badgeIcon: (
-      <svg viewBox="0 0 24 24" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M12 2a8 8 0 0 0-8 8c0 3.37 2.08 6.25 5 7.42V20a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2v-2.58c2.92-1.17 5-4.05 5-7.42a8 8 0 0 0-8-8z" />
-        <line x1="9" y1="9" x2="9.01" y2="9" />
-        <line x1="15" y1="9" x2="15.01" y2="9" />
-        <path d="M10 13a2 2 0 0 0 4 0" />
-      </svg>
-    ),
-    topics: [
-      {
-        title: 'Data Mining + AI',
-        subskills: 'Python Statistics, Python Machine Learning, Deep Learning, NLP, Gen AI, Agentic AI',
-        description: 'Apply advanced AI techniques to extract insights, build intelligent models, and create AI-powered solutions.',
-        isRedTitle: true,
-      },
-    ],
+    title: 'Base to Advanced – Data Mining & AI',
+    keyTech: 'Python Statistics, Python Machine Learning, Deep Learning, NLP, Generative AI and Agentic AI.',
+    description:
+      'Develop advanced technical skills by exploring data mining, statistical analysis and Artificial Intelligence. Learn Python-based Machine Learning, Deep Learning and Natural Language Processing (NLP). Explore Generative AI and Agentic AI to extract meaningful insights, build intelligent models and develop AI-powered solutions.',
     importance: [
-      'Core of data science - turns data into intelligence.',
-      'Powers prediction, automation, and decision-making.',
-      'AI skills open doors to high-value careers and innovations.',
+      'Helps transform raw data into meaningful insights.',
+      'Supports prediction, automation and data-driven decision-making.',
+      'Develops practical knowledge of modern AI technologies.',
+      'Creates opportunities in advanced technology and AI-related careers.',
     ],
   },
   {
     stepNum: '03',
-    stepTag: 'Expert Step',
+    stepTag: 'Step 3: Expert Level',
     badgeTheme: 'navy',
-    badgeIcon: (
-      <svg viewBox="0 0 24 24" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <rect x="2" y="2" width="20" height="8" rx="2" ry="2" />
-        <rect x="2" y="14" width="20" height="8" rx="2" ry="2" />
-        <line x1="6" y1="6" x2="6.01" y2="6" />
-        <line x1="6" y1="18" x2="6.01" y2="18" />
-        <path d="M18 10v4" />
-      </svg>
-    ),
-    topics: [
-      {
-        title: 'Data Engineering + AI',
-        subskills: 'Deployment (MLOps, LLMOps, AIOps) and Cloud Computing',
-        description: 'Build scalable data pipelines, deploy AI models, and manage them in production using MLOps, LLMOps, and AIOps on cloud platforms.',
-        isRedTitle: false,
-      },
-    ],
+    title: 'Expert Level – Data Engineering & AI Deployment',
+    keyTech: 'MLOps, LLMOps, AIOps and Cloud Computing.',
+    description:
+      'Learn how to build scalable data pipelines and deploy AI models into real-world production environments. Understand MLOps, LLMOps and AIOps to manage, monitor and maintain AI models and applications. Gain knowledge of cloud computing to develop scalable and reliable AI solutions.',
     importance: [
-      'Bridges the gap between models and real-world impact.',
-      'Ensures scalability, reliability, and continuous improvement.',
-      'High demand skillset for future-ready data scientists.',
+      'Bridges the gap between AI model development and real-world implementation.',
+      'Helps ensure scalability, reliability and continuous improvement.',
+      'Develops practical knowledge of AI deployment and cloud technologies.',
+      'Builds skills relevant to emerging Data Science and AI engineering roles.',
     ],
   },
 ];
 
-const cyberSecuritySteps: StepData[] = [
+const cyberSecurityRoadmapSteps: RoadmapStep[] = [
   {
     stepNum: '01',
-    stepTag: 'Foundation Step',
+    stepTag: 'Step 1: Foundation',
     badgeTheme: 'navy',
-    badgeIcon: (
-      <svg viewBox="0 0 24 24" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-      </svg>
-    ),
-    topics: [
-      {
-        title: 'Core Concepts & IT Basics',
-        bullets: [
-          'Networking Basics (TCP/IP, DNS, HTTP)',
-          'Operating Systems (Windows, Linux)',
-          'Fundamentals of Information Security',
-          'Cryptography Basics',
-        ],
-        description: 'Build a strong foundation in IT and security fundamentals.',
-      },
-    ],
+    title: 'Core Concepts & IT Basics',
+    keyTech: 'Networking Basics (TCP/IP, DNS, HTTP), Operating Systems (Windows, Linux), Basic Scripting (Bash, Python).',
+    description:
+      'Build a rock-solid understanding of computer networks, system internals, protocols, and fundamental scripting tools essential for defensive and offensive security operations.',
     importance: [
-      'Helps you understand how systems and networks work.',
-      'Essential for identifying threats and vulnerabilities.',
-      'Builds the base for advanced cybersecurity skills.',
+      'Provides the non-negotiable bedrock for all cybersecurity disciplines.',
+      'Enables you to identify abnormalities in network packets and system logs.',
+      'Prepares you for ethical hacking and threat investigations.',
     ],
   },
   {
     stepNum: '02',
-    stepTag: 'Intermediate Step',
+    stepTag: 'Step 2: Applied Security',
     badgeTheme: 'red',
-    badgeIcon: (
-      <svg viewBox="0 0 24 24" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <circle cx="11" cy="11" r="8" />
-        <line x1="21" y1="21" x2="16.65" y2="16.65" />
-        <line x1="11" y1="8" x2="11" y2="14" />
-        <line x1="8" y1="11" x2="14" y2="11" />
-      </svg>
-    ),
-    topics: [
-      {
-        title: 'Security Skills & Operations',
-        bullets: [
-          'Network Security & Firewalls',
-          'System & Application Security',
-          'Vulnerability Assessment & Penetration Testing',
-          'SIEM Tools (Splunk, ELK) & Log Analysis',
-        ],
-        description: 'Learn to find vulnerabilities, analyze threats & secure systems.',
-        isRedTitle: true,
-      },
-    ],
+    title: 'Defensive, Offensive & Threat Intelligence',
+    keyTech: 'Security Operations (SOC), SIEM (Splunk), Ethical Hacking (Nmap, Metasploit, Burp Suite), Vulnerability Scanning.',
+    description:
+      'Master the tools and frameworks used by enterprise blue teams and penetration testers to discover vulnerabilities, investigate active threats, and analyze malware incidents.',
     importance: [
-      'Prepares you to detect, analyze and respond to cyber threats.',
-      'Penetration testing skills are in high industry demand.',
-      'Builds practical hands-on expertise.',
+      'Simulates real-world cyber attack and defense workflows.',
+      'Develops high-demand hands-on skills in SOC analysis and vulnerability assessment.',
+      'Empowers you to safeguard enterprise cloud and on-prem infrastructures.',
     ],
   },
   {
     stepNum: '03',
-    stepTag: 'Advanced Step',
+    stepTag: 'Step 3: Expert Level',
     badgeTheme: 'navy',
-    badgeIcon: (
-      <svg viewBox="0 0 24 24" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-        <circle cx="12" cy="7" r="4" />
-      </svg>
-    ),
-    topics: [
-      {
-        title: 'Advanced Security & Specialization',
-        bullets: [
-          'Ethical Hacking & Exploitation',
-          'Digital Forensics & Incident Response',
-          'Threat Intelligence',
-          'Cloud Security (AWS, Azure, GCP)',
-          'Security Automation & Scripting (Python, Bash)',
-        ],
-        description: 'Master advanced techniques and real-world attack & defense strategies.',
-      },
-    ],
+    title: 'Governance, Architecture & Incident Response',
+    keyTech: 'Governance, Risk & Compliance (GRC), Cloud Security Architecture (AWS IAM), Digital Forensics & Incident Response (DFIR).',
+    description:
+      'Scale up to enterprise security architecture, regulatory compliance, zero-trust frameworks, cloud security hardening, and digital forensics evidence handling.',
     importance: [
-      'Helps you handle real-world cyber attacks.',
-      'Strengthens incident response and threat hunting skills.',
-      'Makes you job-ready for advanced roles.',
-    ],
-  },
-  {
-    stepNum: '04',
-    stepTag: 'Expert Step',
-    badgeTheme: 'red',
-    badgeIcon: (
-      <svg viewBox="0 0 24 24" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
-        <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-      </svg>
-    ),
-    topics: [
-      {
-        title: 'Expertise & Career Readiness',
-        bullets: [
-          'Governance, Risk & Compliance (GRC)',
-          'Security Architecture & Zero Trust',
-          'SOC Operations & Threat Hunting',
-          'Certifications (Security+, CEH, CISSP, OSCP etc.)',
-        ],
-        description: 'Specialize, get certified and prepare for leadership.',
-        isRedTitle: true,
-      },
-    ],
-    importance: [
-      'Opens doors to high-paying cybersecurity careers.',
-      'Certifications validate your skills globally.',
-      'Prepares you for leadership and strategic roles.',
+      'Opens doors to high-paying cybersecurity engineering and consultant careers.',
+      'Prepares you for industry-recognized global certifications.',
+      'Equips you with strategic decision-making and incident leadership capabilities.',
     ],
   },
 ];
 
 export const RoadmapSection: React.FC = () => {
   const [activeRoadmap, setActiveRoadmap] = useState<'ds' | 'cyber'>('ds');
+  const [expandedStep, setExpandedStep] = useState<number | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const currentSteps = activeRoadmap === 'ds' ? dataScientistSteps : cyberSecuritySteps;
+  const steps = activeRoadmap === 'ds' ? dataScientistRoadmapSteps : cyberSecurityRoadmapSteps;
+  const sideImage = activeRoadmap === 'ds' ? '/data-scientist-roadmap.png' : '/cyber-security-roadmap.png';
+
+  const toggleStep = (index: number) => {
+    setExpandedStep(expandedStep === index ? null : index);
+  };
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setIsModalOpen(false);
+      }
+    };
+
+    if (isModalOpen) {
+      document.body.style.overflow = 'hidden';
+      window.addEventListener('keydown', handleKeyDown);
+    } else {
+      document.body.style.overflow = '';
+    }
+
+    return () => {
+      document.body.style.overflow = '';
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isModalOpen]);
 
   return (
     <section className="roadmap-section reveal-on-scroll" id="roadmap">
@@ -233,7 +144,7 @@ export const RoadmapSection: React.FC = () => {
         <div className="programs-section-header">
           <div className="section-title-wrapper">
             <h2 className="section-title-divider">
-              A Complete Road Map for Data Scientists and Cyber Specialist
+              Roadmap to Becoming a Data Scientist
             </h2>
           </div>
         </div>
@@ -241,93 +152,172 @@ export const RoadmapSection: React.FC = () => {
         {/* Buttons to switch between roadmaps */}
         <div className="roadmap-buttons-container">
           <button
+            type="button"
             className={`roadmap-btn ${activeRoadmap === 'ds' ? 'active' : ''}`}
-            onClick={() => setActiveRoadmap('ds')}
+            onClick={() => {
+              setActiveRoadmap('ds');
+              setExpandedStep(null);
+            }}
           >
             Data Scientist Roadmap
           </button>
           <button
+            type="button"
             className={`roadmap-btn ${activeRoadmap === 'cyber' ? 'active' : ''}`}
-            onClick={() => setActiveRoadmap('cyber')}
+            onClick={() => {
+              setActiveRoadmap('cyber');
+              setExpandedStep(null);
+            }}
           >
             Cyber Security Roadmap
           </button>
         </div>
 
-        {/* Live CSS & Text Content Display area */}
-        <div className="roadmap-interactive-wrapper">
-          <div className="roadmap-main-header">
-            <h3 className="roadmap-main-title">
-              <span className="title-lead">ROAD MAP FOR A</span>
-              <span className="title-primary">
-                {activeRoadmap === 'ds' ? 'DATA' : 'CYBERSECURITY'}
-              </span>
-              <span className="title-accent">
-                {activeRoadmap === 'ds' ? 'SCIENTIST' : 'SPECIALIST'}
-              </span>
-            </h3>
-            <span className="roadmap-main-subtitle">
-              A Step-By-Step Journey From Foundations To Expertise
+        {/* Main Header */}
+        <div className="roadmap-main-header">
+          <h3 className="roadmap-main-title">
+            <span className="title-lead">ROAD MAP FOR A</span>
+            <span className="title-primary">
+              {activeRoadmap === 'ds' ? 'DATA' : 'CYBERSECURITY'}
             </span>
-          </div>
+            <span className="title-accent">
+              {activeRoadmap === 'ds' ? 'SCIENTIST' : 'SPECIALIST'}
+            </span>
+          </h3>
+          <span className="roadmap-main-subtitle">
+            A Step-by-Step Learning Journey from Fundamentals to Advanced Expertise
+          </span>
+        </div>
 
-          <div className="roadmap-steps-flow">
-            {currentSteps.map((step) => (
-              <div key={`${activeRoadmap}-${step.stepNum}`} className="roadmap-step-card">
-                {/* Left Badge Column */}
-                <div className={`roadmap-step-badge-col badge-${step.badgeTheme}`}>
-                  <span className="roadmap-step-tag">{step.stepTag}</span>
-                  <span className="roadmap-step-num">{step.stepNum}</span>
-                  <div className="roadmap-step-badge-icon" aria-hidden="true">
-                    {step.badgeIcon}
-                  </div>
-                </div>
+        {/* 2-Column Split: Accordion Steps on Left, Road Illustration on Right */}
+        <div className="roadmap-split-layout">
+          <div className="roadmap-steps-accordion">
+            {steps.map((step, idx) => {
+              const isExpanded = expandedStep === idx;
+              return (
+                <div
+                  key={`${activeRoadmap}-${step.stepNum}`}
+                  className={`roadmap-accordion-card ${isExpanded ? 'is-expanded' : 'is-collapsed'}`}
+                >
+                  <button
+                    type="button"
+                    className="roadmap-step-header-btn"
+                    onClick={() => toggleStep(idx)}
+                    aria-expanded={isExpanded}
+                    aria-controls={`roadmap-step-body-${idx}`}
+                  >
+                    <div className={`roadmap-step-badge-indicator badge-${step.badgeTheme}`}>
+                      <span className="step-badge-num">{step.stepNum}</span>
+                    </div>
 
-                {/* Middle Content Column */}
-                <div className="roadmap-step-main-col">
-                  {step.topics.map((t, idx) => (
-                    <div key={idx} className="roadmap-topic-group">
-                      <h4
-                        className={`roadmap-topic-title ${t.isRedTitle ? 'highlight-red' : ''}`}
-                      >
-                        {t.title}
-                      </h4>
-                      {t.subskills && (
-                        <p className="roadmap-topic-subskills">{t.subskills}</p>
-                      )}
-                      {t.bullets && (
-                        <ul className="roadmap-topic-bullets">
-                          {t.bullets.map((b, bIdx) => (
-                            <li key={bIdx}>{b}</li>
+                    <div className="roadmap-step-header-text">
+                      <span className="roadmap-step-tag-pill">{step.stepTag}</span>
+                      <h4 className="roadmap-step-title">{step.title}</h4>
+                    </div>
+
+                    <div className={`roadmap-step-chevron ${isExpanded ? 'rotated' : ''}`} aria-hidden="true">
+                      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                        <polyline points="6 9 12 15 18 9" />
+                      </svg>
+                    </div>
+                  </button>
+
+                  <div
+                    id={`roadmap-step-body-${idx}`}
+                    className={`roadmap-step-body ${isExpanded ? 'open' : 'closed'}`}
+                  >
+                    <div className="roadmap-step-body-inner">
+                      <div className="roadmap-step-tech-box">
+                        <span className="tech-box-label">Key Technologies:</span>
+                        <p className="tech-box-text">{step.keyTech}</p>
+                      </div>
+
+                      <p className="roadmap-step-description">{step.description}</p>
+
+                      <div className="roadmap-step-importance-box">
+                        <h5 className="roadmap-importance-heading">
+                          <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                          </svg>
+                          Why Is This Important?
+                        </h5>
+                        <ul className="roadmap-importance-list">
+                          {step.importance.map((point, pIdx) => (
+                            <li key={pIdx}>{point}</li>
                           ))}
                         </ul>
-                      )}
-                      {t.description && (
-                        <p className="roadmap-topic-desc">{t.description}</p>
-                      )}
+                      </div>
                     </div>
-                  ))}
+                  </div>
                 </div>
+              );
+            })}
+          </div>
 
-                {/* Right Importance Column */}
-                <div className="roadmap-step-importance-col">
-                  <h5 className="roadmap-importance-heading">
-                    <svg viewBox="0 0 24 24">
-                      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-                    </svg>
-                    IMPORTANCE
-                  </h5>
-                  <ul className="roadmap-importance-list">
-                    {step.importance.map((point, pIdx) => (
-                      <li key={pIdx}>{point}</li>
-                    ))}
-                  </ul>
-                </div>
+          <div className="roadmap-image-column">
+            <div
+              className="roadmap-image-card"
+              role="button"
+              tabIndex={0}
+              onClick={() => setIsModalOpen(true)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  setIsModalOpen(true);
+                }
+              }}
+              aria-label="Click to enlarge roadmap image"
+            >
+              <div className="roadmap-zoom-hint" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="11" cy="11" r="8" />
+                  <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                  <line x1="11" y1="8" x2="11" y2="14" />
+                  <line x1="8" y1="11" x2="14" y2="11" />
+                </svg>
+                <span>Click to view full size</span>
               </div>
-            ))}
+              <img
+                src={sideImage}
+                alt={`${activeRoadmap === 'ds' ? 'Data Scientist' : 'Cybersecurity'} Roadmap Illustration`}
+                className="roadmap-side-illustration"
+                loading="lazy"
+              />
+            </div>
           </div>
         </div>
       </div>
+
+      {/* Enlarged Image Lightbox Modal Portal */}
+      {isModalOpen && typeof document !== 'undefined' && createPortal(
+        <div
+          className="roadmap-lightbox-backdrop"
+          onClick={() => setIsModalOpen(false)}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Roadmap Image View"
+        >
+          <button
+            type="button"
+            className="roadmap-lightbox-close"
+            onClick={() => setIsModalOpen(false)}
+            aria-label="Close roadmap modal"
+          >
+            ✕
+          </button>
+          <div
+            className="roadmap-lightbox-content"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <img
+              src={sideImage}
+              alt={`${activeRoadmap === 'ds' ? 'Data Scientist' : 'Cybersecurity'} Roadmap Illustration Enlarged`}
+              className="roadmap-lightbox-img"
+            />
+          </div>
+        </div>,
+        document.body
+      )}
     </section>
   );
 };

@@ -66,6 +66,13 @@
       }
     },
     {
+      "src": "^/industrial-data-science-ai/?$",
+      "status": 301,
+      "headers": {
+        "Location": "/courses/apids/"
+      }
+    },
+    {
       "src": "^/data-science-course-india/?$",
       "status": 302,
       "headers": {

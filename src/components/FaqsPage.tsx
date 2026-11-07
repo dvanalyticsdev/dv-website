@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { homeFaqsData } from '../data/courseExtraContent';
 
 interface FaqItem {
   id: number;
@@ -316,82 +317,132 @@ export const FaqsPage: React.FC<FaqsPageProps> = ({ onEnroll, isHomePage = false
         </div>
       )}
 
-      {/* 2. FAQs Split Tabs Layout */}
-      <section className="faq-content-section container">
-        <h2 className="cat-title-header">{categories[activeCategory].title} FAQs</h2>
-        
-        <div className="faq-split-container">
-          
-          {/* Left Category Navigation Tabs */}
-          <div className="faq-tabs-sidebar">
-            {categories.map((cat, idx) => (
-              <button
-                key={idx}
-                className={`faq-tab-btn ${activeCategory === idx ? 'active' : ''}`}
-                aria-pressed={activeCategory === idx}
-                onClick={() => {
-                  setActiveCategory(idx);
-                  setExpandedFaq(null); // Reset open accordion
-                }}
-              >
-                {cat.title}
-                <svg className="tab-arrow-icon" viewBox="0 0 24 24">
-                  <path d="M9 5l7 7-7 7" stroke="currentColor" strokeWidth="2.5" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-              </button>
-            ))}
-          </div>
-
-          {/* Right Accordion Panel */}
-          <div className="faq-accordion-panel">
-            <div className="accordion-list">
-              {categories[activeCategory].items.map((item) => {
-                const isOpen = expandedFaq === item.id;
-                return (
-                  <div key={item.id} className={`faq-accordion-card ${isOpen ? 'open' : ''}`}>
-                    <button
-                      className="faq-question-btn"
-                      id={`faq-question-${item.id}`}
-                      aria-expanded={isOpen}
-                      aria-controls={`faq-answer-${item.id}`}
-                      onClick={() => toggleFaq(item.id)}
-                    >
-                      <span>{item.question}</span>
-                      <span className="faq-toggle-icon">
-                        {isOpen ? (
-                          <svg viewBox="0 0 24 24">
-                            <line x1="5" y1="12" x2="19" y2="12" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"/>
-                          </svg>
-                        ) : (
-                          <svg viewBox="0 0 24 24">
-                            <line x1="12" y1="5" x2="12" y2="19" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"/>
-                            <line x1="5" y1="12" x2="19" y2="12" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"/>
-                          </svg>
-                        )}
-                      </span>
-                    </button>
-                    
-                    <div
-                      id={`faq-answer-${item.id}`}
-                      className={`faq-answer-panel ${isOpen ? 'open' : 'closed'}`}
-                      role="region"
-                      aria-labelledby={`faq-question-${item.id}`}
-                      aria-hidden={!isOpen}
-                    >
-                      <div style={{ minHeight: '0px' }}>
-                        <div className="faq-answer-content">
-                          {item.answer}
-                        </div>
+      {/* 2. FAQs Layout */}
+      {isHomePage ? (
+        <section className="faq-content-section container" style={{ maxWidth: '960px', margin: '0 auto 3.5rem' }}>
+          <div className="accordion-list">
+            {homeFaqsData.map((item, idx) => {
+              const isOpen = expandedFaq === idx + 1;
+              return (
+                <div key={idx} className={`faq-accordion-card ${isOpen ? 'open' : ''}`}>
+                  <button
+                    type="button"
+                    className="faq-question-btn"
+                    id={`faq-home-question-${idx}`}
+                    aria-expanded={isOpen}
+                    aria-controls={`faq-home-answer-${idx}`}
+                    onClick={() => toggleFaq(idx + 1)}
+                  >
+                    <span>{idx + 1}. {item.question}</span>
+                    <span className="faq-toggle-icon">
+                      {isOpen ? (
+                        <svg viewBox="0 0 24 24">
+                          <line x1="5" y1="12" x2="19" y2="12" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"/>
+                        </svg>
+                      ) : (
+                        <svg viewBox="0 0 24 24">
+                          <line x1="12" y1="5" x2="12" y2="19" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"/>
+                          <line x1="5" y1="12" x2="19" y2="12" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"/>
+                        </svg>
+                      )}
+                    </span>
+                  </button>
+                  
+                  <div
+                    id={`faq-home-answer-${idx}`}
+                    className={`faq-answer-panel ${isOpen ? 'open' : 'closed'}`}
+                    role="region"
+                    aria-labelledby={`faq-home-question-${idx}`}
+                    aria-hidden={!isOpen}
+                  >
+                    <div style={{ minHeight: '0px' }}>
+                      <div className="faq-answer-content">
+                        {item.answer}
                       </div>
                     </div>
                   </div>
-                );
-              })}
-            </div>
+                </div>
+              );
+            })}
           </div>
+        </section>
+      ) : (
+        <section className="faq-content-section container">
+          <h2 className="cat-title-header">{categories[activeCategory].title} FAQs</h2>
+          
+          <div className="faq-split-container">
+            
+            {/* Left Category Navigation Tabs */}
+            <div className="faq-tabs-sidebar">
+              {categories.map((cat, idx) => (
+                <button
+                  key={idx}
+                  className={`faq-tab-btn ${activeCategory === idx ? 'active' : ''}`}
+                  aria-pressed={activeCategory === idx}
+                  onClick={() => {
+                    setActiveCategory(idx);
+                    setExpandedFaq(null); // Reset open accordion
+                  }}
+                >
+                  {cat.title}
+                  <svg className="tab-arrow-icon" viewBox="0 0 24 24">
+                    <path d="M9 5l7 7-7 7" stroke="currentColor" strokeWidth="2.5" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </button>
+              ))}
+            </div>
 
-        </div>
-      </section>
+            {/* Right Accordion Panel */}
+            <div className="faq-accordion-panel">
+              <div className="accordion-list">
+                {categories[activeCategory].items.map((item) => {
+                  const isOpen = expandedFaq === item.id;
+                  return (
+                    <div key={item.id} className={`faq-accordion-card ${isOpen ? 'open' : ''}`}>
+                      <button
+                        className="faq-question-btn"
+                        id={`faq-question-${item.id}`}
+                        aria-expanded={isOpen}
+                        aria-controls={`faq-answer-${item.id}`}
+                        onClick={() => toggleFaq(item.id)}
+                      >
+                        <span>{item.question}</span>
+                        <span className="faq-toggle-icon">
+                          {isOpen ? (
+                            <svg viewBox="0 0 24 24">
+                              <line x1="5" y1="12" x2="19" y2="12" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"/>
+                            </svg>
+                          ) : (
+                            <svg viewBox="0 0 24 24">
+                              <line x1="12" y1="5" x2="12" y2="19" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"/>
+                              <line x1="5" y1="12" x2="19" y2="12" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"/>
+                            </svg>
+                          )}
+                        </span>
+                      </button>
+                      
+                      <div
+                        id={`faq-answer-${item.id}`}
+                        className={`faq-answer-panel ${isOpen ? 'open' : 'closed'}`}
+                        role="region"
+                        aria-labelledby={`faq-question-${item.id}`}
+                        aria-hidden={!isOpen}
+                      >
+                        <div style={{ minHeight: '0px' }}>
+                          <div className="faq-answer-content">
+                            {item.answer}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+          </div>
+        </section>
+      )}
 
       {/* 3. Bottom CTA Section */}
       <section className="faq-advisor-cta">

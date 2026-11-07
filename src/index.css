@@ -142,10 +142,10 @@ a {
 }
 
 .header-contact-btn.call {
-  border: 1px solid rgba(5, 31, 64, 0.18);
-  background: #ffffff;
-  color: #051f40;
-  box-shadow: 0 6px 16px rgba(5, 31, 64, 0.08);
+  border: 1px solid #ef5323;
+  background: #ef5323;
+  color: #ffffff;
+  box-shadow: 0 6px 16px rgba(239, 83, 35, 0.32);
 }
 
 .header-contact-btn.whatsapp {
@@ -160,9 +160,9 @@ a {
 }
 
 .header-contact-btn.call:hover {
-  background: #051f40;
+  background: #d94214;
   color: #ffffff;
-  box-shadow: 0 10px 22px rgba(5, 31, 64, 0.2);
+  box-shadow: 0 10px 22px rgba(239, 83, 35, 0.45);
 }
 
 .header-contact-btn.whatsapp:hover {
@@ -1583,7 +1583,9 @@ a {
   overflow: hidden;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  aspect-ratio: 1.55;
+  aspect-ratio: auto;
+  min-height: 160px;
+  height: auto;
   display: flex;
   background-color: #ffffff;
   border: 1px solid rgba(0, 0, 0, 0.03);
@@ -1892,7 +1894,8 @@ a {
   }
 
   .hero-badge-card {
-    aspect-ratio: 1.18;
+    aspect-ratio: auto;
+    height: auto;
   }
 }
 
@@ -4931,7 +4934,8 @@ a {
   justify-content: space-between;
   align-items: center;
   cursor: pointer;
-  user-select: none;
+  user-select: text;
+  -webkit-user-select: text;
   background: #ffffff;
   transition: background-color 0.3s ease;
 }

@@ -46,6 +46,7 @@ export const seoLandingPageRedirects: Record<string, string> = {
   'data-analytics-course-in-bhubaneswar': '/data-analytics-course-bhubaneswar/',
 
   // Data Science -> APIDS (/courses/apids/)
+  'industrial-data-science-ai': '/courses/apids/',
   'data-science-course-india': '/courses/apids/',
   'data-science-course-online': '/courses/apids/',
   'data-science-course-with-placement': '/courses/apids/',

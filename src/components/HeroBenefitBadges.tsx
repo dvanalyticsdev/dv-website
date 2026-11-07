@@ -8,12 +8,12 @@ export const HeroBenefitBadges: React.FC = () => {
       <div className="hero-badge-card badge-experts">
         <div className="hero-badge-content">
           <h3 className="hero-badge-title">
-            <span className="badge-title-top">TRAINED BY</span>
+            <span className="badge-title-top">TRAINING BY</span>
             <span className="badge-title-accent">INDUSTRY EXPERTS</span>
           </h3>
           <div className="hero-badge-divider" />
           <p className="hero-badge-text">
-            Learn from experienced professionals who bring real-world knowledge to every session.
+            Learn Data Science, AI and Cybersecurity from experienced industry professionals who share practical knowledge, real-world applications and insights into current industry requirements.
           </p>
         </div>
         <div className="hero-badge-art" aria-hidden="true">
@@ -54,12 +54,12 @@ export const HeroBenefitBadges: React.FC = () => {
       <div className="hero-badge-card badge-projects">
         <div className="hero-badge-content">
           <h3 className="hero-badge-title">
-            <span className="badge-title-top">INDUSTRY</span>
-            <span className="badge-title-accent">PROJECT HANDS-ON</span>
+            <span className="badge-title-top">HANDS-ON</span>
+            <span className="badge-title-accent">INDUSTRY PROJECTS</span>
           </h3>
           <div className="hero-badge-divider" />
           <p className="hero-badge-text">
-            Work on real-time industry projects and gain practical experience that sets you apart.
+            Gain practical experience by working on real-world projects involving Python, SQL, Machine Learning, Data Analytics, Generative AI and other in-demand technologies.
           </p>
         </div>
         <div className="hero-badge-art" aria-hidden="true">
@@ -103,12 +103,12 @@ export const HeroBenefitBadges: React.FC = () => {
       <div className="hero-badge-card badge-lms">
         <div className="hero-badge-content">
           <h3 className="hero-badge-title">
-            <span className="badge-title-top">LMS ACCESS</span>
-            <span className="badge-title-accent">24/7</span>
+            <span className="badge-title-top">24/7</span>
+            <span className="badge-title-accent">LMS ACCESS</span>
           </h3>
           <div className="hero-badge-divider" />
           <p className="hero-badge-text">
-            Get 24/7 access to recorded sessions, resources, and learning materials anytime, anywhere.
+            Access recorded sessions, course materials, learning resources and study modules anytime, allowing you to learn and revise at your own pace.
           </p>
         </div>
         <div className="hero-badge-art" aria-hidden="true">
@@ -141,12 +141,12 @@ export const HeroBenefitBadges: React.FC = () => {
       <div className="hero-badge-card badge-placement">
         <div className="hero-badge-content">
           <h3 className="hero-badge-title">
-            <span className="badge-title-top">RESUME &amp;</span>
-            <span className="badge-title-accent">PLACEMENT</span>
+            <span className="badge-title-top">RESUME BUILDING &amp;</span>
+            <span className="badge-title-accent">PLACEMENT ASSISTANCE</span>
           </h3>
           <div className="hero-badge-divider" />
           <p className="hero-badge-text">
-            From resume building to interview preparation - we support you at every step to help you land your dream job.
+            Prepare for job opportunities with professional resume guidance, mock interviews, interview preparation and dedicated placement assistance to support your career journey.
           </p>
         </div>
         <div className="hero-badge-art" aria-hidden="true">

@@ -8,7 +8,7 @@ export const Footer: React.FC = () => {
         {/* Section Header matching site theme */}
         <div className="footer-header">
           <span className="footer-subtitle">Our Presence</span>
-          <h2 className="footer-title">Visit Our Offices</h2>
+          <h2 className="footer-title">Visit Our Training Centres</h2>
           <div className="footer-header-line"></div>
         </div>
 

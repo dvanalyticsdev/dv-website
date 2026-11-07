@@ -398,11 +398,9 @@ function App() {
 
             <div className="hero-left">
               <div className="hero-desktop-heading-group">
-                <p className="hero-desktop-kicker">Become</p>
                 <h1 className="hero-heading-accent hero-front-page-heading hero-desktop-heading">
-                  <span>An industry-ready expert</span>
-                  <span>data scientist and</span>
-                  <span>cybersecurity professional</span>
+                  <span>Data Science Course with AI,</span>
+                  <span>Cybersecurity Training</span>
                 </h1>
                 <h2 className="hero-desktop-subtitle">
                   Any graduate can be an IT professional
@@ -411,9 +409,9 @@ function App() {
 
               <div className="hero-desc hero-copy-block">
                 <p className="hero-heading-accent hero-front-page-heading hero-mobile-heading">
-                  Become an industry-ready data scientist &amp; cybersecurity professional
+                  Data Science Course with AI, Cybersecurity Training
                 </p>
-                <h2 className="hero-copy-title">Get an Expert in:</h2>
+                <h2 className="hero-copy-title">Explore Our Specialised Training Programmes</h2>
                 <ul className="hero-expertise-list">
                   <li>Data Science + AI Deployment</li>
                   <li>Data Analytics + Gen AI</li>
@@ -424,10 +422,10 @@ function App() {
               </div>
 
               <div className="hero-desc hero-copy-block hero-audience-block">
-                <h2 className="hero-copy-title">Who Can:</h2>
+                <h2 className="hero-copy-title">Who Can Join?</h2>
                 <p className="hero-audience-text">
                   <span>Freshers | Graduates (Technical &amp; Non-Technical)</span>
-                  <span>Masters (Technical &amp; Non-Technical) | Working Professionals | Reachers | Entrepreneurs</span>
+                  <span>Masters (Technical &amp; Non-Technical) | Working Professionals | Researchers | Entrepreneurs</span>
                 </p>
                 <SkillPackageExplorer onViewDetails={(courseId) => handleViewCourseClick(courseId, 'hero_skill_package')} />
               </div>
@@ -452,7 +450,20 @@ function App() {
           />
 
           <div className="badges-header">
-            <h2 className="badges-title">Learners Benefit</h2>
+            <h2 className="badges-title">Why Choose DV Analytics for Data Science, AI &amp; Cybersecurity Training?</h2>
+            <p
+              className="badges-intro-text"
+              style={{
+                maxWidth: '960px',
+                margin: '1.25rem auto 2.5rem',
+                fontSize: '1.05rem',
+                lineHeight: 1.7,
+                color: '#475569',
+                textAlign: 'center',
+              }}
+            >
+              DV Analytics is a leading Data Science and AI training institute in India, we offer industry-oriented training programmes in Data Science, Artificial Intelligence, Generative AI, Data Analytics and Cybersecurity. Learners can choose flexible online courses or attend classroom training at our institutes in Bangalore and Bhubaneswar. Our programmes combine expert-led instruction, hands-on industry projects and practical learning to help students, freshers and working professionals develop in-demand technical skills. With 24/7 LMS access, resume-building guidance, interview preparation and dedicated placement assistance, we support learners in preparing for rewarding career opportunities in the IT industry.
+            </p>
           </div>
 
           <HeroBenefitBadges />

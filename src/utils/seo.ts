@@ -1,4 +1,5 @@
 import { blogIdBySlug, blogMeta, blogSlugById, type BlogMeta } from '../data/blogMeta.ts';
+import { courseFaqsData, homeFaqsData } from '../data/courseExtraContent.ts';
 import { courseCatalog } from '../data/courseMeta.ts';
 import { seoLandingPages } from '../data/seoLandingPages.ts';
 import { getPathFromPage, serviceSlugById } from './routes.ts';
@@ -93,24 +94,52 @@ const courseTitleById: Record<string, string> = {
   flp: 'Flexi Data Science & AI Program (FLP)',
 };
 
+const courseSeoOverrides: Record<string, { title?: string; description?: string }> = {
+  fde: {
+    title: 'AI Forward Deployment Engineer (FDE) Course | DV Analytics',
+    description:
+      'Join the AI Forward Deployment Engineer (FDE) course at DV Analytics. Learn Python, Generative AI, LLMs, RAG, AI Agents and cloud deployment through practical projects.',
+  },
+  apcs: {
+    title: 'Cybersecurity & Ethical Hacking Course | DV Analytics',
+    description:
+      "Join DV Analytics' Cybersecurity and Forensics Course. Learn ethical hacking, digital forensics, network security and AI security tools with practical training.",
+  },
+  specialist: {
+    title: 'Data Analytics Specialist Program with Placement | DV Analytics',
+    description:
+      'Join the Data Analytics Specialist program at DV Analytics. Learn SQL, Python, Excel, Power BI and Tableau through practical training with placement assistance.',
+  },
+  apids: {
+    title: 'Advanced Industrial Data Science & AI Course | DV Analytics',
+    description:
+      "Join DV Analytics' Industrial Data Science course to learn Python, AL, ML, Gen AI, LLMs and AI deployment with practical training and placement support.",
+  },
+};
+
 const courseSeoById: Record<string, { name: string; title: string; description: string; duration: string; topics: string[] }> = Object.fromEntries(
-  courseCatalog.map((course) => [
-    course.id,
-    {
-      name: course.label,
-      title: formatSeoTitle(courseTitleById[course.id] ?? course.label),
-      description: `${course.label} at DV Analytics covers real projects, mentor support, placement preparation, transparent fees, EMI options, and certification.`,
-      duration: course.category === 'self-paced' ? 'Self-paced' : 'Live training program',
-      topics: courseSearchFocusById[course.id] ?? ['Data Science', 'AI', 'Analytics'],
-    },
-  ])
+  courseCatalog.map((course) => {
+    const override = courseSeoOverrides[course.id];
+    return [
+      course.id,
+      {
+        name: course.label,
+        title: override?.title ?? formatSeoTitle(courseTitleById[course.id] ?? course.label),
+        description:
+          override?.description ??
+          `${course.label} at DV Analytics covers real projects, mentor support, placement preparation, transparent fees, EMI options, and certification.`,
+        duration: course.category === 'self-paced' ? 'Self-paced' : 'Live training program',
+        topics: courseSearchFocusById[course.id] ?? ['Data Science', 'AI', 'Analytics'],
+      },
+    ];
+  })
 );
 
 const basePages: Record<string, { title: string; description: string; image?: string; noindex?: boolean }> = {
   home: {
-    title: 'Data Science, AI FDE Course with Placement - DV Analytics',
+    title: 'Data Science Course with Placement | AI, ML & FDE Training',
     description:
-      'DV Analytics is a leading Data Science Institute in India, offering Data Science, AI, Forward Deployment Engineering (FDE) and Gen AI courses with placement support.',
+      'DV Analytics is the leading Data Science Institute in India, offers Data Science & Analytics, AI, ML, FDE and Generative AI courses with placement assistance.',
     image: '/hero-mobile-bg.png',
   },
   courses: {
@@ -498,6 +527,21 @@ export const getSeoForPage = (pageId: string) => {
         { name: 'Courses', path: '/courses/' },
         { name: course.name, path },
       ]));
+      const faqsObj = courseFaqsData[courseId];
+      if (faqsObj && faqsObj.items.length > 0) {
+        schema.push({
+          '@context': 'https://schema.org',
+          '@type': 'FAQPage',
+          mainEntity: faqsObj.items.map((faq) => ({
+            '@type': 'Question',
+            name: faq.question,
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: faq.answer,
+            },
+          })),
+        });
+      }
       return {
         title: course.title,
         description: truncate(course.description),
@@ -592,6 +636,21 @@ export const getSeoForPage = (pageId: string) => {
 
   if (pageId === 'faqs') {
     schema.push(faqSchema);
+  }
+
+  if (pageId === 'home') {
+    schema.push({
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: homeFaqsData.map((faq) => ({
+        '@type': 'Question',
+        name: faq.question,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: faq.answer,
+        },
+      })),
+    });
   }
 
   if (pageId.startsWith('lp-')) {

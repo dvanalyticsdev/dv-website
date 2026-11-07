@@ -2143,55 +2143,69 @@
   }
 }
 
-/* Premium Accordion Trigger Styling (Orange Hover & Selection Highlights) */
+/* Premium Accordion Trigger Styling (Selectable, High Contrast & High Readability) */
 .accordion-trigger {
   background-color: #ffffff !important; /* Force clean white default background */
   background: #ffffff !important;
   border-radius: 12px;
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  user-select: text !important;
+  -webkit-user-select: text !important;
+}
+
+.accordion-trigger *,
+.accordion-trigger-left,
+.module-title,
+.module-index,
+.curriculum-section-title,
+.topic-bullet-item,
+.topic-bullet-item span,
+.curriculum-section-box,
+.accordion-panel,
+.accordion-panel-content {
+  user-select: text !important;
+  -webkit-user-select: text !important;
+}
+
+.accordion-trigger-left {
+  cursor: text;
 }
 
 .accordion-trigger .module-title {
-  color: #051f40 !important; /* Highly visible dark navy title */
-  font-weight: 700 !important;
+  color: #0b1e3b !important; /* High contrast dark navy title */
+  font-weight: 800 !important;
+  font-size: 1.25rem !important;
   transition: color 0.25s ease !important;
 }
 
 .accordion-trigger .module-index {
   color: #ef5323 !important; /* Keep index numbers in brand orange */
   font-weight: 800 !important;
+  background: rgba(239, 83, 35, 0.08);
+  padding: 0.2rem 0.65rem;
+  border-radius: 8px;
   opacity: 1 !important;
+  transition: all 0.25s ease !important;
 }
 
 .accordion-trigger .accordion-arrow {
-  color: #051f40 !important; /* Highly visible arrow icon */
-  transition: color 0.25s ease !important;
-}
-
-.accordion-trigger .module-index {
-  color: #ef5323 !important; /* Keep index numbers in brand orange */
-  font-weight: 800 !important;
-  opacity: 1 !important;
-  transition: color 0.25s ease !important;
-}
-
-.accordion-trigger .accordion-arrow {
-  color: #051f40 !important; /* Highly visible arrow icon */
+  color: #0b1e3b !important; /* Highly visible arrow icon */
   transition: color 0.25s ease !important;
 }
 
 /* Hover State */
 .accordion-trigger:hover {
-  background-color: #ef5323 !important; /* Solid orange background */
-  background: #ef5323 !important;
+  background: linear-gradient(135deg, #c2410c 0%, #ea580c 100%) !important;
 }
 
 .accordion-trigger:hover .module-title {
   color: #ffffff !important; /* White text on hover */
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 .accordion-trigger:hover .module-index {
   color: #ffffff !important; /* White index on hover */
+  background: rgba(0, 0, 0, 0.22) !important;
 }
 
 .accordion-trigger:hover .accordion-arrow {
@@ -2200,20 +2214,42 @@
 
 /* Active/Expanded State (when parent accordion-item is active) */
 .accordion-item.active .accordion-trigger {
-  background-color: #ef5323 !important; /* Solid orange background when open */
-  background: #ef5323 !important;
+  background: linear-gradient(135deg, #c2410c 0%, #ea580c 100%) !important; /* Deep rich contrast orange: WCAG AA compliant */
+  box-shadow: 0 4px 14px rgba(194, 65, 12, 0.25) !important;
 }
 
 .accordion-item.active .accordion-trigger .module-title {
   color: #ffffff !important; /* White text when open */
+  font-weight: 800 !important;
+  font-size: 1.25rem !important;
+  letter-spacing: -0.01em;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 .accordion-item.active .accordion-trigger .module-index {
   color: #ffffff !important; /* White index when open */
+  background: rgba(0, 0, 0, 0.22) !important;
+  font-weight: 900 !important;
 }
 
 .accordion-item.active .accordion-trigger .accordion-arrow {
   color: #ffffff !important; /* White arrow when open */
+}
+
+/* Curriculum Section & Topics Inside Accordion Panel: 100% Readable & Selectable */
+.curriculum-section-title {
+  color: #0b1e3b !important;
+  font-size: 1.15rem !important;
+  font-weight: 800 !important;
+  margin-bottom: 0.95rem !important;
+  letter-spacing: -0.015em !important;
+}
+
+.topic-bullet-item span {
+  color: #1e293b !important;
+  font-size: 0.95rem !important;
+  font-weight: 600 !important;
+  line-height: 1.55 !important;
 }
 
 /* FAQ category sidebar buttons (Orange Hover & Selection Highlights) */
@@ -3337,10 +3373,13 @@ button {
   overflow-wrap: anywhere;
 }
 
-/* Course duration tabs in the programs carousel. */
+/* Course duration tabs in the programs carousel - Enhanced Readability & Selectability */
 .course-term-tabs {
-  margin: 0 auto 0.5rem !important;
+  margin: 0 auto 0.85rem !important;
   width: min(100%, 780px);
+  gap: 0.85rem !important;
+  display: flex !important;
+  justify-content: center !important;
 }
 
 .course-term-tabs .tab-btn {
@@ -3348,19 +3387,67 @@ button {
   flex: 1 1 0;
   justify-content: center;
   text-align: center;
+  padding: 0.85rem 1.4rem !important;
+  border-radius: 100px !important;
+  font-size: 1rem !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.01em;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  cursor: pointer !important;
+  user-select: text !important;
+  -webkit-user-select: text !important;
+  outline: none;
+}
+
+.course-term-tabs .tab-btn-text {
+  user-select: text !important;
+  -webkit-user-select: text !important;
+  display: inline-block;
+  pointer-events: auto;
+}
+
+/* Inactive duration tabs - High-contrast, bold dark navy text on crisp white with distinct border */
+.course-term-tabs .tab-btn:not(.active) {
+  background: #ffffff !important;
+  color: #0b1e3b !important;
+  border: 1.5px solid #cbd5e1 !important;
+  box-shadow: 0 2px 6px rgba(11, 30, 59, 0.05) !important;
+}
+
+.course-term-tabs .tab-btn:not(.active):hover {
+  background: #fff7f5 !important;
+  border-color: #ef5323 !important;
+  color: #ef5323 !important;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(239, 83, 35, 0.15) !important;
+}
+
+/* Active duration tab - Bold brand orange with pure white text and vibrant glow */
+.course-term-tabs .tab-btn.active {
+  background: linear-gradient(135deg, #ef5323 0%, #e04416 100%) !important;
+  border: 1.5px solid #ef5323 !important;
+  color: #ffffff !important;
+  box-shadow: 0 6px 20px rgba(239, 83, 35, 0.35) !important;
+  transform: translateY(-1px);
+}
+
+.course-term-tabs .tab-btn.active:hover {
+  background: #e04416 !important;
+  border-color: #e04416 !important;
 }
 
 @media (max-width: 768px) {
   .course-term-tabs {
     width: 100%;
     gap: 0.55rem !important;
-    margin-bottom: 0.25rem !important;
+    margin-bottom: 0.35rem !important;
   }
 
   .course-term-tabs .tab-btn {
     padding: 0.75rem 0.65rem !important;
-    font-size: clamp(0.72rem, 3vw, 0.86rem) !important;
-    line-height: 1.15;
+    font-size: clamp(0.82rem, 3vw, 0.92rem) !important;
+    font-weight: 700 !important;
+    line-height: 1.2;
     white-space: normal;
   }
 }
@@ -3409,6 +3496,23 @@ button {
     white-space: normal;
     overflow-wrap: normal;
   }
+
+  /* Reduce excessive gap between hero training programs list and audience block */
+  .hero-left .hero-copy-block:not(.hero-audience-block) {
+    margin-bottom: 1.15rem !important;
+  }
+
+  .hero-left .hero-audience-block {
+    margin-bottom: 1.5rem !important;
+  }
+
+  .hero-left .hero-audience-block .skill-package-explorer {
+    margin-top: 1rem !important;
+  }
+}
+
+.hero-copy-block:not(.hero-audience-block) {
+  margin-bottom: 1.15rem !important;
 }
 
 /* Homepage expertise list: orange dots only on desktop */
@@ -5007,5 +5111,1128 @@ button {
 
 .faq-home-section .faq-split-container {
   align-items: start;
+}
+
+/* ==========================================================================
+   Marketing Update 2026: HTML Text Hero, Why Choose, FAQs & Program Titles
+   ========================================================================== */
+
+/* 1. Live Text-Based Course Hero */
+.course-text-hero {
+  position: relative;
+  background: linear-gradient(140deg, #070d1e 0%, #0e1e3f 50%, #09142b 100%);
+  padding: 3.5rem 0 3.75rem;
+  color: #ffffff;
+  overflow: hidden;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.course-text-hero::before {
+  content: '';
+  position: absolute;
+  top: -20%;
+  right: 10%;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(2, 132, 199, 0.18) 0%, transparent 70%);
+  pointer-events: none;
+  filter: blur(40px);
+}
+
+.course-text-hero-card {
+  display: grid;
+  grid-template-columns: 1fr 1.08fr;
+  align-items: center;
+  gap: 2.25rem;
+  position: relative;
+  z-index: 2;
+}
+
+.course-text-hero-left {
+  display: flex;
+  flex-direction: column;
+  gap: 1.35rem;
+}
+
+.course-text-hero-title {
+  margin: 0;
+  font-size: clamp(1.85rem, 3.2vw, 2.5rem);
+  font-weight: 800;
+  line-height: 1.22;
+  color: #ffffff;
+  letter-spacing: -0.015em;
+}
+
+.hero-title-prefix {
+  display: block;
+  font-size: clamp(1rem, 1.8vw, 1.25rem);
+  font-weight: 700;
+  color: #f87e59;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-bottom: 0.35rem;
+}
+
+.hero-title-main {
+  display: block;
+  color: #ffffff;
+}
+
+/* Key Learning Area Pills */
+.course-key-learning-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  margin: 0.25rem 0 0.5rem;
+}
+
+.key-learning-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.45rem 0.85rem;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: #e2e8f0;
+  font-size: 0.85rem;
+  font-weight: 500;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  transition: all 0.2s ease;
+}
+
+.key-learning-item:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(56, 189, 248, 0.4);
+  color: #ffffff;
+}
+
+.key-learning-icon-frame {
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #38bdf8;
+  flex-shrink: 0;
+}
+
+.key-learning-icon-frame svg {
+  width: 18px;
+  height: 18px;
+}
+
+.key-learning-label {
+  white-space: nowrap;
+}
+
+/* Hero CTAs */
+.course-text-hero-ctas {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-top: 0.35rem;
+}
+
+.btn-enroll-main {
+  background: linear-gradient(135deg, #ef5323 0%, #e04110 100%);
+  color: #ffffff !important;
+  font-weight: 700;
+  font-size: 1.025rem;
+  padding: 0.85rem 2rem;
+  border-radius: 0.5rem;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(239, 83, 35, 0.4);
+  transition: all 0.25s ease;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-enroll-main:hover {
+  background: linear-gradient(135deg, #f46234 0%, #ef5323 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(239, 83, 35, 0.5);
+}
+
+.course-text-hero .btn-download-syllabus {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.85rem 1.6rem;
+  border-radius: 0.5rem;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.course-text-hero .btn-download-syllabus:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.35);
+  transform: translateY(-2px);
+}
+
+.course-text-hero .download-icon {
+  width: 18px;
+  height: 18px;
+}
+
+/* Right Illustration */
+.course-text-hero-right {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.course-text-hero-graphic-wrap {
+  max-width: 640px;
+  width: 100%;
+  border-radius: 20px;
+  overflow: visible;
+  border: none;
+  background: transparent;
+}
+
+.course-text-hero-graphic-wrap .live-poster-card,
+.course-hero-poster-container .live-poster-card {
+  width: 100% !important;
+  margin: 0 !important;
+  border-radius: 20px !important;
+  border: 1px solid rgba(255, 255, 255, 0.22) !important;
+  box-shadow: 0 24px 50px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.15) !important;
+}
+
+.course-text-hero-illustration {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+@media (max-width: 1050px) {
+  .course-text-hero-card {
+    grid-template-columns: 1fr;
+    gap: 2.25rem;
+  }
+
+  .course-text-hero-right {
+    order: -1;
+  }
+
+  .course-text-hero-graphic-wrap {
+    max-width: 640px;
+    margin: 0 auto;
+  }
+
+  .course-text-hero-left {
+    text-align: center;
+    align-items: center;
+  }
+
+  .course-key-learning-row {
+    justify-content: center;
+  }
+
+  .course-text-hero-ctas {
+    justify-content: center;
+  }
+}
+
+/* 2. Why Choose DV Analytics Section */
+.course-why-choose-section {
+  padding: 1rem 0;
+}
+
+.course-why-choose-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.25rem;
+  margin-top: 1.5rem;
+}
+
+.why-choose-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.85rem;
+  padding: 1.5rem;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.why-choose-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.09);
+  border-color: #38bdf8;
+}
+
+.why-choose-card-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 0.5rem;
+  line-height: 1.35;
+}
+
+.why-choose-card-desc {
+  font-size: 0.925rem;
+  color: #475569;
+  line-height: 1.55;
+  margin: 0;
+}
+
+/* Why Choose Numbered List (APCF, DAS) */
+.why-choose-numbered-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  max-width: 960px;
+  margin: 1.5rem auto 0;
+}
+
+.why-choose-list-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.15rem;
+  padding: 1.1rem 1.4rem;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.75rem;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.03);
+  transition: all 0.2s ease;
+}
+
+.why-choose-list-item:hover {
+  border-color: #cbd5e1;
+  box-shadow: 0 6px 16px rgba(15, 23, 42, 0.06);
+  transform: translateX(3px);
+}
+
+.why-choose-list-num {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ef5323 0%, #f97316 100%);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 0.925rem;
+  box-shadow: 0 2px 6px rgba(239, 83, 35, 0.3);
+}
+
+.why-choose-list-text {
+  font-size: 0.975rem;
+  color: #334155;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* 3. Course-Specific FAQs Section */
+.course-faqs-section {
+  position: relative;
+}
+
+.course-faqs-accordion {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.faq-accordion-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.03);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.faq-accordion-card.open {
+  border-color: #0284c7;
+  box-shadow: 0 6px 18px rgba(2, 132, 199, 0.08);
+}
+
+.faq-question-btn {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.25rem 1.4rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  font-size: 1.025rem;
+  font-weight: 700;
+  color: #0f172a;
+  gap: 1rem;
+  transition: color 0.2s ease;
+}
+
+.faq-question-btn:hover {
+  color: #ef5323;
+}
+
+.faq-toggle-icon {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  color: #ef5323;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.faq-toggle-icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.faq-answer-panel.closed {
+  display: none;
+}
+
+.faq-answer-panel.open {
+  display: block;
+}
+
+.faq-answer-content {
+  padding: 0 1.4rem 1.35rem;
+  color: #475569;
+  font-size: 0.95rem;
+  line-height: 1.65;
+  border-top: 1px dashed #f1f5f9;
+  padding-top: 0.85rem;
+}
+
+.faq-answer-content p {
+  margin: 0;
+}
+
+/* 4. SEO-Readable Live Poster Card Design (ProgramsSection & Course Hero) */
+.live-poster-card {
+  width: 100%;
+  margin: 0;
+  border-radius: 20px;
+  background: linear-gradient(155deg, #f0f7ff 0%, #ffffff 42%, #f6faff 100%);
+  padding: 1.5rem 1.25rem 1.15rem 1.25rem;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 16px 36px -10px rgba(15, 23, 42, 0.12);
+  display: flex;
+  flex-direction: column;
+  user-select: text;
+}
+
+.program-card .live-poster-card {
+  width: calc(100% + 2.5rem);
+  margin: -2rem -1.25rem 1.25rem -1.25rem;
+  border-top-left-radius: 19px;
+  border-top-right-radius: 19px;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  border: none;
+  border-bottom: 1px solid #e2e8f0;
+  box-shadow: none;
+}
+
+.live-poster-ambient {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.ambient-orange {
+  top: -35px;
+  right: -35px;
+  width: 170px;
+  height: 170px;
+  background: radial-gradient(circle, rgba(239, 83, 35, 0.22) 0%, rgba(239, 83, 35, 0.04) 65%, transparent 100%);
+}
+
+.ambient-blue {
+  top: 30px;
+  right: 25px;
+  width: 130px;
+  height: 130px;
+  background: radial-gradient(circle, rgba(14, 165, 233, 0.16) 0%, transparent 70%);
+}
+
+.live-poster-header {
+  position: relative;
+  z-index: 1;
+  text-align: left;
+  margin-bottom: 0.85rem;
+}
+
+.live-poster-prefix {
+  font-size: clamp(0.72rem, 1.2vw, 0.86rem);
+  font-weight: 700;
+  color: #0b1e3b;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+  margin: 0;
+  display: block;
+}
+
+.live-poster-title {
+  font-size: clamp(1.2rem, 2.05vw, 1.58rem);
+  font-weight: 900;
+  color: #ef5323;
+  line-height: 1.12;
+  margin: 0.2rem 0 0.15rem;
+  letter-spacing: -0.025em;
+  display: block;
+}
+
+.live-poster-subtitle {
+  font-size: clamp(0.78rem, 1.3vw, 0.92rem);
+  font-weight: 700;
+  color: #0b1e3b;
+  line-height: 1.2;
+  margin: 0;
+  display: block;
+}
+
+.live-poster-body {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.65rem;
+  margin-bottom: 0.85rem;
+  position: relative;
+  z-index: 1;
+}
+
+.live-poster-tools-col {
+  flex: 0 0 42%;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.45rem;
+}
+
+.live-tool-tile {
+  background: #ffffff;
+  border: 1px solid rgba(226, 232, 240, 0.95);
+  border-radius: 10px;
+  padding: 0.45rem 0.25rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.03), 0 1px 2px rgba(0, 0, 0, 0.02);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  min-height: 56px;
+  box-sizing: border-box;
+}
+
+.live-tool-tile:hover {
+  transform: translateY(-2px);
+  border-color: #cbd5e1;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.06);
+}
+
+.live-tool-icon {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.live-tool-icon svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.live-tool-name {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: #1e293b;
+  text-align: center;
+  line-height: 1.15;
+  user-select: text;
+}
+
+.live-poster-visual-col {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  position: relative;
+}
+
+.live-poster-laptop-svg {
+  width: 100%;
+  height: auto;
+  max-height: 195px;
+  display: block;
+  overflow: visible;
+}
+
+.live-poster-meta-strip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #f0f7ff;
+  border: 1px solid #dbeafe;
+  border-radius: 12px;
+  padding: 0.65rem 0.75rem;
+  gap: 0.35rem;
+  position: relative;
+  z-index: 1;
+  user-select: text;
+}
+
+.live-meta-item {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #0b1e3b;
+  white-space: nowrap;
+}
+
+.live-meta-icon {
+  width: 15px;
+  height: 15px;
+  color: #ef5323;
+  flex-shrink: 0;
+}
+
+.live-meta-divider {
+  width: 1px;
+  height: 16px;
+  background-color: #cbd5e1;
+  flex-shrink: 0;
+}
+
+/* Responsive adjustments for program poster */
+@media (max-width: 768px) {
+  .program-card .live-poster-card {
+    width: calc(100% + 1.9rem);
+    margin: -1rem -0.95rem 1rem -0.95rem;
+    padding: 1.15rem 0.95rem 0.95rem 0.95rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .program-card .live-poster-card {
+    width: calc(100% + 1.7rem);
+    margin: -0.85rem -0.85rem 0.85rem -0.85rem;
+    padding: 1rem 0.85rem 0.85rem 0.85rem;
+  }
+  .live-poster-body {
+    gap: 0.45rem;
+  }
+  .live-poster-tools-col {
+    flex: 0 0 44%;
+    gap: 0.35rem;
+  }
+  .live-tool-tile {
+    min-height: 50px;
+    padding: 0.35rem 0.2rem;
+  }
+  .live-tool-icon {
+    width: 20px;
+    height: 20px;
+  }
+  .live-tool-name {
+    font-size: 0.62rem;
+  }
+  .live-poster-meta-strip {
+    flex-wrap: wrap;
+    gap: 0.35rem 0.5rem;
+    justify-content: center;
+    padding: 0.55rem 0.5rem;
+  }
+  .live-meta-divider {
+    display: none;
+  }
+  .live-meta-item {
+    font-size: 0.68rem;
+  }
+}
+
+/* 5. Hero Benefit Badges: ensure cards expand to fit content without clipping */
+.hero-badges-grid {
+  align-items: stretch !important;
+}
+
+.hero-badge-card {
+  aspect-ratio: auto !important;
+  height: auto !important;
+  min-height: 180px !important;
+  overflow: visible !important;
+}
+
+/* 6. Live Horizontal Course Hero Poster */
+.live-horizontal-poster {
+  width: 100%;
+  background: linear-gradient(145deg, #f7faff 0%, #ffffff 42%, #f2f7fd 100%);
+  border: 1px solid rgba(226, 232, 240, 0.95);
+  border-radius: 20px;
+  box-shadow: 0 20px 45px -12px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(255, 255, 255, 0.15);
+  padding: 1.35rem 1.45rem 1.35rem 1.55rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.15rem;
+  position: relative;
+  overflow: hidden;
+  user-select: text;
+}
+
+.horizontal-poster-ambient {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.horizontal-poster-ambient.ambient-orange {
+  top: -45px;
+  right: 25%;
+  width: 220px;
+  height: 220px;
+  background: radial-gradient(circle, rgba(239, 83, 35, 0.16) 0%, transparent 70%);
+}
+
+.horizontal-poster-ambient.ambient-blue {
+  bottom: -45px;
+  right: -25px;
+  width: 220px;
+  height: 220px;
+  background: radial-gradient(circle, rgba(14, 165, 233, 0.15) 0%, transparent 70%);
+}
+
+.horizontal-poster-left {
+  flex: 1 1 58%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1.1rem;
+  position: relative;
+  z-index: 1;
+  min-width: 0;
+}
+
+.horizontal-poster-header {
+  text-align: left;
+}
+
+.horizontal-poster-prefix {
+  font-size: clamp(0.72rem, 1.1vw, 0.84rem);
+  font-weight: 700;
+  color: #0b1e3b;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+  display: block;
+}
+
+.horizontal-poster-title {
+  font-size: clamp(1.2rem, 1.85vw, 1.58rem);
+  font-weight: 900;
+  color: #ef5323;
+  line-height: 1.12;
+  margin: 0.2rem 0 0.15rem;
+  letter-spacing: -0.025em;
+  display: block;
+}
+
+.horizontal-poster-subtitle {
+  font-size: clamp(0.76rem, 1.15vw, 0.88rem);
+  font-weight: 700;
+  color: #0b1e3b;
+  line-height: 1.2;
+  display: block;
+}
+
+.horizontal-poster-tools-row {
+  display: flex;
+  align-items: stretch;
+  gap: 0.45rem;
+  flex-wrap: nowrap;
+}
+
+.horizontal-tool-card {
+  flex: 1 1 0;
+  min-width: 0;
+  background: #ffffff;
+  border: 1px solid rgba(226, 232, 240, 0.95);
+  border-radius: 9px;
+  padding: 0.45rem 0.25rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  box-shadow: 0 2px 6px -1px rgba(15, 23, 42, 0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.horizontal-tool-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px -2px rgba(15, 23, 42, 0.1);
+}
+
+.horizontal-tool-icon {
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.horizontal-tool-icon svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.horizontal-tool-label {
+  font-size: clamp(0.56rem, 0.8vw, 0.65rem);
+  font-weight: 700;
+  color: #1e293b;
+  text-align: center;
+  line-height: 1.15;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.horizontal-poster-right {
+  flex: 0 0 38%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+}
+
+.horizontal-poster-right .poster-laptop-wrap {
+  width: 100%;
+  max-width: 250px;
+}
+
+@media (max-width: 640px) {
+  .live-horizontal-poster {
+    flex-direction: column;
+    padding: 1.15rem 1rem;
+    gap: 1rem;
+  }
+
+  .horizontal-poster-left {
+    flex: 1 1 100%;
+    width: 100%;
+  }
+
+  .horizontal-poster-right {
+    flex: 0 0 auto;
+    width: 100%;
+    max-width: 240px;
+  }
+
+  .horizontal-poster-tools-row {
+    flex-wrap: wrap;
+    gap: 0.35rem;
+  }
+
+  .horizontal-tool-card {
+    flex: 1 1 calc(20% - 0.35rem);
+    min-width: 52px;
+    padding: 0.35rem 0.2rem;
+  }
+}
+
+/* 7. Full-Size End-to-End Live Poster Hero Section */
+.course-hero-full-poster {
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  background: linear-gradient(135deg, #f8fbff 0%, #ffffff 42%, #f2f7fd 100%);
+  border-bottom: 1px solid #e2e8f0;
+  position: relative;
+  overflow: hidden;
+  user-select: text;
+  box-shadow: 0 10px 30px -10px rgba(15, 23, 42, 0.05);
+}
+
+.full-poster-ambient {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.full-poster-ambient.ambient-orange {
+  top: -80px;
+  right: 20%;
+  width: 420px;
+  height: 420px;
+  background: radial-gradient(circle, rgba(239, 83, 35, 0.14) 0%, rgba(239, 83, 35, 0.02) 65%, transparent 100%);
+}
+
+.full-poster-ambient.ambient-blue {
+  bottom: -90px;
+  right: -40px;
+  width: 440px;
+  height: 440px;
+  background: radial-gradient(circle, rgba(14, 165, 233, 0.13) 0%, transparent 70%);
+}
+
+.full-poster-content-container {
+  max-width: 1380px !important;
+  margin: 0 auto;
+  padding: 3.25rem 2rem 3rem !important;
+  display: grid;
+  grid-template-columns: 1.18fr 0.82fr;
+  align-items: center;
+  gap: 3rem;
+  position: relative;
+  z-index: 1;
+}
+
+.full-poster-left {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: left;
+}
+
+.full-poster-prefix {
+  font-size: clamp(0.9rem, 1.35vw, 1.18rem);
+  font-weight: 700;
+  color: #0b1e3b;
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+  display: block;
+}
+
+.full-poster-title {
+  font-size: clamp(2.2rem, 3.8vw, 3.5rem);
+  font-weight: 900;
+  color: #ef5323;
+  line-height: 1.08;
+  margin: 0.35rem 0 0.25rem;
+  letter-spacing: -0.025em;
+  display: block;
+}
+
+.full-poster-subtitle {
+  font-size: clamp(1.1rem, 1.8vw, 1.48rem);
+  font-weight: 700;
+  color: #0b1e3b;
+  line-height: 1.25;
+  display: block;
+}
+
+.full-poster-tools-row {
+  display: flex;
+  align-items: stretch;
+  gap: 0.65rem;
+  margin: 1.65rem 0 2rem;
+  flex-wrap: nowrap;
+}
+
+.full-poster-tool-card {
+  flex: 1 1 0;
+  min-width: 0;
+  background: #ffffff;
+  border: 1px solid rgba(226, 232, 240, 0.95);
+  border-radius: 12px;
+  padding: 0.75rem 0.55rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  box-shadow: 0 4px 14px -3px rgba(15, 23, 42, 0.08);
+  transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+}
+
+.full-poster-tool-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 22px -4px rgba(15, 23, 42, 0.14);
+  border-color: rgba(239, 83, 35, 0.4);
+}
+
+.full-poster-tool-icon {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.full-poster-tool-icon svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.full-poster-tool-label {
+  font-size: clamp(0.68rem, 0.9vw, 0.78rem);
+  font-weight: 700;
+  color: #0b1e3b;
+  text-align: center;
+  line-height: 1.2;
+}
+
+.full-poster-actions {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.btn-full-poster-enroll {
+  background: linear-gradient(135deg, #ef5323 0%, #ff6b3d 100%);
+  color: #ffffff;
+  border: none;
+  font-size: 1.05rem;
+  font-weight: 700;
+  padding: 0.85rem 2.25rem;
+  border-radius: 9999px;
+  cursor: pointer;
+  box-shadow: 0 8px 24px -4px rgba(239, 83, 35, 0.45);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-full-poster-enroll:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px -4px rgba(239, 83, 35, 0.6);
+}
+
+.btn-full-poster-brochure {
+  background: #ffffff;
+  color: #0b1e3b;
+  border: 1.5px solid #cbd5e1;
+  font-size: 1.02rem;
+  font-weight: 700;
+  padding: 0.82rem 1.95rem;
+  border-radius: 9999px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  transition: transform 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.btn-full-poster-brochure:hover:not(:disabled) {
+  border-color: #0b1e3b;
+  background-color: #f8fafc;
+  transform: translateY(-2px);
+}
+
+.btn-full-poster-brochure:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-full-poster-brochure .brochure-download-icon {
+  width: 18px;
+  height: 18px;
+}
+
+.full-poster-right {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+}
+
+.full-poster-right .poster-laptop-wrap {
+  width: 100%;
+  max-width: 480px;
+}
+
+/* Responsive Breakpoints for Full Poster Hero */
+@media (max-width: 1080px) {
+  .full-poster-content-container {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+    padding: 2.75rem 1.5rem 2.5rem !important;
+    text-align: center;
+  }
+
+  .full-poster-left {
+    text-align: center;
+    align-items: center;
+  }
+
+  .full-poster-header {
+    text-align: center;
+  }
+
+  .full-poster-tools-row {
+    justify-content: center;
+  }
+
+  .full-poster-actions {
+    justify-content: center;
+  }
+
+  .full-poster-right {
+    order: -1;
+  }
+
+  .full-poster-right .poster-laptop-wrap {
+    max-width: 380px;
+  }
+}
+
+@media (max-width: 640px) {
+  .full-poster-tools-row {
+    flex-wrap: wrap;
+    gap: 0.45rem;
+  }
+
+  .full-poster-tool-card {
+    flex: 1 1 calc(33.333% - 0.45rem);
+    min-width: 75px;
+    padding: 0.55rem 0.35rem;
+  }
+
+  .full-poster-tool-icon {
+    width: 24px;
+    height: 24px;
+  }
+
+  .full-poster-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .btn-full-poster-enroll,
+  .btn-full-poster-brochure {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .full-poster-right .poster-laptop-wrap {
+    max-width: 290px;
+  }
 }
 

@@ -14,8 +14,8 @@ const programBenefits: BenefitItem[] = [
   {
     id: 'instructor-training',
     badge: '01',
-    title: 'Instructor-Led Training',
-    description: 'Learn from experienced industry professionals through interactive live sessions. Get real-time insights, ask questions, & clarify concepts for a deeper understanding.',
+    title: 'Expert-Led Training',
+    description: 'Learn from experienced industry professionals through interactive training sessions. Gain practical knowledge, ask questions and develop a deeper understanding of Data Science, AI and emerging technologies.',
     icon: (
       <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
         {/* Presentation Board */}
@@ -47,8 +47,8 @@ const programBenefits: BenefitItem[] = [
   {
     id: 'lms-access',
     badge: '02',
-    title: 'LMS Access',
-    description: 'Get access to our advanced Learning Management System 24/7. Access recordings, study materials, resources, and track your progress anytime, anywhere.',
+    title: '24/7 LMS Access',
+    description: 'Access recorded lectures, study materials, assignments and learning resources through our Learning Management System. Learn at your own pace and revisit lessons whenever you need.',
     icon: (
       <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
         {/* Laptop Body */}
@@ -74,7 +74,7 @@ const programBenefits: BenefitItem[] = [
     id: 'assignments-case-studies',
     badge: '03',
     title: 'Assignments & Case Studies',
-    description: 'Strengthen your concepts through well-designed assignments and real-world case studies that enhance problem-solving skills.',
+    description: 'Strengthen your technical knowledge through practical assignments and real-world case studies. Develop analytical thinking and problem-solving skills by working on industry-relevant challenges.',
     icon: (
       <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
         {/* Clipboard */}
@@ -107,8 +107,8 @@ const programBenefits: BenefitItem[] = [
   {
     id: 'industry-projects',
     badge: '04',
-    title: 'Industry Projects',
-    description: 'Work on real-time industry projects that give you hands-on experience and help you apply your learning to practical scenarios.',
+    title: 'Hands-On Industry Projects',
+    description: 'Apply your knowledge to practical projects involving Python, SQL, Machine Learning, Data Analytics and Generative AI. Gain experience working with real-world datasets and business scenarios.',
     icon: (
       <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
         {/* Desktop Monitor */}
@@ -133,7 +133,7 @@ const programBenefits: BenefitItem[] = [
     id: 'capstone-project',
     badge: '05',
     title: 'Capstone Project',
-    description: 'Comprehensive end-to-end project to demonstrate your skills, build a strong portfolio, and showcase your ability to deliver real-world solutions.',
+    description: 'Work on a comprehensive project that brings together the concepts and technologies covered during your training. Build a project portfolio to demonstrate your practical skills to potential employers.',
     icon: (
       <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
         {/* Red & White Archery Target */}
@@ -155,8 +155,8 @@ const programBenefits: BenefitItem[] = [
   {
     id: 'resume-preparation',
     badge: '06',
-    title: 'Resume Preparation',
-    description: 'Create a professional, job-winning resume that highlights your skills, projects, and achievements to stand out to recruiters.',
+    title: 'Professional Resume Preparation',
+    description: 'Get guidance on creating a professional, job-ready resume that highlights your technical skills, project experience, certifications and career strengths.',
     icon: (
       <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
         {/* Resume paper */}
@@ -187,8 +187,8 @@ const programBenefits: BenefitItem[] = [
   {
     id: 'linkedin-optimization',
     badge: '07',
-    title: 'LinkedIn Optimization',
-    description: 'Build a powerful LinkedIn profile that showcases your skills and achievements to attract recruiters and grow your professional network.',
+    title: 'LinkedIn Profile Optimization',
+    description: 'Learn how to create and improve your LinkedIn profile to showcase your skills, connect with industry professionals and explore relevant career opportunities.',
     icon: (
       <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
         {/* Circular LinkedIn Badge */}
@@ -207,7 +207,7 @@ const programBenefits: BenefitItem[] = [
     id: 'mock-interviews',
     badge: '08',
     title: 'Tests & Mock Interviews',
-    description: 'Access chapter-wise tests & full-length mock interviews to evaluate your skills and improve your performance.',
+    description: 'Evaluate your learning through regular assessments and practice interviews. Improve your technical knowledge, communication skills and confidence before attending actual job interviews.',
     icon: (
       <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
         {/* Interview Desk */}
@@ -231,8 +231,8 @@ const programBenefits: BenefitItem[] = [
   {
     id: 'placement-support',
     badge: '09',
-    title: 'Placement Support',
-    description: 'Get dedicated placement support including job opportunities, referrals, and guidance to help you kickstart your career.',
+    title: 'Placement Assistance',
+    description: 'Receive dedicated career guidance and placement assistance, including job opportunity updates, interview preparation and support throughout your job search journey.',
     icon: (
       <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
         {/* Hiring Team in Background */}
@@ -254,8 +254,8 @@ const programBenefits: BenefitItem[] = [
   {
     id: 'training-certificate',
     badge: '10',
-    title: 'Training & Completion Certificate',
-    description: 'Receive a training completion certificate upon successfully completing the program to showcase your achievement.',
+    title: 'Training & Completion Certificates',
+    description: 'Receive a course completion certificate after successfully meeting the programme requirements. Showcase your learning achievements and newly developed technical skills.',
     icon: (
       <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
         {/* Certificate Frame */}
@@ -280,8 +280,8 @@ const lmsBenefits: BenefitItem[] = [
   {
     id: 'lms-recordings',
     badge: '01',
-    title: 'Post Class Materials with Live Recorded Videos Access',
-    description: 'Get lifetime access to live recorded sessions, slides, notes and other study materials anytime, anywhere to revise and strengthen your concepts.',
+    title: 'Recorded Classes & Study Materials',
+    description: 'Revisit recorded training sessions, lecture videos, presentations and study materials anytime. Review important topics and strengthen your understanding at your own pace.',
     icon: (
       <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
         {/* Laptop */}
@@ -308,8 +308,8 @@ const lmsBenefits: BenefitItem[] = [
   {
     id: 'lms-assignments',
     badge: '02',
-    title: 'Download Session-Wise Assignments & Feedbacks',
-    description: 'Access session-wise assignments, complete them at your convenience and upload for evaluation with detailed feedback from experts.',
+    title: 'Assignments & Expert Feedback',
+    description: 'Access course-wise assignments, complete practical exercises and submit your work through the LMS. Receive feedback from trainers to identify areas for improvement and strengthen your technical skills.',
     icon: (
       <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
         {/* Assignments Clipboard */}
@@ -332,8 +332,8 @@ const lmsBenefits: BenefitItem[] = [
   {
     id: 'lms-mcq',
     badge: '03',
-    title: 'Test Your Knowledge with MCQs & Practical Questions',
-    description: 'Reinforce your learning by attempting MCQs and practical questions. Keep practicing until you score 70% or more to ensure strong concepts.',
+    title: 'Online Tests & Assessments',
+    description: 'Test your knowledge through MCQ-based assessments and practical exercises. Review your performance, identify learning gaps and improve your understanding of important concepts.',
     icon: (
       <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
         {/* Computer Screen */}
@@ -359,8 +359,8 @@ const lmsBenefits: BenefitItem[] = [
   {
     id: 'lms-resume',
     badge: '04',
-    title: 'Fill Resume Form & Get Professional Resume Ready',
-    description: 'Fill the resume form with your details and get a professionally crafted resume that highlights your skills and projects.',
+    title: 'Professional Resume Preparation',
+    description: 'Complete your resume details through our LMS and get guidance on creating a professional resume that highlights your technical skills, project experience and learning achievements.',
     icon: (
       <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
         {/* Laptop */}
@@ -383,8 +383,8 @@ const lmsBenefits: BenefitItem[] = [
   {
     id: 'lms-interview-kit',
     badge: '05',
-    title: 'Interviews Preparation Kit (Technical & HR Q&A)',
-    description: 'Access a comprehensive interview preparation kit with Q&A on behavioural, technical and projects to boost your confidence.',
+    title: 'Technical & HR Interview Preparation',
+    description: 'Access interview preparation resources covering technical questions, behavioural interviews and project-related discussions. Build confidence and prepare for different stages of the recruitment process.',
     icon: (
       <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
         {/* Candidate at laptop */}
@@ -405,8 +405,8 @@ const lmsBenefits: BenefitItem[] = [
   {
     id: 'lms-mentor-mock',
     badge: '06',
-    title: 'Request Mock Interviews by Industry Mentors',
-    description: 'Schedule mock interviews with industry mentors, get real-time feedback and improve your performance.',
+    title: 'Mock Interviews with Industry Mentors',
+    description: 'Practise your interview skills through mock interview sessions with industry mentors. Receive constructive feedback and improve your technical knowledge, communication and presentation skills.',
     icon: (
       <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
         {/* Video Call Monitor */}
@@ -428,8 +428,8 @@ const lmsBenefits: BenefitItem[] = [
   {
     id: 'lms-elite-test',
     badge: '07',
-    title: 'Appear for DV Elite Test for Placement Support',
-    description: 'Clear the DV Elite Test to become eligible for placement assistance and connect with top hiring partners.',
+    title: 'DV Elite Test & Placement Eligibility',
+    description: 'Attempt the DV Elite assessment to evaluate your technical knowledge and programme readiness. Eligible learners can access additional placement assistance and relevant hiring opportunities, subject to programme requirements.',
     icon: (
       <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
         {/* Clipboard */}
@@ -453,8 +453,8 @@ const lmsBenefits: BenefitItem[] = [
   {
     id: 'lms-certifications',
     badge: '08',
-    title: 'Training & Industry Data Science & AI Certificates',
-    description: 'Earn recognized Training & Industry Data Science & AI skill certificates to validate your expertise and boost your career.',
+    title: 'Training & Industry Data Science Certificates',
+    description: 'Access your training and industry-related Data Science and AI certificates after meeting the respective programme requirements. Showcase your learning achievements and technical skills to potential employers.',
     icon: (
       <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
         {/* Certificate 1 (Training - Gold) */}
@@ -483,19 +483,13 @@ export const BenefitsSection: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'program' | 'lms' | 'certificate'>('program');
   const revealRef = useScrollReveal(activeTab);
 
-  const titleMap = {
-    program: 'Program Benefits',
-    lms: 'LMS Platform Benefits',
-    certificate: 'Certificates',
-  } as const;
-
   return (
     <section className="benefits-section" id="benefits">
       <div className="benefits-container">
         {/* Title Header */}
         <div className="benefits-header reveal-on-scroll">
-          <span className="benefits-subtitle">Maximize Your Success</span>
-          <h2 className="benefits-title">{titleMap[activeTab]}</h2>
+          <span className="benefits-subtitle">MAXIMIZE YOUR CAREER POTENTIAL</span>
+          <h2 className="benefits-title">Benefits of Learning with DV Analytics</h2>
 
           {/* Decorative Divider */}
           <div className="benefits-title-divider">
@@ -537,10 +531,13 @@ export const BenefitsSection: React.FC = () => {
             <div className="benefits-interactive-wrapper" key="program-interactive">
               <div className="benefits-inner-banner">
                 <h3 className="benefits-inner-title">
-                  <span className="title-primary">PROGRAM</span>
-                  <span className="title-highlight">BENEFITS</span>
+                  <span className="title-primary">DATA SCIENCE &amp; AI</span>
+                  <span className="title-highlight">PROGRAM BENEFITS</span>
                 </h3>
-                <div className="benefits-inner-divider">
+                <p style={{ margin: '0.6rem auto 0', color: '#475569', fontSize: '0.98rem', fontWeight: 500, maxWidth: '750px', textAlign: 'center' }}>
+                  Industry-focused learning, practical projects and career support to help you build job-ready skills.
+                </p>
+                <div className="benefits-inner-divider" style={{ marginTop: '0.85rem' }}>
                   <div className="line"></div>
                   <div className="diamond">✦</div>
                   <div className="line"></div>
@@ -564,10 +561,13 @@ export const BenefitsSection: React.FC = () => {
             <div className="benefits-interactive-wrapper" key="lms-interactive">
               <div className="benefits-inner-banner">
                 <h3 className="benefits-inner-title">
-                  <span className="title-primary">LMS</span>
+                  <span className="title-primary">LMS PLATFORM</span>
                   <span className="title-highlight">BENEFITS</span>
                 </h3>
-                <div className="benefits-inner-divider">
+                <p style={{ margin: '0.6rem auto 0', color: '#475569', fontSize: '0.95rem', lineHeight: 1.6, maxWidth: '820px', textAlign: 'center' }}>
+                  Our Learning Management System (LMS) makes learning more flexible, organised and accessible. Learners can revisit recorded classes, access study materials, complete assignments, track their progress and prepare for interviews through a single learning platform.
+                </p>
+                <div className="benefits-inner-divider" style={{ marginTop: '0.85rem' }}>
                   <div className="line"></div>
                   <div className="diamond">✦</div>
                   <div className="line"></div>

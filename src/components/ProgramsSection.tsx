@@ -1,14 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useGlowCard } from '../hooks/useGlowCard';
 import { getPathFromPage } from '../utils/routes';
-
-const posterImages: Record<string, string> = {
-  apids: '/courses-poster/APIDS.png',
-  apida: '/courses-poster/APIDA.png',
-  specialist: '/courses-poster/DAS.png',
-  apcs: '/courses-poster/APCF.png',
-  fde: '/courses-poster/ai-forward-deployment-engineer.png',
-};
+import { LiveCoursePoster } from './LiveCoursePoster';
 
 interface Module {
   title: string;
@@ -259,22 +252,28 @@ export const ProgramsSection: React.FC<ProgramsSectionProps> = ({ onViewDetails 
     <section className="programs-section" id="courses">
       <div className="programs-section-header reveal-on-scroll">
         <div className="section-title-wrapper">
-          <h2 className="section-title-divider">Our Training Program</h2>
+          <h2 className="section-title-divider">Explore Our Industry-Oriented Data Science and AI Courses</h2>
         </div>
       </div>
 
       <div className="benefits-tab-switcher course-term-tabs reveal-on-scroll delay-1" role="tablist" aria-label="Course duration filters">
         {termTabs.map((tab) => (
-          <button
+          <div
             key={tab.id}
-            type="button"
             role="tab"
+            tabIndex={0}
             aria-selected={activeTerm === tab.id}
             className={`tab-btn ${activeTerm === tab.id ? 'active' : ''}`}
             onClick={() => setActiveTerm(tab.id)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                setActiveTerm(tab.id);
+              }
+            }}
           >
-            {tab.label}
-          </button>
+            <span className="tab-btn-text">{tab.label}</span>
+          </div>
         ))}
       </div>
 
@@ -337,14 +336,8 @@ const ProgramCard: React.FC<ProgramCardProps> = ({ program, onViewDetails, index
         className={`program-card glow-card ${program.theme}`}
         style={{ '--glow-color': glowColors[program.theme] } as React.CSSProperties}
       >
-        <div className="program-poster-container">
-          <img 
-            src={posterImages[program.id]} 
-            alt={`${program.shortTitle} Poster`} 
-            className="program-poster-img"
-            loading="lazy"
-          />
-        </div>
+        {/* Live Vector Poster Card: 100% Readable, Selectable, and SEO Friendly */}
+        <LiveCoursePoster courseId={program.id} />
 
         <a
           className="view-details-btn" 
