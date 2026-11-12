@@ -1689,31 +1689,35 @@
     text-decoration: none;
   }
 
-  .mobile-courses-dropdown {
-    position: absolute;
-    top: calc(100% + 0.6rem);
+  .mobile-courses-dropdown,
+  .mobile-services-dropdown {
+    position: static !important;
+    top: auto !important;
     left: auto !important;
-    right: 0 !important;
+    right: auto !important;
     transform: none !important;
     min-width: 0 !important;
-    width: 250px !important;
-    background: #ffffff !important;
-    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+    width: 100% !important;
+    background: #f8fafc !important;
+    border: 1px solid rgba(15, 23, 42, 0.08) !important;
     border-radius: 16px !important;
-    box-shadow: 0 12px 32px rgba(15, 23, 42, 0.12) !important;
-    z-index: 1000 !important;
+    box-shadow: none !important;
+    z-index: auto !important;
     display: none !important;
     flex-direction: column !important;
+    margin-top: 0.4rem !important;
     padding: 0.5rem !important;
     opacity: 1 !important;
     pointer-events: auto !important;
   }
 
-  .mobile-courses-dropdown.show {
+  .mobile-courses-dropdown.show,
+  .mobile-services-dropdown.show {
     display: flex !important;
   }
 
-  .mobile-courses-dropdown .dropdown-item-link {
+  .mobile-courses-dropdown .dropdown-item-link,
+  .mobile-services-dropdown .dropdown-item-link {
     padding: 0.75rem 0.85rem;
     font-size: 0.85rem;
     color: #475569;
@@ -1722,7 +1726,8 @@
     transition: all 0.2s;
   }
 
-  .mobile-courses-dropdown .dropdown-item-link:hover {
+  .mobile-courses-dropdown .dropdown-item-link:hover,
+  .mobile-services-dropdown .dropdown-item-link:hover {
     background: #f8fafc;
     color: #ef5323;
   }
@@ -1908,7 +1913,8 @@
   border-bottom: none !important; /* Remove line dividers between items for a modern pill hover effect */
 }
 
-.site-header .dropdown-item-link:hover {
+.site-header .dropdown-item-link:hover,
+.site-header .dropdown-item-link.active {
   background-color: #ef5323 !important;
   color: #ffffff !important;
 }
@@ -2879,10 +2885,9 @@ button {
   }
 
   .mobile-courses-dropdown {
-    width: min(290px, calc(100vw - 2rem)) !important;
-    max-height: min(65vh, 520px);
-    overflow-y: auto;
-    overscroll-behavior: contain;
+    width: 100% !important;
+    max-height: none;
+    overflow: visible;
   }
 
   .mobile-nav-panel .nav-item a,
@@ -3568,10 +3573,9 @@ button {
   }
 
   .mobile-courses-dropdown {
-    width: min(290px, calc(100vw - 2rem)) !important;
-    max-height: min(65vh, 520px);
-    overflow-y: auto;
-    overscroll-behavior: contain;
+    width: 100% !important;
+    max-height: none;
+    overflow: visible;
   }
 
   .slideshow-nav-btn,

@@ -92,6 +92,9 @@ export const Header: React.FC<HeaderProps> = ({
         setServicesDropdownOpen(false);
         setMobileServicesOpen(false);
       }
+      if (!target.closest('.site-header')) {
+        setMobileMenuOpen(false);
+      }
     };
 
     document.addEventListener('mousedown', handleClickOutside);
@@ -115,9 +118,10 @@ export const Header: React.FC<HeaderProps> = ({
 
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth > 768) {
+      if (window.innerWidth > 900) {
         setMobileMenuOpen(false);
         setMobileCoursesOpen(false);
+        setMobileServicesOpen(false);
         setActiveCourseGroupId(null);
       }
     };
@@ -129,6 +133,7 @@ export const Header: React.FC<HeaderProps> = ({
   const handleCourseClick = (courseId: string) => {
     setCoursesDropdownOpen(false);
     setMobileCoursesOpen(false);
+    setMobileServicesOpen(false);
     setActiveCourseGroupId(null);
     clearCourseGroupHoverTimeout();
     setMobileMenuOpen(false);
@@ -139,6 +144,9 @@ export const Header: React.FC<HeaderProps> = ({
 
   const handleServiceClick = (serviceId: string) => {
     setServicesDropdownOpen(false);
+    setMobileServicesOpen(false);
+    setMobileCoursesOpen(false);
+    setActiveCourseGroupId(null);
     setMobileMenuOpen(false);
     if (onNavClick) {
       onNavClick(serviceId);
@@ -152,7 +160,7 @@ export const Header: React.FC<HeaderProps> = ({
       <div className={`courses-dropdown-shell courses-dropdown-shell-${variant}`}>
         <div className="courses-category-list">
           {courseGroups.map((group) => {
-            const isActive = activeCourseGroupId === group.id;
+            const isActive = activeGroup?.id === group.id;
 
             return (
               <button
@@ -166,9 +174,10 @@ export const Header: React.FC<HeaderProps> = ({
                   }
                 }}
                 onMouseLeave={clearCourseGroupHoverTimeout}
-                onClick={() => {
+                onClick={(e) => {
+                  e.stopPropagation();
                   clearCourseGroupHoverTimeout();
-                  setActiveCourseGroupId(isActive && variant === 'mobile' ? null : group.id);
+                  setActiveCourseGroupId(group.id);
                 }}
               >
                 <span>{group.title}</span>
@@ -186,9 +195,10 @@ export const Header: React.FC<HeaderProps> = ({
             <a
               key={course.id}
               href={getPathFromPage(course.id)}
-              className="dropdown-item-link"
+              className={`dropdown-item-link ${activePage === course.id ? 'active' : ''}`}
               onClick={(e) => {
                 e.preventDefault();
+                e.stopPropagation();
                 handleCourseClick(course.id);
               }}
             >
@@ -426,6 +436,8 @@ export const Header: React.FC<HeaderProps> = ({
                 onClick={() => {
                   setMobileMenuOpen((prev) => !prev);
                   setMobileServicesOpen(false);
+                  setMobileCoursesOpen(false);
+                  setActiveCourseGroupId(null);
                 }}
               >
                 <span></span>
@@ -438,6 +450,8 @@ export const Header: React.FC<HeaderProps> = ({
                 e.preventDefault();
                 setMobileMenuOpen(false);
                 setMobileServicesOpen(false);
+                setMobileCoursesOpen(false);
+                setActiveCourseGroupId(null);
                 if (onNavClick) onNavClick('home');
               }}>
                 <img src="/logo.png" alt="DV Analytics Logo" className="logo-image mobile-logo-image" />
@@ -449,6 +463,9 @@ export const Header: React.FC<HeaderProps> = ({
                 className="btn-enroll-header mobile-top-enroll-btn"
                 onClick={() => {
                   setMobileMenuOpen(false);
+                  setMobileServicesOpen(false);
+                  setMobileCoursesOpen(false);
+                  setActiveCourseGroupId(null);
                   if (activeCourse) {
                     onCourseEnrollClick?.(activeCourse.id);
                   } else if (onNavClick) {
@@ -463,24 +480,25 @@ export const Header: React.FC<HeaderProps> = ({
             {/* Drawer Menu Panel */}
             <nav className={`nav-panel mobile-nav-panel ${mobileMenuOpen ? 'mobile-open' : ''}`}>
               <ul className="nav-list">
-                <li 
-                  className="nav-item dropdown-container courses-dropdown-container"
-                  onClick={() => {
-                    const nextOpen = !mobileCoursesOpen;
-                    setMobileCoursesOpen(nextOpen);
-                    if (nextOpen) {
-                      setActiveCourseGroupId(courseGroups[0]?.id ?? null);
-                    } else {
-                      setActiveCourseGroupId(null);
-                    }
-                  }}
-                >
+                <li className="nav-item dropdown-container courses-dropdown-container">
                   <a
                     href={getPathFromPage('courses')}
-                    className={`dropdown-trigger ${mobileCoursesOpen ? 'open' : ''}`}
+                    className={`dropdown-trigger ${mobileCoursesOpen ? 'open' : ''} ${activePage === 'courses' || activePage.startsWith('course-') ? 'active' : ''}`}
                     aria-haspopup="true"
                     aria-expanded={mobileCoursesOpen}
                     aria-controls="mobile-courses-menu"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      const nextOpen = !mobileCoursesOpen;
+                      setMobileCoursesOpen(nextOpen);
+                      setMobileServicesOpen(false);
+                      if (nextOpen) {
+                        setActiveCourseGroupId((currentGroupId) => currentGroupId ?? courseGroups[0]?.id ?? null);
+                      } else {
+                        setActiveCourseGroupId(null);
+                      }
+                    }}
                   >
                     All Courses
                     <svg className={`chevron-icon ${mobileCoursesOpen ? 'rotated' : ''}`} viewBox="0 0 24 24">
@@ -493,18 +511,23 @@ export const Header: React.FC<HeaderProps> = ({
                   </div>
                 </li>
 
-                <li 
-                  className="nav-item dropdown-container services-dropdown-container"
-                  onClick={() => {
-                    setMobileServicesOpen(!mobileServicesOpen);
-                  }}
-                >
+                <li className="nav-item dropdown-container services-dropdown-container">
                   <a
                     href={getPathFromPage('services')}
                     className={`dropdown-trigger ${mobileServicesOpen ? 'open' : ''} ${activePage.startsWith('service-') || activePage === 'services' ? 'active' : ''}`}
                     aria-haspopup="true"
                     aria-expanded={mobileServicesOpen}
                     aria-controls="mobile-services-menu"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      const nextOpen = !mobileServicesOpen;
+                      setMobileServicesOpen(nextOpen);
+                      if (nextOpen) {
+                        setMobileCoursesOpen(false);
+                        setActiveCourseGroupId(null);
+                      }
+                    }}
                   >
                     Services
                     <svg className={`chevron-icon ${mobileServicesOpen ? 'rotated' : ''}`} viewBox="0 0 24 24">
@@ -512,14 +535,26 @@ export const Header: React.FC<HeaderProps> = ({
                     </svg>
                   </a>
 
-                  <div id="mobile-services-menu" className={`services-dropdown-menu ${mobileServicesOpen ? 'show' : ''}`}>
+                  <div id="mobile-services-menu" className={`services-dropdown-menu mobile-services-dropdown ${mobileServicesOpen ? 'show' : ''}`}>
+                    <a
+                      href={getPathFromPage('services')}
+                      className={`dropdown-item-link ${activePage === 'services' ? 'active' : ''}`}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        handleServiceClick('services');
+                      }}
+                    >
+                      All Services
+                    </a>
                     {servicesList.map((service) => (
                       <a
                         key={service.id}
                         href={getPathFromPage(service.id)}
-                        className="dropdown-item-link"
+                        className={`dropdown-item-link ${activePage === service.id ? 'active' : ''}`}
                         onClick={(e) => {
                           e.preventDefault();
+                          e.stopPropagation();
                           handleServiceClick(service.id);
                         }}
                       >
