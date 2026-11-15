@@ -1620,9 +1620,9 @@ export const FdeStoryLandingPage: React.FC<FdeStoryLandingPageProps> = ({ onRegi
             <div>
               <h3>How much of the job is code?</h3>
               <div className="bar" role="img" aria-label="50% Problem-Solving & Shipper, 30% Software Engineering, 20% AI & Cloud Systems">
-                <div className="b1" style={{ width: '50%' }}>50%<span className="bar-tag"> Problem-Solving</span></div>
-                <div className="b2" style={{ width: '30%' }}>30%<span className="bar-tag"> Engineering</span></div>
-                <div className="b3" style={{ width: '20%' }}>20%<span className="bar-tag"> AI &amp; Cloud</span></div>
+                <div className="b1" style={{ flex: 50 }}>50%<span className="bar-tag"> Problem-Solving</span></div>
+                <div className="b2" style={{ flex: 30 }}>30%<span className="bar-tag"> Engineering</span></div>
+                <div className="b3" style={{ flex: 20 }}>20%<span className="bar-tag"> AI &amp; Cloud</span></div>
               </div>
               <div className="legend">
                 <div><b>50% Problem-Solving &amp; Shipper:</b> Client discovery, requirement translation, stakeholder management, executive presentations, and project handover.</div>

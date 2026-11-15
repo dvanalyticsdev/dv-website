@@ -850,8 +850,17 @@
   }
 
   .job-meta-list {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
+}
+
+@media (max-width: 520px) {
+  .job-meta-list {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 420px) {
 
   .job-card-actions {
     flex-direction: column;

@@ -225,7 +225,7 @@ export const Header: React.FC<HeaderProps> = ({
       <li 
         className="nav-item dropdown-container courses-dropdown-container"
         onMouseEnter={() => {
-          if (window.innerWidth > 768) {
+          if (window.innerWidth > 900) {
             openCoursesDropdown();
           }
         }}
@@ -262,7 +262,7 @@ export const Header: React.FC<HeaderProps> = ({
       <li 
         className="nav-item dropdown-container services-dropdown-container"
         onMouseEnter={() => {
-          if (window.innerWidth > 768) {
+          if (window.innerWidth > 900) {
             setServicesDropdownOpen(true);
             setCoursesDropdownOpen(false);
           }

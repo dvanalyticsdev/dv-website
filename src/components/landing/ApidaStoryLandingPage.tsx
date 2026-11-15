@@ -1608,9 +1608,9 @@ export const ApidaStoryLandingPage: React.FC<ApidaStoryLandingPageProps> = ({ on
             <div>
               <h3>How much of the job is code?</h3>
               <div className="bar" role="img" aria-label="50% Data Management & BI, 30% Statistical & ML Modeling, 20% Business Strategy & Gen AI">
-                <div className="b1" style={{ width: '50%' }}>50%<span className="bar-tag"> Data &amp; BI</span></div>
-                <div className="b2" style={{ width: '30%' }}>30%<span className="bar-tag"> Stats &amp; ML</span></div>
-                <div className="b3" style={{ width: '20%' }}>20%<span className="bar-tag"> Strategy</span></div>
+                <div className="b1" style={{ flex: 50 }}>50%<span className="bar-tag"> Data &amp; BI</span></div>
+                <div className="b2" style={{ flex: 30 }}>30%<span className="bar-tag"> Stats &amp; ML</span></div>
+                <div className="b3" style={{ flex: 20 }}>20%<span className="bar-tag"> Strategy</span></div>
               </div>
               <div className="legend">
                 <div><b>50% Data Management &amp; BI:</b> SQL Server, MySQL, Base/Advanced SAS, Excel AI, Power BI DAX, and Tableau storytelling.</div>

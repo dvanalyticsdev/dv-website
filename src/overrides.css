@@ -788,6 +788,16 @@
   padding: 0 !important;
 }
 
+@media (max-width: 768px) {
+  .services-hero,
+  .service-detail-hero {
+    height: auto !important;
+    min-height: 300px !important;
+    margin-top: 96px !important;
+    padding: 2.5rem 1rem !important;
+  }
+}
+
 .service-hero-content {
   max-width: 800px !important;
   margin: 0 auto !important;
@@ -2773,21 +2783,27 @@
   background-image: url('/office-bg/dubai.png') !important;
 }
 
-/* Show Slider Arrows on Mobile View */
+/* Show Slider Arrows cleanly below cards on Mobile View (no overlap with poster chips) */
 @media (max-width: 768px) {
+  .slider-outer-wrapper {
+    padding-bottom: 3.25rem;
+  }
   .side-slider-arrow {
     display: flex !important;
+    top: auto !important;
+    bottom: 0 !important;
+    transform: none !important;
     width: 38px !important;
     height: 38px !important;
-    background-color: rgba(255, 255, 255, 0.95) !important;
-    border: 1px solid rgba(0, 0, 0, 0.15) !important;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15) !important;
+    background-color: rgba(255, 255, 255, 0.96) !important;
+    border: 1px solid rgba(5, 31, 64, 0.14) !important;
+    box-shadow: 0 4px 12px rgba(5, 31, 64, 0.12) !important;
   }
   .side-slider-arrow.prev {
-    left: 10px !important;
+    left: calc(50% - 46px) !important;
   }
   .side-slider-arrow.next {
-    right: 10px !important;
+    right: calc(50% - 46px) !important;
   }
   .side-slider-arrow svg {
     width: 16px !important;
@@ -3104,7 +3120,7 @@ button {
   }
 
   .site-footer {
-    padding-bottom: env(safe-area-inset-bottom);
+    padding-bottom: calc(4.75rem + env(safe-area-inset-bottom, 0px)) !important;
   }
 }
 
@@ -5735,6 +5751,17 @@ button {
     width: calc(100% + 1.9rem);
     margin: -1rem -0.95rem 1rem -0.95rem;
     padding: 1.15rem 0.95rem 0.95rem 0.95rem;
+  }
+  .live-poster-meta-strip {
+    flex-wrap: wrap;
+    gap: 0.4rem 0.65rem;
+    justify-content: center;
+  }
+  .live-meta-item {
+    white-space: normal;
+  }
+  .live-meta-divider {
+    display: none;
   }
 }
 

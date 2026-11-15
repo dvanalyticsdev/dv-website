@@ -52,11 +52,14 @@
 
 .demo-modal-box {
   max-width: 520px !important;
+  width: min(520px, calc(100vw - 2rem));
+  max-height: 90dvh;
   border-radius: 20px !important;
   background: #ffffff;
   box-shadow: 0 25px 50px -12px rgba(5, 31, 64, 0.38);
   position: relative;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
   animation: demoModalPopIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -364,21 +367,48 @@
 
 @media (max-width: 768px) {
   .demo-btn-trigger {
-    padding: 12px 8px;
-    font-size: 0.85rem;
-    border-radius: 10px 0 0 10px;
+    top: auto;
+    bottom: calc(3.65rem + env(safe-area-inset-bottom, 0px));
+    left: 0.75rem;
+    right: auto;
+    transform: none;
+    writing-mode: horizontal-tb;
+    text-orientation: initial;
+    border-radius: 999px;
+    padding: 0.55rem 0.9rem;
+    font-size: 0.78rem;
+    gap: 6px;
+    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.35);
+  }
+
+  .demo-btn-trigger:hover {
+    padding-left: 0.9rem;
+  }
+
+  .demo-btn-trigger:active {
+    transform: scale(0.97);
   }
 
   .demo-btn-icon {
-    width: 20px;
-    height: 20px;
+    width: 18px;
+    height: 18px;
   }
 
   .demo-modal-content {
-    padding: 1.75rem 1.25rem 1.5rem 1.25rem;
+    padding: 1.5rem 1.15rem 1.35rem 1.15rem;
   }
 
   .demo-modal-header h2 {
-    font-size: 1.4rem;
+    font-size: 1.35rem;
+  }
+
+  .demo-form-group input,
+  .demo-form-group select {
+    font-size: 1rem;
+  }
+
+  .demo-slot-card-body {
+    flex-wrap: wrap;
+    gap: 8px;
   }
 }

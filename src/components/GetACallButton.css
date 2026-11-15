@@ -234,14 +234,31 @@
 /* Mobile Responsiveness */
 @media (max-width: 768px) {
   .get-call-btn-trigger {
-    padding: 12px 8px;
-    font-size: 0.85rem;
-    border-radius: 10px 0 0 10px;
+    top: auto;
+    bottom: calc(0.75rem + env(safe-area-inset-bottom, 0px));
+    left: 0.75rem;
+    right: auto;
+    transform: none;
+    writing-mode: horizontal-tb;
+    text-orientation: initial;
+    border-radius: 999px;
+    padding: 0.62rem 1rem;
+    font-size: 0.82rem;
+    gap: 6px;
+    box-shadow: 0 6px 20px rgba(239, 83, 35, 0.35);
+  }
+
+  .get-call-btn-trigger:hover {
+    padding-left: 1rem;
+  }
+
+  .get-call-btn-trigger:active {
+    transform: scale(0.97);
   }
 
   .get-call-btn-icon {
-    width: 20px;
-    height: 20px;
+    width: 18px;
+    height: 18px;
   }
 
   .call-modal-content {

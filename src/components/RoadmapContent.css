@@ -444,7 +444,7 @@
 }
 
 .roadmap-step-body.open {
-  max-height: 800px;
+  max-height: 1600px;
   opacity: 1;
 }
 

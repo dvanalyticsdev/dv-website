@@ -97,7 +97,7 @@
 /* Countdown Timers Container */
 .ub-dual-timers-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
   gap: 1.5rem;
   max-width: 960px;
   margin: 0 auto 2.5rem auto;
@@ -125,7 +125,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 0.75rem;
+  flex-wrap: wrap;
+  gap: 0.5rem 0.75rem;
   margin-bottom: 0.85rem;
 }
 
@@ -287,7 +288,7 @@
 
 .ub-trends-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
   gap: 1.75rem;
 }
 
@@ -349,7 +350,7 @@
 
 .ub-batches-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
   gap: 2rem;
 }
 
@@ -381,6 +382,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
   margin-bottom: 1.25rem;
 }
 

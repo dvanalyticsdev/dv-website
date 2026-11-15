@@ -221,7 +221,7 @@ export const courseCareerIntroTexts: Record<string, string[]> = {
 
 export const courseFaqsData: Record<string, { title: string; items: FaqItem[] }> = {
   fde: {
-    title: 'Frequently Asked Questions – AI Forward Deployment Engineer Course',
+    title: 'Frequently Asked Questions',
     items: [
       {
         question: 'What is an AI Forward Deployment Engineer course?',
@@ -392,7 +392,7 @@ export const courseFaqsData: Record<string, { title: string; items: FaqItem[] }>
     ],
   },
   apids: {
-    title: 'Frequently Asked Questions About the Industrial Data Science and AI Course',
+    title: 'Frequently Asked Questions',
     items: [
       {
         question: 'What is the Advanced Program in Industrial Data Science and AI (APIDS)?',

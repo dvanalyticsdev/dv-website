@@ -96,6 +96,26 @@
   box-shadow: -6px 0 26px rgba(234, 88, 12, 0.65);
 }
 
+@media (max-width: 768px) {
+  .fde-side-sticky-cta {
+    top: auto;
+    bottom: calc(0.75rem + env(safe-area-inset-bottom, 0px));
+    left: 0.75rem;
+    right: auto;
+    transform: none;
+    writing-mode: horizontal-tb;
+    text-orientation: initial;
+    border-radius: 999px;
+    padding: 0.65rem 1.1rem;
+    font-size: 0.85rem;
+    letter-spacing: 0.3px;
+  }
+
+  .fde-side-sticky-cta:hover {
+    transform: none;
+  }
+}
+
 /* Hero Section: Two-Column Split (Poster Left, Registration Panel Right) */
 .fde-hero-split-section {
   position: relative;
@@ -754,7 +774,7 @@
 
 .fde-salary-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
   gap: 1.5rem;
   margin-bottom: 3rem;
 }
@@ -999,7 +1019,7 @@
 
 .fde-what-is-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
   gap: 2rem;
   margin-bottom: 3.5rem;
 }
@@ -1098,7 +1118,7 @@
 
 .fde-comparison-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
   gap: 1.5rem;
 }
 
@@ -1311,7 +1331,7 @@
 
 .fde-mentors-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
   gap: 2rem;
 }
 
@@ -1324,6 +1344,14 @@
   border-radius: 16px;
   align-items: center;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+}
+
+@media (max-width: 480px) {
+  .fde-mentor-card {
+    flex-direction: column;
+    text-align: center;
+    padding: 1.25rem;
+  }
 }
 
 .fde-mentor-avatar {
@@ -1681,6 +1709,8 @@
 .fde-summary-row {
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.25rem 0.75rem;
   padding: 0.5rem 0;
   border-bottom: 1px solid #e2e8f0;
   font-size: 0.9rem;

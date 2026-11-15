@@ -473,9 +473,29 @@ section[id] {
   font-size: 0.9rem;
 }
 
+@media (min-width: 961px) and (max-width: 1180px) {
+  .top .wrap {
+    padding-inline: 20px;
+    gap: 14px;
+  }
+
+  .lp-nav {
+    gap: 14px;
+  }
+
+  .lp-nav a {
+    font-size: 0.84rem;
+  }
+
+  .hero-content-grid {
+    grid-template-columns: minmax(0, 1.15fr) minmax(320px, 410px);
+    gap: 28px;
+  }
+}
+
 @media (max-width: 960px) {
   .hero-content-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     gap: 32px;
   }
 }
@@ -694,9 +714,16 @@ section[id] {
   font-size: 0.95rem;
 }
 
+@media (max-width: 1024px) {
+  .path {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px 16px;
+  }
+}
+
 @media (max-width: 760px) {
   .path {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     gap: 0;
   }
   .path li {
@@ -777,7 +804,7 @@ section[id] {
 }
 
 .def {
-  font-size: 1.25rem;
+  font-size: clamp(1rem, 2.2vw, 1.25rem);
   line-height: 1.6;
   color: var(--ink);
   max-width: 100%;
@@ -1386,7 +1413,12 @@ section[id] {
 
 @media (max-width: 860px) {
   .why-grid, .vs {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .why-demand .why-card-poster-wrap {
+    height: auto;
+    aspect-ratio: 16 / 9;
+    max-height: 260px;
   }
 }
 
@@ -1401,7 +1433,7 @@ section[id] {
 
 .ai h2 {
   color: var(--ink);
-  font-size: clamp(2rem, 3.8vw, 2.75rem);
+  font-size: clamp(1.55rem, 3.8vw, 2.75rem);
   font-weight: 850;
   line-height: 1.15;
 }
@@ -2490,13 +2522,19 @@ section[id] {
 
 .lp-form-row-2 {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 12px;
 }
 
 @media (max-width: 600px) {
   .lp-form-row-2 {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .lp-demo-form-modal-wrap .lp-form-row-2 {
+    grid-template-columns: minmax(0, 1fr);
   }
 }
 
@@ -2543,8 +2581,16 @@ section[id] {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 8px;
   cursor: pointer;
   user-select: none;
+}
+
+.lp-custom-select-trigger > span:first-child {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .lp-custom-select-trigger.has-placeholder {
@@ -2573,11 +2619,11 @@ section[id] {
   border: 1px solid var(--line);
   border-radius: 8px;
   box-shadow: 0 10px 24px rgba(20, 26, 74, 0.12);
-  z-index: 50;
+  z-index: 1200;
   list-style: none;
   padding: 6px 0;
   margin: 0;
-  max-height: 240px;
+  max-height: 220px;
   overflow-y: auto;
 }
 
@@ -3057,8 +3103,8 @@ footer.lp-footer .wrap {
 }
 
 .career-engine-section .sec-head h2 {
-  font-size: clamp(1.6rem, 2.8vw, 2.45rem);
-  white-space: nowrap;
+  font-size: clamp(1.5rem, 2.8vw, 2.45rem);
+  white-space: normal;
 }
 
 .career-engine-highlight {
@@ -3715,14 +3761,45 @@ footer.lp-footer .wrap {
 }
 
 @media (max-width: 768px) {
+  .mobile-sticky-bar {
+    display: none;
+  }
+
+  .lp-page-wrapper {
+    padding-bottom: calc(74px + env(safe-area-inset-bottom, 0px));
+  }
+
   .lp-side-actions-dock {
+    top: auto;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    transform: none;
+    flex-direction: row;
+    align-items: stretch;
     gap: 8px;
+    padding: 8px 12px calc(8px + env(safe-area-inset-bottom, 0px));
+    background: rgba(255, 255, 255, 0.96);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-top: 1px solid var(--line);
+    box-shadow: 0 -4px 16px rgba(20, 26, 74, 0.08);
+    pointer-events: auto;
   }
 
   .lp-side-actions-dock .get-call-btn-trigger {
-    padding: 11px 7px !important;
+    flex: 1 1 0;
+    justify-content: center;
+    writing-mode: horizontal-tb !important;
+    text-orientation: initial !important;
+    padding: 10px 10px !important;
     font-size: 0.8rem !important;
-    border-radius: 10px 0 0 10px !important;
+    border-radius: 10px !important;
+    box-shadow: 0 4px 12px rgba(239, 83, 35, 0.25) !important;
+  }
+
+  .lp-side-actions-dock .get-call-btn-trigger:hover {
+    padding-left: 10px !important;
   }
 
   .lp-page-wrapper .hero {
@@ -3730,8 +3807,8 @@ footer.lp-footer .wrap {
   }
 
   .lp-page-wrapper h1 {
-    font-size: clamp(1.75rem, 6.5vw, 2.3rem);
-    line-height: 1.12;
+    font-size: clamp(1.6rem, 6vw, 2.3rem);
+    line-height: 1.14;
   }
 
   .lp-page-wrapper .lead {
@@ -3761,6 +3838,26 @@ footer.lp-footer .wrap {
 
   .lp-page-wrapper .lp-modal-backdrop {
     padding: 12px;
+  }
+
+  .lp-page-wrapper .lp-modal-header {
+    padding: 16px;
+  }
+
+  .lp-page-wrapper .lp-modal-body {
+    padding: 16px;
+    gap: 14px;
+  }
+
+  .lp-page-wrapper .lp-modal-footer {
+    padding: 14px 16px;
+    flex-wrap: wrap;
+  }
+
+  .lp-page-wrapper .lp-modal-btn-close,
+  .lp-page-wrapper .lp-modal-btn-register {
+    flex: 1 1 auto;
+    justify-content: center;
   }
 }
 
