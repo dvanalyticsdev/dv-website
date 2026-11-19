@@ -2,12 +2,45 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <!-- Google Tag Manager -->
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-NFB3LVLT');</script>
+    <script>
+      if (typeof window !== 'undefined' && window.location.hostname === 'www.dvanalyticsmds.com') {
+        window.location.replace(
+          'https://dvanalyticsmds.com' +
+            window.location.pathname +
+            window.location.search +
+            window.location.hash
+        );
+      }
+    </script>
+    <!-- Google Tag Manager (deferred for PageSpeed LCP/TBT optimization) -->
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+      (function () {
+        var loaded = false;
+        function loadGtm() {
+          if (loaded) return;
+          loaded = true;
+          var f = document.getElementsByTagName('script')[0],
+            j = document.createElement('script');
+          j.async = true;
+          j.src = 'https://www.googletagmanager.com/gtm.js?id=GTM-NFB3LVLT';
+          f.parentNode.insertBefore(j, f);
+        }
+        if (typeof window !== 'undefined') {
+          window.addEventListener('load', function () {
+            if ('requestIdleCallback' in window) {
+              window.requestIdleCallback(loadGtm, { timeout: 2500 });
+            } else {
+              setTimeout(loadGtm, 1200);
+            }
+          });
+          ['scroll', 'pointerdown', 'keydown', 'touchstart'].forEach(function (evt) {
+            window.addEventListener(evt, loadGtm, { once: true, passive: true });
+          });
+        }
+      })();
+    </script>
     <!-- End Google Tag Manager -->
     <!-- Favicon / Brand Tab Icon Configuration -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -20,16 +53,14 @@
     <meta name="theme-color" content="#1b2a60" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- Resource Hints for Page Speed & Core Web Vitals -->
-    <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin />
     <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
-    <link rel="preconnect" href="https://schema.org" crossorigin />
     <meta
       name="description"
       content="DV Analytics is the leading Data Science Institute in India, offers Data Science & Analytics, AI, ML, FDE and Generative AI courses with placement assistance."
     />
     <meta name="robots" content="index, follow" />
     <meta name="google-site-verification" content="-On92TrUA9oamrrzDhSeJIIU1u6N7ynhzljeUFU" />
-    <link rel="canonical" href="https://www.dvanalyticsmds.com/" />
+    <link rel="canonical" href="https://dvanalyticsmds.com/" />
     <meta property="og:site_name" content="DV Analytics" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Data Science Course with Placement | AI, ML & FDE Training" />
@@ -37,8 +68,8 @@
       property="og:description"
       content="DV Analytics is the leading Data Science Institute in India, offers Data Science & Analytics, AI, ML, FDE and Generative AI courses with placement assistance."
     />
-    <meta property="og:url" content="https://www.dvanalyticsmds.com/" />
-    <meta property="og:image" content="https://www.dvanalyticsmds.com/hero-mobile-bg.png" />
+    <meta property="og:url" content="https://dvanalyticsmds.com/" />
+    <meta property="og:image" content="https://dvanalyticsmds.com/hero-mobile-bg.png" />
     <meta property="og:image:alt" content="DV Analytics Data Science, AI, GenAI and Cybersecurity training" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Data Science Course with Placement | AI, ML & FDE Training" />
@@ -46,14 +77,15 @@
       name="twitter:description"
       content="DV Analytics is the leading Data Science Institute in India, offers Data Science & Analytics, AI, ML, FDE and Generative AI courses with placement assistance."
     />
-    <meta name="twitter:image" content="https://www.dvanalyticsmds.com/hero-mobile-bg.png" />
-    <script type="application/ld+json">
+    <meta name="twitter:image" content="https://dvanalyticsmds.com/hero-mobile-bg.png" />
+    <script type="application/ld+json" data-seo-json-ld="true">
       {
         "@context": "https://schema.org",
-        "@type": "EducationalOrganization",
+        "@type": "Organization",
+        "@id": "https://dvanalyticsmds.com/#organization",
         "name": "DV Analytics",
-        "url": "https://www.dvanalyticsmds.com/",
-        "logo": "https://www.dvanalyticsmds.com/logo.png",
+        "url": "https://dvanalyticsmds.com",
+        "logo": "https://dvanalyticsmds.com/logo.png",
         "email": "info@dvanalyticsmds.com",
         "telephone": "+91-8095881188"
       }

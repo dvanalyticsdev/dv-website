@@ -8,6 +8,119 @@ interface SeoLandingPageProps {
   onNavigate: (pageId: string) => void;
 }
 
+const renderSubitemIcon = (title = '', idx = 0) => {
+  const lower = title.toLowerCase();
+
+  if (lower.includes('python') || lower.includes('programming')) {
+    return (
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <polyline points="16 18 22 12 16 6" />
+        <polyline points="8 6 2 12 8 18" />
+      </svg>
+    );
+  }
+
+  if (lower.includes('sql') || lower.includes('database')) {
+    return (
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <ellipse cx="12" cy="5" rx="9" ry="3" />
+        <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3" />
+        <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5" />
+      </svg>
+    );
+  }
+
+  if (lower.includes('excel') || lower.includes('reporting') || lower.includes('sas')) {
+    return (
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+        <line x1="3" y1="9" x2="21" y2="9" />
+        <line x1="3" y1="15" x2="21" y2="15" />
+        <line x1="9" y1="9" x2="9" y2="21" />
+      </svg>
+    );
+  }
+
+  if (lower.includes('visual') || lower.includes('power bi') || lower.includes('tableau') || lower.includes('business intelligence')) {
+    return (
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <line x1="18" y1="20" x2="18" y2="10" />
+        <line x1="12" y1="20" x2="12" y2="4" />
+        <line x1="6" y1="20" x2="6" y2="14" />
+      </svg>
+    );
+  }
+
+  if (lower.includes('statistics') || lower.includes('analysis') || lower.includes('predictive')) {
+    return (
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+      </svg>
+    );
+  }
+
+  if (lower.includes('machine learning') || lower.includes('generative ai') || lower.includes('agentic') || lower.includes('ai-driven')) {
+    return (
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="4" y="4" width="16" height="16" rx="2" />
+        <rect x="9" y="9" width="6" height="6" />
+        <line x1="9" y1="1" x2="9" y2="4" />
+        <line x1="15" y1="1" x2="15" y2="4" />
+        <line x1="9" y1="20" x2="9" y2="23" />
+        <line x1="15" y1="20" x2="15" y2="23" />
+        <line x1="20" y1="9" x2="23" y2="9" />
+        <line x1="20" y1="14" x2="23" y2="14" />
+        <line x1="1" y1="9" x2="4" y2="9" />
+        <line x1="1" y1="14" x2="4" y2="14" />
+      </svg>
+    );
+  }
+
+  if (lower.includes('expert') || lower.includes('trainer')) {
+    return (
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
+        <path d="M6 12v5c3 3 9 3 12 0v-5" />
+      </svg>
+    );
+  }
+
+  if (lower.includes('project') || lower.includes('practical') || lower.includes('hands-on')) {
+    return (
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="2" y="7" width="20" height="14" rx="2" ry="2" />
+        <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
+      </svg>
+    );
+  }
+
+  if (lower.includes('lms') || lower.includes('learning management') || lower.includes('flexible')) {
+    return (
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+        <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+      </svg>
+    );
+  }
+
+  if (lower.includes('career') || lower.includes('placement') || idx === 3) {
+    return (
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="12" cy="8" r="6" />
+        <path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11" />
+      </svg>
+    );
+  }
+
+  return (
+    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <polygon points="12 2 2 7 12 12 22 7 12 2" />
+      <polyline points="2 17 12 22 22 17" />
+      <polyline points="2 12 12 17 22 12" />
+    </svg>
+  );
+};
+
 export const SeoLandingPage: React.FC<SeoLandingPageProps> = ({ pageId, onNavigate }) => {
   const page = seoLandingPageById[pageId];
 
@@ -72,23 +185,12 @@ export const SeoLandingPage: React.FC<SeoLandingPageProps> = ({ pageId, onNaviga
         </div>
       </section>
 
-      <section className="seo-landing-section container">
-        <div className="seo-landing-content-grid">
-          {page.sections.map((section) => (
-            <article className="seo-landing-info-card" key={section.title}>
-              <h2>{section.title}</h2>
-              <p>{section.body}</p>
-            </article>
-          ))}
-        </div>
-      </section>
-
       {page.richSections && page.richSections.length > 0 && (
         <section className="seo-landing-section container seo-landing-rich-container">
           {page.richSections.map((sec, idx) => (
             <article className="seo-landing-rich-card" key={idx}>
               <h2 className="seo-landing-rich-heading">{sec.heading}</h2>
-              {sec.intro && <p className="seo-landing-rich-intro">{sec.intro}</p>}
+              {!sec.image && sec.intro && <p className="seo-landing-rich-intro">{sec.intro}</p>}
 
               {sec.image ? (
                 <div
@@ -97,15 +199,22 @@ export const SeoLandingPage: React.FC<SeoLandingPageProps> = ({ pageId, onNaviga
                   }`}
                 >
                   <div className="seo-landing-media-content">
+                    {sec.intro && <p className="seo-landing-rich-intro">{sec.intro}</p>}
                     {sec.paragraphs &&
                       sec.paragraphs.map((p, pIdx) => <p key={pIdx}>{p}</p>)}
-                    {sec.subsections &&
-                      sec.subsections.map((sub, sIdx) => (
-                        <div className="seo-landing-subitem" key={sIdx}>
-                          {sub.title && <h3>{sub.title}</h3>}
-                          <p>{sub.body}</p>
-                        </div>
-                      ))}
+                    {sec.subsections && (
+                      <div className="seo-landing-subsections-grid">
+                        {sec.subsections.map((sub, sIdx) => (
+                          <div className="seo-landing-subitem" key={sIdx}>
+                            <div className="seo-landing-subitem-icon" aria-hidden="true">
+                              {renderSubitemIcon(sub.title, sIdx)}
+                            </div>
+                            {sub.title && <h3>{sub.title}</h3>}
+                            <p>{sub.body}</p>
+                          </div>
+                        ))}
+                      </div>
+                    )}
                     {sec.bullets && (
                       <ul className="seo-landing-rich-bullets">
                         {sec.bullets.map((b, bIdx) => (
@@ -129,6 +238,9 @@ export const SeoLandingPage: React.FC<SeoLandingPageProps> = ({ pageId, onNaviga
                     <div className="seo-landing-subsections-grid">
                       {sec.subsections.map((sub, sIdx) => (
                         <div className="seo-landing-subitem" key={sIdx}>
+                          <div className="seo-landing-subitem-icon" aria-hidden="true">
+                            {renderSubitemIcon(sub.title, sIdx)}
+                          </div>
                           {sub.title && <h3>{sub.title}</h3>}
                           <p>{sub.body}</p>
                         </div>

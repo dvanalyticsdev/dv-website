@@ -7,4 +7,4 @@ Disallow: /admin
 Disallow: /admin/
 Disallow: /wp-admin/
 
-Sitemap: https://www.dvanalyticsmds.com/sitemap.xml
+Sitemap: https://dvanalyticsmds.com/sitemap.xml

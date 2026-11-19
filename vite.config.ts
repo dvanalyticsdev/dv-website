@@ -12,8 +12,16 @@ export default defineConfig({
             return 'vendor';
           }
 
-          if (id.includes('/src/data/') || id.includes('\\src\\data\\')) {
-            return 'site-data';
+          if (id.includes('coursesData') || id.includes('courseExtraContent')) {
+            return 'course-detail-data';
+          }
+
+          if (id.includes('blogsData')) {
+            return 'blogs-data';
+          }
+
+          if (id.includes('seoLandingPages')) {
+            return 'seo-landing-data';
           }
         },
       },

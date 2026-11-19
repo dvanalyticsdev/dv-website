@@ -124,6 +124,97 @@ interface CourseDetailPageProps {
   onDownloadBrochure: () => void;
 }
 
+const renderWhyChooseCardIcon = (title: string, idx: number) => {
+  const lower = title.toLowerCase();
+  if (lower.includes('curriculum') || lower.includes('stack') || lower.includes('beginner')) {
+    return (
+      <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <polygon points="12 2 2 7 12 12 22 7 12 2" />
+        <polyline points="2 17 12 22 22 17" />
+        <polyline points="2 12 12 17 22 12" />
+      </svg>
+    );
+  }
+  if (lower.includes('coding') || lower.includes('practical') || lower.includes('full-stack')) {
+    return (
+      <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <polyline points="16 18 22 12 16 6" />
+        <polyline points="8 6 2 12 8 18" />
+      </svg>
+    );
+  }
+  if (lower.includes('project') || lower.includes('domain') || lower.includes('capstone')) {
+    return (
+      <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="2" y="7" width="20" height="14" rx="2" ry="2" />
+        <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
+      </svg>
+    );
+  }
+  if (lower.includes('dashboard') || lower.includes('bi') || lower.includes('visual')) {
+    return (
+      <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <line x1="18" y1="20" x2="18" y2="10" />
+        <line x1="12" y1="20" x2="12" y2="4" />
+        <line x1="6" y1="20" x2="6" y2="14" />
+      </svg>
+    );
+  }
+  if (lower.includes('gen ai') || lower.includes('generative') || lower.includes('agentic') || lower.includes('modern ai')) {
+    return (
+      <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="4" y="4" width="16" height="16" rx="2" />
+        <rect x="9" y="9" width="6" height="6" />
+        <line x1="9" y1="1" x2="9" y2="4" />
+        <line x1="15" y1="1" x2="15" y2="4" />
+        <line x1="9" y1="20" x2="9" y2="23" />
+        <line x1="15" y1="20" x2="15" y2="23" />
+        <line x1="20" y1="9" x2="23" y2="9" />
+        <line x1="20" y1="14" x2="23" y2="14" />
+        <line x1="1" y1="9" x2="4" y2="9" />
+        <line x1="1" y1="14" x2="4" y2="14" />
+      </svg>
+    );
+  }
+  if (lower.includes('cloud') || lower.includes('mlops') || lower.includes('deployment')) {
+    return (
+      <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z" />
+      </svg>
+    );
+  }
+  if (lower.includes('mentor') || lower.includes('expert') || lower.includes('consultant')) {
+    return (
+      <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
+        <path d="M6 12v5c3 3 9 3 12 0v-5" />
+      </svg>
+    );
+  }
+  if (lower.includes('lms') || lower.includes('recorded') || lower.includes('flexible')) {
+    return (
+      <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+        <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+      </svg>
+    );
+  }
+  if (lower.includes('placement') || lower.includes('career') || idx === 7) {
+    return (
+      <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="12" cy="8" r="6" />
+        <path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11" />
+      </svg>
+    );
+  }
+  return (
+    <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+      <polyline points="22 4 12 14.01 9 11.01" />
+    </svg>
+  );
+};
+
 const normalizeProjectHeading = (domainLabel: string) => {
   const cleanedLabel = domainLabel
     .replace(/^tier\s*\d+\s*capstone\s*(project\s*\d+)?\s*[-—:]\s*/i, '')
@@ -490,6 +581,12 @@ export const CourseDetailPage: React.FC<CourseDetailPageProps> = ({
                   onClick={() => toggleProjectDomain(idx)}
                   aria-expanded={isExpanded}
                 >
+                  <span className="domain-header-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <rect x="2" y="7" width="20" height="14" rx="2" ry="2" />
+                      <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
+                    </svg>
+                  </span>
                   <h3 className="domain-title">{normalizeProjectHeading(domain.domain)}</h3>
                   {isMobileView && (
                     <span
@@ -615,11 +712,8 @@ export const CourseDetailPage: React.FC<CourseDetailPageProps> = ({
             <div className="course-why-choose-cards-grid">
               {whyChoose.cards.map((card, cIdx) => (
                 <div key={cIdx} className="why-choose-card">
-                  <div className="why-choose-card-icon" style={{ color: '#0284c7', marginBottom: '0.65rem' }}>
-                    <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
-                      <polyline points="22 4 12 14.01 9 11.01" />
-                    </svg>
+                  <div className="why-choose-card-icon">
+                    {renderWhyChooseCardIcon(card.title, cIdx)}
                   </div>
                   <h4 className="why-choose-card-title">{card.title}</h4>
                   <p className="why-choose-card-desc">{card.description}</p>
@@ -686,7 +780,15 @@ export const CourseDetailPage: React.FC<CourseDetailPageProps> = ({
                   onClick={() => toggleCareerGroup(idx)}
                   aria-expanded={isExpanded}
                 >
-                  <span className="career-level">{career.level}</span>
+                  <span className="career-level-wrap">
+                    <span className="career-level-icon" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                        <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
+                        <polyline points="17 6 23 6 23 12" />
+                      </svg>
+                    </span>
+                    <span className="career-level">{career.level}</span>
+                  </span>
                   {isMobileView && (
                     <span
                       className={`mobile-collapsible-icon ${isExpanded ? 'is-open' : ''}`}
@@ -876,7 +978,7 @@ export const CourseDetailPage: React.FC<CourseDetailPageProps> = ({
         <div className="cta-box container text-center">
           <h2>
             Ready to Launch Your Career in{' '}
-            {course.title.match(/\(([^)]+)\)$/)?.[1] || course.id.toUpperCase()}?
+            {(course.title.match(/\(([^)]+)\)$/)?.[1] || course.id.toUpperCase()).trim()}?
           </h2>
           <p>
             {hasPlacementSupport

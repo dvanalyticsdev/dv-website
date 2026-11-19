@@ -1,10 +1,9 @@
 import { blogIdBySlug, blogMeta, blogSlugById, type BlogMeta } from '../data/blogMeta.ts';
-import { courseFaqsData, homeFaqsData } from '../data/courseExtraContent.ts';
 import { courseCatalog } from '../data/courseMeta.ts';
 import { seoLandingPages } from '../data/seoLandingPages.ts';
 import { getPathFromPage, serviceSlugById } from './routes.ts';
 
-export const siteUrl = 'https://www.dvanalyticsmds.com';
+export const siteUrl = 'https://dvanalyticsmds.com';
 export const siteName = 'DV Analytics';
 export const defaultSocialImage = '/logo.png';
 
@@ -287,7 +286,9 @@ const setOrCreateLink = (rel: string, href: string) => {
 };
 
 const replaceJsonLd = (schema: unknown[]) => {
-  document.head.querySelectorAll('script[data-seo-json-ld="true"]').forEach((element) => element.remove());
+  document.head
+    .querySelectorAll('script[type="application/ld+json"], script[data-seo-json-ld="true"]')
+    .forEach((element) => element.remove());
   schema.forEach((item) => {
     const script = document.createElement('script');
     script.type = 'application/ld+json';
@@ -297,62 +298,10 @@ const replaceJsonLd = (schema: unknown[]) => {
   });
 };
 
-const localBusinessSchemas = [
-  {
-    '@context': 'https://schema.org',
-    '@type': 'EducationalOrganization',
-    '@id': `${siteUrl}/#organization`,
-    name: 'DV Analytics - Data Science, Data Analyst & AI Training Institute',
-    url: siteUrl,
-    logo: absoluteUrl('/logo.png'),
-    image: absoluteUrl('/hero-mobile-bg.png'),
-    telephone: '+91-8095881188',
-    email: 'info@dvanalyticsmds.com',
-    priceRange: '₹₹',
-    address: {
-      '@type': 'PostalAddress',
-      addressLocality: 'Bangalore',
-      addressRegion: 'Karnataka',
-      addressCountry: 'IN',
-    },
-    geo: {
-      '@type': 'GeoCoordinates',
-      latitude: '12.9716',
-      longitude: '77.5946',
-    },
-    areaServed: ['Bangalore', 'Karnataka', 'India'],
-    knowsAbout: ['Data Science', 'Data Analytics', 'AI', 'Generative AI', 'Agentic AI', 'Forward Deployment Engineering'],
-  },
-  {
-    '@context': 'https://schema.org',
-    '@type': 'EducationalOrganization',
-    '@id': `${siteUrl}/#bhubaneswar`,
-    name: 'DV Analytics - Data Science & AI Training Institute Bhubaneswar',
-    url: `${siteUrl}/data-analytics-course-bhubaneswar/`,
-    logo: absoluteUrl('/logo.png'),
-    image: absoluteUrl('/office-bg/bhubneshwar.png'),
-    telephone: '+91-8095881188',
-    email: 'info@dvanalyticsmds.com',
-    priceRange: '₹₹',
-    address: {
-      '@type': 'PostalAddress',
-      addressLocality: 'Bhubaneswar',
-      addressRegion: 'Odisha',
-      addressCountry: 'IN',
-    },
-    geo: {
-      '@type': 'GeoCoordinates',
-      latitude: '20.2961',
-      longitude: '85.8245',
-    },
-    areaServed: ['Bhubaneswar', 'Odisha', 'India'],
-    knowsAbout: ['Data Science', 'Data Analytics', 'AI', 'Generative AI', 'Cybersecurity'],
-  },
-];
-
 const organizationSchema = {
   '@context': 'https://schema.org',
-  '@type': 'EducationalOrganization',
+  '@type': 'Organization',
+  '@id': `${siteUrl}/#organization`,
   name: siteName,
   url: siteUrl,
   logo: absoluteUrl('/logo.png'),
@@ -367,8 +316,8 @@ const organizationSchema = {
   areaServed: ['India', 'United Arab Emirates', 'Global'],
   knowsAbout: ['Data Science', 'Data Analytics', 'Generative AI', 'Agentic AI', 'Cybersecurity', 'AI Engineering'],
   address: [
-    { '@type': 'PostalAddress', addressLocality: 'Bangalore', addressCountry: 'IN' },
-    { '@type': 'PostalAddress', addressLocality: 'Bhubaneswar', addressCountry: 'IN' },
+    { '@type': 'PostalAddress', addressLocality: 'Bangalore', addressRegion: 'Karnataka', addressCountry: 'IN' },
+    { '@type': 'PostalAddress', addressLocality: 'Bhubaneswar', addressRegion: 'Odisha', addressCountry: 'IN' },
     { '@type': 'PostalAddress', addressLocality: 'Dubai', addressCountry: 'AE' },
   ],
 };
@@ -376,9 +325,33 @@ const organizationSchema = {
 const websiteSchema = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
+  '@id': `${siteUrl}/#website`,
   name: siteName,
   url: siteUrl,
+  publisher: {
+    '@id': `${siteUrl}/#organization`,
+  },
 };
+
+const webPageSchema = (
+  name: string,
+  description: string,
+  path: string,
+  pageType: 'WebPage' | 'CollectionPage' | 'AboutPage' | 'ContactPage' = 'WebPage',
+  extra: Record<string, unknown> = {}
+) => ({
+  '@context': 'https://schema.org',
+  '@type': pageType,
+  '@id': `${absoluteUrl(path)}#webpage`,
+  name,
+  description: truncate(description, 300),
+  url: absoluteUrl(path),
+  inLanguage: 'en',
+  isPartOf: {
+    '@id': `${siteUrl}/#website`,
+  },
+  ...extra,
+});
 
 const breadcrumbSchema = (items: Array<{ name: string; path: string }>) => ({
   '@context': 'https://schema.org',
@@ -389,67 +362,6 @@ const breadcrumbSchema = (items: Array<{ name: string; path: string }>) => ({
     name: item.name,
     item: absoluteUrl(item.path),
   })),
-});
-
-const faqSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'FAQPage',
-  mainEntity: [
-    {
-      '@type': 'Question',
-      name: 'Who can join these programs?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'Graduates, freshers, working professionals, career-gap candidates, and professionals transitioning into Data Science, AI, Cybersecurity, or Digital Technology careers can join.',
-      },
-    },
-    {
-      '@type': 'Question',
-      name: 'Do I need a programming background?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'No. The programs start from fundamentals and gradually move to advanced concepts such as SQL, Python, AI, analytics, and cloud deployment.',
-      },
-    },
-    {
-      '@type': 'Question',
-      name: 'Will I work on industry projects?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'Yes. Students work on real-world projects across domains such as banking, telecom, retail, e-commerce, healthcare, insurance, and manufacturing.',
-      },
-    },
-  ],
-};
-
-const courseSchema = (course: { name: string; title: string; description: string; duration: string; topics: string[] }, path: string) => ({
-  '@context': 'https://schema.org',
-  '@type': 'Course',
-  name: course.name,
-  description: truncate(course.description, 300),
-  url: absoluteUrl(path),
-  inLanguage: 'en',
-  about: course.topics,
-  teaches: course.topics,
-  educationalCredentialAwarded: 'DV Analytics Industry Certification',
-  provider: {
-    '@type': 'EducationalOrganization',
-    '@id': `${siteUrl}/#organization`,
-    name: siteName,
-    url: siteUrl,
-  },
-  offers: {
-    '@type': 'Offer',
-    category: 'Education',
-    priceCurrency: 'INR',
-    availability: 'https://schema.org/InStock',
-    url: absoluteUrl(path),
-  },
-  hasCourseInstance: {
-    '@type': 'CourseInstance',
-    courseMode: 'Online and offline instructor-led training',
-    courseWorkload: course.duration,
-  },
 });
 
 const articleSchema = (blog: BlogMeta, path: string) => ({
@@ -466,82 +378,87 @@ const articleSchema = (blog: BlogMeta, path: string) => ({
   },
   publisher: {
     '@type': 'Organization',
+    '@id': `${siteUrl}/#organization`,
     name: siteName,
     logo: {
       '@type': 'ImageObject',
       url: absoluteUrl('/logo.png'),
     },
   },
-  mainEntityOfPage: absoluteUrl(path),
-});
-
-const landingPageSchema = (page: (typeof seoLandingPages)[number], path: string) => ({
-  '@context': 'https://schema.org',
-  '@type': 'WebPage',
-  name: page.heading,
-  description: page.description,
-  url: absoluteUrl(path),
-  primaryImageOfPage: {
-    '@type': 'ImageObject',
-    url: absoluteUrl(page.image),
+  mainEntityOfPage: {
+    '@type': 'WebPage',
+    '@id': `${absoluteUrl(path)}#webpage`,
   },
-  about: page.bullets,
 });
 
-const landingFaqSchema = (page: (typeof seoLandingPages)[number]) => ({
-  '@context': 'https://schema.org',
-  '@type': 'FAQPage',
-  mainEntity: page.faqs.map((faq) => ({
-    '@type': 'Question',
-    name: faq.question,
-    acceptedAnswer: {
-      '@type': 'Answer',
-      text: faq.answer,
-    },
-  })),
-});
+export interface VerifiedProductOffer {
+  name: string;
+  description: string;
+  path: string;
+  image?: string;
+  price: string | number;
+  priceCurrency?: string;
+  availability?: string;
+}
 
-const itemListSchema = (name: string, items: Array<{ name: string; path: string }>) => ({
+export const buildProductOfferSchema = (offerData: VerifiedProductOffer) => ({
   '@context': 'https://schema.org',
-  '@type': 'ItemList',
-  name,
-  itemListElement: items.map((item, index) => ({
-    '@type': 'ListItem',
-    position: index + 1,
-    name: item.name,
-    url: absoluteUrl(item.path),
-  })),
+  '@type': 'Product',
+  name: offerData.name,
+  description: truncate(offerData.description, 300),
+  image: absoluteUrl(offerData.image ?? defaultSocialImage),
+  brand: {
+    '@type': 'Organization',
+    '@id': `${siteUrl}/#organization`,
+    name: siteName,
+  },
+  offers: {
+    '@type': 'Offer',
+    url: absoluteUrl(offerData.path),
+    priceCurrency: offerData.priceCurrency ?? 'INR',
+    price: String(offerData.price),
+    availability: offerData.availability ?? 'https://schema.org/InStock',
+  },
 });
 
 export const getSeoForPage = (pageId: string) => {
   const path = routePathByPageId(pageId);
-  const schema: unknown[] = [organizationSchema, websiteSchema, ...localBusinessSchemas];
 
+  // 1. Homepage -> Organization + WebSite + WebPage
+  if (pageId === 'home') {
+    const homeBase = basePages.home;
+    const schema: unknown[] = [
+      organizationSchema,
+      websiteSchema,
+      webPageSchema(homeBase.title, homeBase.description, path, 'WebPage'),
+    ];
+
+    return {
+      title: homeBase.title,
+      description: homeBase.description,
+      canonical: absoluteUrl(path),
+      image: absoluteUrl(homeBase.image ?? defaultSocialImage),
+      noindex: false,
+      schema,
+    };
+  }
+
+  // 2. Course pages -> CollectionPage + BreadcrumbList
   if (pageId.startsWith('course-')) {
     const courseId = pageId.replace('course-', '');
     const course = courseSeoById[courseId];
     if (course) {
-      schema.push(courseSchema(course, path));
-      schema.push(breadcrumbSchema([
-        { name: 'Home', path: '/' },
-        { name: 'Courses', path: '/courses/' },
-        { name: course.name, path },
-      ]));
-      const faqsObj = courseFaqsData[courseId];
-      if (faqsObj && faqsObj.items.length > 0) {
-        schema.push({
-          '@context': 'https://schema.org',
-          '@type': 'FAQPage',
-          mainEntity: faqsObj.items.map((faq) => ({
-            '@type': 'Question',
-            name: faq.question,
-            acceptedAnswer: {
-              '@type': 'Answer',
-              text: faq.answer,
-            },
-          })),
-        });
-      }
+      const schema: unknown[] = [
+        webPageSchema(course.title, course.description, path, 'CollectionPage', {
+          about: course.topics,
+        }),
+        breadcrumbSchema([
+          { name: 'Home', path: '/' },
+          { name: 'Courses', path: '/courses/' },
+          { name: course.name, path },
+        ]),
+      ];
+
       return {
         title: course.title,
         description: truncate(course.description),
@@ -553,7 +470,82 @@ export const getSeoForPage = (pageId: string) => {
     }
   }
 
-  if (pageId.startsWith('enroll')) {
+  if (pageId === 'courses') {
+    const coursesBase = basePages.courses;
+    const schema: unknown[] = [
+      webPageSchema(coursesBase.title, coursesBase.description, path, 'CollectionPage', {
+        hasPart: courseCatalog.map((course) => ({
+          '@type': 'WebPage',
+          name: course.label,
+          url: absoluteUrl(getPathFromPage(`course-${course.id}`)),
+        })),
+      }),
+      breadcrumbSchema([
+        { name: 'Home', path: '/' },
+        { name: 'Courses', path },
+      ]),
+    ];
+
+    return {
+      title: coursesBase.title,
+      description: coursesBase.description,
+      canonical: absoluteUrl(path),
+      image: absoluteUrl(coursesBase.image ?? defaultSocialImage),
+      noindex: false,
+      schema,
+    };
+  }
+
+  // 3. Blog posts -> Article + WebPage + BreadcrumbList
+  if (pageId.startsWith('blog-')) {
+    const value = pageId.replace('blog-', '');
+    const blogId = blogIdBySlug[value] ?? value;
+    const blog = blogMeta.find((item) => item.id === blogId);
+    if (blog) {
+      const blogPath = getBlogPath(blog);
+      const formattedTitle = formatSeoTitle(blog.title, 'DV Analytics Journal');
+      const schema: unknown[] = [
+        articleSchema(blog, blogPath),
+        webPageSchema(formattedTitle, blog.excerpt, blogPath, 'WebPage'),
+        breadcrumbSchema([
+          { name: 'Home', path: '/' },
+          { name: 'Journal', path: '/journal/' },
+          { name: blog.title, path: blogPath },
+        ]),
+      ];
+      return {
+        title: formattedTitle,
+        description: truncate(blog.excerpt),
+        canonical: absoluteUrl(blogPath),
+        image: absoluteUrl(blog.image),
+        noindex: false,
+        schema,
+      };
+    }
+  }
+
+  // 4. About Us -> AboutPage + BreadcrumbList
+  if (pageId === 'about') {
+    const aboutBase = basePages.about;
+    const schema: unknown[] = [
+      webPageSchema(aboutBase.title, aboutBase.description, path, 'AboutPage'),
+      breadcrumbSchema([
+        { name: 'Home', path: '/' },
+        { name: 'Who We Are', path },
+      ]),
+    ];
+    return {
+      title: aboutBase.title,
+      description: aboutBase.description,
+      canonical: absoluteUrl(path),
+      image: absoluteUrl(aboutBase.image ?? defaultSocialImage),
+      noindex: false,
+      schema,
+    };
+  }
+
+  // 5. Contact Us / Enrollment -> ContactPage + BreadcrumbList
+  if (pageId.startsWith('enroll') || pageId === 'contact') {
     const courseId = pageId.startsWith('enroll-') ? pageId.replace('enroll-', '') : '';
     const course = courseId ? courseSeoById[courseId] : undefined;
     const courseShortTitle = courseId ? (courseTitleById[courseId] ?? course?.name ?? '') : '';
@@ -564,11 +556,14 @@ export const getSeoForPage = (pageId: string) => {
       ? `Enroll in ${course.name} at DV Analytics. Reserve your seat for upcoming batches with 1-on-1 mentorship and full placement support.`
       : (basePages['enroll']?.description ?? 'Start your admission inquiry for DV Analytics Data Science, AI, GenAI, Cybersecurity, and analytics career programs.');
 
-    schema.push(breadcrumbSchema([
-      { name: 'Home', path: '/' },
-      ...(course && courseId ? [{ name: 'Courses', path: '/courses/' }, { name: course.name, path: getPathFromPage(`course-${courseId}`) }] : []),
-      { name: 'Enrollment', path },
-    ]));
+    const schema: unknown[] = [
+      webPageSchema(enrollTitle, enrollDesc, path, 'ContactPage'),
+      breadcrumbSchema([
+        { name: 'Home', path: '/' },
+        ...(course && courseId ? [{ name: 'Courses', path: '/courses/' }, { name: course.name, path: getPathFromPage(`course-${courseId}`) }] : []),
+        { name: 'Contact & Enrollment', path },
+      ]),
+    ];
 
     return {
       title: enrollTitle,
@@ -580,16 +575,23 @@ export const getSeoForPage = (pageId: string) => {
     };
   }
 
+  // 6. Services detail pages -> WebPage + BreadcrumbList
   if (pageId.startsWith('service-')) {
     const title = serviceTitles[pageId] ?? 'Enterprise AI Service';
-    schema.push(breadcrumbSchema([
-      { name: 'Home', path: '/' },
-      { name: 'Services', path: '/services' },
-      { name: title, path },
-    ]));
+    const description = truncate(
+      `${title} from DV Analytics for enterprise AI, analytics, consulting, training, and talent transformation programs.`
+    );
+    const schema: unknown[] = [
+      webPageSchema(`${title} | DV Analytics`, description, path, 'WebPage'),
+      breadcrumbSchema([
+        { name: 'Home', path: '/' },
+        { name: 'Services', path: '/services/' },
+        { name: title, path },
+      ]),
+    ];
     return {
       title: `${title} | DV Analytics`,
-      description: truncate(`${title} from DV Analytics for enterprise AI, analytics, consulting, training, and talent transformation programs.`),
+      description,
       canonical: absoluteUrl(path),
       image: absoluteUrl('/services-hero-bg.jpg'),
       noindex: false,
@@ -597,71 +599,23 @@ export const getSeoForPage = (pageId: string) => {
     };
   }
 
-  if (pageId.startsWith('blog-')) {
-    const value = pageId.replace('blog-', '');
-    const blogId = blogIdBySlug[value] ?? value;
-    const blog = blogMeta.find((item) => item.id === blogId);
-    if (blog) {
-      const blogPath = getBlogPath(blog);
-      schema.push(articleSchema(blog, blogPath));
-      schema.push(breadcrumbSchema([
-        { name: 'Home', path: '/' },
-        { name: 'Journal', path: '/journal' },
-        { name: blog.title, path: blogPath },
-      ]));
-      return {
-        title: formatSeoTitle(blog.title, 'DV Analytics Journal'),
-        description: truncate(blog.excerpt),
-        canonical: absoluteUrl(blogPath),
-        image: absoluteUrl(blog.image),
-        noindex: false,
-        schema,
-      };
-    }
-  }
-
-  if (pageId === 'courses') {
-    schema.push(itemListSchema('DV Analytics Courses', courseCatalog.map((course) => ({
-      name: course.label,
-      path: getPathFromPage(`course-${course.id}`),
-    }))));
-  }
-
-  if (pageId === 'blogs') {
-    schema.push(itemListSchema('DV Analytics Journal Articles', blogMeta.map((blog) => ({
-      name: blog.title,
-      path: getBlogPath(blog),
-    }))));
-  }
-
-  if (pageId === 'faqs') {
-    schema.push(faqSchema);
-  }
-
-  if (pageId === 'home') {
-    schema.push({
-      '@context': 'https://schema.org',
-      '@type': 'FAQPage',
-      mainEntity: homeFaqsData.map((faq) => ({
-        '@type': 'Question',
-        name: faq.question,
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: faq.answer,
-        },
-      })),
-    });
-  }
-
+  // 7. SEO & Location landing pages -> WebPage + BreadcrumbList
   if (pageId.startsWith('lp-')) {
     const landingPage = seoLandingPages.find((page) => page.id === pageId);
     if (landingPage) {
-      schema.push(landingPageSchema(landingPage, path));
-      schema.push(landingFaqSchema(landingPage));
-      schema.push(breadcrumbSchema([
-        { name: 'Home', path: '/' },
-        { name: landingPage.heading, path },
-      ]));
+      const schema: unknown[] = [
+        webPageSchema(landingPage.title, landingPage.description, path, 'WebPage', {
+          primaryImageOfPage: {
+            '@type': 'ImageObject',
+            url: absoluteUrl(landingPage.image),
+          },
+          about: landingPage.bullets,
+        }),
+        breadcrumbSchema([
+          { name: 'Home', path: '/' },
+          { name: landingPage.heading, path },
+        ]),
+      ];
       return {
         title: landingPage.title,
         description: truncate(landingPage.description),
@@ -673,13 +627,16 @@ export const getSeoForPage = (pageId: string) => {
     }
   }
 
+  // 8. Other landing pages -> WebPage + BreadcrumbList
   const base = basePages[pageId] ?? basePages['not-found'];
-  if (['courses', 'services', 'about', 'alumni', 'blogs', 'faqs', 'upcoming-batches', 'lp-apids', 'lp-apida', 'lp-fde'].includes(pageId)) {
-    schema.push(breadcrumbSchema([
+  const cleanCrumbName = base.title.replace(` | ${siteName}`, '').replace(' | DV Analytics', '');
+  const schema: unknown[] = [
+    webPageSchema(base.title, base.description, path, 'WebPage'),
+    breadcrumbSchema([
       { name: 'Home', path: '/' },
-      { name: base.title.replace(` | ${siteName}`, '').replace(' | DV Analytics', ''), path },
-    ]));
-  }
+      { name: cleanCrumbName, path },
+    ]),
+  ];
 
   return {
     title: base.title,

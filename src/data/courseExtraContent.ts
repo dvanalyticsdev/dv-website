@@ -132,12 +132,103 @@ export const courseCustomHeadings: Record<string, {
   },
   apids: {
     overviewHeading: 'Program Overview: Advanced Industrial Data Science and AI Training',
+    whoShouldJoinHeading: 'Who Can Join the Industrial Data Science & AI (APIDS) Program?',
+    whoShouldJoinIntro:
+      'The APIDS program is tailored for fresh graduates, postgraduates, career switchers, and working professionals who want end-to-end expertise in Data Science, Machine Learning, Generative AI, and Cloud AI Deployment.',
+    modulesHeading: 'Industrial Data Science & AI Deployment Modules',
     careersHeading: 'Career Opportunities After a Data Science and AI Course',
     outcomesHeading: 'Industrial Data Science Program Outcome',
+  },
+  apida: {
+    overviewHeading: 'Program Overview: Advance Industrial Data Analytics, Gen AI & Agentic AI Training',
+    whoShouldJoinHeading: 'Who Can Join the Industrial Data Analytics & AI (APIDA) Program?',
+    whoShouldJoinIntro:
+      'The APIDA program is designed for fresh graduates, students, and working professionals from both technical and non-technical backgrounds who want to build an industry-ready career in Data Analytics, Business Intelligence, and Generative AI.',
+    modulesHeading: 'Industrial Data Analytics with Gen AI & Agentic AI Modules',
+    careersHeading: 'Career Opportunities After Completing the APIDA Course',
+    outcomesHeading: 'Key Learning Outcomes of the APIDA Program',
   },
 };
 
 export const courseWhyChooseData: Record<string, CourseWhyChooseSection> = {
+  apids: {
+    heading: 'Why Choose DV Analytics for Industrial Data Science & AI Training?',
+    intro:
+      'At DV Analytics, the Advanced Program in Industrial Data Science with AI Deployment (APIDS) bridges the gap between academic theory and enterprise production. You learn from practicing data scientists and AI architects while building real-world solutions across BFSI, healthcare, retail, and telecom.',
+    cards: [
+      {
+        title: 'End-to-End Data Science & AI Stack',
+        description: 'Master SQL, Python, SAS, Power BI, Tableau, Machine Learning, Deep Learning, NLP, Generative AI, Agentic AI, and MLOps.',
+      },
+      {
+        title: 'Hands-On Practical Coding',
+        description: 'Build strong programming and analytical fluency through daily live coding labs, case studies, and guided assignments.',
+      },
+      {
+        title: 'Enterprise Capstone Projects',
+        description: 'Deliver production-grade data science and AI projects across banking, healthcare, retail, e-commerce, and telecom domains.',
+      },
+      {
+        title: 'Generative AI & Agentic AI Workflows',
+        description: 'Work with LLMs, Prompt Engineering, RAG, LangChain, vector databases, and autonomous multi-agent systems.',
+      },
+      {
+        title: 'Cloud Deployment & MLOps',
+        description: 'Learn to containerize, deploy, monitor, and scale AI models in production using AWS, Azure, Docker, and CI/CD pipelines.',
+      },
+      {
+        title: 'Mentorship by Industry Experts',
+        description: 'Learn directly from senior data scientists and AI consultants with 15+ years of real-world enterprise delivery experience.',
+      },
+      {
+        title: '24/7 LMS & Recorded Sessions',
+        description: 'Access lifetime learning resources, code repositories, interview question banks, and recorded live classes at your own pace.',
+      },
+      {
+        title: 'Dedicated Placement Assistance',
+        description: 'Receive 1-on-1 resume building, GitHub portfolio optimization, mock technical interviews, and direct corporate hiring referrals.',
+      },
+    ],
+  },
+  apida: {
+    heading: 'Why Choose DV Analytics for Industrial Data Analytics & Gen AI Training?',
+    intro:
+      'Choosing the right Data Analytics training institute is essential for launching a high-growth career. The Advance Program in Industrial Data Analytics with Gen AI & Agentic AI (APIDA) at DV Analytics combines foundational business analytics with modern AI-powered automation and practical project delivery.',
+    cards: [
+      {
+        title: 'Industrial & AI-Driven Curriculum',
+        description: 'Master Advanced Excel with AI, SQL, Python, SAS, Power BI, Tableau, Statistics, Predictive Modeling, and Generative AI & Agentic AI.',
+      },
+      {
+        title: 'Beginner-Friendly Step-by-Step Path',
+        description: 'Designed for both technical and non-technical learners—start from data fundamentals and progress smoothly to advanced AI analytics.',
+      },
+      {
+        title: 'Executive BI & Storytelling Dashboards',
+        description: 'Design interactive KPI scorecards, DAX models, and automated visual dashboards in Power BI and Tableau for business leaders.',
+      },
+      {
+        title: 'Real-World Domain Projects',
+        description: 'Solve practical business challenges through hands-on projects in BFSI, retail, e-commerce, healthcare, and supply chain analytics.',
+      },
+      {
+        title: 'Gen AI & Agentic Analytics Automation',
+        description: 'Leverage AI copilots, prompt engineering, and agentic workflows to automate data cleaning, querying, and executive reporting.',
+      },
+      {
+        title: 'Training by Senior Data Consultants',
+        description: 'Gain practical insights from industry mentors who share real enterprise case studies, best practices, and portfolio guidance.',
+      },
+      {
+        title: 'Flexible Live Classes & 24/7 LMS',
+        description: 'Attend interactive online or classroom sessions in Bangalore and Bhubaneswar with full access to recorded lectures and study materials.',
+      },
+      {
+        title: '100% Placement Support & Career Prep',
+        description: 'Prepare for top analytics roles with personalized resume reviews, mock interviews, LinkedIn profile building, and hiring partner referrals.',
+      },
+    ],
+  },
   fde: {
     heading: 'Why Choose DV Analytics for AI Forward Deployment Engineer Training?',
     intro:
@@ -212,6 +303,14 @@ export const courseWhyChooseData: Record<string, CourseWhyChooseSection> = {
 };
 
 export const courseCareerIntroTexts: Record<string, string[]> = {
+  apids: [
+    'The Advanced Program in Industrial Data Science with AI Deployment (APIDS) equips learners with the complete technical and analytical skill set demanded by modern data and AI teams.',
+    'Graduates can explore high-impact roles across IT enterprises, global capability centers (GCCs), banking, fintech, healthcare, e-commerce, and AI consulting firms:',
+  ],
+  apida: [
+    'The Advance Program in Industrial Data Analytics with Gen AI & Agentic AI (APIDA) prepares learners for high-demand analytics, business intelligence, and AI-enabled reporting roles.',
+    'Depending on your educational background, project portfolio, and technical fluency, you can pursue career paths across entry, mid, and senior levels:',
+  ],
   apcs: [
     'The AI Integrated Advanced Program in Cybersecurity & Forensics (APCF) at DV Analytics helps learners develop practical skills for exploring career opportunities in the growing cybersecurity industry.',
     'After completing the cybersecurity and forensics course, learners can explore various job roles across IT companies, cybersecurity firms, financial institutions, government organisations and technology companies.',
@@ -286,7 +385,7 @@ export const courseFaqsData: Record<string, { title: string; items: FaqItem[] }>
     ],
   },
   apcs: {
-    title: 'FAQs: Frequently Asked Questions',
+    title: 'Frequently Asked Questions',
     items: [
       {
         question: 'What is the Cybersecurity and Cyber Forensics course at DV Analytics?',
@@ -421,6 +520,43 @@ export const courseFaqsData: Record<string, { title: string; items: FaqItem[] }>
       {
         question: 'Does the APIDS course provide placement assistance?',
         answer: "Learners can benefit from career guidance, interview preparation and placement assistance, subject to the program's placement support policies.",
+      },
+    ],
+  },
+  apida: {
+    title: 'Frequently Asked Questions',
+    items: [
+      {
+        question: 'What is the Advance Program in Industrial Data Analytics with Gen AI & Agentic AI (APIDA)?',
+        answer: 'APIDA is an industry-focused training program at DV Analytics that covers the complete data analytics lifecycle—from Excel AI, SQL, Python, SAS, Power BI, and Tableau to Statistical Modeling, Machine Learning, Generative AI, and Agentic AI workflows.',
+      },
+      {
+        question: 'Who is eligible to join the APIDA course?',
+        answer: 'Fresh graduates, college students, career switchers, and working professionals from both technical and non-technical backgrounds (B.Com, BBA, MBA, B.Sc, BCA, B.Tech, M.Sc, MCA, etc.) can enroll in the APIDA program.',
+      },
+      {
+        question: 'Do I need prior coding experience to join the APIDA program?',
+        answer: 'No prior programming experience is required. The curriculum starts from absolute fundamentals in Excel, SQL, and Python and gradually builds up to advanced analytics, BI dashboarding, and Generative AI.',
+      },
+      {
+        question: 'What tools and technologies are covered in the APIDA course?',
+        answer: 'You will master Advanced Excel with AI, SQL Server, Python (Pandas, NumPy, Matplotlib, Seaborn), SAS Programming, Power BI, Tableau, Business Statistics, Predictive Machine Learning, Generative AI, and Agentic AI tools.',
+      },
+      {
+        question: 'What is the duration of the APIDA course?',
+        answer: 'The APIDA program duration is approximately 4–5 months with live interactive online and offline classroom sessions, hands-on assignments, and real-time domain capstones.',
+      },
+      {
+        question: 'What kind of practical projects will I build during the APIDA training?',
+        answer: 'Learners work on real-world industry projects across banking, finance, retail, e-commerce, healthcare, and telecommunications—building automated data pipelines, executive Power BI/Tableau dashboards, and predictive analytics solutions.',
+      },
+      {
+        question: 'What career opportunities are available after completing the APIDA course?',
+        answer: 'Graduates can explore roles such as Data Analyst, Business Intelligence (BI) Analyst, Power BI / Tableau Developer, MIS Specialist, SAS Analyst, Reporting Analyst, Business Analyst, and AI-Enabled Analytics Specialist.',
+      },
+      {
+        question: 'Does DV Analytics provide placement assistance for the APIDA program?',
+        answer: 'Yes. DV Analytics provides 100% placement assistance, including 1-on-1 resume building, GitHub and BI portfolio preparation, mock technical interviews, and job referrals through hiring partners in Bangalore, Bhubaneswar, and across India.',
       },
     ],
   },

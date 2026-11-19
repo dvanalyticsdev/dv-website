@@ -18,18 +18,29 @@ const shuffleArray = <T,>(array: T[]): T[] => {
 
 interface AnimatedHeroGraphicProps {
   images?: string[];
+  priority?: boolean;
 }
 
-export const AnimatedHeroGraphic: React.FC<AnimatedHeroGraphicProps> = ({ images: propImages }) => {
-  const [images] = useState(() => propImages ? shuffleArray(propImages) : slideshowImages);
+export const AnimatedHeroGraphic: React.FC<AnimatedHeroGraphicProps> = ({
+  images: propImages,
+  priority = false,
+}) => {
+  // Keep the first image deterministic for fast initial LCP, shuffle the remaining slides
+  const [images] = useState(() => {
+    const source = (propImages && propImages.length > 0 ? propImages : slideshowImages).filter(Boolean);
+    if (source.length <= 2) return source;
+    return [source[0], ...shuffleArray(source.slice(1))];
+  });
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(true);
+  const [hasAdvanced, setHasAdvanced] = useState(false);
   const touchStartX = useRef<number | null>(null);
 
   useEffect(() => {
     if (!isPlaying || images.length <= 1) return;
 
     const timer = setInterval(() => {
+      setHasAdvanced(true);
       setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
     }, SLIDE_DURATION);
 
@@ -37,10 +48,12 @@ export const AnimatedHeroGraphic: React.FC<AnimatedHeroGraphicProps> = ({ images
   }, [isPlaying, images.length]);
 
   const handlePrev = () => {
+    setHasAdvanced(true);
     setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
   };
 
   const handleNext = () => {
+    setHasAdvanced(true);
     setCurrentIndex((prev) => (prev + 1) % images.length);
   };
 
@@ -61,6 +74,8 @@ export const AnimatedHeroGraphic: React.FC<AnimatedHeroGraphicProps> = ({ images
     touchStartX.current = null;
   };
 
+  const nextIndex = images.length > 1 ? (currentIndex + 1) % images.length : 0;
+
   return (
     <div 
       className="hero-slideshow-card"
@@ -73,19 +88,24 @@ export const AnimatedHeroGraphic: React.FC<AnimatedHeroGraphicProps> = ({ images
       <div className="slideshow-slides-viewport">
         {images.map((image, index) => {
           const isActive = index === currentIndex;
+          const shouldRenderImage = isActive || (hasAdvanced && index === nextIndex);
           return (
             <div 
-              key={index} 
+              key={image || index} 
               className={`slideshow-slide ${isActive ? 'active' : ''}`}
             >
-              <img
-                src={image}
-                alt={`Hero Story ${index + 1}`}
-                className="slide-image-foreground"
-                loading={index === 0 ? 'eager' : 'lazy'}
-                decoding="async"
-                fetchPriority={index === 0 ? 'high' : 'low'}
-              />
+              {shouldRenderImage && (
+                <img
+                  src={image}
+                  alt={`DV Analytics Learner Success Story ${index + 1}`}
+                  className="slide-image-foreground"
+                  width="640"
+                  height="640"
+                  loading={priority && index === 0 ? 'eager' : 'lazy'}
+                  decoding="async"
+                  fetchPriority={priority && index === 0 ? 'high' : 'low'}
+                />
+              )}
             </div>
           );
         })}

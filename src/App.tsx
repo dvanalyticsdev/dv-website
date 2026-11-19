@@ -433,7 +433,7 @@ function App() {
 
             <div className="hero-right">
               <div className="hero-image-container hero-image-container-home">
-                <AnimatedHeroGraphic images={heroPosterImages} />
+                <AnimatedHeroGraphic images={heroPosterImages} priority={true} />
               </div>
             </div>
           </div>

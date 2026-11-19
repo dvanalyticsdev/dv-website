@@ -19,7 +19,12 @@ const escapeAttribute = (value) =>
 const seoBlock = (route) => {
   const pageId = getPageFromPath(route);
   const seo = getSeoForPage(pageId);
-  const schema = JSON.stringify(seo.schema ?? []).replace(/</g, '\\u003c');
+  const schemaScripts = (seo.schema ?? [])
+    .map(
+      (item) =>
+        `<script type="application/ld+json" data-seo-json-ld="true">${JSON.stringify(item).replace(/</g, '\\u003c')}</script>`
+    )
+    .join('\n    ');
 
   return `<meta name="author" content="DV Analytics" />
     <meta
@@ -51,7 +56,7 @@ const seoBlock = (route) => {
     />
     <meta name="twitter:image" content="${escapeAttribute(seo.image)}" />
     <meta name="twitter:image:alt" content="${escapeAttribute(seo.title)}" />
-    <script type="application/ld+json">${schema}</script>
+    ${schemaScripts}
     <title>${escapeAttribute(seo.title)}</title>`;
 };
 
@@ -115,7 +120,7 @@ for (const [slug, targetUrl] of Object.entries(seoLandingPageRedirects)) {
   })(window,document,'script','dataLayer','GTM-NFB3LVLT');</script>
   <!-- End Google Tag Manager -->
   <meta http-equiv="refresh" content="0; url=${targetUrl}">
-  <link rel="canonical" href="https://www.dvanalyticsmds.com${targetUrl}">
+  <link rel="canonical" href="https://dvanalyticsmds.com${targetUrl}">
   <title>Redirecting to DV Analytics...</title>
 </head>
 <body>
@@ -147,7 +152,7 @@ ${sitemapRoutes
   .map((route) => {
     const { priority, changefreq } = getRoutePriorityAndFreq(route);
     return `  <url>
-    <loc>https://www.dvanalyticsmds.com${route}</loc>
+    <loc>https://dvanalyticsmds.com${route}</loc>
     <lastmod>${todayIso}</lastmod>
     <changefreq>${changefreq}</changefreq>
     <priority>${priority}</priority>

@@ -6267,3 +6267,151 @@ button {
   }
 }
 
+/* ==========================================================================
+   Course Detail & Location Pages UI Enhancements (Doc Requirements)
+   ========================================================================== */
+
+/* Split long Career Opportunities H2 cleanly into two lines */
+.course-careers-section .careers-header .section-title {
+  max-width: 780px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  padding: 0 2.5rem !important;
+  text-wrap: balance !important;
+  line-height: 1.25 !important;
+}
+
+/* Why Choose Card Icons & Design Effects */
+.why-choose-card {
+  position: relative;
+  overflow: hidden;
+  border-top: 3px solid #ef5323 !important;
+}
+
+.why-choose-card-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(239, 83, 35, 0.12) 0%, rgba(2, 132, 199, 0.12) 100%);
+  color: #ef5323;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.9rem;
+  transition: transform 0.25s ease, background 0.25s ease, color 0.25s ease;
+}
+
+.why-choose-card:hover .why-choose-card-icon {
+  transform: scale(1.08);
+  background: linear-gradient(135deg, #ef5323 0%, #f97316 100%);
+  color: #ffffff;
+}
+
+/* Domain Project Header Icon & Career Level Header Icon */
+.domain-card-header {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.75rem !important;
+}
+
+.domain-header-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: rgba(239, 83, 35, 0.12);
+  color: #ef5323;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: transform 0.25s ease, background-color 0.25s ease, color 0.25s ease;
+}
+
+.domain-card:hover .domain-header-icon {
+  background: #ef5323;
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.career-level-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.career-level-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 9px;
+  background: rgba(5, 31, 64, 0.08);
+  color: #ef5323;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.25s ease;
+}
+
+.career-path-card:hover .career-level-icon {
+  background: #ef5323;
+  color: #ffffff;
+}
+
+/* SEO Location Landing Page Feature/Skill Boxes with Icons & Hover Effects */
+.seo-landing-subitem {
+  position: relative;
+  padding: 1.35rem 1.35rem !important;
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  border-left: 4px solid #ef5323 !important;
+  border-radius: 12px !important;
+  margin-bottom: 0 !important;
+  box-shadow: 0 4px 14px rgba(5, 31, 64, 0.04);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.seo-landing-subitem:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 26px rgba(5, 31, 64, 0.1);
+  border-color: #cbd5e1 !important;
+  border-left-color: #051f40 !important;
+}
+
+.seo-landing-subitem-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 11px;
+  background: linear-gradient(135deg, rgba(239, 83, 35, 0.12) 0%, rgba(5, 31, 64, 0.08) 100%);
+  color: #ef5323;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.85rem;
+  flex-shrink: 0;
+  transition: transform 0.25s ease, background 0.25s ease, color 0.25s ease;
+}
+
+.seo-landing-subitem:hover .seo-landing-subitem-icon {
+  transform: scale(1.06);
+  background: linear-gradient(135deg, #051f40 0%, #0d3869 100%);
+  color: #ffffff;
+}
+
+.seo-landing-media-thumb {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.seo-landing-media-thumb img {
+  width: 100%;
+  max-height: 360px !important;
+  object-fit: cover;
+  border-radius: 14px !important;
+  border: 1px solid rgba(5, 31, 64, 0.08);
+  box-shadow: 0 14px 32px rgba(5, 31, 64, 0.12) !important;
+}
+
+

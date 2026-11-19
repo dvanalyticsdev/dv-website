@@ -86,6 +86,11 @@ const coreSeoLandingPages: SeoLandingPage[] = [
           'DV Analytics offers the Best Data Science course in Bangalore. Enroll in the Advanced Program in Industrial Data Science (APIDS) of DV Data & Analytics. Be a certified professional, ready to handle the industry requirements and emerge as a successful name in the coming years.',
           'With a strong emphasis on DBMS programming, Data Mining, Reporting and Visualization, and Machine Learning, our Data Science course in Bangalore for freshers gives you the finest preparation to meet industry standards and demands. Get the knowledge and skills that you need. Excel in the field of data analytics!',
         ],
+        image: {
+          src: '/data-science-ai-training-banner.png',
+          alt: 'Trusted Data Science Training Institute in Bangalore - DV Analytics',
+          align: 'right',
+        },
       },
       {
         heading: 'Why Choose DV Analytics for a Data Science Course in Bangalore?',
@@ -144,6 +149,11 @@ const coreSeoLandingPages: SeoLandingPage[] = [
           'Each role has different requirements. For example, data analyst positions often focus on SQL, reporting, and visualisation, while data scientist and Machine Learning roles may require stronger programming, statistics, and modelling skills.',
           'The course can provide a foundation for these career paths, but employment depends on individual performance and employer requirements.',
         ],
+        image: {
+          src: '/blogs/ds_careerpath_n_salary_2026.jpg',
+          alt: 'Career Opportunities After a Data Science Course in Bangalore',
+          align: 'right',
+        },
       },
       {
         heading: 'Placement Assistance and Career Preparation',
@@ -229,6 +239,11 @@ const coreSeoLandingPages: SeoLandingPage[] = [
           'DV Data & Analytics is offering the best data analytics course in Bangalore with 100% Placement Assistance. Enroll in our Advance Program in Industrial Data Analytics with Gen AI & Agentic AI (APIDA) to obtain comprehensive training in data analytics, with a focus on practical industry applications.',
           'We have the most industry-ready program. Get equipped with a holistic skill set, essential for addressing industry demands, including data analysis, storytelling dashboard creation, DBMS programming, advanced visualization, and advanced analytics for predictive model and strategic action building. Get ready for the industry!',
         ],
+        image: {
+          src: '/industrial-data-analytics-banner.png',
+          alt: 'Best Data Analytics Institute in Bangalore - DV Analytics',
+          align: 'right',
+        },
       },
       {
         heading: 'Why is DV Analytics the Best Data Analytics Training Institute in Bangalore?',
@@ -316,6 +331,11 @@ const coreSeoLandingPages: SeoLandingPage[] = [
           'Working professionals: Upgrade your skills from manual reporting to automated BI, machine learning, and Generative AI workflows.',
           'Career switchers: Transition into in-demand roles across Data Analytics, Business Intelligence, and Analytics Consulting.',
         ],
+        image: {
+          src: '/blogs/apida_industrial_data_analytics.jpg',
+          alt: 'Who Can Join the Data Analytics Course in Bangalore',
+          align: 'right',
+        },
       },
       {
         heading: 'Career Opportunities After a Data Analytics Course',
@@ -434,6 +454,11 @@ const coreSeoLandingPages: SeoLandingPage[] = [
         paragraphs: [
           'The course is structured step by step, taking you from fundamentals to advanced AI and predictive analytics with complete confidence.',
         ],
+        image: {
+          src: '/apida-training-banner.png',
+          alt: 'Why Choose DV Analytics for Data Analytics Training in Bhubaneswar',
+          align: 'right',
+        },
       },
       {
         heading: 'What Will You Learn in Our Data Analytics Course?',
@@ -497,6 +522,11 @@ const coreSeoLandingPages: SeoLandingPage[] = [
         paragraphs: [
           'Your career opportunities will be backed by strong capstone projects, hands-on tool fluency, and targeted interview preparation.',
         ],
+        image: {
+          src: '/blogs/nextblr_da_course.jpg',
+          alt: 'Career Opportunities After a Data Analytics Course in Bhubaneswar',
+          align: 'right',
+        },
       },
       {
         heading: 'Data Analytics Course with Placement Support in Bhubaneswar',
@@ -604,6 +634,11 @@ const coreSeoLandingPages: SeoLandingPage[] = [
         paragraphs: [
           'The goal is to help you move beyond theoretical knowledge and understand how Data Science skills can be applied to real business problems.',
         ],
+        image: {
+          src: '/data-science-ai-deployment-banner.png',
+          alt: 'Why DV Analytics is the Best Data Science Institute in Bhubaneswar',
+          align: 'right',
+        },
       },
       {
         heading: 'What Skills Will You Learn in Our Data Science Course?',
@@ -672,6 +707,11 @@ const coreSeoLandingPages: SeoLandingPage[] = [
         paragraphs: [
           'The roles you qualify for will depend on your education, technical skills, project experience, and interview performance. Completing a course can help you prepare, but it does not guarantee a job or a particular salary.',
         ],
+        image: {
+          src: '/blogs/ds_jobsbbsrblog_28feb.jpg',
+          alt: 'Career Opportunities After a Data Science Course in Bhubaneswar',
+          align: 'right',
+        },
       },
       {
         heading: 'Data Science Course with Placement Assistance in Bhubaneswar',

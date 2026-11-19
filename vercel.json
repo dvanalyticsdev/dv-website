@@ -38,6 +38,19 @@
   ],
   "routes": [
     {
+      "src": "^/(.*)$",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.dvanalyticsmds.com"
+        }
+      ],
+      "status": 301,
+      "headers": {
+        "Location": "https://dvanalyticsmds.com/$1"
+      }
+    },
+    {
       "src": "^/data-science-course-in-bangalore/?$",
       "status": 301,
       "headers": {
