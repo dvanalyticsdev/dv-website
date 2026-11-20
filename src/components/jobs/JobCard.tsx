@@ -1,5 +1,5 @@
 import React from 'react';
-import type { JobListing } from '../../services/jobService';
+import { DEFAULT_APPLICATION_WINDOW_DAYS, type JobListing } from '../../services/jobService';
 
 interface JobCardProps {
   job: JobListing;
@@ -90,7 +90,7 @@ export const JobCard: React.FC<JobCardProps> = ({
           </div>
         </div>
 
-        {/* 2-Day Deadline Notice for Open Jobs */}
+        {/* 15-Day Deadline Notice for Open Jobs */}
         {job.isOpen && (
           <div className="job-deadline-tag">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
@@ -98,9 +98,9 @@ export const JobCard: React.FC<JobCardProps> = ({
               <polyline points="12 6 12 12 16 14" />
             </svg>
             <span>
-              {job.daysRemaining && job.daysRemaining <= 1
+              {job.daysRemaining !== undefined && job.daysRemaining <= 1
                 ? 'Applications closing soon! Apply within today.'
-                : 'Applications open for the next 2 days.'}
+                : `Applications open for the next ${job.daysRemaining ?? DEFAULT_APPLICATION_WINDOW_DAYS} days.`}
             </span>
           </div>
         )}

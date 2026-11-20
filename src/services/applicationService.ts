@@ -1,4 +1,4 @@
-import type { JobListing } from './jobService.ts';
+import { isJobExpired, type JobListing } from './jobService.ts';
 import type { VerifiedStudent } from './lmsService.ts';
 import { appendAttributionToPayload, trackEvent } from '../utils/analytics.ts';
 
@@ -103,8 +103,8 @@ export async function submitJobApplication(
 ): Promise<{ success: boolean; message?: string }> {
   const { job, student } = data;
 
-  // 1. Guard against applying for a closed position
-  if (!job.isOpen) {
+  // 1. Guard against applying for a closed or expired position
+  if (!job.isOpen || isJobExpired(job)) {
     return {
       success: false,
       message: 'This position is currently closed. Applications cannot be accepted.',

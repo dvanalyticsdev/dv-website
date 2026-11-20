@@ -1,8 +1,10 @@
 import assert from 'node:assert';
 import {
+  DEFAULT_APPLICATION_WINDOW_DAYS,
   fetchJobs,
   parseCSV,
   evaluateJobStatus,
+  isJobExpired,
 } from '../src/services/jobService.ts';
 import {
   verifyLmsId,
@@ -26,23 +28,47 @@ async function runTests() {
   console.log('✓ CSV parser works properly');
 
   // Test 2: Evaluate Job Status Logic
-  console.log('\n[TEST 2] Job Status Logic (Open vs Closed & 2-day window)...');
-  const now = new Date();
-  const yesterday = new Date(now.getTime() - 24 * 60 * 60 * 1000);
-  const fiveDaysAgo = new Date(now.getTime() - 5 * 24 * 60 * 60 * 1000);
+  console.log('\n[TEST 2] Job Status Logic (Open vs Closed & 15-day window)...');
+  assert.strictEqual(DEFAULT_APPLICATION_WINDOW_DAYS, 15, 'Default window must be 15 days');
+  const nowMs = Date.now();
+  const dayMs = 24 * 60 * 60 * 1000;
+  const fiveDaysAgo = new Date(nowMs - 5 * dayMs);
+  const fourteenDaysAgo = new Date(nowMs - 14 * dayMs);
+  const exactlyFifteenDaysAgo = new Date(nowMs - 15 * dayMs);
+  const twentyDaysAgo = new Date(nowMs - 20 * dayMs);
 
-  const openStatus = evaluateJobStatus('Interested in Vendors only', yesterday, 2);
-  assert.strictEqual(openStatus.isOpen, true);
-  assert.strictEqual(openStatus.statusLabel, 'Open');
+  const openFiveDays = evaluateJobStatus('Interested in Vendors only', fiveDaysAgo, DEFAULT_APPLICATION_WINDOW_DAYS, nowMs);
+  assert.strictEqual(openFiveDays.isOpen, true);
+  assert.strictEqual(openFiveDays.statusLabel, 'Open');
+  assert.strictEqual(openFiveDays.daysRemaining, 10);
 
-  const closedByExplicitStatus = evaluateJobStatus('Position closed', yesterday, 2);
+  const openFourteenDays = evaluateJobStatus('', fourteenDaysAgo, DEFAULT_APPLICATION_WINDOW_DAYS, nowMs);
+  assert.strictEqual(openFourteenDays.isOpen, true);
+  assert.strictEqual(openFourteenDays.statusLabel, 'Open');
+  assert.strictEqual(openFourteenDays.daysRemaining, 1);
+
+  const closedByExplicitStatus = evaluateJobStatus('Position closed', fiveDaysAgo, DEFAULT_APPLICATION_WINDOW_DAYS, nowMs);
   assert.strictEqual(closedByExplicitStatus.isOpen, false);
   assert.strictEqual(closedByExplicitStatus.statusLabel, 'Closed');
 
-  const closedByDeadline = evaluateJobStatus('Interested in Vendors only', fiveDaysAgo, 2);
+  const closedExactlyFifteenDays = evaluateJobStatus('Interested in Vendors only', exactlyFifteenDaysAgo, DEFAULT_APPLICATION_WINDOW_DAYS, nowMs);
+  assert.strictEqual(closedExactlyFifteenDays.isOpen, false);
+  assert.strictEqual(closedExactlyFifteenDays.statusLabel, 'Closed');
+  assert.strictEqual(closedExactlyFifteenDays.daysRemaining, 0);
+
+  const closedByDeadline = evaluateJobStatus('Interested in Vendors only', twentyDaysAgo, DEFAULT_APPLICATION_WINDOW_DAYS, nowMs);
   assert.strictEqual(closedByDeadline.isOpen, false);
   assert.strictEqual(closedByDeadline.statusLabel, 'Closed');
-  console.log('✓ Job status evaluation correctly enforces Open, Explicit Closed, and Deadline Closed');
+
+  assert.strictEqual(
+    isJobExpired({ isOpen: true, postedTimestamp: fiveDaysAgo.getTime(), expiresAt: openFiveDays.expiresAt }, nowMs),
+    false
+  );
+  assert.strictEqual(
+    isJobExpired({ isOpen: true, postedTimestamp: exactlyFifteenDaysAgo.getTime(), expiresAt: closedExactlyFifteenDays.expiresAt }, nowMs),
+    true
+  );
+  console.log('✓ Job status evaluation correctly enforces Open, Explicit Closed, and exact 15-day Deadline Closed');
 
   // Test 3: Fetch Real Google Sheet Jobs
   console.log('\n[TEST 3] Fetching and parsing live Jobs Google Sheet...');

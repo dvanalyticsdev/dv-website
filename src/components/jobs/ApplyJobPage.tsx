@@ -130,7 +130,7 @@ export const ApplyJobPage: React.FC<ApplyJobPageProps> = () => {
           Explore current opportunities and apply for positions that match your skills and experience.
         </p>
 
-        {/* Prominent Configurable 2-Day Deadline Notice */}
+        {/* Prominent Configurable 15-Day Deadline Notice */}
         <div className="jobs-deadline-banner">
           <span className="jobs-deadline-icon">⚡</span>
           <span>

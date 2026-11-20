@@ -2,6 +2,16 @@ import http from 'node:http';
 import crypto from 'node:crypto';
 import fs from 'node:fs';
 import { MongoClient } from 'mongodb';
+import {
+  JOBS_COLLECTION_NAME,
+  JOB_EXPIRY_DAYS,
+  ensureJobsIndexes,
+  syncJobsFromSheet,
+  expireOverdueJobs,
+  createJobInDatabase,
+  getJobsFromDatabase,
+  startJobExpiryScheduler,
+} from './job-expiry-service.mjs';
 
 const PORT = Number(process.env.PORT || 4317);
 const DATABASE_NAME = 'website_lead_tracking';
@@ -25,6 +35,8 @@ const mongoUri = readMongoUri();
 if (!mongoUri || !DASHBOARD_PIN) throw new Error('Dashboard API configuration is incomplete.');
 const client = new MongoClient(mongoUri);
 let submissions;
+let jobsCollection;
+let jobExpiryScheduler;
 
 const originHeaders = (origin) => ({
   'Access-Control-Allow-Origin': ALLOWED_ORIGINS.has(origin) ? origin : 'null',
@@ -67,7 +79,42 @@ const handler = async (req, res) => {
   }
   const url = new URL(req.url || '/', `http://${req.headers.host || 'localhost'}`);
   try {
-    if (req.method === 'GET' && url.pathname === '/healthz') return send(res, 200, { ok: true }, origin);
+    if (req.method === 'GET' && url.pathname === '/healthz') return send(res, 200, { ok: true, jobExpiryDays: JOB_EXPIRY_DAYS }, origin);
+    if (url.pathname === '/api/jobs') {
+      if (req.method === 'GET') {
+        const forceRefresh = url.searchParams.get('refresh') === '1' || url.searchParams.get('refresh') === 'true';
+        const existingCount = await jobsCollection.countDocuments({});
+        if (forceRefresh || existingCount === 0) {
+          try {
+            await syncJobsFromSheet(jobsCollection);
+          } catch (syncError) {
+            console.error('[jobs-api] Sheet sync failed, serving database state:', syncError);
+          }
+        }
+        const payload = await getJobsFromDatabase(jobsCollection);
+        return send(res, 200, { ok: true, ...payload }, origin);
+      }
+      if (req.method === 'POST') {
+        if (!getSession(req)) return send(res, 401, { message: 'Dashboard login required.' }, origin);
+        const body = await readBody(req);
+        if (!body.companyName || !body.designation) {
+          return send(res, 400, { message: 'companyName and designation are required.' }, origin);
+        }
+        const job = await createJobInDatabase(jobsCollection, body);
+        return send(res, 201, { ok: true, job }, origin);
+      }
+      return send(res, 405, { message: 'Method not allowed.' }, origin);
+    }
+    if (req.method === 'POST' && url.pathname === '/api/jobs/expire') {
+      if (!getSession(req)) return send(res, 401, { message: 'Dashboard login required.' }, origin);
+      const body = await readBody(req);
+      let syncResult = null;
+      if (body.syncSheet) {
+        syncResult = await syncJobsFromSheet(jobsCollection);
+      }
+      const expiryResult = await expireOverdueJobs(jobsCollection);
+      return send(res, 200, { ok: true, syncResult, expiryResult, applicationWindowDays: JOB_EXPIRY_DAYS }, origin);
+    }
     if (req.method === 'POST' && url.pathname === '/api/dashboard/auth') {
       const body = await readBody(req);
       if (!pinMatches(body.pin)) return send(res, 401, { message: 'Invalid dashboard PIN.' }, origin);
@@ -97,7 +144,19 @@ const handler = async (req, res) => {
 };
 
 await client.connect();
-submissions = client.db(DATABASE_NAME).collection(COLLECTION_NAME);
+const db = client.db(DATABASE_NAME);
+submissions = db.collection(COLLECTION_NAME);
 await submissions.createIndex({ submissionId: 1 }, { unique: true, name: 'submissionId_unique' });
 await submissions.createIndex({ createdAt: -1 }, { name: 'createdAt_desc' });
-http.createServer(handler).listen(PORT, '127.0.0.1', () => console.log(`Website lead tracking API listening on ${PORT}`));
+jobsCollection = db.collection(JOBS_COLLECTION_NAME);
+await ensureJobsIndexes(jobsCollection);
+jobExpiryScheduler = startJobExpiryScheduler(jobsCollection);
+const server = http.createServer(handler).listen(PORT, '127.0.0.1', () => {
+  console.log(`Website lead tracking & jobs API listening on ${PORT} (job expiry: ${JOB_EXPIRY_DAYS} days)`);
+});
+const shutdown = () => {
+  if (jobExpiryScheduler) jobExpiryScheduler.stop();
+  server.close(() => process.exit(0));
+};
+process.on('SIGTERM', shutdown);
+process.on('SIGINT', shutdown);

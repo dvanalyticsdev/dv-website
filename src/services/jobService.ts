@@ -7,6 +7,7 @@ export interface JobListing {
   jobProfileUrl: string;
   postedDate: string; // formatted date
   postedTimestamp: number;
+  expiresAt?: number;
   isOpen: boolean;
   statusLabel: 'Open' | 'Closed';
   rawStatus?: string;
@@ -18,13 +19,23 @@ export interface JobsDataResponse {
   closedJobs: JobListing[];
   lastUpdated: number;
   totalCount: number;
+  applicationWindowDays?: number;
 }
 
 export const JOBS_SHEET_CSV_URL =
   'https://docs.google.com/spreadsheets/d/1WR4UUthfqDC40g_oBdn2uSAAmv_lfIVAP8Sg1X24hc0/export?format=csv&gid=1959589469';
 
+const envJobsApiUrl =
+  typeof import.meta !== 'undefined' &&
+  typeof (import.meta as { env?: Record<string, string> }).env?.VITE_JOBS_API_URL === 'string'
+    ? (import.meta as { env?: Record<string, string> }).env?.VITE_JOBS_API_URL
+    : '';
+
+export const JOBS_API_URL = envJobsApiUrl || 'https://tracking-api.dvanalyticsmds.in/api/jobs';
+
 // Configurable default application period in days
-export const DEFAULT_APPLICATION_WINDOW_DAYS = 2;
+export const DEFAULT_APPLICATION_WINDOW_DAYS = 15;
+export const MS_PER_DAY = 24 * 60 * 60 * 1000;
 
 // In-memory cache with 5-minute TTL
 let cachedJobsData: JobsDataResponse | null = null;
@@ -109,9 +120,12 @@ export function parseDateString(dateStr: string): Date | null {
 export function evaluateJobStatus(
   statusCell: string,
   postedDate: Date | null,
-  applicationWindowDays = DEFAULT_APPLICATION_WINDOW_DAYS
-): { isOpen: boolean; statusLabel: 'Open' | 'Closed'; daysRemaining?: number } {
+  applicationWindowDays = DEFAULT_APPLICATION_WINDOW_DAYS,
+  nowMs = Date.now()
+): { isOpen: boolean; statusLabel: 'Open' | 'Closed'; daysRemaining?: number; expiresAt?: number } {
   const normalizedStatus = (statusCell || '').toLowerCase().trim();
+  const windowMs = applicationWindowDays * MS_PER_DAY;
+  const expiresAt = postedDate ? postedDate.getTime() + windowMs : undefined;
 
   // Explicit closed markers
   const explicitClosedKeywords = [
@@ -125,26 +139,41 @@ export function evaluateJobStatus(
 
   const isExplicitlyClosed = explicitClosedKeywords.some((keyword) => normalizedStatus.includes(keyword));
   if (isExplicitlyClosed) {
-    return { isOpen: false, statusLabel: 'Closed' };
+    return { isOpen: false, statusLabel: 'Closed', daysRemaining: 0, expiresAt };
   }
 
   // If we have a valid posting date, check against the configured application window
-  if (postedDate) {
-    const now = Date.now();
-    const windowMs = applicationWindowDays * 24 * 60 * 60 * 1000;
-    const deadlineMs = postedDate.getTime() + windowMs;
-    const diffMs = deadlineMs - now;
+  if (postedDate && expiresAt !== undefined) {
+    const diffMs = expiresAt - nowMs;
 
     if (diffMs <= 0) {
-      return { isOpen: false, statusLabel: 'Closed' };
+      return { isOpen: false, statusLabel: 'Closed', daysRemaining: 0, expiresAt };
     }
 
-    const daysRemaining = Math.max(1, Math.ceil(diffMs / (24 * 60 * 60 * 1000)));
-    return { isOpen: true, statusLabel: 'Open', daysRemaining };
+    const daysRemaining = Math.max(1, Math.ceil(diffMs / MS_PER_DAY));
+    return { isOpen: true, statusLabel: 'Open', daysRemaining, expiresAt };
   }
 
   // Default fallback if no date: open with default window
   return { isOpen: true, statusLabel: 'Open', daysRemaining: applicationWindowDays };
+}
+
+/**
+ * Check whether a job has passed its 15-day expiry deadline
+ */
+export function isJobExpired(
+  job: Pick<JobListing, 'postedTimestamp' | 'expiresAt' | 'isOpen'>,
+  nowMs = Date.now(),
+  applicationWindowDays = DEFAULT_APPLICATION_WINDOW_DAYS
+): boolean {
+  if (!job.isOpen) return true;
+  if (typeof job.expiresAt === 'number' && job.expiresAt > 0) {
+    return nowMs >= job.expiresAt;
+  }
+  if (typeof job.postedTimestamp === 'number' && job.postedTimestamp > 0) {
+    return nowMs >= job.postedTimestamp + applicationWindowDays * MS_PER_DAY;
+  }
+  return false;
 }
 
 /**
@@ -169,7 +198,89 @@ export function formatDisplayDate(date: Date | null): string {
 }
 
 /**
- * Fetch and parse jobs from the Google Sheet
+ * Try fetching authoritative database-backed jobs from the backend API (where the automated
+ * 15-day expiry scheduler persists status updates in MongoDB).
+ */
+async function fetchJobsFromBackendApi(forceRefresh: boolean, now: number): Promise<JobsDataResponse | null> {
+  if (!JOBS_API_URL) return null;
+
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 4000);
+
+  try {
+    const query = forceRefresh ? `?refresh=1&_t=${now}` : `?_t=${now}`;
+    const response = await fetch(`${JOBS_API_URL}${query}`, {
+      method: 'GET',
+      cache: 'no-store',
+      signal: controller.signal,
+      headers: {
+        Accept: 'application/json',
+        'Cache-Control': 'no-cache',
+      },
+    });
+
+    if (!response.ok) return null;
+
+    const payload = (await response.json()) as {
+      ok?: boolean;
+      openJobs?: JobListing[];
+      closedJobs?: JobListing[];
+      lastUpdated?: number;
+      totalCount?: number;
+      applicationWindowDays?: number;
+    };
+
+    if (!payload?.ok || !Array.isArray(payload.openJobs) || !Array.isArray(payload.closedJobs)) {
+      return null;
+    }
+
+    const allJobs = [...payload.openJobs, ...payload.closedJobs];
+    if (allJobs.length === 0) return null;
+
+    const openJobs: JobListing[] = [];
+    const closedJobs: JobListing[] = [];
+    const windowDays = payload.applicationWindowDays || DEFAULT_APPLICATION_WINDOW_DAYS;
+
+    for (const job of allJobs) {
+      const postedDate = job.postedTimestamp > 0 ? new Date(job.postedTimestamp) : null;
+      const evaluated = evaluateJobStatus(job.rawStatus || '', postedDate, windowDays, now);
+      const isOpen = Boolean(job.isOpen) && evaluated.isOpen;
+
+      const normalized: JobListing = {
+        ...job,
+        expiresAt: job.expiresAt ?? evaluated.expiresAt,
+        isOpen,
+        statusLabel: isOpen ? 'Open' : 'Closed',
+        daysRemaining: isOpen ? evaluated.daysRemaining : 0,
+      };
+
+      if (normalized.isOpen) {
+        openJobs.push(normalized);
+      } else {
+        closedJobs.push(normalized);
+      }
+    }
+
+    openJobs.sort((a, b) => b.postedTimestamp - a.postedTimestamp);
+    closedJobs.sort((a, b) => b.postedTimestamp - a.postedTimestamp);
+
+    return {
+      openJobs,
+      closedJobs,
+      lastUpdated: payload.lastUpdated || now,
+      totalCount: openJobs.length + closedJobs.length,
+      applicationWindowDays: windowDays,
+    };
+  } catch {
+    return null;
+  } finally {
+    clearTimeout(timeoutId);
+  }
+}
+
+/**
+ * Fetch and parse jobs (prefers backend database API with automated 15-day expiry scheduler,
+ * falling back seamlessly to Google Sheets CSV with identical 15-day expiry evaluation).
  */
 export async function fetchJobs(forceRefresh = false): Promise<JobsDataResponse> {
   const now = Date.now();
@@ -178,6 +289,13 @@ export async function fetchJobs(forceRefresh = false): Promise<JobsDataResponse>
   }
 
   try {
+    const backendResult = await fetchJobsFromBackendApi(forceRefresh, now);
+    if (backendResult) {
+      cachedJobsData = backendResult;
+      lastCacheTime = now;
+      return backendResult;
+    }
+
     const fetchUrl = `${JOBS_SHEET_CSV_URL}&_t=${now}`;
     const response = await fetch(fetchUrl, {
       method: 'GET',
@@ -196,7 +314,13 @@ export async function fetchJobs(forceRefresh = false): Promise<JobsDataResponse>
     const rows = parseCSV(csvText);
 
     if (rows.length < 2) {
-      return { openJobs: [], closedJobs: [], lastUpdated: now, totalCount: 0 };
+      return {
+        openJobs: [],
+        closedJobs: [],
+        lastUpdated: now,
+        totalCount: 0,
+        applicationWindowDays: DEFAULT_APPLICATION_WINDOW_DAYS,
+      };
     }
 
     const header = rows[0].map((h) => h.toLowerCase().trim());
@@ -241,7 +365,7 @@ export async function fetchJobs(forceRefresh = false): Promise<JobsDataResponse>
         jobProfileUrl = rawLink.trim();
       }
 
-      const statusResult = evaluateJobStatus(rawStatus, parsedDate, DEFAULT_APPLICATION_WINDOW_DAYS);
+      const statusResult = evaluateJobStatus(rawStatus, parsedDate, DEFAULT_APPLICATION_WINDOW_DAYS, now);
       const jobId = generateJobId(company, designation, i);
 
       const jobListing: JobListing = {
@@ -253,6 +377,7 @@ export async function fetchJobs(forceRefresh = false): Promise<JobsDataResponse>
         jobProfileUrl,
         postedDate: formatDisplayDate(parsedDate),
         postedTimestamp: parsedDate ? parsedDate.getTime() : 0,
+        expiresAt: statusResult.expiresAt,
         isOpen: statusResult.isOpen,
         statusLabel: statusResult.statusLabel,
         rawStatus: rawStatus.trim(),
@@ -276,6 +401,7 @@ export async function fetchJobs(forceRefresh = false): Promise<JobsDataResponse>
       closedJobs,
       lastUpdated: now,
       totalCount: openJobs.length + closedJobs.length,
+      applicationWindowDays: DEFAULT_APPLICATION_WINDOW_DAYS,
     };
 
     cachedJobsData = result;
