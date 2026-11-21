@@ -1,8 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { createPortal } from 'react-dom';
 import './GetACallButton.css';
 import { appendAttributionToPayload, getAttribution, trackEvent } from '../utils/analytics';
 import { recordLeadSubmission } from '../services/leadTrackingService';
+import {
+  isHoneypotTriggered,
+  NAME_MAX_LENGTH,
+  PHONE_EXACT_LENGTH,
+  validateIndianPhone,
+  validateName,
+} from '../utils/formValidation';
 
 const COURSE_OPTIONS = [
   'Advanced Program in Industrial Data Science with AI Deployment (APIDS)',
@@ -41,7 +48,9 @@ export const GetACallButton: React.FC<GetACallButtonProps> = ({ defaultCourse })
     ...initialFormState,
     course: resolvedDefaultCourse,
   });
+  const [honeypot, setHoneypot] = useState('');
   const [errors, setErrors] = useState<{ name?: string; phone?: string; course?: string }>({});
+  const [touched, setTouched] = useState<{ name?: boolean; phone?: boolean; course?: boolean }>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [submitError, setSubmitError] = useState('');
@@ -52,49 +61,73 @@ export const GetACallButton: React.FC<GetACallButtonProps> = ({ defaultCourse })
         ...initialFormState,
         course: resolvedDefaultCourse,
       });
+      setHoneypot('');
       setErrors({});
+      setTouched({});
       setIsSubmitting(false);
       setIsSubmitted(false);
       setSubmitError('');
     }
   }, [isOpen, resolvedDefaultCourse]);
 
+  const validateSingleField = (fieldName: keyof FormState, value: string): string => {
+    if (fieldName === 'name') return validateName(value);
+    if (fieldName === 'phone') return validateIndianPhone(value);
+    if (fieldName === 'course') return !value.trim() ? 'Please select a course.' : '';
+    return '';
+  };
+
+  const isFormValid = useMemo(() => {
+    return (
+      !validateName(formData.name) &&
+      !validateIndianPhone(formData.phone) &&
+      Boolean(formData.course.trim())
+    );
+  }, [formData.name, formData.phone, formData.course]);
+
   const validate = (): boolean => {
-    const newErrors: { name?: string; phone?: string; course?: string } = {};
-    let valid = true;
+    const nameError = validateName(formData.name);
+    const phoneError = validateIndianPhone(formData.phone);
+    const courseError = !formData.course.trim() ? 'Please select a course.' : '';
 
-    if (!formData.name.trim()) {
-      newErrors.name = 'Full name is required';
-      valid = false;
-    }
+    setTouched({ name: true, phone: true, course: true });
+    setErrors({
+      name: nameError || undefined,
+      phone: phoneError || undefined,
+      course: courseError || undefined,
+    });
 
-    if (!formData.phone.trim()) {
-      newErrors.phone = 'Phone number is required';
-      valid = false;
-    } else if (!/^\+?[0-9\s-]{10,15}$/.test(formData.phone.trim())) {
-      newErrors.phone = 'Enter a valid 10-15 digit phone number';
-      valid = false;
-    }
-
-    if (!formData.course) {
-      newErrors.course = 'Please select a course';
-      valid = false;
-    }
-
-    setErrors(newErrors);
-    return valid;
+    return !nameError && !phoneError && !courseError;
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-    setErrors((prev) => ({ ...prev, [name]: undefined }));
+    const fieldName = name as keyof FormState;
+    setFormData((prev) => ({ ...prev, [fieldName]: value }));
     setSubmitError('');
+
+    if (touched[fieldName] || value.length > 0) {
+      setTouched((prev) => ({ ...prev, [fieldName]: true }));
+      const err = validateSingleField(fieldName, value);
+      setErrors((prev) => ({ ...prev, [fieldName]: err || undefined }));
+    }
+  };
+
+  const handleBlur = (e: React.FocusEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    const fieldName = name as keyof FormState;
+    setTouched((prev) => ({ ...prev, [fieldName]: true }));
+    const err = validateSingleField(fieldName, value);
+    setErrors((prev) => ({ ...prev, [fieldName]: err || undefined }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitError('');
+
+    if (isHoneypotTriggered(honeypot)) {
+      return;
+    }
 
     if (!validate()) {
       trackEvent('form_validation_error', {
@@ -106,9 +139,12 @@ export const GetACallButton: React.FC<GetACallButtonProps> = ({ defaultCourse })
 
     setIsSubmitting(true);
 
+    const normalizedName = formData.name.trim().replace(/\s+/g, ' ');
+    const normalizedPhone = formData.phone.trim();
+
     const payload = {
-      name: formData.name.trim(),
-      phone: formData.phone.trim(),
+      name: normalizedName,
+      phone: normalizedPhone,
       course: formData.course,
       submittedAt: new Date().toISOString(),
       landingPageUrl: window.location.origin + window.location.pathname,
@@ -126,8 +162,8 @@ export const GetACallButton: React.FC<GetACallButtonProps> = ({ defaultCourse })
     crmPayload.set('intent', 'counselling');
     crmPayload.set('source_type', 'website');
     crmPayload.set('pipeline', 'main-admission');
-    crmPayload.set('name', formData.name.trim());
-    crmPayload.set('phone', formData.phone.trim());
+    crmPayload.set('name', normalizedName);
+    crmPayload.set('phone', normalizedPhone);
     crmPayload.set('course', formData.course);
     crmPayload.set('page_url', window.location.href);
     appendAttributionToPayload(crmPayload);
@@ -167,8 +203,8 @@ export const GetACallButton: React.FC<GetACallButtonProps> = ({ defaultCourse })
     if (postSuccess) {
       setIsSubmitted(true);
       recordLeadSubmission({
-        name: formData.name,
-        phone: formData.phone,
+        name: normalizedName,
+        phone: normalizedPhone,
         course: formData.course,
         formType: 'free-counselling',
         formLabel: 'Book Free Counselling',
@@ -250,7 +286,21 @@ export const GetACallButton: React.FC<GetACallButtonProps> = ({ defaultCourse })
                     <p>Enter your details to schedule a 1-on-1 session with our career experts.</p>
                   </div>
 
-                  <form className="call-form" onSubmit={handleSubmit}>
+                  <form className="call-form" onSubmit={handleSubmit} noValidate>
+                    {/* Hidden Honeypot Field for Bot Prevention */}
+                    <div className="hp-bot-trap" aria-hidden="true">
+                      <label htmlFor="call-website-url">Website</label>
+                      <input
+                        id="call-website-url"
+                        name="website_url"
+                        type="text"
+                        value={honeypot}
+                        onChange={(e) => setHoneypot(e.target.value)}
+                        tabIndex={-1}
+                        autoComplete="off"
+                      />
+                    </div>
+
                     <div className="call-form-group">
                       <label htmlFor="call-name">Name *</label>
                       <input
@@ -259,10 +309,13 @@ export const GetACallButton: React.FC<GetACallButtonProps> = ({ defaultCourse })
                         type="text"
                         value={formData.name}
                         onChange={handleChange}
+                        onBlur={handleBlur}
+                        maxLength={NAME_MAX_LENGTH}
                         placeholder="Enter your full name"
                         className={errors.name ? 'input-error' : ''}
+                        aria-invalid={Boolean(errors.name)}
                       />
-                      {errors.name && <span className="error-text">{errors.name}</span>}
+                      {errors.name && <span className="error-text" role="alert">{errors.name}</span>}
                     </div>
 
                     <div className="call-form-group">
@@ -271,12 +324,16 @@ export const GetACallButton: React.FC<GetACallButtonProps> = ({ defaultCourse })
                         id="call-phone"
                         name="phone"
                         type="tel"
+                        inputMode="numeric"
                         value={formData.phone}
                         onChange={handleChange}
+                        onBlur={handleBlur}
+                        maxLength={PHONE_EXACT_LENGTH + 3}
                         placeholder="Enter 10-digit mobile number"
                         className={errors.phone ? 'input-error' : ''}
+                        aria-invalid={Boolean(errors.phone)}
                       />
-                      {errors.phone && <span className="error-text">{errors.phone}</span>}
+                      {errors.phone && <span className="error-text" role="alert">{errors.phone}</span>}
                     </div>
 
                     <div className="call-form-group">
@@ -286,7 +343,9 @@ export const GetACallButton: React.FC<GetACallButtonProps> = ({ defaultCourse })
                         name="course"
                         value={formData.course}
                         onChange={handleChange}
+                        onBlur={handleBlur}
                         className={errors.course ? 'input-error' : ''}
+                        aria-invalid={Boolean(errors.course)}
                       >
                         {COURSE_OPTIONS.map((c) => (
                           <option key={c} value={c}>
@@ -294,15 +353,15 @@ export const GetACallButton: React.FC<GetACallButtonProps> = ({ defaultCourse })
                           </option>
                         ))}
                       </select>
-                      {errors.course && <span className="error-text">{errors.course}</span>}
+                      {errors.course && <span className="error-text" role="alert">{errors.course}</span>}
                     </div>
 
-                    {submitError && <div className="error-text call-global-error">{submitError}</div>}
+                    {submitError && <div className="error-text call-global-error" role="alert">{submitError}</div>}
 
                     <button
                       type="submit"
                       className="btn btn-enroll-main call-submit-btn"
-                      disabled={isSubmitting}
+                      disabled={isSubmitting || !isFormValid}
                     >
                       {isSubmitting ? 'Booking Session...' : 'Book Free Counselling'}
                     </button>

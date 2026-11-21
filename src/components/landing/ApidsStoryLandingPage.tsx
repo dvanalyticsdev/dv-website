@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { googleReviewsData, GOOGLE_REVIEWS_LINK } from '../../data/googleReviewsData';
 import { CompaniesSection } from '../CompaniesSection';
 import './ApidsStoryLandingPage.css';
@@ -6,6 +6,15 @@ import { BrochureLeadModal } from '../BrochureLeadModal';
 import { recordLeadSubmission } from '../../services/leadTrackingService';
 import { appendAttributionToPayload, trackEvent } from '../../utils/analytics';
 import { saveLandingRegistration } from '../../utils/landingRegistrationStorage';
+import {
+  EMAIL_MAX_LENGTH,
+  isHoneypotTriggered,
+  NAME_MAX_LENGTH,
+  PHONE_EXACT_LENGTH,
+  validateEmail,
+  validateIndianPhone,
+  validateName,
+} from '../../utils/formValidation';
 
 interface SelectOption {
   value: string;
@@ -17,6 +26,7 @@ interface LpCustomSelectProps {
   value: string;
   placeholder: string;
   required?: boolean;
+  hasError?: boolean;
   onChange: (val: string) => void;
 }
 
@@ -25,6 +35,7 @@ const LpCustomSelect: React.FC<LpCustomSelectProps> = ({
   value,
   placeholder,
   required,
+  hasError,
   onChange,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -44,7 +55,7 @@ const LpCustomSelect: React.FC<LpCustomSelectProps> = ({
   return (
     <div className="lp-custom-select-wrap">
       <div
-        className={`lp-custom-select-trigger ${!selectedOption ? 'has-placeholder' : ''}`}
+        className={`lp-custom-select-trigger ${!selectedOption ? 'has-placeholder' : ''} ${hasError ? 'input-error' : ''}`}
         onClick={() => setIsOpen(!isOpen)}
         role="button"
         tabIndex={0}
@@ -109,6 +120,16 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
     state: '',
     course: 'APIDS (Data Science & AI)',
   });
+  const [honeypot, setHoneypot] = useState('');
+  const [fieldErrors, setFieldErrors] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    qualification: '',
+    experience: '',
+    state: '',
+  });
+  const [touched, setTouched] = useState<Record<string, boolean>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [formError, setFormError] = useState('');
@@ -293,34 +314,95 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
     }
   };
 
+  const validateSingleField = (field: string, value: string): string => {
+    switch (field) {
+      case 'name':
+        return validateName(value);
+      case 'email':
+        return validateEmail(value);
+      case 'phone':
+        return validateIndianPhone(value);
+      case 'qualification':
+        return !value.trim() ? 'Please select your highest qualification.' : '';
+      case 'experience':
+        return !value.trim() ? 'Please select your experience level.' : '';
+      case 'state':
+        return !value.trim() ? 'Please select your location / state.' : '';
+      default:
+        return '';
+    }
+  };
+
+  const isFormValid = useMemo(() => {
+    return (
+      !validateName(formData.name) &&
+      !validateEmail(formData.email) &&
+      !validateIndianPhone(formData.phone) &&
+      Boolean(formData.qualification.trim()) &&
+      Boolean(formData.experience.trim()) &&
+      Boolean(formData.state.trim())
+    );
+  }, [
+    formData.name,
+    formData.email,
+    formData.phone,
+    formData.qualification,
+    formData.experience,
+    formData.state,
+  ]);
+
+  const handleFieldChange = (field: keyof typeof fieldErrors, value: string) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
+    setFormError('');
+    if (touched[field] || value.length > 0) {
+      setTouched((prev) => ({ ...prev, [field]: true }));
+      setFieldErrors((prev) => ({ ...prev, [field]: validateSingleField(field, value) }));
+    }
+  };
+
+  const handleFieldBlur = (field: keyof typeof fieldErrors, value: string) => {
+    setTouched((prev) => ({ ...prev, [field]: true }));
+    setFieldErrors((prev) => ({ ...prev, [field]: validateSingleField(field, value) }));
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setFormError('');
 
-    if (!formData.name.trim()) {
-      setFormError('Please enter your full name');
+    if (isHoneypotTriggered(honeypot)) {
       return;
     }
-    if (!formData.email.trim() || !formData.email.includes('@')) {
-      setFormError('Please enter a valid email address');
+
+    const nextErrors = {
+      name: validateName(formData.name),
+      email: validateEmail(formData.email),
+      phone: validateIndianPhone(formData.phone),
+      qualification: !formData.qualification.trim() ? 'Please select your highest qualification.' : '',
+      experience: !formData.experience.trim() ? 'Please select your experience level.' : '',
+      state: !formData.state.trim() ? 'Please select your location / state.' : '',
+    };
+
+    setTouched({
+      name: true,
+      email: true,
+      phone: true,
+      qualification: true,
+      experience: true,
+      state: true,
+    });
+    setFieldErrors(nextErrors);
+
+    if (Object.values(nextErrors).some((err) => Boolean(err))) {
+      trackEvent('form_validation_error', {
+        form_name: 'lp_apids_registration',
+        course_id: 'apids',
+      });
       return;
     }
-    if (!formData.phone.trim() || formData.phone.length < 10) {
-      setFormError('Please enter a valid 10-digit mobile number');
-      return;
-    }
-    if (!formData.qualification) {
-      setFormError('Please select your qualification');
-      return;
-    }
-    if (!formData.experience) {
-      setFormError('Please select your experience level');
-      return;
-    }
-    if (!formData.state) {
-      setFormError('Please select your location / state');
-      return;
-    }
+
+    const normalizedName = formData.name.trim().replace(/\s+/g, ' ');
+    const normalizedEmail = formData.email.trim();
+    const normalizedPhone = formData.phone.trim();
 
     setIsSubmitting(true);
     const payload = new URLSearchParams();
@@ -330,9 +412,9 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
     payload.set('intent', 'registration');
     payload.set('source_type', 'website');
     payload.set('pipeline', 'main-admission');
-    payload.set('name', formData.name.trim());
-    payload.set('email', formData.email.trim());
-    payload.set('phone', formData.phone.trim());
+    payload.set('name', normalizedName);
+    payload.set('email', normalizedEmail);
+    payload.set('phone', normalizedPhone);
     payload.set('course', 'Advanced Program in Industrial Data Science with AI Deployment (APIDS)');
     payload.set('highest_qualification', formData.qualification);
     payload.set('experience', formData.experience);
@@ -354,9 +436,9 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
     }
 
     recordLeadSubmission({
-      name: formData.name,
-      email: formData.email,
-      phone: formData.phone,
+      name: normalizedName,
+      email: normalizedEmail,
+      phone: normalizedPhone,
       qualification: formData.qualification,
       experience: formData.experience,
       state: formData.state,
@@ -365,9 +447,9 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
       formLabel: 'Landing Page Lead Registration',
     });
     saveLandingRegistration({
-      name: formData.name.trim(),
-      email: formData.email.trim(),
-      phone: formData.phone.trim(),
+      name: normalizedName,
+      email: normalizedEmail,
+      phone: normalizedPhone,
       qualification: formData.qualification,
       experience: formData.experience,
       state: formData.state,
@@ -408,7 +490,21 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
           </button>
         </div>
       ) : (
-        <form onSubmit={handleSubmit} className="lp-lead-form">
+        <form onSubmit={handleSubmit} className="lp-lead-form" noValidate>
+          {/* Hidden Honeypot Field for Bot Prevention */}
+          <div className="hp-bot-trap" aria-hidden="true">
+            <label htmlFor="apids-website-url">Website</label>
+            <input
+              id="apids-website-url"
+              name="website_url"
+              type="text"
+              value={honeypot}
+              onChange={(e) => setHoneypot(e.target.value)}
+              tabIndex={-1}
+              autoComplete="off"
+            />
+          </div>
+
           <div className="lp-form-header">
             <h3>{title}</h3>
             <p>{subtitle}</p>
@@ -417,79 +513,96 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
           {formError && <div className="lp-form-error-banner" role="alert">{formError}</div>}
 
           <div className="lp-form-field">
-            <label className="lp-form-label">Full Name</label>
+            <label className="lp-form-label">Full Name *</label>
             <input
               type="text"
-              className="lp-form-input"
+              className={`lp-form-input ${fieldErrors.name ? 'input-error' : ''}`}
               placeholder="Enter your full name"
               value={formData.name}
+              maxLength={NAME_MAX_LENGTH}
               required
-              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              aria-invalid={Boolean(fieldErrors.name)}
+              onChange={(e) => handleFieldChange('name', e.target.value)}
+              onBlur={(e) => handleFieldBlur('name', e.target.value)}
             />
+            {fieldErrors.name && <span className="lp-field-error" role="alert">{fieldErrors.name}</span>}
           </div>
 
           <div className="lp-form-row-2">
             <div className="lp-form-field">
-              <label className="lp-form-label">Email Address</label>
+              <label className="lp-form-label">Email Address *</label>
               <input
                 type="email"
-                className="lp-form-input"
+                className={`lp-form-input ${fieldErrors.email ? 'input-error' : ''}`}
                 placeholder="name@example.com"
                 value={formData.email}
+                maxLength={EMAIL_MAX_LENGTH}
                 required
-                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                aria-invalid={Boolean(fieldErrors.email)}
+                onChange={(e) => handleFieldChange('email', e.target.value)}
+                onBlur={(e) => handleFieldBlur('email', e.target.value)}
               />
+              {fieldErrors.email && <span className="lp-field-error" role="alert">{fieldErrors.email}</span>}
             </div>
 
             <div className="lp-form-field">
-              <label className="lp-form-label">Phone Number</label>
+              <label className="lp-form-label">Phone Number *</label>
               <input
                 type="tel"
-                className="lp-form-input"
+                inputMode="numeric"
+                className={`lp-form-input ${fieldErrors.phone ? 'input-error' : ''}`}
                 placeholder="10-digit mobile number"
                 value={formData.phone}
+                maxLength={PHONE_EXACT_LENGTH + 3}
                 required
-                pattern="[0-9]{10}"
-                title="Please enter a valid 10-digit mobile number"
-                onChange={(e) => setFormData({ ...formData, phone: e.target.value.replace(/\D/g, '').slice(0, 10) })}
+                aria-invalid={Boolean(fieldErrors.phone)}
+                onChange={(e) => handleFieldChange('phone', e.target.value)}
+                onBlur={(e) => handleFieldBlur('phone', e.target.value)}
               />
+              {fieldErrors.phone && <span className="lp-field-error" role="alert">{fieldErrors.phone}</span>}
             </div>
           </div>
 
           <div className="lp-form-row-2">
             <div className="lp-form-field">
-              <label className="lp-form-label">Highest Qualification</label>
+              <label className="lp-form-label">Highest Qualification *</label>
               <LpCustomSelect
                 options={qualificationOptions}
                 value={formData.qualification}
                 placeholder="Select qualification"
                 required
-                onChange={(val) => setFormData({ ...formData, qualification: val })}
+                hasError={Boolean(fieldErrors.qualification)}
+                onChange={(val) => handleFieldChange('qualification', val)}
               />
+              {fieldErrors.qualification && <span className="lp-field-error" role="alert">{fieldErrors.qualification}</span>}
             </div>
 
             <div className="lp-form-field">
-              <label className="lp-form-label">Experience</label>
+              <label className="lp-form-label">Experience *</label>
               <LpCustomSelect
                 options={experienceOptions}
                 value={formData.experience}
                 placeholder="Select experience"
                 required
-                onChange={(val) => setFormData({ ...formData, experience: val })}
+                hasError={Boolean(fieldErrors.experience)}
+                onChange={(val) => handleFieldChange('experience', val)}
               />
+              {fieldErrors.experience && <span className="lp-field-error" role="alert">{fieldErrors.experience}</span>}
             </div>
           </div>
 
           <div className="lp-form-row-2">
             <div className="lp-form-field">
-              <label className="lp-form-label">State / Location</label>
+              <label className="lp-form-label">State / Location *</label>
               <LpCustomSelect
                 options={locationOptions}
                 value={formData.state}
                 placeholder="Select state"
                 required
-                onChange={(val) => setFormData({ ...formData, state: val })}
+                hasError={Boolean(fieldErrors.state)}
+                onChange={(val) => handleFieldChange('state', val)}
               />
+              {fieldErrors.state && <span className="lp-field-error" role="alert">{fieldErrors.state}</span>}
             </div>
 
             <div className="lp-form-field">
@@ -511,7 +624,11 @@ export const ApidsStoryLandingPage: React.FC<ApidsStoryLandingPageProps> = ({ on
             </div>
           </div>
 
-          <button type="submit" className="lp-orange-submit-btn" disabled={isSubmitting}>
+          <button
+            type="submit"
+            className="lp-orange-submit-btn"
+            disabled={isSubmitting || !isFormValid}
+          >
             {isSubmitting ? 'Submitting Registration...' : 'REGISTER NOW →'}
           </button>
 

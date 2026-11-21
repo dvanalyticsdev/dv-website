@@ -1,8 +1,19 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useMagneticEffect } from '../hooks/useMagneticEffect';
 import { getCrmCourseMapping } from '../data/crmCourseMapping';
 import { appendAttributionToPayload, trackEvent } from '../utils/analytics';
 import { recordLeadSubmission } from '../services/leadTrackingService';
+import {
+  EMAIL_MAX_LENGTH,
+  isHoneypotTriggered,
+  MESSAGE_MAX_LENGTH,
+  NAME_MAX_LENGTH,
+  PHONE_EXACT_LENGTH,
+  validateEmail,
+  validateIndianPhone,
+  validateName,
+  validateOptionalMessage,
+} from '../utils/formValidation';
 
 const courses = [
   { id: 'apids', category: 'data-science', label: 'Advanced Program in Industrial Data Science with AI Deployment (APIDS)' },
@@ -75,7 +86,6 @@ export const EnrollmentPage: React.FC<EnrollmentPageProps> = ({ onBackHome, defa
     : 'apids';
   const initialCourseCategory = courses.find((course) => course.id === initialCourse)?.category || 'data-science';
 
-
   const submitRef = useMagneticEffect(0.25);
 
   const [formData, setFormData] = useState({
@@ -91,6 +101,7 @@ export const EnrollmentPage: React.FC<EnrollmentPageProps> = ({ onBackHome, defa
     batch: 'weekend',
     message: '',
   });
+  const [honeypot, setHoneypot] = useState('');
 
   const [formErrors, setFormErrors] = useState({
     name: '',
@@ -102,8 +113,10 @@ export const EnrollmentPage: React.FC<EnrollmentPageProps> = ({ onBackHome, defa
     courseCategory: '',
     course: '',
     startTimeline: '',
+    message: '',
   });
 
+  const [touched, setTouched] = useState<Record<string, boolean>>({});
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState('');
@@ -111,6 +124,59 @@ export const EnrollmentPage: React.FC<EnrollmentPageProps> = ({ onBackHome, defa
   const selectedCourseIndustry = courseIndustryLabels[formData.course] || 'technology';
   const selectedCourseLabel = courses.find(c => c.id === formData.course)?.label || '';
   const selectedCrmCourse = getCrmCourseMapping(formData.course);
+
+  const validateSingleField = (name: string, value: string): string => {
+    switch (name) {
+      case 'name':
+        return validateName(value);
+      case 'email':
+        return validateEmail(value);
+      case 'phone':
+        return validateIndianPhone(value);
+      case 'qualification':
+        return !value.trim() ? 'Highest Qualification is required.' : '';
+      case 'experience':
+        return !value.trim() ? 'Experience is required.' : '';
+      case 'state':
+        return !value.trim() ? 'State or location is required.' : '';
+      case 'courseCategory':
+        return !value.trim() ? 'Course is required.' : '';
+      case 'course':
+        return !value.trim() ? 'Program is required.' : '';
+      case 'startTimeline':
+        return !value.trim() ? 'Preferred start timeline is required.' : '';
+      case 'message':
+        return validateOptionalMessage(value);
+      default:
+        return '';
+    }
+  };
+
+  const isFormValid = useMemo(() => {
+    return (
+      !validateName(formData.name) &&
+      !validateEmail(formData.email) &&
+      !validateIndianPhone(formData.phone) &&
+      Boolean(formData.qualification.trim()) &&
+      Boolean(formData.experience.trim()) &&
+      Boolean(formData.state.trim()) &&
+      Boolean(formData.courseCategory.trim()) &&
+      Boolean(formData.course.trim()) &&
+      Boolean(formData.startTimeline.trim()) &&
+      !validateOptionalMessage(formData.message)
+    );
+  }, [
+    formData.name,
+    formData.email,
+    formData.phone,
+    formData.qualification,
+    formData.experience,
+    formData.state,
+    formData.courseCategory,
+    formData.course,
+    formData.startTimeline,
+    formData.message,
+  ]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -142,82 +208,56 @@ export const EnrollmentPage: React.FC<EnrollmentPageProps> = ({ onBackHome, defa
 
     setSubmitError('');
 
-    if (name in formErrors) {
+    if (name in formErrors && (touched[name] || value.length > 0)) {
+      setTouched((current) => ({ ...current, [name]: true }));
       setFormErrors((current) => ({
         ...current,
-        [name]: '',
+        [name]: validateSingleField(name, value),
         ...(name === 'courseCategory' ? { course: '' } : {}),
       }));
     }
   };
 
+  const handleBlur = (e: React.FocusEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    if (name in formErrors) {
+      setTouched((current) => ({ ...current, [name]: true }));
+      setFormErrors((current) => ({
+        ...current,
+        [name]: validateSingleField(name, value),
+      }));
+    }
+  };
+
   const validateForm = () => {
-    let isValid = true;
     const errors = {
-      name: '',
-      email: '',
-      phone: '',
-      qualification: '',
-      experience: '',
-      state: '',
-      courseCategory: '',
-      course: '',
-      startTimeline: '',
+      name: validateName(formData.name),
+      email: validateEmail(formData.email),
+      phone: validateIndianPhone(formData.phone),
+      qualification: !formData.qualification.trim() ? 'Highest Qualification is required.' : '',
+      experience: !formData.experience.trim() ? 'Experience is required.' : '',
+      state: !formData.state.trim() ? 'State or location is required.' : '',
+      courseCategory: !formData.courseCategory.trim() ? 'Course is required.' : '',
+      course: !formData.course.trim() ? 'Program is required.' : '',
+      startTimeline: !formData.startTimeline.trim() ? 'Preferred start timeline is required.' : '',
+      message: validateOptionalMessage(formData.message),
     };
 
-    if (!formData.name.trim()) {
-      errors.name = 'Full Name is required';
-      isValid = false;
-    }
-
-    if (!formData.email.trim()) {
-      errors.email = 'Email Address is required';
-      isValid = false;
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      errors.email = 'Please enter a valid email address';
-      isValid = false;
-    }
-
-    if (!formData.phone.trim()) {
-      errors.phone = 'Phone Number is required';
-      isValid = false;
-    } else if (!/^\+?[0-9\s-]{10,15}$/.test(formData.phone.trim())) {
-      errors.phone = 'Please enter a valid phone number (10-15 digits)';
-      isValid = false;
-    }
-
-    if (!formData.qualification) {
-      errors.qualification = 'Highest Qualification is required';
-      isValid = false;
-    }
-
-    if (!formData.experience) {
-      errors.experience = 'Experience is required';
-      isValid = false;
-    }
-
-    if (!formData.state) {
-      errors.state = 'State or location is required';
-      isValid = false;
-    }
-
-    if (!formData.courseCategory) {
-      errors.courseCategory = 'Course is required';
-      isValid = false;
-    }
-
-    if (!formData.course) {
-      errors.course = 'Program is required';
-      isValid = false;
-    }
-
-    if (!formData.startTimeline) {
-      errors.startTimeline = 'Preferred start timeline is required';
-      isValid = false;
-    }
-
+    setTouched({
+      name: true,
+      email: true,
+      phone: true,
+      qualification: true,
+      experience: true,
+      state: true,
+      courseCategory: true,
+      course: true,
+      startTimeline: true,
+      message: true,
+    });
     setFormErrors(errors);
-    return isValid;
+
+    return Object.values(errors).every((err) => !err);
   };
 
   const buildElementorPayload = () => {
@@ -230,7 +270,7 @@ export const EnrollmentPage: React.FC<EnrollmentPageProps> = ({ onBackHome, defa
     payload.set('intent', 'enroll');
     payload.set('source_type', 'website');
     payload.set('pipeline', 'main-admission');
-    payload.set('name', formData.name.trim());
+    payload.set('name', formData.name.trim().replace(/\s+/g, ' '));
     payload.set('email', formData.email.trim());
     payload.set('phone', formData.phone.trim());
     payload.set('highest_qualification', formData.qualification.trim());
@@ -266,6 +306,10 @@ export const EnrollmentPage: React.FC<EnrollmentPageProps> = ({ onBackHome, defa
     e.preventDefault();
     setSubmitError('');
 
+    if (isHoneypotTriggered(honeypot)) {
+      return;
+    }
+
     if (!validateForm()) {
       trackEvent('form_validation_error', {
         form_name: 'enroll',
@@ -295,9 +339,9 @@ export const EnrollmentPage: React.FC<EnrollmentPageProps> = ({ onBackHome, defa
 
       setIsSubmitted(true);
       recordLeadSubmission({
-        name: formData.name,
-        email: formData.email,
-        phone: formData.phone,
+        name: formData.name.trim().replace(/\s+/g, ' '),
+        email: formData.email.trim(),
+        phone: formData.phone.trim(),
         qualification: formData.qualification,
         experience: formData.experience,
         state: formData.state,
@@ -427,7 +471,20 @@ export const EnrollmentPage: React.FC<EnrollmentPageProps> = ({ onBackHome, defa
             <div className="enroll-form-card reveal-on-scroll delay-1">
               <h3>Admissions Query Form</h3>
               
-              <form onSubmit={handleSubmit} className="enroll-form">
+              <form onSubmit={handleSubmit} className="enroll-form" noValidate>
+                {/* Hidden Honeypot Field for Bot Prevention */}
+                <div className="hp-bot-trap" aria-hidden="true">
+                  <label htmlFor="enroll-website-url">Website</label>
+                  <input
+                    id="enroll-website-url"
+                    name="website_url"
+                    type="text"
+                    value={honeypot}
+                    onChange={(e) => setHoneypot(e.target.value)}
+                    tabIndex={-1}
+                    autoComplete="off"
+                  />
+                </div>
                 
                 <div className="form-group-item">
                   <label htmlFor="name">Full Name *</label>
@@ -437,6 +494,8 @@ export const EnrollmentPage: React.FC<EnrollmentPageProps> = ({ onBackHome, defa
                     name="name"
                     value={formData.name}
                     onChange={handleInputChange}
+                    onBlur={handleBlur}
+                    maxLength={NAME_MAX_LENGTH}
                     placeholder="Enter your full name"
                     className={formErrors.name ? 'input-error' : ''}
                     aria-invalid={Boolean(formErrors.name)}
@@ -453,6 +512,8 @@ export const EnrollmentPage: React.FC<EnrollmentPageProps> = ({ onBackHome, defa
                     name="email"
                     value={formData.email}
                     onChange={handleInputChange}
+                    onBlur={handleBlur}
+                    maxLength={EMAIL_MAX_LENGTH}
                     placeholder="Enter your email address"
                     className={formErrors.email ? 'input-error' : ''}
                     aria-invalid={Boolean(formErrors.email)}
@@ -465,11 +526,14 @@ export const EnrollmentPage: React.FC<EnrollmentPageProps> = ({ onBackHome, defa
                   <label htmlFor="phone">Phone Number *</label>
                   <input
                     type="tel"
+                    inputMode="numeric"
                     id="phone"
                     name="phone"
                     value={formData.phone}
                     onChange={handleInputChange}
-                    placeholder="Enter your mobile number"
+                    onBlur={handleBlur}
+                    maxLength={PHONE_EXACT_LENGTH + 3}
+                    placeholder="Enter 10-digit mobile number"
                     className={formErrors.phone ? 'input-error' : ''}
                     aria-invalid={Boolean(formErrors.phone)}
                     aria-describedby={formErrors.phone ? 'phone-error' : undefined}
@@ -484,6 +548,7 @@ export const EnrollmentPage: React.FC<EnrollmentPageProps> = ({ onBackHome, defa
                     name="qualification"
                     value={formData.qualification}
                     onChange={handleInputChange}
+                    onBlur={handleBlur}
                     className={formErrors.qualification ? 'input-error' : ''}
                     aria-invalid={Boolean(formErrors.qualification)}
                     aria-describedby={formErrors.qualification ? 'qualification-error' : undefined}
@@ -505,6 +570,7 @@ export const EnrollmentPage: React.FC<EnrollmentPageProps> = ({ onBackHome, defa
                     name="experience"
                     value={formData.experience}
                     onChange={handleInputChange}
+                    onBlur={handleBlur}
                     className={formErrors.experience ? 'input-error' : ''}
                     aria-invalid={Boolean(formErrors.experience)}
                     aria-describedby={formErrors.experience ? 'experience-error' : undefined}
@@ -527,6 +593,7 @@ export const EnrollmentPage: React.FC<EnrollmentPageProps> = ({ onBackHome, defa
                     name="state"
                     value={formData.state}
                     onChange={handleInputChange}
+                    onBlur={handleBlur}
                     className={formErrors.state ? 'input-error' : ''}
                     aria-invalid={Boolean(formErrors.state)}
                     aria-describedby={formErrors.state ? 'state-error' : undefined}
@@ -546,6 +613,7 @@ export const EnrollmentPage: React.FC<EnrollmentPageProps> = ({ onBackHome, defa
                     name="courseCategory"
                     value={formData.courseCategory}
                     onChange={handleInputChange}
+                    onBlur={handleBlur}
                     className={formErrors.courseCategory ? 'input-error' : ''}
                     aria-invalid={Boolean(formErrors.courseCategory)}
                     aria-describedby={formErrors.courseCategory ? 'course-category-error' : undefined}
@@ -563,6 +631,7 @@ export const EnrollmentPage: React.FC<EnrollmentPageProps> = ({ onBackHome, defa
                     name="course"
                     value={formData.course}
                     onChange={handleInputChange}
+                    onBlur={handleBlur}
                     className={formErrors.course ? 'input-error' : ''}
                     aria-invalid={Boolean(formErrors.course)}
                     aria-describedby={formErrors.course ? 'course-error' : undefined}
@@ -583,6 +652,7 @@ export const EnrollmentPage: React.FC<EnrollmentPageProps> = ({ onBackHome, defa
                     name="startTimeline"
                     value={formData.startTimeline}
                     onChange={handleInputChange}
+                    onBlur={handleBlur}
                     className={formErrors.startTimeline ? 'input-error' : ''}
                     aria-invalid={Boolean(formErrors.startTimeline)}
                     aria-describedby={formErrors.startTimeline ? 'start-timeline-error' : undefined}
@@ -630,14 +700,25 @@ export const EnrollmentPage: React.FC<EnrollmentPageProps> = ({ onBackHome, defa
                     name="message"
                     value={formData.message}
                     onChange={handleInputChange}
+                    onBlur={handleBlur}
+                    maxLength={MESSAGE_MAX_LENGTH}
                     placeholder="Any questions you have for our admissions team..."
                     rows={4}
+                    className={formErrors.message ? 'input-error' : ''}
+                    aria-invalid={Boolean(formErrors.message)}
+                    aria-describedby={formErrors.message ? 'message-error' : undefined}
                   />
+                  {formErrors.message && <span id="message-error" className="error-text" role="alert">{formErrors.message}</span>}
                 </div>
 
                 {submitError && <span className="error-text" role="alert">{submitError}</span>}
 
-                <button ref={submitRef} type="submit" className="btn-submit-enroll" disabled={isSubmitting}>
+                <button
+                  ref={submitRef}
+                  type="submit"
+                  className="btn-submit-enroll"
+                  disabled={isSubmitting || !isFormValid}
+                >
                   {isSubmitting ? 'Submitting...' : 'Submit Admissions Query'}
                 </button>
 

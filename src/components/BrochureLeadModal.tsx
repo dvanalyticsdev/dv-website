@@ -4,6 +4,15 @@ import { getCrmCourseMapping } from '../data/crmCourseMapping';
 import { getCourseMeta } from '../data/courseMeta';
 import { appendAttributionToPayload, trackEvent } from '../utils/analytics';
 import { recordLeadSubmission } from '../services/leadTrackingService';
+import {
+  EMAIL_MAX_LENGTH,
+  isHoneypotTriggered,
+  NAME_MAX_LENGTH,
+  PHONE_EXACT_LENGTH,
+  validateEmail,
+  validateIndianPhone,
+  validateName,
+} from '../utils/formValidation';
 
 interface BrochureLeadModalProps {
   courseId?: string | null;
@@ -29,7 +38,13 @@ const getCrmElementorWebhookUrl = () => CRM_ELEMENTOR_WEBHOOK_URL;
 
 export const BrochureLeadModal: React.FC<BrochureLeadModalProps> = ({ courseId, isOpen, onClose }) => {
   const [formData, setFormData] = useState<FormState>(initialFormState);
+  const [honeypot, setHoneypot] = useState('');
   const [errors, setErrors] = useState<FormState>(initialFormState);
+  const [touched, setTouched] = useState<Record<keyof FormState, boolean>>({
+    name: false,
+    email: false,
+    phone: false,
+  });
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState('');
@@ -39,12 +54,29 @@ export const BrochureLeadModal: React.FC<BrochureLeadModalProps> = ({ courseId, 
   useEffect(() => {
     if (!isOpen) {
       setFormData(initialFormState);
+      setHoneypot('');
       setErrors(initialFormState);
+      setTouched({ name: false, email: false, phone: false });
       setIsSubmitted(false);
       setIsSubmitting(false);
       setSubmitError('');
     }
   }, [isOpen]);
+
+  const validateSingleField = (fieldName: keyof FormState, value: string): string => {
+    if (fieldName === 'name') return validateName(value);
+    if (fieldName === 'phone') return validateIndianPhone(value);
+    if (fieldName === 'email') return validateEmail(value);
+    return '';
+  };
+
+  const isFormValid = useMemo(() => {
+    return (
+      !validateName(formData.name) &&
+      !validateIndianPhone(formData.phone) &&
+      !validateEmail(formData.email)
+    );
+  }, [formData.name, formData.phone, formData.email]);
 
   if (!isOpen || !course) {
     return null;
@@ -52,49 +84,44 @@ export const BrochureLeadModal: React.FC<BrochureLeadModalProps> = ({ courseId, 
 
   const validateForm = () => {
     const nextErrors: FormState = {
-      name: '',
-      email: '',
-      phone: '',
+      name: validateName(formData.name),
+      email: validateEmail(formData.email),
+      phone: validateIndianPhone(formData.phone),
     };
-    let isValid = true;
 
-    if (!formData.name.trim()) {
-      nextErrors.name = 'Full name is required';
-      isValid = false;
-    }
-
-    if (!formData.email.trim()) {
-      nextErrors.email = 'Email is required';
-      isValid = false;
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      nextErrors.email = 'Enter a valid email address';
-      isValid = false;
-    }
-
-    if (!formData.phone.trim()) {
-      nextErrors.phone = 'Phone number is required';
-      isValid = false;
-    } else if (!/^\+?[0-9\s-]{10,15}$/.test(formData.phone.trim())) {
-      nextErrors.phone = 'Enter a valid phone number';
-      isValid = false;
-    }
-
+    setTouched({ name: true, email: true, phone: true });
     setErrors(nextErrors);
-    return isValid;
+    return !nextErrors.name && !nextErrors.email && !nextErrors.phone;
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
+    const fieldName = name as keyof FormState;
 
     setFormData((current) => ({
       ...current,
-      [name]: value,
+      [fieldName]: value,
     }));
 
     setSubmitError('');
+
+    if (touched[fieldName] || value.length > 0) {
+      setTouched((current) => ({ ...current, [fieldName]: true }));
+      setErrors((current) => ({
+        ...current,
+        [fieldName]: validateSingleField(fieldName, value),
+      }));
+    }
+  };
+
+  const handleBlur = (event: React.FocusEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    const fieldName = name as keyof FormState;
+
+    setTouched((current) => ({ ...current, [fieldName]: true }));
     setErrors((current) => ({
       ...current,
-      [name]: '',
+      [fieldName]: validateSingleField(fieldName, value),
     }));
   };
 
@@ -110,7 +137,7 @@ export const BrochureLeadModal: React.FC<BrochureLeadModalProps> = ({ courseId, 
     payload.set('intent', 'brochure');
     payload.set('source_type', 'website');
     payload.set('pipeline', 'main-admission');
-    payload.set('name', formData.name.trim());
+    payload.set('name', formData.name.trim().replace(/\s+/g, ' '));
     payload.set('email', formData.email.trim());
     payload.set('phone', formData.phone.trim());
     payload.set('course', courseLabel);
@@ -153,6 +180,10 @@ export const BrochureLeadModal: React.FC<BrochureLeadModalProps> = ({ courseId, 
     event.preventDefault();
     setSubmitError('');
 
+    if (isHoneypotTriggered(honeypot)) {
+      return;
+    }
+
     if (!validateForm()) {
       trackEvent('form_validation_error', {
         form_name: 'brochure',
@@ -182,9 +213,9 @@ export const BrochureLeadModal: React.FC<BrochureLeadModalProps> = ({ courseId, 
 
       setIsSubmitted(true);
       recordLeadSubmission({
-        name: formData.name,
-        phone: formData.phone,
-        email: formData.email,
+        name: formData.name.trim().replace(/\s+/g, ' '),
+        phone: formData.phone.trim(),
+        email: formData.email.trim(),
         course: course.label,
         formType: 'download-brochure',
         formLabel: 'Course Brochure Download',
@@ -251,7 +282,21 @@ export const BrochureLeadModal: React.FC<BrochureLeadModalProps> = ({ courseId, 
 
             <div className="brochure-course-pill">{course.label}</div>
 
-            <form className="brochure-form" onSubmit={handleSubmit}>
+            <form className="brochure-form" onSubmit={handleSubmit} noValidate>
+              {/* Hidden Honeypot Field for Bot Prevention */}
+              <div className="hp-bot-trap" aria-hidden="true">
+                <label htmlFor="brochure-website-url">Website</label>
+                <input
+                  id="brochure-website-url"
+                  name="website_url"
+                  type="text"
+                  value={honeypot}
+                  onChange={(e) => setHoneypot(e.target.value)}
+                  tabIndex={-1}
+                  autoComplete="off"
+                />
+              </div>
+
               <div className="brochure-form-group">
                 <label htmlFor="brochure-name">Full Name *</label>
                 <input
@@ -260,10 +305,13 @@ export const BrochureLeadModal: React.FC<BrochureLeadModalProps> = ({ courseId, 
                   type="text"
                   value={formData.name}
                   onChange={handleChange}
+                  onBlur={handleBlur}
+                  maxLength={NAME_MAX_LENGTH}
                   placeholder="Enter your full name"
                   className={errors.name ? 'input-error' : ''}
+                  aria-invalid={Boolean(errors.name)}
                 />
-                {errors.name ? <span className="error-text">{errors.name}</span> : null}
+                {errors.name ? <span className="error-text" role="alert">{errors.name}</span> : null}
               </div>
 
               <div className="brochure-form-group">
@@ -272,12 +320,16 @@ export const BrochureLeadModal: React.FC<BrochureLeadModalProps> = ({ courseId, 
                   id="brochure-phone"
                   name="phone"
                   type="tel"
+                  inputMode="numeric"
                   value={formData.phone}
                   onChange={handleChange}
-                  placeholder="Enter your mobile number"
+                  onBlur={handleBlur}
+                  maxLength={PHONE_EXACT_LENGTH + 3}
+                  placeholder="Enter 10-digit mobile number"
                   className={errors.phone ? 'input-error' : ''}
+                  aria-invalid={Boolean(errors.phone)}
                 />
-                {errors.phone ? <span className="error-text">{errors.phone}</span> : null}
+                {errors.phone ? <span className="error-text" role="alert">{errors.phone}</span> : null}
               </div>
 
               <div className="brochure-form-group">
@@ -288,15 +340,22 @@ export const BrochureLeadModal: React.FC<BrochureLeadModalProps> = ({ courseId, 
                   type="email"
                   value={formData.email}
                   onChange={handleChange}
+                  onBlur={handleBlur}
+                  maxLength={EMAIL_MAX_LENGTH}
                   placeholder="Enter your email address"
                   className={errors.email ? 'input-error' : ''}
+                  aria-invalid={Boolean(errors.email)}
                 />
-                {errors.email ? <span className="error-text">{errors.email}</span> : null}
+                {errors.email ? <span className="error-text" role="alert">{errors.email}</span> : null}
               </div>
 
               {submitError ? <span className="error-text" role="alert">{submitError}</span> : null}
 
-              <button type="submit" className="btn btn-enroll-main brochure-submit-btn" disabled={isSubmitting}>
+              <button
+                type="submit"
+                className="btn btn-enroll-main brochure-submit-btn"
+                disabled={isSubmitting || !isFormValid}
+              >
                 {isSubmitting ? 'Submitting...' : 'Download Brochure'}
               </button>
             </form>

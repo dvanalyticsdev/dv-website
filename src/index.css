@@ -4420,6 +4420,18 @@ a {
   box-shadow: 0 12px 24px rgba(239, 83, 35, 0.18);
 }
 
+.brochure-submit-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
+.brochure-form-group input.input-error {
+  border-color: #ef4444;
+  background-color: #fff5f5;
+}
+
 .brochure-success-state {
   align-items: flex-start;
 }
@@ -7127,7 +7139,9 @@ a {
   box-shadow: 0 0 0 4px rgba(1, 143, 255, 0.08);
 }
 
-.form-group-item input.input-error {
+.form-group-item input.input-error,
+.form-group-item select.input-error,
+.form-group-item textarea.input-error {
   border-color: #ef4444;
   background-color: #fff5f5;
 }
@@ -7212,10 +7226,27 @@ a {
   margin-top: 0.5rem;
 }
 
-.btn-submit-enroll:hover {
+.btn-submit-enroll:hover:not(:disabled) {
   background-color: #026ca3;
   transform: translateY(-2px);
   box-shadow: 0 8px 25px rgba(1, 143, 255, 0.35);
+}
+
+.btn-submit-enroll:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
+.hp-bot-trap {
+  position: absolute !important;
+  left: -9999px !important;
+  width: 1px !important;
+  height: 1px !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  overflow: hidden !important;
 }
 
 /* Success Box */
